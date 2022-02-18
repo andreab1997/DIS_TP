@@ -1,5 +1,4 @@
 import numpy as np
-import ReadTxt as readt
 import Initialize
 #F2
 def Cg_1_m_reg(z,Q,p):
@@ -19,7 +18,6 @@ def Cg_2_m_reg(z,Q,p):
     m_b = p[0]
     eps = m_b*m_b/Q2
     thre = 4.*eps*z/(1-z)
-    v = np.sqrt(1-thre)
     if thre > 1.:
         return 0
     return Initialize.Cg2m(z,Q)[0]
@@ -29,7 +27,6 @@ def Cg_3_m_reg(z,Q,p):
     m_b = p[0]
     eps = m_b*m_b/Q2
     thre = 4.*eps*z/(1-z)
-    v = np.sqrt(1-thre)
     if thre > 1.:
         return 0
     #return Initialize.Cg3m(z,Q)[0]
@@ -40,7 +37,6 @@ def Cq_2_m_reg(z,Q,p):
     m_b = p[0]
     eps = m_b*m_b/Q2
     thre = 4.*eps*z/(1-z)
-    v = np.sqrt(1-thre)
     if thre > 1.:
         return 0
     return Initialize.Cq2m(z,Q)[0]
@@ -50,7 +46,6 @@ def Cq_3_m_reg(z,Q,p):
     m_b = p[0]
     eps = m_b*m_b/Q2
     thre = 4.*eps*z/(1-z)
-    v = np.sqrt(1-thre)
     if thre > 1.:
         return 0
     #return Initialize.Cq3m(z,Q)[0]
@@ -61,7 +56,6 @@ def CLg_1_m_reg(z,Q,p):
     m_b = p[0]
     eps = m_b*m_b/Q2
     z2 = z*z
-    eta = 1./(4*eps + 1)
     thre = 4.*eps*z/(1-z)
     v = np.sqrt(1-thre)
     TR = 1./2.
@@ -74,7 +68,6 @@ def CLg_2_m_reg(z,Q,p):
     m_b = p[0]
     eps = m_b*m_b/Q2
     thre = 4.*eps*z/(1-z)
-    v = np.sqrt(1-thre)
     if thre > 1.:
         return 0
     return Initialize.CLg2m(z,Q)[0]
@@ -83,7 +76,6 @@ def CLg_3_m_reg(z,Q,p):
     m_b = p[0]
     eps = m_b*m_b/Q2
     thre = 4.*eps*z/(1-z)
-    v = np.sqrt(1-thre)
     if thre > 1.:
         return 0
     #return Initialize.CLg3m(z,Q)[0]
@@ -94,7 +86,6 @@ def CLq_2_m_reg(z,Q,p):
     m_b = p[0]
     eps = m_b*m_b/Q2
     thre = 4.*eps*z/(1-z)
-    v = np.sqrt(1-thre)
     if thre > 1.:
         return 0
     return Initialize.CLq2m(z,Q)[0]
@@ -103,7 +94,6 @@ def CLq_3_m_reg(z,Q,p):
     m_b = p[0]
     eps = m_b*m_b/Q2
     thre = 4.*eps*z/(1-z)
-    v = np.sqrt(1-thre)
     if thre > 1.:
         return 0
     #return Initialize.CLq3m(z,Q)[0]

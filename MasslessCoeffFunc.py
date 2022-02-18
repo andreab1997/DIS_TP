@@ -20,7 +20,6 @@ def Cb_1_sing(z,Q,p):
 
 def Cb_2_reg(z,Q,p):
     e_b = 1./3.
-    CF = 4./3.
     z1 = 1-z
     dl = np.log(z)
     dl1 = np.log(z1)
@@ -32,12 +31,10 @@ def Cb_2_reg(z,Q,p):
 
 def Cb_2_loc(z,Q):
     e_b = 1./3.
-    CF = 4./3.
     zeta2 = 1.6449340668482264 
     return e_b*e_b *(- 338.046 + 5 * ( 46.8405))
 def Cb_2_sing(z,Q,p):
     e_b = 1./3.
-    CF = 4./3.
     z1 = 1-z
     dl = np.log(z)
     dl1 = np.log(z1)
@@ -50,14 +47,11 @@ def Cb_2_sing(z,Q,p):
 
     
 def Cg_1_reg(z,Q,p):
-    Q2 = Q*Q
     TR = 1./2.
     e_b = 1./3.
     return 4 * TR * e_b*e_b * ( ( (1-z)*(1-z) + z*z ) * np.log( ( 1 - z ) / z ) - 8 * z * ( z - 1 ) - 1 )
 
 def Cg_2_reg(z,Q,p):
-    Q2 = Q*Q
-    TR = 1./2.
     e_b = 1./3.
     z1 = 1-z
     L0 = np.log(z)

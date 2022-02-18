@@ -26,8 +26,8 @@ def F2_FO(order,pdf,x,Q,muF_ratio=1,muR_ratio=1):
     Parameters:
         order : int
             requested perturbative order (0 == LO, 1 == NLO,...)
-        pdf : string
-            pdf to be used 
+        pdf : str or list(str)
+            pdf(s) to be used 
         x : float
             x-value 
         Q : float
@@ -66,8 +66,8 @@ def F2_R(order,pdf,x,Q,muF_ratio=1,muR_ratio=1):
     Parameters:
         order : int
             requested perturbative order (0 == LO, 1 == NLO,...)
-        pdf : string
-            pdf to be used 
+        pdf : str or list(str)
+            pdf(s) to be used 
         x : float
             x-value 
         Q : float
@@ -116,8 +116,8 @@ def F2_M(order,meth,pdf,x,Q,muF_ratio=1,muR_ratio=1):
             requested perturbative order (0 == LO, 1 == NLO,...)
         meth : str
             method to be used (our, fonll)
-        pdf : string
-            pdf to be used 
+        pdf : str or list(str)
+            pdf(s) to be used 
         x : float
             x-value 
         Q : float
@@ -180,8 +180,8 @@ def FL_FO(order,pdf,x,Q,muF_ratio=1,muR_ratio=1):
     Parameters:
         order : int
             requested perturbative order (0 == LO, 1 == NLO,...)
-        pdf : string
-            pdf to be used 
+        pdf : str or list(str)
+            pdf(s) to be used 
         x : float
             x-value 
         Q : float
@@ -220,8 +220,8 @@ def FL_R(order,pdf,x,Q,muF_ratio=1,muR_ratio=1):
     Parameters:
         order : int
             requested perturbative order (0 == LO, 1 == NLO,...)
-        pdf : string
-            pdf to be used 
+        pdf : str or list(str)
+            pdf(s) to be used 
         x : float
             x-value 
         Q : float
@@ -265,8 +265,8 @@ def FL_M(order,meth,pdf,x,Q,muF_ratio=1,muR_ratio=1):
             requested perturbative order (0 == LO, 1 == NLO,...)
         meth : str
             method to be used (our, fonll)
-        pdf : string
-            pdf to be used 
+        pdf : str or list(str)
+            pdf(s) to be used 
         x : float
             x-value 
         Q : float
