@@ -160,14 +160,16 @@ def do_the_calculation(Stru_func,Methods,map_PDFsorder,scalevar):
     eps = 0.5
     mine = lhapdf.mkPDF("MyPDF_mub=mb_nlo")
     thre = [mine.quarkMass(5)]
-    if len(ratios)>0:    
+    if len(ratios)>1:    
         thre = [mine.quarkMass(5)*ratio for ratio in [0.5,1.,2.0]]
     Qlogmin = np.log10(1.)
     Qlogmax = np.log10(150.)
     Qlog = np.linspace(Qlogmin,Qlogmax,200)
     Qcommon = pow(10,Qlog)
     Qsing = [np.linspace(thr-eps,thr+eps,5) for thr in thre]
-    Q = np.sort(np.concatenate((Qcommon,Qsing[0],Qsing[1],Qsing[2])))
+    Q = np.sort(np.concatenate((Qcommon,Qsing[0])))
+    if len(ratios)>1:
+        Q = np.sort(np.concatenate((Qcommon,Qsing[0],Qsing[1],Qsing[2])))
 
     X = [0.1,0.01,0.001,0.0001]
 
