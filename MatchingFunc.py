@@ -62,4 +62,5 @@ def P1(p):
     return Mgg_1_loc(0,p)
 #TODO: implement P2
 def P2(p):
-    return 0
+    fact = np.log((p[1]**2)/(p[0]**2))
+    return (2./9.)*(2*(fact**2)+ 33*fact - 7)
