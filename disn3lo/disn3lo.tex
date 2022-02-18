@@ -1,0 +1,556 @@
+\documentclass[a4paper,10pt]{article}
+\pdfoutput=1 % if your are submitting a pdflatex (i.e. if you have
+             % images in pdf, png or jpg format)
+
+\usepackage{jheppub} % for details on the use of the package, please
+                     % see the JHEP-author-manual
+
+\usepackage[T1]{fontenc} % if needed
+\usepackage{lmodern} %so that textasciitilde works properly
+
+
+%%% packages
+%\usepackage[a4paper,top=3cm,bottom=2.5cm,left=2.5cm,right=2.5cm,bindingoffset=0mm]{geometry}
+\usepackage{xcolor}
+%\usepackage{amsmath,amssymb}
+\usepackage{mathrsfs,wasysym}
+\usepackage{booktabs}
+\usepackage{slashed}
+\usepackage{cancel}
+%\usepackage{cite}  %% cannot be used with REVtex4
+%\usepackage[pdftex]{hyperref}
+%\usepackage{showlabels}
+
+
+%%% New commands
+\newcommand{\kt}{k_{\rm t}}
+\newcommand{\ktn}[1]{k_{{\rm t} #1}}
+\newcommand{\kb}{\boldsymbol{k}}
+\newcommand{\MSbar}{\overline{\text{MS}}}
+\newcommand{\sss}{\scriptscriptstyle}
+\newcommand{\LQCD}{\Lambda_{\rm\sss QCD}}
+%
+\newcommand{\C}   {c}
+%\newcommand{\Cm}  {\boldsymbol{c}}
+\newcommand{\Cm}  {\widetilde{c}}
+\newcommand{\DC}  {\Delta \C}
+\newcommand{\DCm} {\Delta \Cm}
+\newcommand{\DkC} [1]{\Delta_#1 \C}
+\newcommand{\DkCm}[1]{\Delta_#1 \Cm}
+\newcommand{\rhot} {\rho_t}
+%
+\newcommand{\nf}{{[n_f]}}
+\newcommand{\nfo}{{[n_f+1]}}
+\newcommand{\zapp}{\tilde z}
+\newcommand{\as}{\alpha_s}
+\newcommand{\ashat}{\hat\alpha_s}
+\newcommand{\asb}{\bar\alpha_s}
+\newcommand{\asq}{\alpha_s(Q^2)}
+\newcommand{\Ord}{\mathcal{O}}
+\newcommand{\Lum}{\mathscr{L}}
+\newcommand{\Mell}{\mathcal{M}}
+\newcommand{\gammaa}{\hat\gamma}
+\newcommand{\gammat}{\tilde\gamma}
+\newcommand{\mh}{m_{H}}
+\newcommand{\mt}{m_{t}}
+\newcommand{\mz}{m_{Z}}
+\newcommand{\mheavy}{m_{q_{n_f+1}}}
+\newcommand{\muf}{\mu_{\sss\rm F}}
+\newcommand{\mur}{\mu_{\sss\rm R}}
+\newcommand{\mus}{\mu_s}
+\newcommand{\pr}{$^\prime$}
+\newcommand{\lf} {\ell_{\sss\rm F}}
+\newcommand{\lfr}{\ell_{\sss\rm FR}}
+\newcommand{\plus}[1]{\left(#1\right)_+}
+\newcommand{\plusq}[1]{\left[#1\right]_+}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Dt}{\tilde{\mathcal{D}}}
+\newcommand{\Dh}{\hat{\mathcal{D}}}
+\newcommand{\Dm}{\mathcal{D}^{\log}}
+\newcommand{\Li}{\mathrm{Li}}
+\newcommand{\gammae}{\gamma_{\scriptscriptstyle E}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\Res}[1]{\underset{#1}{\rm Res}\:}
+\newcommand{\FONLL}[1]{\text{FONLL-#1}}
+\newcommand{\de}[1]{\frac{\partial}{\partial #1}}
+\renewcommand{\Re}{\mathrm{Re}\:}
+\renewcommand{\Im}{\mathrm{Im}\:}
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\tr}{{\rm tr}\,}
+\newcommand{\sqmatr}[4]{\left(
+    \begin{array}[c]{cc}
+      #1 \;&\; #2 \\ #3 \;&\; #4
+    \end{array}
+  \right)}
+\newcommand{\dvec}[2]{\left(
+    \begin{array}{c}
+      #1 \\ #2
+    \end{array}
+\right)}
+\newcommand{\bcs}{\chi^\sigma}
+\newcommand{\bc}{\chi^\sigma}
+
+
+
+\def\beq{\begin{equation}}  
+\def\eeq{\end{equation}}
+\def\({\left(}
+\def\){\right)}
+\def\[{\left[}
+\def\]{\right]}
+\def\nn{\nonumber \\}
+
+\let\oldsubsection\subsection
+\renewcommand\subsection[2][\subsectiontoc]{%
+  \def\subsectiontoc{#2}%
+  \oldsubsection[#1]{\boldmath #2}%
+}
+
+\let\oldsubsubsection\subsubsection
+\renewcommand\subsubsection[2][\subsubsectiontoc]{%
+  \def\subsubsectiontoc{#2}%
+  \oldsubsubsection[#1]{\boldmath #2}%
+}
+
+
+\allowdisplaybreaks
+
+
+
+\newcommand{\MB}[1]{\textbf{\textcolor{red}   {MB: #1}}}
+\newcommand{\LR}[1]{\textbf{\textcolor{blue}  {LR: #1}}}
+
+
+
+
+
+\title{\boldmath A complete implementation of DIS at three loops for PDF determination}
+
+
+\author[a]{Marco Bonvini}
+\affiliation[a]{INFN, Sezione di Roma 1,\\ Piazzale Aldo Moro~5, 00185 Roma, Italy}
+%
+\author[b]{and Luca Rottoli}
+\affiliation[b]{Dipartimento di Fisica, Universit\`a di Milano Bicocca and INFN, Sezione di Milano Bicocca,\\ Via XXXXXX, XXXX, Italy}
+%
+
+%
+\preprint{}
+
+% e-mail addresses: one for each author, in the same order as the authors
+\emailAdd{marco.bonvini@roma1.infn.it}
+\emailAdd{luca.rottoli@mib.infn.it}
+
+
+
+
+
+
+%%% abstract
+\abstract{%
+Cheers
+}
+
+
+
+
+
+
+\begin{document}
+
+
+
+%%%
+\maketitle
+%\flushbottom
+
+
+%\newpage
+
+
+\section{Introduction}
+
+
+\section{DIS cross section for PDF fitting}
+
+Introduce massive 3FS, massless 4FS and massive 4FS (namely FONLL/S-ACOT).
+
+Comments on IC.
+
+The goal is to write
+\beq
+\sigma = FO+RES-d.c.
+\eeq 
+
+
+\section{How to achieve N$^3$LO accuracy}
+
+Here we need to sfatate the various myths about FONLL etc.
+We construct our VFNS, which is FONLL without damping, i.e.\ S-ACOT, using the BPT counting,
+which corresponds to FONLL-0, FONLL-B and FONLL-D, and possibly adding the missing charm-initiated contributions
+at the next order, modulated by a ``damping'' function to delay their activation to higher scales,
+where they upgrade to A, C and E which are more appropriate at higher scales.
+In this way, one has a result which is either $\Ord(\as)$, $\Ord(\as^2)$ or $\Ord(\as^3)$ in all regions of $Q^2$.
+
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{l|ll}
+    PDF order & DGLAP evolution & Coefficient functions \\
+    \midrule
+    LO & LL & $\Ord(\as^0)$ \\
+    NLO & NLL & $\Ord(\as)$ \\
+    NNLO & NNLL & $\Ord(\as^2)$ \\
+    N$^3$LO & N$^3$LL & $\Ord(\as^3)$
+  \end{tabular}
+  \caption{Definition of the minimal orders needed for a given PDF order.}
+  \label{tab:PDForder}
+\end{table}
+
+The order in Tab.~\ref{tab:PDForder} represent the lowest order needed for each contribution in order to reach the desired accuracy.
+Subleading higher order contributions can of course be included.
+For instance, in the TR scheme $F_L$ is systematically included to one order higher.
+
+
+
+
+\subsection{Comparison with FONLL}
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{l|ll}
+    PDF order & FONLL & our proposal \\
+    \midrule
+    %LO & ZM-LO & $\Ord(\as^0)$: ??? \\
+    NLO & FONLL-A, FONLL-B & $\Ord(\as)$: $\FONLL{0} + {\rm damp}\times(\FONLL{A}-\FONLL{0})$ \\
+    NNLO & FONLL-C, FONLL-D & $\Ord(\as^2)$: $\FONLL{B} + {\rm damp}\times(\FONLL{C}-\FONLL{B})$ \\
+    N$^3$LO & FONLL-E, FONLL-F & $\Ord(\as^3)$: $\FONLL{D} + {\rm damp}\times(\FONLL{E}-\FONLL{D})$
+  \end{tabular}
+  \caption{Comparison with FONLL.}
+  \label{tab:counting}
+\end{table}
+
+In a standard approach, for N$^k$LO PDFs all contributions up to $\Ord(\as^k)$ in the coefficient functions are included,
+including those coming from initial state heavy quarks.
+This leads to what is denoted in Ref.~\cite{Forte:} as FONLL-A for NLO, which includes all $\Ord(\as)$ contributions,
+then FONLL-C at NNLO, which includes all $\Ord(\as^2)$ contributions, and so on (with odd letters).
+One may instead adopt a relative counting of the perturbative orders, where one takes into account that some contributions,
+specifically the massive coefficients, start at $\Ord(\as)$.
+For this reason, a new construction denoted FONLL-B is proposed,
+where the massive contributions are retained to one order higher, $\Ord(\as^2)$.
+In FONLL-B the behaviour of the structure functions close to threshold is very much improved.
+\MB{give more explanations}
+Results with FONLL-B for NLO PDFs are also much better than results with FONLL-C for NNLO PDFs,
+as FONLL-C suffers from the same problems as FONLL-A.
+However, given that FONLL-B uses NNLO massive coefficients for NLO PDFs,
+the extension of FONLL-B to NNLO PDFs, dubbed FONLL-D, would require $\Ord(\as^3)$ massive coefficients.
+Thanks to the results presented in Sect.~\ref{sec:approx}, an approximate version of FONLL-D can
+now be constructed. However, in this approach N$^3$LO PDFs are out of reach.
+
+We observe that FONLL with even letters, B/D/etc, reproduces exactly the construction obtained with our (BPT) counting.
+\MB{Luca, add here your proof.}
+
+The FONLL solution for improving FONLL-A/C/etc is to \emph{add} subleading higher order contributions.
+In our approach, instead, we improve the FONLL-A/C/etc by \emph{removing} contributions which are
+subleading at small scales, restoring them at high scales.
+In terms of FONLL structure functions, the construction we propose can be written as
+\beq
+\FONLL{}(2n) + {\rm damping}\times\Big[\FONLL{}(2n+1)-\FONLL{}(2n)\Big],
+\eeq
+where $(2n)$ represents an even letter like 0,B,D and $(2n+1)$ its subsequent odd letter, A,C,E.
+For this reason, in our approach FONLL-B is used for the first time at NNLO,\footnote
+{Note that in Ref.~\cite{Forte:} distinction is also made on the evolution order of the PDFs,
+  which is taken to be NLL in FONLL-A and FONLL-B and NNLO in FONLL-C. In our implementation, since
+we use FONLL-B at NNLO, we also consider NNLL evolution.}
+so our NNLO implementation uses only exactly known contributions,
+and our approximation for the $\Ord(\as^3)$ massive coefficients only enters the new N$^3$LO PDFs,
+which become accessible.
+
+
+
+
+
+\section{\boldmath Approximate N$^3$LO coefficient functions with mass effects}
+\label{sec:approx}
+
+The idea is to construct an approximate expression for $C^{[4]}(m)$ starting from its massless limit $C^{[4]}(0)$.
+Basically, one can reintroduce kinematic mass corrections in the $\chi$ style.
+At $\Ord(\as)$ and $\Ord(\as^2)$, both massive and massless results are known and the approximation can be validated.
+At $\Ord(\as^3)$, only the massless result is known, and the approximation can be used to construct the massive
+result at N$^3$LO.
+
+The cross section is written as
+\beq
+F(x,Q^2)
+= x\int_x^1 \frac{dy}{y} \, C\(\frac{x}{y}\) f(y)
+= x\int_x^1 \frac{dz}{z} \, C(z) f\(\frac{x}{z}\).
+\eeq
+When all quarks are treated as massless, $C(z)$ contains a $\theta(1-z)$.
+In the massive case, namely for production of a heavy quark pair, the coefficient function contains
+$\theta(1-\alpha z)$, with
+\beq
+\alpha = 1+\frac{4m^2}{Q^2}.
+\eeq
+\MB{In CC there is a single heavy quark in the final state, so the 4 is not present. We need to generalise.}
+If we want to approximate the massive coefficients from the massless ones,
+the kinematic constraint contained in the theta function must be restored.
+The most convenient way to do so is to rescale $z\to\alpha z$, so that the $\theta$ restores the massive kinematic constraint.
+However, the massless result is good at small $z$
+(since small $z$ corresponds to high partonic center of mass energy, which is therefore insensitive to the mass of the heavy quark pair),
+namely the massive coefficient does not depend on $m$ at small $z$. Therefore a simple rescaling does not work,
+as it modifies also the small-$z$ part of the coefficient function.
+A better rescaling is given by
+\beq
+z\to \frac{z}{1-\frac{4m^2}{Q^2}z}
+=z\(1+\frac{4m^2}{Q^2}z\(1+\frac{4m^2}{Q^2}\cdots\)\).
+\eeq
+Indeed, we see that for small $z$ it tends to $z$, while in $z=1/\alpha$ it gives 1, as we can also see from the expansion
+(which can be used as an alternative, even though the full expression is more compact and elegant).
+So, a naive implementation of the approximation that we want to propose is
+\beq
+C^{[4]}\(z,\frac{m^2}{Q^2}\) \simeq C^{[4]}\(\frac{z}{1-\frac{4m^2}{Q^2}z},0\),
+\eeq
+which is very simple to implement as it uses simply the massless computation.
+However, this approximation is not very physical, as the coefficient in the 4FS
+contains collinear subtractions which do not necessarily satisfy the same kinematic constraints
+as the unsubtracted diagrams. This is indeed the case in both ACOT and S-ACOT,
+since the subtractions involving heavy-quark initiated diagrams have a different kinematics as those with
+two heavy quarks in the final state.
+Therefore, the only way to make the approximation work is to apply it to
+the unsubtracted coefficients, namely
+\beq
+C^{[3]}\(z,\frac{m^2}{Q^2}\) \simeq C^{[3,0]}\(\frac{z}{1-\frac{4m^2}{Q^2}z}, \frac{m^2}{Q^2}\),
+\eeq
+where the coefficient $C^{[3,0]}$ is the massless limit of $C^{[3]}$ except for the logarithmic terms,
+and can be constructed as
+\beq\label{eq:C30def}
+C^{[3,0]}\(z,\frac{m^2}{Q^2}\) = \sum_\text{flavours} C^{[4]}\(z,0\)\otimes K\(z,\frac{m^2}{Q^2}\),
+\eeq
+where $K$ are the matching functions which the depend on the mass only logarithmically.
+This implementation is more complicated as it requires
+a number of convolutions among lower-order coefficients and matching functions.
+However, the kinematics of $C^{[3]}$ is the one for production of a heavy quark pair in the final state,
+and therefore correctly approximated by the rescaling.
+Once the coefficients $C^{[3]}$ are known, either exactly or approximately,
+one can compute the subtracted coefficients in the S-ACOT formulation~\cite{Ball:2015dpa}
+\beq\label{eq:C4-SACOT}
+C_i^{[4]}\(z,\frac{m^2}{Q^2}\)
+= \sum_{j=g,q,\bar q} \[C_j^{[3]}\(z,\frac{m^2}{Q^2}\)-\sum_{k=c,\bar c}C_k^{[4]}(z,0)\otimes K_{kj}\(z,\frac{m^2}{Q^2}\)\]
+\otimes \tilde K_{ji}^{-1}\(z,\frac{m^2}{Q^2}\),
+\eeq
+where the function $\tilde K$, defined in Ref.~\cite{Ball:2015dpa}, represents the restriction of
+the matrix $K$ to the subspace of light flavours, where the inversion has to be computed.
+
+
+While the approximation is certainly not perfect, it is also certainly better than just
+approximating the massive coefficient with just $C^{[4]}(z,0)$, as one would do in a ZM scheme.
+Given that we cannot do much better than this at N$^3$LO, we consider this approximation perfectly acceptable:
+we will quantify its quality later in this section.
+%In particular, it turns out that the second one is better than the first one,
+%since the massive kinematics is restored only in those coefficients which really correspond
+%to diagrams where the charm pair is produced, while $C^{[4]}$ also contains (massless) collinear subtractions.
+
+
+Note that one can perhaps slightly simplify the computation of the approximation beyond the lowest order.
+Indeed, at the first non-trivial order there is no choice, as the $\Ord(\as)$ coefficient in the 4FS is given by
+\begin{align}\label{eq:C41}
+C_g^{[4](1)}\(z,\frac{m^2}{Q^2}\)
+&= C_g^{[3](1)}\(z,\frac{m^2}{Q^2}\) -2C_c^{[4](0)}(z,0)\otimes K_{cg}^{(1)}\(z,\frac{m^2}{Q^2}\).
+\end{align}
+The object to be approximated is just the first one,
+\begin{align}
+C_g^{[3](1)}\(z,\frac{m^2}{Q^2}\)
+&\simeq C_g^{[3,0](1)}\(\frac{z}{1-\frac{4m^2}{Q^2}z},\frac{m^2}{Q^2}\),
+\end{align}
+with
+\begin{align}
+C_g^{[3,0](1)}\(z,\frac{m^2}{Q^2}\)
+&= C_g^{[4](1)}\(z,0\) +2C_c^{[4](0)}(z,0)\otimes K_{cg}^{(1)}\(z,\frac{m^2}{Q^2}\).
+\end{align}
+%So far we have no freedom.
+Let's now consider the $\Ord(\as^2)$ gluonic contribution in Eq.~\eqref{eq:C4-SACOT},
+which is given by \MB{checked against BBR -> OK}
+\begin{align}\label{eq:C42}
+C_g^{[4](2)}\(z,\frac{m^2}{Q^2}\)
+&= C_g^{[3](2)}\(z,\frac{m^2}{Q^2}\)-C_g^{[3](1)}\(z,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)
+\nonumber\\ &\quad
+-2C_c^{[4](0)}(z,0)\otimes \[K_{cg}^{(2)}\(z,\frac{m^2}{Q^2}\)-K_{cg}^{(1)}\(z,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)\]
+\nonumber\\ &\quad
+-2C_c^{[4](1)}(z,0)\otimes K_{cg}^{(1)}\(z,\frac{m^2}{Q^2}\).
+\end{align}
+The natural option is to approximate only the highest-order contribution,
+\begin{align}
+C_g^{[3](2)}\(z,\frac{m^2}{Q^2}\)
+&\simeq C_g^{[4](2)}\(\zapp,0\)+C_g^{[4](1)}\(\zapp,0\)\otimes K_{gg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\)
+\nonumber\\ &\quad
++2C_c^{[4](0)}(\zapp,0)\otimes K_{cg}^{(2)}\(\zapp,\frac{m^2}{Q^2}\)
+\nonumber\\ &\quad
++2C_c^{[4](1)}(\zapp,0)\otimes K_{cg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\),
+\end{align}
+with the variable $\zapp=z/(1-\frac{4m^2}{Q^2}z)$ is the rescaled variable that we propose.
+Alternatively, we can approximate both $C_g^{[3](2)}$ and $C_g^{[3](1)}$, or equivalently\footnote
+{Computing the convolution first and then rescaling $z$ or rescaling $z$ first in the coefficient and then computing the convolution
+  is equivalent, thanks to the $\theta$ function.}
+the combination
+\begin{align}
+C_g^{[3](2)}\(z,\frac{m^2}{Q^2}\) -C_g^{[3](1)}&\(z,\frac{m^2}{Q^2}\) \otimes K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\) \nonumber\\
+&\simeq C_g^{[4](2)}\(\zapp,0\)
+\nonumber\\ &\quad
++2C_c^{[4](0)}(\zapp,0)\otimes \[K_{cg}^{(2)}\(\zapp,\frac{m^2}{Q^2}\)-K_{cg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\)\]
+\nonumber\\ &\quad
++2C_c^{[4](1)}(\zapp,0)\otimes K_{cg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\),
+\end{align}
+where again the variable $\zapp$ in the right-hand side is meant to be rescaled.
+The advantage of this second option is that one can avoid computing the convolution
+$C_g^{[4](1)}\otimes K_{gg}^{(1)}$, at the price of computing $K_{cg}^{(1)}\otimes K_{gg}^{(1)}$,
+which is however anyway needed in Eq.~\eqref{eq:C42}.
+At this order both convolutions are straightforward, but at the next order they are not,
+and the second option can save time and reduce the chance of making mistakes.
+
+At $\Ord(\as^3)$ we have \MB{please check them!}
+\begin{align}\label{eq:C43}
+C_g^{[4](3)}\(z,\frac{m^2}{Q^2}\)
+&= C_g^{[3](3)}\(z,\frac{m^2}{Q^2}\)
+-C_g^{[3](2)}\(z,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)
+\nonumber\\ &\quad
+-C_g^{[3](1)}\(z,\frac{m^2}{Q^2}\)\otimes \[K_{gg}^{(2)}\(z,\frac{m^2}{Q^2}\)-K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)\]
+\nonumber\\ &\quad
+-\cancel{C_q^{[3](1)}\(z,\frac{m^2}{Q^2}\)\otimes K_{qg}^{(2)}\(z,\frac{m^2}{Q^2}\)}
+\nonumber\\ &\quad
+-2C_c^{[4](0)}(z,0)\otimes \bigg[K_{cg}^{(3)}\(z,\frac{m^2}{Q^2}\)-K_{cg}^{(2)}\(z,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)
+\nonumber\\ &\qquad\qquad\qquad\qquad
+-K_{cg}^{(1)}\(z,\frac{m^2}{Q^2}\)\otimes \[K_{gg}^{(2)}\(z,\frac{m^2}{Q^2}\) - K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\) \otimes K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)\]\bigg]
+\nonumber\\ &\quad
+-2C_c^{[4](1)}(z,0)\otimes \[K_{cg}^{(2)}\(z,\frac{m^2}{Q^2}\)-K_{cg}^{(1)}\(z,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)\]
+\nonumber\\ &\quad
+-2C_c^{[4](2)}(z,0)\otimes K_{cg}^{(1)}\(z,\frac{m^2}{Q^2}\),
+\end{align}
+and
+\begin{align}\label{eq:C33}
+C_g^{[3](3)}\(z,\frac{m^2}{Q^2}\)
+&\simeq C_g^{[4](3)}\(\zapp,0\) +C_g^{[4](2)}\(\zapp,0\)\otimes K_{gg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\)
+  +C_g^{[4](1)}\(\zapp,0\)\otimes K_{gg}^{(2)}\(\zapp,\frac{m^2}{Q^2}\)
+\nonumber\\ &\quad
+  +\cancel{C_q^{[4](1)}\(\zapp,0\)\otimes K_{qg}^{(2)}\(\zapp,\frac{m^2}{Q^2}\)}
+\nonumber\\ &\quad
++2C_c^{[4](0)}(\zapp,0)\otimes K_{cg}^{(3)}\(\zapp,\frac{m^2}{Q^2}\)
+\nonumber\\ &\quad
++2C_c^{[4](1)}(\zapp,0)\otimes K_{cg}^{(2)}\(\zapp,\frac{m^2}{Q^2}\)
+\nonumber\\ &\quad
++2C_c^{[4](2)}(\zapp,0)\otimes K_{cg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\),
+\end{align}
+and
+\begin{align}
+&C_g^{[3](3)}\(z,\frac{m^2}{Q^2}\) -C_g^{[3](2)}\(z,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)
+\nonumber\\ &
+-C_g^{[3](1)}\(z,\frac{m^2}{Q^2}\)\otimes \[K_{gg}^{(2)}\(z,\frac{m^2}{Q^2}\)-K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(z,\frac{m^2}{Q^2}\)\]
+\nonumber\\ &
+-\cancel{C_q^{[3](1)}\(z,\frac{m^2}{Q^2}\)\otimes K_{qg}^{(2)}\(z,\frac{m^2}{Q^2}\)}
+\nonumber\\ &\quad
+\simeq C_g^{[4](3)}(\zapp,0)
+\nonumber\\ &\qquad
++ 2C_c^{[4](0)}(\zapp,0)\otimes \bigg[K_{cg}^{(3)}\(\zapp,\frac{m^2}{Q^2}\)-K_{cg}^{(2)}\(\zapp,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\)
+\nonumber\\ &\qquad\qquad\qquad\qquad\qquad
+-K_{cg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\)\otimes \[K_{gg}^{(2)}\(\zapp,\frac{m^2}{Q^2}\) - K_{gg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\) \otimes K_{gg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\)\]\bigg]
+\nonumber\\ &\qquad
++2C_c^{[4](1)}(\zapp,0)\otimes \[K_{cg}^{(2)}\(\zapp,\frac{m^2}{Q^2}\)-K_{cg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\)\otimes K_{gg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\)\]
+\nonumber\\ &\qquad
++2C_c^{[4](2)}(\zapp,0)\otimes K_{cg}^{(1)}\(\zapp,\frac{m^2}{Q^2}\).
+\end{align}
+Here the advantage of the simplified approach is clear: one can avoid computing the second line of Eq.~\eqref{eq:C43}
+and, equivalently, the last convolution of the first line of Eq.~\eqref{eq:C33}.
+
+\MB{do we need to worry about the light structure functions at N3LO?}
+
+Note that at $\Ord(\as^3)$ there may be contributions with the production of two heavy quark pairs in the final state.
+In this case, the kinematics is different, and the approximation is not accurate.
+However, the contribution from such diagrams is likely rather small, so we prefer to treat them with the same (in this case not correct) approximation developed above rather than trying to construct an ad-hoc approximation for these kind of contributions.
+
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.49\textwidth,page=1]{images/DIS_partonic}
+  \includegraphics[width=0.49\textwidth,page=2]{images/DIS_partonic}
+  \caption{Partonic plot}
+  \label{fig:partonic}
+\end{figure}
+
+
+
+
+\section{The VFNS}
+
+
+
+
+
+%\section{Small-$x$ resummation}
+%Including small-$x$ resummation in the framework above.
+
+%\section{Approximate N$^3$LO evolution}
+
+%\section{PDF fits}
+%NNLO with FONLL-B+ (=FONLL-Cdamp),
+%NNLO with FONLL-D,
+%N3LOapprox with FONLL-D+ (=FONLL-Edamp),
+%and variants with small-$x$ resummation
+
+
+
+
+
+
+\section{Conclusions}
+\label{sec:conclusions}
+
+
+
+
+
+
+
+
+
+
+
+
+\acknowledgments
+{
+We thank.....
+%
+The work of MB is supported by the Marie Sk\l{}odowska Curie grant HiPPiE@LHC.
+}
+
+
+
+
+\appendix
+\section{\boldmath Appendix}
+\label{sec:app}
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\phantomsection
+\addcontentsline{toc}{section}{References}
+
+\bibliographystyle{jhep}
+\bibliography{references}
+
+
+
+
+
+
+\end{document}
+
+
