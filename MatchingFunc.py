@@ -18,7 +18,7 @@ def Mgg_1_loc(z,p):
 def Mgg_2_reg(z,p):
     CF = 4./3.
     TR = 1./2.
-    CA = 1
+    CA = 3.
     L = np.log((p[1]**2)/(p[0]**2))
     z1 = 1-z 
     LO = np.log(z)
@@ -28,14 +28,14 @@ def Mgg_2_reg(z,p):
 def Mgg_2_loc(z,p):
     CF = 4./3.
     TR = 1./2.
-    CA = 1. #change here
+    CA = 3. #change here
     L = np.log((p[1]**2)/(p[0]**2))
     return (L**2)*((TR**2)*(16./9.))+L*(CF*TR*4 + CA*TR*(16./3.)) - CF*TR*15 + CA*TR*(10./9.)
     
 def Mgg_2_sing(z,p):
     CF = 4./3.
     TR = 1./2.
-    CA = 1.
+    CA = 3.
     L = np.log((p[1]**2)/(p[0]**2))
     z1 = 1-z 
     return (L**2)*(CA*TR*(8./3.)*(1./z1))+L*(CA*TR*(80./9.)*(1./z1))+CA*TR*((224./27.)*(1./z1))
