@@ -1,25 +1,25 @@
 import numpy as np
 #F2
 def Cb_0_loc(z,Q):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     return e_b*e_b
 
 def Cb_1_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     CF = 4./3.
     return e_b*e_b* 2 * CF * ( - ( 1 + z ) * np.log( 1 - z ) - ( 1 + z*z ) * np.log(z) / ( 1 - z ) + 3 + 2 * z )
 def Cb_1_loc(z,Q):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     CF = 4./3.
     zeta2 = 1.6449340668482264 
     return e_b*e_b * 2 * CF * (  - ( 2 * zeta2 + 9. / 2. ) ) 
 def Cb_1_sing(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     CF = 4./3.
     return e_b*e_b * 2 * CF  * ( 2 * np.log( 1 - z ) - 3. / 2. ) / ( 1 - z )
 
 def Cb_2_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1-z
     dl = np.log(z)
     dl1 = np.log(z1)
@@ -30,11 +30,11 @@ def Cb_2_reg(z,Q,p):
     return e_b*e_b* (- 69.59 - 1008 * z - 2.835 * dl_3 - 17.08 * dl_2 + 5.986 * dl - 17.19 * dl1_3 + 71.08 * dl1_2 - 660.7 * dl1 - 174.8 * dl * dl1_2 + 95.09 * dl_2 * dl1 + 5 * ( - 5.691 - 37.91 * z + 2.244 * dl_2 + 5.770 * dl - 1.707 * dl1_2  + 22.95 * dl1 + 3.036 * dl_2 * dl1 + 17.97 * dl * dl1 ))
 
 def Cb_2_loc(z,Q):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     zeta2 = 1.6449340668482264 
     return e_b*e_b *(- 338.046 + 5 * ( 46.8405))
 def Cb_2_sing(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1-z
     dl = np.log(z)
     dl1 = np.log(z1)
@@ -48,18 +48,18 @@ def Cb_2_sing(z,Q,p):
     
 def Cg_1_reg(z,Q,p):
     TR = 1./2.
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     return 4 * TR * e_b*e_b * ( ( (1-z)*(1-z) + z*z ) * np.log( ( 1 - z ) / z ) - 8 * z * ( z - 1 ) - 1 )
 
 def Cg_2_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1-z
     L0 = np.log(z)
     L1 = np.log(z1)
     return  e_b*e_b * ( (58./9.) * pow(L1,3) - 24 * pow(L1,2) - 34.88 * L1 + 30.586 - (25.08 + 760.3 * z + 29.65 * pow(L1,3)) * z1 + 1204 * z * pow(L0,2) + L0 * L1 *(293.8 + 711.2 * z + 1043 * L0) + 115.6 * L0 - 7.109 * pow(L0,2) + (70./9.) * pow(L0,3) + 11.9033 *(z1/z) ) 
 
 def Cg_3_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1-z
     L0 = np.log(z)
     L1 = np.log(z1)
@@ -70,7 +70,7 @@ def Cg_3_reg(z,Q,p):
     return e_b*e_b * ((966./81.)*(L1**5)-(1871./18.)*(L1**4)+89.31*(L1**3)+979.2*(L1**2)-2405*L1+1372*z1*(L1**4)-15729-310510*z+331570*(z**2)-244150*z*(L0**2)-253.3*z*(L0**5)+L0*L1*(138230-237010*L0)-11860*L0-700.8*(L0**2)-1440*(L0**3)+(4961./162.)*(L0**4)-(134./9.)*(L0**5)-(1./z)*(6362.54-932.089*L0)+fl11g*nf*(3.211*(L1**2)+19.04*z*L1+0.623*z1*(L1**3)-64.47*z+121.6*(z**2)-45.82*(z**3)-z*L0*L1*(31.68+37.24*L0)+11.27*(z**2)*(L0**3)-82.40*z*L0-16.08*z*(L0**2)+(520./81.)*z*(L0**3)+(20./27.)*z*(L0**4))+nf*((131./81.)*(L1**4)-14.72*(L1**3)+3.607*(L1**2)-226.1*L1+4.762-190*z-818.4*(z**2)-4019*z*(L0**2)-L0*L1*(791.5+4646*L0)+739.0*L0+418.0*(L0**2)+104.3*(L0**3)+(809./81.)*(L0**4)+(12./9.)*(L0**5)+(1./z)*(84.423)))
 
 def Cg_3_loc(z,Q):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1-z
     L0 = np.log(z)
     L1 = np.log(z1)
@@ -83,14 +83,14 @@ def Cg_3_loc(z,Q):
 def Cq_2_reg(z,Q,p):
     Q2 = Q*Q
     TR = 1./2.
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1-z
     L0 = np.log(z)
     L1 = np.log(z1)
     return  e_b*e_b * ( z1 * ((8./3.) * pow(L1,2) - (32./3.) * L1 + 9.8937) + (9.57 - 13.41 * z + 0.08 * pow(L1,3)) * pow(z1,2) + 5.667 * z * pow(L0,3) - pow(L0,2) * L1 * (20.26 - 33.93 * z) + 43.36 * z1 * L0 - 1.053 * pow(L0,2) + (40./9.) * pow(L0,3) + 5.2903 * (pow(z1,2)/z)) 
 
 def Cq_3_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1-z
     L0 = np.log(z)
     L1 = np.log(z1)
@@ -102,7 +102,7 @@ def Cq_3_reg(z,Q,p):
 
 
 def Cq_3_loc(z,Q):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1-z
     L0 = np.log(z)
     L1 = np.log(z1)
@@ -117,11 +117,11 @@ def Cq_3_loc(z,Q):
 #FL
 def CLg_1_reg(z,Q,p):
     TR = 1./2.
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     return 16 * TR * e_b*e_b * z * (1. - z )
 
 def CLg_2_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     omx = 1.-z
     dl = np.log(z)
     dl_2 = dl*dl 
@@ -130,7 +130,7 @@ def CLg_2_reg(z,Q,p):
     return  e_b*e_b *(( 94.74 - 49.20 * z ) * omx * dl1_2 + 864.8 * omx * dl1 + 1161 * z * dl * dl1 + 60.06 * z * dl_2 + 39.66 * omx * dl - 5.333 * ( 1. / z - 1 ))
 
 def CLg_3_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1-z
     L0 = np.log(z)
     L1 = np.log(z1)
@@ -141,12 +141,12 @@ def CLg_3_reg(z,Q,p):
     return e_b*e_b * (z1*(144*(L1**4)-(47024./27.)*(L1**3)+6319*(L1**2)+53160*L1)+72549*L0*L1+88238*L1*(L0**2)+z1*(3709-33514*z-9533*(z**2))+66773*z*(L0**2)-1117*L0+45.37*(L0**2)-(5360./27.)*(L0**3)-(1./z)*(2044.70*z1+409.506*L0)+fl11g*nf*(z1*(-0.0105*(L1**3)+1.550*(L1**2)+19.72*z*L1-66.745*z+0.615*(z**2))+(20./27.)*z*(L0**4)+z*(L0**3)*((280./81.)+2.260*z)-z*(L0**2)*(15.40-2.201*z)-z*L0*(71.66-0.121*z))+nf*(z1*((32./3.)*(L1**3)-(1216./9.)*(L1**2)-592.3*L1+1511*z*L1)+311.3*L0*L1+14.24*L1*(L0**2)+z1*(577.3-729.0*z)+30.78*z*(L0**3)+366.0*L0+(1000./9.)*(L0**2)+(160./9.)*(L0**3)+88.5037*(z1/z)))
 
 def CLb_1_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     CF = 4./3.
     return e_b*e_b * 4 * CF * z
  
 def CLb_2_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1.-z
     dl = np.log(z)
     dl1 = np.log(z1)
@@ -155,11 +155,11 @@ def CLb_2_reg(z,Q,p):
     return  e_b*e_b *(- 40.41 + 97.48 * z + ( 26.56 * z - 0.031 ) * dl_2 - 14.85 * dl + 13.62 * dl1_2 - 55.79 * dl1 - 150.5 * dl * dl1 + 5 * (16./27.) * ( 6 * z * dl1 - 12 * z * dl - 25 * z + 6 ))
 
 def CLb_2_loc(z,Q):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     return  e_b*e_b *(-0.164)
 
 def CLq_2_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     omz = 1.-z
     dl = np.log(z)
     dl1 = np.log(omz)
@@ -169,7 +169,7 @@ def CLq_2_reg(z,Q,p):
     return  e_b*e_b *(( 15.94 - 5.212 * z ) * omz2 * dl1 + ( 0.421 + 1.520 * z ) * dl_2 + 28.09 * omz * dl - ( 2.370 / z - 19.27 ) * omz3)
 
 def CLq_3_reg(z,Q,p):
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     z1 = 1-z
     L0 = np.log(z)
     L1 = np.log(z1)

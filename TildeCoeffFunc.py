@@ -10,12 +10,12 @@ from tools import Convolute, Convolute_matching, Convolute_plus_coeff, Convolute
 def Cb1_Mbg1(z):
     TR = 1./2.
     CF = 4./3.
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     return  4 * CF * TR * pow(e_b,2) * (-(5./2.) + 2 * z * (3 - 4 * z) + (pow(np.pi,2)/6.) * (-1 + 2 * z - 4 * pow(z,2)) + pow(np.log(1-z),2) * (1 - 2 * z * (1-z)) - (1./2.) * np.log(1-z) * (7 + 4 * z * (3 * z -4) + (4 - 8 * z * (1-z)) * np.log(z)) + (1./2.) * np.log(z) * (-1 + 4 * z * (3 * z -2) + (1 - 2 * z + 4 * pow(z,2)) * np.log(z)) + (2 * z - 1) * special.spence(z) )
 def CLb1_Mbg1(z):
     TR = 1./2.
     CF = 4./3.
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     return 8 * CF * TR * pow(e_b,2) * (1 + z - 2 * pow(z,2) + 2 * z * np.log(z)) 
 #F2
 def Cg_1_til_reg(z,Q,p):

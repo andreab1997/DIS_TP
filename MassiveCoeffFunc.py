@@ -1,5 +1,6 @@
 import numpy as np
 import Initialize
+import parameters as para
 #F2
 def Cg_1_m_reg(z,Q,p):
     Q2 = Q*Q
@@ -8,7 +9,7 @@ def Cg_1_m_reg(z,Q,p):
     thre = 4.*eps*z/(1-z)
     v = np.sqrt(1-thre)
     TR = 1./2.
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     if thre > 1.:
         return 0
     return  4 * TR * e_b*e_b * (v * ( 8 * z * (1-z) - 1 - 4 * z * (1-z) * eps) + np.log( (1+v) / (1-v) ) * ( z*z + (1-z)**2 + 4 * z * eps * (1-3*z) - 8 * z*z * eps*eps)) 
@@ -59,7 +60,7 @@ def CLg_1_m_reg(z,Q,p):
     thre = 4.*eps*z/(1-z)
     v = np.sqrt(1-thre)
     TR = 1./2.
-    e_b = 1./3.
+    e_b = para.parameters[e_b]
     if thre > 1.:
         return 0
     return  4 * TR * e_b*e_b *( - 8 * eps * z2 * np.log( ( 1 + v ) / ( 1 - v ) ) + 4 * v * z * ( 1 - z ) )
