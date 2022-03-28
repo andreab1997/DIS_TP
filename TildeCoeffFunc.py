@@ -4,18 +4,18 @@ from MassiveCoeffFunc import CLg_3_m_reg, CLq_3_m_reg, Cg_1_m_reg, CLg_1_m_reg, 
 from MasslessCoeffFunc import CLb_2_loc, CLb_2_reg, Cb_0_loc, Cb_1_loc,Cb_1_reg,Cb_1_sing, CLb_1_reg, Cb_2_loc, Cb_2_reg, Cb_2_sing
 from MatchingFunc import Mbg_1, Mbg_2, Mbg_3_reg, Mbq_2, Mgg_1_loc, Mgg_2_loc, Mgg_2_reg, Mgg_2_sing, Mgq_2_reg, P1, P2
 import scipy.special as special
-
+import parameters as para
 from tools import Convolute, Convolute_matching, Convolute_plus_coeff, Convolute_plus_matching, Convolute_plus_matching_per_matching
 
 def Cb1_Mbg1(z):
     TR = 1./2.
     CF = 4./3.
-    e_b = para.parameters[e_b]
+    e_b = para.parameters["e_b"]
     return  4 * CF * TR * pow(e_b,2) * (-(5./2.) + 2 * z * (3 - 4 * z) + (pow(np.pi,2)/6.) * (-1 + 2 * z - 4 * pow(z,2)) + pow(np.log(1-z),2) * (1 - 2 * z * (1-z)) - (1./2.) * np.log(1-z) * (7 + 4 * z * (3 * z -4) + (4 - 8 * z * (1-z)) * np.log(z)) + (1./2.) * np.log(z) * (-1 + 4 * z * (3 * z -2) + (1 - 2 * z + 4 * pow(z,2)) * np.log(z)) + (2 * z - 1) * special.spence(z) )
 def CLb1_Mbg1(z):
     TR = 1./2.
     CF = 4./3.
-    e_b = para.parameters[e_b]
+    e_b = para.parameters["e_b"]
     return 8 * CF * TR * pow(e_b,2) * (1 + z - 2 * pow(z,2) + 2 * z * np.log(z)) 
 #F2
 def Cg_1_til_reg(z,Q,p):
