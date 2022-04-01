@@ -27,17 +27,13 @@ def H_0111(x):
 def H_00001(x):
     return polylog(5,x)
 def H_00011(x):##
-    return 0. #polylog(3,2,x) 
-    #Nielsen Polylog?
+    return Ini.HPL_00011(x)[0]
 def H_00101(x):##
-    return 0.  
-    #HPL does not know 
+    return Ini.HPL_00101(x)[0] 
 def H_00111(x):##
-    return 0. #polylog(2,3,x) 
-    #Nielsen Polylog?
+    return Ini.HPL_00111(x)[0]
 def H_01011(x):##
-    return 0. 
-    #HPL does not know 
+    return Ini.HPL_01011(x)[0]
 def H_01111(x):
     return (1./24.)*(np.log(1 - x)**4)*np.log(x) + (1./6.)*(np.log(1 - x)**3)*polylog(2, 1 - x) - (1./2.)*(np.log(1 - x)**2)*polylog(3, 1 - x) + np.log(1 - x)*polylog(4, 1 - x) - polylog(5, 1 - x) + zet.zeta_5
 def H_0111(x):
@@ -55,112 +51,77 @@ def H_0m11(x):
 def H_01m1(x):
     return  ((np.pi**2)/(12.) - (np.log(2)**2)/(2.))*np.log(1 + x) + (1./2.)*np.log(2)*(np.log(1 + x)**2) + np.log(1 + x)*polylog(2, x) - polylog(3, x) - polylog(3, (x)/(1 + x)) + polylog(3, (2*x)/(1 + x)) - polylog(3, (1 + x)/2) + (1./24.)*(-2*(np.pi**2)*np.log(2) + 4*(np.log(2)**3) + 21*zet.zeta_3)
 def H_0m1m1m1(x):## ok but there was imaginary part---> ask 
-    return 0.
-    #return -((np.pi**4)/90.) + (1./6.)*np.log(-x)*(np.log(1 + x)**3) + (1./2.)*(np.log(1 + x)**2)*polylog(2, 1 + x) - np.log(1 + x)*polylog(3, 1 + x) + polylog(4, 1 + x)
-    #chiedere a Marco
+    return Ini.HPL_0m1m1m1(x)[0]
 def H_0m101(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m101(x)[0]
 def H_00m1m1(x):##
-    return 0. #polylog(2,2,-x) 
-    #Nielsen Polylog?
+    return Ini.HPL_00m1m1(x)[0]
 def H_00m11(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_00m11(x)[0]
 def H_000m1(x):
     return -polylog(4,-x)
 def H_001m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_001m1(x)[0]
 def H_0m10m1m1(x):##
-    return 0.  
-    #HPL does not know
+    return Ini.HPL_0m10m1m1(x)[0]
 def H_00m1m1m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_00m1m1m1(x)[0]
 def H_00m10m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_00m10m1(x)[0]
 def H_00m101(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_00m101(x)[0]
 def H_000m1m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_000m1m1(x)[0]
 def H_000m11(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_000m11(x)[0]
 def H_0000m1(x):
     return -polylog(5,-x)
 def H_0001m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0001m1(x)[0]
 def H_0010m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0010m1(x)[0]
 def H_0m1m11(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m1m11(x)[0]
 def H_0m11m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m11m1(x)[0]
 def H_01m1m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_01m1m1(x)[0]
 def H_0m111(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m111(x)[0]
 def H_01m11(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_01m11(x)[0]
 def H_011m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_011m1(x)[0]
 def H_0m1011(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m1011(x)[0]
 def H_0m1m101(x):#
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m1m101(x)[0]
 def H_0m1m1m1m1(x):#
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m1m1m1m1(x)[0]
 def H_0m1m1m11(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m1m1m11(x)[0]
 def H_0m1m11m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m1m11m1(x)[0]
 def H_0m10m11(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m10m11(x)[0]
 def H_0m101m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m101m1(x)[0]
 def H_0m11m1m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0m11m1m1(x)[0]
 def H_00m1m11(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_00m1m11(x)[0]
 def H_00m11m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_00m11m1(x)[0]
 def H_00m111(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_00m111(x)[0]
 def H_001m1m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_001m1m1(x)[0]
 def H_001m11(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_001m11(x)[0]
 def H_0011m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_0011m1(x)[0]
 def H_01m1m1m1(x):##
-    return 0. 
-    #HPL does not know
+    return Ini.HPL_01m1m1m1(x)[0]
     
 #Generalized Nielsen 
 def S12(x):
