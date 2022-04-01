@@ -1,5 +1,5 @@
 import ReadTxt as readt
-from scipy.interpolate import interp2d
+from scipy.interpolate import interp2d, interp1d
 def InitializeQX():
     """
     Initialize the Q and z grids over which the other functions are built
@@ -68,3 +68,110 @@ def InitializeMbq2():
     global Mbq2
     Mbq2_array = readt.readND('./External/Mbq_2/Mbq2.txt')
     Mbq2 = interp2d(ZList,QList,Mbq2_array,kind='linear')
+
+def InitializeHPL():
+    global HPL_x
+    global HPL_0011
+    global HPL_00111
+    global HPL_00101
+    global HPL_00011
+    global HPL_01011 #continua da qui...
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    global HPL_0011
+    HPL_x_array = readt.read1D('./External/HPL/HPL_x.txt')
+    HPL_0011_array = readt.read1D('./External/HPL/HPL_0011.txt')
+    HPL_0011 = interp1d(HPL_x_array,HPL_0011_array)
+    HPL_00011_array = readt.read1D('./External/HPL/HPL_00011.txt')
+    HPL_00011 = interp1d(HPL_x_array,HPL_00011_array)
+    HPL_00101_array = readt.read1D('./External/HPL/HPL_00101.txt')
+    HPL_00101 = interp1d(HPL_x_array,HPL_00101_array)
+    HPL_00111_array = readt.read1D('./External/HPL/HPL_00111.txt')
+    HPL_00111 = interp1d(HPL_x_array,HPL_00111_array)
+    HPL_01011_array = readt.read1D('./External/HPL/HPL_01011.txt')
+    HPL_01011 = interp1d(HPL_x_array,HPL_01011_array)
+    HPL_0m1m1m1_array = readt.read1D('./External/HPL/HPL_0m1m1m1.txt')
+    HPL_0m1m1m1 = interp1d(HPL_x_array,HPL_0m1m1m1_array)
+    HPL_0m101_array = readt.read1D('./External/HPL/HPL_0m101.txt')
+    HPL_0m101 = interp1d(HPL_x_array,HPL_0m101_array)
+    HPL_00m1m1_array = readt.read1D('./External/HPL/HPL_00m1m1.txt')
+    HPL_00m1m1 = interp1d(HPL_x_array,HPL_00m1m1_array)
+    HPL_00m11_array = readt.read1D('./External/HPL/HPL_00m11.txt')
+    HPL_00m11 = interp1d(HPL_x_array,HPL_00m11_array)
+    HPL_001m1_array = readt.read1D('./External/HPL/HPL_001m1.txt')
+    HPL_001m1 = interp1d(HPL_x_array,HPL_001m1_array)
+    HPL_0m10m1m1_array = readt.read1D('./External/HPL/HPL_0m10m1m1.txt')
+    HPL_0m10m1m1 = interp1d(HPL_x_array,HPL_0m10m1m1_array)
+    HPL_00m1m1m1_array = readt.read1D('./External/HPL/HPL_00m1m1m1.txt')
+    HPL_00m1m1m1 = interp1d(HPL_x_array,HPL_00m1m1m1_array)
+    HPL_00m10m1_array = readt.read1D('./External/HPL/HPL_00m10m1.txt')
+    HPL_00m10m1 = interp1d(HPL_x_array,HPL_00m10m1_array)
+    HPL_00m101_array = readt.read1D('./External/HPL/HPL_00m101.txt')
+    HPL_00m101 = interp1d(HPL_x_array,HPL_00m101_array)
+    HPL_000m1m1_array = readt.read1D('./External/HPL/HPL_000m1m1.txt')
+    HPL_000m1m1 = interp1d(HPL_x_array,HPL_000m1m1_array)
+    HPL_000m11_array = readt.read1D('./External/HPL/HPL_000m11.txt')
+    HPL_000m11 = interp1d(HPL_x_array,HPL_000m11_array)
+    HPL_0001m1_array = readt.read1D('./External/HPL/HPL_0001m1.txt')
+    HPL_0001m1 = interp1d(HPL_x_array,HPL_0001m1_array)
+    HPL_0010m1_array = readt.read1D('./External/HPL/HPL_0010m1.txt')
+    HPL_0010m1 = interp1d(HPL_x_array,HPL_0010m1_array)
+    HPL_0m1m11_array = readt.read1D('./External/HPL/HPL_0m1m11.txt')
+    HPL_0m1m11 = interp1d(HPL_x_array,HPL_0m1m11_array)
+    HPL_0m11m1_array = readt.read1D('./External/HPL/HPL_0m11m1.txt')
+    HPL_0m11m1 = interp1d(HPL_x_array,HPL_0m11m1_array)
+    HPL_01m1m1_array = readt.read1D('./External/HPL/HPL_01m1m1.txt')
+    HPL_01m1m1 = interp1d(HPL_x_array,HPL_01m1m1_array)
+    HPL_0m111_array = readt.read1D('./External/HPL/HPL_0m111.txt')
+    HPL_0m111 = interp1d(HPL_x_array,HPL_0m111_array)
+    HPL_01m11_array = readt.read1D('./External/HPL/HPL_01m11.txt')
+    HPL_01m11 = interp1d(HPL_x_array,HPL_01m11_array)
+    HPL_011m1_array = readt.read1D('./External/HPL/HPL_011m1.txt')
+    HPL_011m1 = interp1d(HPL_x_array,HPL_011m1_array)
+    HPL_0m1011_array = readt.read1D('./External/HPL/HPL_0m1011.txt')
+    HPL_0m1011 = interp1d(HPL_x_array,HPL_0m1011_array)
+    HPL_0m1m101_array = readt.read1D('./External/HPL/HPL_0m1m101.txt')
+    HPL_0m1m101 = interp1d(HPL_x_array,HPL_0m1m101_array)
+    HPL_0m1m11m1_array = readt.read1D('./External/HPL/HPL_0m1m11m1.txt')
+    HPL_0m1m11m1 = interp1d(HPL_x_array,HPL_0m1m11m1_array)
+    HPL_0m10m11_array = readt.read1D('./External/HPL/HPL_0m10m11.txt')
+    HPL_0m10m11 = interp1d(HPL_x_array,HPL_0m10m11_array)
+    HPL_0m101m1_array = readt.read1D('./External/HPL/HPL_0m101m1.txt')
+    HPL_0m101m1 = interp1d(HPL_x_array,HPL_0m101m1_array)
+    HPL_0m11m1m1_array = readt.read1D('./External/HPL/HPL_0m11m1m1.txt')
+    HPL_0m11m1m1 = interp1d(HPL_x_array,HPL_0m11m1m1_array)
+    HPL_00m1m11_array = readt.read1D('./External/HPL/HPL_00m1m11.txt')
+    HPL_00m1m11 = interp1d(HPL_x_array,HPL_00m1m11_array)
+    HPL_00m11m1_array = readt.read1D('./External/HPL/HPL_00m11m1.txt')
+    HPL_00m11m1 = interp1d(HPL_x_array,HPL_00m11m1_array)
+    HPL_00m111_array = readt.read1D('./External/HPL/HPL_00m111.txt')
+    HPL_00m111 = interp1d(HPL_x_array,HPL_00m111_array)
+    HPL_001m1m1_array = readt.read1D('./External/HPL/HPL_001m1m1.txt')
+    HPL_001m1m1 = interp1d(HPL_x_array,HPL_001m1m1_array)
+    HPL_001m11_array = readt.read1D('./External/HPL/HPL_001m11.txt')
+    HPL_001m11 = interp1d(HPL_x_array,HPL_001m11_array)
+    HPL_0011m1_array = readt.read1D('./External/HPL/HPL_0011m1.txt')
+    HPL_0011m1 = interp1d(HPL_x_array,HPL_0011m1_array)
+    HPL_01m1m1m1_array = readt.read1D('./External/HPL/HPL_01m1m1m1.txt')
+    HPL_01m1m1m1 = interp1d(HPL_x_array,HPL_01m1m1m1_array)
+
+
+
+    

@@ -99,3 +99,4 @@ def CLq_3_m_reg(z,Q,p):
         return 0
     #return Initialize.CLq3m(z,Q)[0]
     return 0
+
