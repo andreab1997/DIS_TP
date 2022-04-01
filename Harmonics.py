@@ -3,7 +3,9 @@ from mpmath import *
 import zetas as zet
 mp.dps = 15 
 mp.pretty = True
-
+#ask if numerically compute the integrals for Nielsen 
+#ask what to do for the ones that HPL does not know
+# ask what to do for the scale independent part of both MbQ (known but many option to implement) and Mbg (not known) 
 
 def H_0(x):
     return np.log(x)
