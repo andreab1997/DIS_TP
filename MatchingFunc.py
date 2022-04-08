@@ -547,7 +547,7 @@ def Mgg_2_sing(z,p):
 def Mbq_2(z,p):
     return Initialize.Mbq2(z,p[1])
 
-def aQqPS30(x,q):
+def aQqPS30(x):
     CF = 4./3.
     TR = 1./2.
     CA = 3.
