@@ -1,4 +1,4 @@
-#This contains the tilde coefficents functions for the matched scheme .
+#This contains the tilde coefficents functions for the matched scheme.
 
 import numpy as np
 
