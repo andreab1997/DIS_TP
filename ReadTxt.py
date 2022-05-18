@@ -1,5 +1,6 @@
 #These are utility functions to read txt grids.
 import numpy as np
+import Initialize as Ini
 def read1D(path_to_file):
     """
     Read a space-separated txt file and return a 1-Dimensional list of the values
@@ -33,6 +34,20 @@ def readND(path_to_file):
             mylist.append(listWord)
     list = [[float(item) if item != '-nan' and item != 'nan' else float(mylist[a][mylist[a].index(item)-1]) for item in mylist[a][:-1]]for a in range(len(mylist))] 
     return list 
+
+def construct_grid_matching(func, mass):
+    func_values = np.array([])
+    p = np.array([])
+    for z in np.array(Ini.HPL_x_array):
+        print(float(Ini.HPL_x_array.index(z))/Ini.HPL_x_array.__len__())
+        z_func_values = np.array([])
+        for q in np.array(Ini.QList):
+            p = [mass, q]
+            np.append(z_func_values,func(z,p))
+        np.append(func_values,z_func_values)
+    return func_values
+    
+
 
 
 

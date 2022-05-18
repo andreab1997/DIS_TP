@@ -71,7 +71,7 @@ def InitializeMbq2():
     Mbq2 = interp2d(ZList,QList,Mbq2_array,kind='linear')
 
 def InitializeHPL():
-    global HPL_x
+    global HPL_x_array
     global HPL_0011
     HPL_x_array = readt.read1D('./External/HPL/HPL_x.txt')
     HPL_0011_array = readt.read1D('./External/HPL/HPL_0011.txt')
