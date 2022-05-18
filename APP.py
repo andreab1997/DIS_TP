@@ -1,3 +1,4 @@
+#Code for computing F2 and FL with all the possibilities.
 
 import Integration as Int
 import numpy as np
@@ -8,7 +9,7 @@ from progress.bar import Bar
 #Constructing the possibilities
 Stru_func = ['F2','FL']
 Methods = ['our','fonll']
-pdf_orders = ['nlo', 'nnlo', 'nnlo'] #TODO: construct an aproximate n3lo set of pdfs 
+pdf_orders = ['nlo', 'nnlo', 'nnlo']  
 orders = ['nlo', 'nnlo', 'n3lo']
 ratios = ["0.5", "", "2"]
 #PDFs

@@ -1,3 +1,5 @@
+#This contains the splitting functions needed to compute some of the scale dependent term. Since at the moment 
+#the code is using grids, these are not needed. 
 import numpy as np
 import zetas as zet
 import Harmonics as harm

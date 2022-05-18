@@ -1,3 +1,6 @@
+#This contains the beta functions to be used in future analytic expression. Not used at the moment.
+
+
 import numpy as np
 
 def beta_0():

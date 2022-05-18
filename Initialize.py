@@ -1,3 +1,4 @@
+#This initializes the grids needed for the evaluation of coefficients functions.
 import ReadTxt as readt
 from scipy.interpolate import interp2d, interp1d
 def InitializeQX():

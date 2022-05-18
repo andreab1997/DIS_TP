@@ -1,9 +1,9 @@
+#this contains the FO massive coefficients functions.
+
 import numpy as np
 import Initialize
 import parameters as para
-from tools import Convolute, Convolute_matching, Convolute_plus_coeff, Convolute_plus_matching
-import Splitting_funcs as Sp
-import Betas as bet
+
 #F2
 def Cg_1_m_reg(z,Q,p):
     Q2 = Q*Q

@@ -1,3 +1,4 @@
+#This is the actual code for computing structure functions at fixed order, in zero-mass scheme and in a matched massive scheme
 from tools import PDFConvolute_plus,PDFConvolute
 import MassiveCoeffFunc
 import TildeCoeffFunc

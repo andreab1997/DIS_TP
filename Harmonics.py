@@ -1,13 +1,11 @@
+#This contains my implementation in python of the harmonic polylogs. Some of them are written in terms of polylogs, others are taken from mathematica grids.
 import numpy as np
 from mpmath import *
 import zetas as zet
 import Initialize as Ini
 mp.dps = 15 
 mp.pretty = True
-#ask if numerically compute the integrals for Nielsen 
-#ask what to do for the ones that HPL does not know
-# ask what to do for the scale independent part of both MbQ (known but many option to implement) and Mbg (not known) 
-
+ 
 def H_0(x):
     return np.log(x)
 def H_1(x):

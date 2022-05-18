@@ -1,3 +1,4 @@
+#This is used to plot the final structure functions.
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages

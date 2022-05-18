@@ -1,3 +1,4 @@
+#This contains the massless coefficients functions.
 import numpy as np
 import parameters as para
 #F2
@@ -31,8 +32,7 @@ def Cb_2_reg(z,Q,p):
     return e_b*e_b* (- 69.59 - 1008 * z - 2.835 * dl_3 - 17.08 * dl_2 + 5.986 * dl - 17.19 * dl1_3 + 71.08 * dl1_2 - 660.7 * dl1 - 174.8 * dl * dl1_2 + 95.09 * dl_2 * dl1 + 5 * ( - 5.691 - 37.91 * z + 2.244 * dl_2 + 5.770 * dl - 1.707 * dl1_2  + 22.95 * dl1 + 3.036 * dl_2 * dl1 + 17.97 * dl * dl1 ))
 
 def Cb_2_loc(z,Q):
-    e_b = para.parameters["e_b"]
-    zeta2 = 1.6449340668482264 
+    e_b = para.parameters["e_b"] 
     return e_b*e_b *(- 338.046 + 5 * ( 46.8405))
 def Cb_2_sing(z,Q,p):
     e_b = para.parameters["e_b"]

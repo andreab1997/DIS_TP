@@ -1,3 +1,4 @@
+#Z functions values that we need
 import numpy as np
 
 zeta_2 = (np.pi**2)/6.

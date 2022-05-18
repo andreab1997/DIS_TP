@@ -1,3 +1,4 @@
+#These are utility functions to read txt grids.
 import numpy as np
 def read1D(path_to_file):
     """
