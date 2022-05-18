@@ -35,7 +35,7 @@ def readND(path_to_file):
     list = [[float(item) if item != '-nan' and item != 'nan' else float(mylist[a][mylist[a].index(item)-1]) for item in mylist[a][:-1]]for a in range(len(mylist))] 
     return list 
 
-def construct_grid_matching(func, mass):
+def construct_grid_matching(func, mass, path):
     func_values = np.array([])
     p = np.array([])
     for z in np.array(Ini.HPL_x_array):
@@ -45,7 +45,8 @@ def construct_grid_matching(func, mass):
             p = [mass, q]
             np.append(z_func_values,func(z,p))
         np.append(func_values,z_func_values)
-    return func_values
+    np.savetxt(path, func_values)
+    return 0.
     
 
 
