@@ -12,6 +12,12 @@ def H_0(x):
     return np.log(x)
 def H_1(x):
     return -np.log(1-x)
+def H_10(x):
+    return -np.log(1-x)*np.log(x) - polylog(2,x)
+def H_m10(x):
+    return np.log(1+x)*np.log(x) + polylog(2,-x)
+def H_00(x):
+    return (np.log(x)**2)/2.
 def H_01(x):
     return polylog(2,x)
 def H_001(x):
