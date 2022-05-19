@@ -132,7 +132,7 @@ def main():
                 check = False
             if check:
                 print("Check was succesfull!")
-                if 'fonll' in Methods:
+                if 'fonll' in Methods and 'n3lo' in orders:
                     print("WARNING: Not all the results are available with FONLL method")
                 main_menu_exit = True
                 print("Computation is starting with:")
@@ -158,6 +158,7 @@ def do_the_calculation(Stru_func,Methods,map_PDFsorder,scalevar):
         ratios = ["0.5", "", "2"]
     
     eps = 0.5
+    lhapdf.setVerbosity(0)
     mine = lhapdf.mkPDF("MyPDF_mub=mb_nlo")
     thre = [mine.quarkMass(5)]
     if len(ratios)>1:    

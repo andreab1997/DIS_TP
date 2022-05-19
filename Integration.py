@@ -19,6 +19,7 @@ def Initialize_all():
     Ini.InitializeMbg2()
     Ini.InitializeMbq2()
     Ini.InitializeHPL()
+    Ini.InitializeMbg_3()
     #TODO:add the 4 new funcs
 
 def F2_FO(order,pdf,x,Q,muF_ratio=1,muR_ratio=1):

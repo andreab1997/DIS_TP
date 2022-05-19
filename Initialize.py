@@ -1,6 +1,7 @@
 #This initializes the grids needed for the evaluation of coefficients functions.
 import ReadTxt as readt
 from scipy.interpolate import interp2d, interp1d
+import numpy as np
 def InitializeQX():
     """
     Initialize the Q and z grids over which the other functions are built
@@ -191,6 +192,12 @@ def InitializeHPL():
     HPL_0m1m1m11_array = readt.read1D('./External/HPL/HPL_0m1m1m11.txt')
     HPL_0m1m1m11 = interp1d(HPL_x_array,HPL_0m1m1m11_array)
 
-
+def InitializeMbg_3():
+    """
+    Initialize the Mbg at N3LO matching condition from the file in External
+    """
+    global Mbg3 
+    Mbg3_array = np.array(readt.readND_python('./External/Mbg_3/Mbg3.txt')).transpose()
+    Mbg3 = interp2d(HPL_x_array,QList,Mbg3_array,kind='linear')
 
     
