@@ -4,6 +4,7 @@ import numpy as np
 import Initialize
 import zetas as zet
 import Harmonics as harm
+import Initialize as Ini
 
 def Mbg_1(z,p):
     TR = 1./2.
@@ -37,6 +38,9 @@ def a_Qg_30(x, v):
     
     
 def Mbg_3_reg(z,p):
+    grids = True
+    if grids: 
+        return Ini.Mbg3(z,p[1])[0]
     CF = 4./3.
     TR = 1./2.
     CA = 3.
@@ -100,7 +104,7 @@ def Mbg_3_reg(z,p):
     H_0011m1 = harm.H_0011m1(z)
     H_01m1m1m1 = harm.H_01m1m1m1(z)
     gamma_qg0 = 0.
-    a_Qg3 = a_Qg_30(z,0) 
+    a_Qg3 = a_Qg_30(z,0)
     return a_Qg3 + (TR**3)*((16./9.)*gamma_qg0*(L_M**3)-(16./9.)*gamma_qg0*zet.zeta_3)+CA*(TR**2)*(-(4./9.)*(2*z+3)*(H_0**4)
 +(8./27.)*(46*(z**2)+74*z-13)*(H_0**3)-(8./27.)*(458*(z**2)-382*z+221)*(H_0**2)+(8./3.)*(16*(z**2)+10*z-7)*zet.zeta_2*(H_0**2)
 -(16*(z-1)*(65*(z**2)+17*z+8)*H_1*(H_0**2))/(9*z)+(64./3.)*(4*z+1)*H_01*(H_0**2)+(16./81.)*(6612*(z**2)+5083*z+346)*H_0
@@ -840,6 +844,9 @@ def aQqPS30(x):
     256./15 * (x+1) *ln2*ln2*ln2*ln2*ln2 )  
 
 def Mbq_3_reg(z,p):
+    grids = True
+    if grids: 
+        return Ini.Mbq3(z,p[1])[0]
     CF = 4./3.
     TR = 1./2.
     CA = 3.
