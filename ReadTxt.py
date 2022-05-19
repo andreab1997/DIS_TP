@@ -73,7 +73,8 @@ def construct_grid_tilde(func, mass, path):
         print(float(Ini.ZList.index(z))/Ini.ZList.__len__())
         z_func_values = []
         for q in np.array(Ini.QList):
-            z_func_values.append(func(z,q,p)[0])
+            #z_func_values.append(func(z,q,p)[0])
+            z_func_values.append(func(z,q,p))
         func_values.append(z_func_values)
     np.savetxt(path, func_values)
     return func_values
