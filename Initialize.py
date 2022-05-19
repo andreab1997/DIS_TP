@@ -40,6 +40,15 @@ def InitializeCLq2_m():
     global CLq2m 
     CLq2m_array = readt.readND('./External/CqL_2_m/CqL.txt')
     CLq2m = interp2d(ZList,QList,CLq2m_array,kind='linear')
+
+def InitializeCg2_til():
+    """
+    Initialize the Cg at NNLO tilde function from the file in External
+    """
+    global Cg2_til 
+    Cg2_til_array_prov = np.array(readt.readND_python('./External/Cg_2_til/Cg2til.txt'))[:-1][:]
+    Cg2_til_array = Cg2_til_array_prov.transpose()[:-1][:]
+    Cg2_til = interp2d(ZList[:-1],QList[:-1],Cg2_til_array,kind='linear')
 #def InitializeCg3_m():
 #    global Cg3m 
 #    Cg3m_array = readt.readND('./External/Cg2_3_m/Cg.txt')
