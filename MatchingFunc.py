@@ -37,8 +37,7 @@ def a_Qg_30(x, v):
 	    return -2658.323*L12 - 7449.948*L1 - 7460.002*(2-x) + 3178.819*L2 + 4710.725/x + 1548.891/x*L
     
     
-def Mbg_3_reg(z,p):
-    grids = True
+def Mbg_3_reg(z,p, grids=True):
     if grids: 
         return Ini.Mbg3(z,p[1])[0]
     CF = 4./3.
@@ -843,8 +842,7 @@ def aQqPS30(x):
     12 * (47 * x - 145) * z5 - 2048 * Li_512 * (x + 1)  + 
     256./15 * (x+1) *ln2*ln2*ln2*ln2*ln2 )  
 
-def Mbq_3_reg(z,p):
-    grids = True
+def Mbq_3_reg(z,p, grids=True):
     if grids: 
         return Ini.Mbq3(z,p[1])[0]
     CF = 4./3.
