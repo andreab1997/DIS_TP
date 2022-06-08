@@ -39,8 +39,10 @@ def Cq_2_til_reg(z,Q,p, grids=True):
     if grids:
         return Ini.Cq2_til(z,Q)[0]
     return Cq_2_m_reg(z,Q,p) - 2 * Cb_0_loc(z,Q) * Mbq_2(z,q)
-def Cq_3_til_reg(z,Q,p):
+def Cq_3_til_reg(z,Q,p, grids = True):
     q = [p[0],Q] 
+    if grids:
+        return Ini.Cq3_til(z,Q)[0]
     return Cq_3_m_reg(z,Q,p) + 2*Cq_2_m_reg(z,Q,p)*Mgg_1_loc(z,q) - Convolute(Cg_1_m_reg,Mgq_2_reg,z,Q,p) - 2*(Cb_1_loc(z,Q)*Mbq_2(z,q) + Convolute(Cb_1_reg,Mbq_2,z,Q,p) + Convolute_plus_coeff(Cb_1_sing,Mbq_2,z,Q,p)) -2*(Cb_0_loc(z,Q)*Mbq_3_reg(z,q))
 #FL
 def CLg_1_til_reg(z,Q,p):
@@ -61,6 +63,8 @@ def CLq_2_til_reg(z,Q,p,grids=True):
         return Ini.CLq2_til(z,Q)[0]
     return CLq_2_m_reg(z,Q,p) 
     
-def CLq_3_til_reg(z,Q,p):
+def CLq_3_til_reg(z,Q,p, grids=True):
     q = [p[0],Q] 
+    if grids:
+        return Ini.CLq3_til(z,Q)[0]
     return CLq_3_m_reg(z,Q,p) + 2*CLq_2_m_reg(z,Q,p)*Mgg_1_loc(z,q) - Convolute(CLg_1_m_reg,Mgq_2_reg,z,Q,p) - 2*Convolute(CLb_1_reg,Mbq_2,z,Q,p) 

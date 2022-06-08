@@ -67,7 +67,7 @@ def InitializeCLg2_til():
 
 def InitializeCLq2_til():
     """
-    Initialize the Cg at NNLO tilde function from the file in External
+    Initialize the Cq at NNLO tilde function from the file in External
     """
     global CLq2_til 
     CLq2_til_array = np.array(readt.readND_python('./External/CLq_2_til/CLq2til.txt')).transpose()
@@ -76,18 +76,10 @@ def InitializeCLq2_til():
 #    global Cg3m 
 #    Cg3m_array = readt.readND('./External/Cg2_3_m/Cg.txt')
 #    Cg3m = interp2d(ZList,QList,Cg3m_array,kind='linear')
-#def InitializeCq3_m():
-#    global Cq3m 
-#    Cq3m_array = readt.readND('./External/Cq2_3_m/Cq.txt')
-#    Cq3m = interp2d(ZList,QList,Cq3m_array,kind='linear')
 #def InitializeCLg3_m():
 #    global CLg3m 
 #    CLg3m_array = readt.readND('./External/CgL_3_m/CgL.txt')
 #    CLg3m = interp2d(ZList,QList,CLg3m_array,kind='linear')
-#def InitializeCLq3_m():
-#    global CLq3m 
-#    CLq3m_array = readt.readND('./External/CqL_3_m/CqL.txt')
-#    CLq3m = interp2d(ZList,QList,CLq3m_array,kind='linear')
 def InitializeMbg2():
     """
     Initialize the Mbg at NNLO matching function from the file in External
@@ -240,4 +232,48 @@ def InitializeMbq_3():
     Mbq3_array = np.array(readt.readND_python('./External/Mbq_3/Mbq3.txt')).transpose()
     Mbq3 = interp2d(HPL_x_array,QList,Mbq3_array,kind='linear')
 
-    
+#Niccolo functions
+
+def InitializeQX_Nic():
+    """
+    Initialize the Q and z grids over which the other functions are built
+    from the files in External (for Niccolo functions)
+    """
+    global QList_Nic 
+    global ZList_Nic
+    QList_Nic = readt.read1D('./External/Cq_3_m/Q.txt')
+    ZList_Nic = readt.read1D_Nic('./External/Cq_3_m/x_NEW.txt')  
+
+def InitializeCq3_m():
+    """
+    Initialize the Cq2 at N3LO massive function from the file in External
+    """
+    global Cq3m 
+    Cq3m_array = readt.readND_Nic('./External/Cq_3_m/C2q.dat')
+    Cq3m = interp2d(ZList_Nic,QList_Nic,Cq3m_array,kind='linear')
+
+def InitializeCq3_til():
+    """
+    Initialize the Cq at N3LO tilde function from the file in External
+    """
+    global Cq3_til 
+    Cq3_til_array_prov = np.array(readt.readND_python('./External/Cq_3_til/Cq3til.txt'))[:-1][:]
+    Cq3_til_array = Cq3_til_array_prov.transpose()[:-1][:]
+    Cq3_til = interp2d(ZList[:-1],QList[:-1],Cq3_til_array,kind='linear')
+
+def InitializeCLq3_m():
+    """
+    Initialize the CqL at N3LO massive function from the file in External
+    """
+    global CLq3m 
+    CLq3m_array = readt.readND_Nic('./External/CLq_3_m/CLq.dat')
+    CLq3m = interp2d(ZList_Nic,QList_Nic,CLq3m_array,kind='linear')
+
+def InitializeCLq3_til():
+    """
+    Initialize the CLq at N3LO tilde function from the file in External
+    """
+    global CLq3_til 
+    CLq3_til_array_prov = np.array(readt.readND_python('./External/CLq_3_til/CLq3til.txt'))[:-1][:]
+    CLq3_til_array = CLq3_til_array_prov.transpose()[:-1][:]
+    CLq3_til = interp2d(ZList[:-1],QList[:-1],CLq3_til_array,kind='linear')
