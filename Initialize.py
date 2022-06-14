@@ -249,8 +249,9 @@ def InitializeCq3_m():
     Initialize the Cq2 at N3LO massive function from the file in External
     """
     global Cq3m 
-    Cq3m_array = readt.readND_Nic('./External/Cq_3_m/C2q.dat')
-    Cq3m = interp2d(ZList_Nic,QList_Nic,Cq3m_array,kind='linear')
+    Cq3m_array_prov = np.array(readt.readND_Nic('./External/Cq_3_m/C2q.dat'))
+    Cq3m_array = Cq3m_array_prov.transpose()[:-1][:]
+    Cq3m = interp2d(ZList_Nic[:-1],QList_Nic,Cq3m_array.transpose(),kind='linear')
 
 def InitializeCq3_til():
     """
@@ -266,8 +267,9 @@ def InitializeCLq3_m():
     Initialize the CqL at N3LO massive function from the file in External
     """
     global CLq3m 
-    CLq3m_array = readt.readND_Nic('./External/CLq_3_m/CLq.dat')
-    CLq3m = interp2d(ZList_Nic,QList_Nic,CLq3m_array,kind='linear')
+    CLq3m_array_prov = np.array(readt.readND_Nic('./External/CLq_3_m/CLq.dat'))
+    CLq3m_array = CLq3m_array_prov.transpose()[:-1][:]
+    CLq3m = interp2d(ZList_Nic[:-1],QList_Nic,CLq3m_array.transpose(),kind='linear')
 
 def InitializeCLq3_til():
     """
