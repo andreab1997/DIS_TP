@@ -33,8 +33,7 @@ def Cg_3_m_reg(z,Q,p):
     thre = 4.*eps*z/(1-z)
     if thre > 1.:
         return 0.
-    #return Initialize.Cg3m(z,Q)[0]
-    return 0.
+    return Initialize.Cg3m(z,Q)[0]
 
 def Cq_2_m_reg(z,Q,p):
     Q2 = Q*Q
@@ -82,8 +81,7 @@ def CLg_3_m_reg(z,Q,p):
     thre = 4.*eps*z/(1-z)
     if thre > 1.:
         return 0
-    #return Initialize.CLg3m(z,Q)[0]
-    return 0
+    return Initialize.CLg3m(z,Q)[0]
 
 def CLq_2_m_reg(z,Q,p):
     Q2 = Q*Q

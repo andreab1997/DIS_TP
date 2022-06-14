@@ -28,8 +28,10 @@ def Initialize_all():
     Ini.InitializeQX_Nic()
     Ini.InitializeCq3_m()
     Ini.InitializeCLq3_m()
-    Ini.InitializeCLq3_til()
-    Ini.InitializeCq3_til()
+    Ini.InitializeCg3_m()
+    Ini.InitializeCLg3_m()
+    #Ini.InitializeCLq3_til()
+    #Ini.InitializeCq3_til()
     #TODO:add the 2 new funcs
 
 def F2_FO(order,pdf,x,Q,muF_ratio=1,muR_ratio=1):

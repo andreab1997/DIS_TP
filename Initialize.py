@@ -241,8 +241,8 @@ def InitializeQX_Nic():
     """
     global QList_Nic 
     global ZList_Nic
-    QList_Nic = readt.read1D('./External/Cq_3_m/Q.txt')
-    ZList_Nic = readt.read1D_Nic('./External/Cq_3_m/x_NEW.txt')  
+    QList_Nic = readt.read1D('./External/Cg_3_m/Q.txt')
+    ZList_Nic = readt.read1D_Nic('./External/Cg_3_m/x_NEW.txt')  
 
 def InitializeCq3_m():
     """
@@ -277,3 +277,21 @@ def InitializeCLq3_til():
     CLq3_til_array_prov = np.array(readt.readND_python('./External/CLq_3_til/CLq3til.txt'))[:-1][:]
     CLq3_til_array = CLq3_til_array_prov.transpose()[:-1][:]
     CLq3_til = interp2d(ZList[:-1],QList[:-1],CLq3_til_array,kind='linear')
+
+def InitializeCg3_m():
+    """
+    Initialize the Cg2 at N3LO massive function from the file in External
+    """
+    global Cg3m 
+    Cg3m_array_prov = np.array(readt.readND_Nic('./External/Cg_3_m/C2g.dat'))
+    Cg3m_array = Cg3m_array_prov.transpose()[:-1][:]
+    Cg3m = interp2d(ZList_Nic[:-1],QList_Nic,Cg3m_array.transpose(),kind='linear')
+
+def InitializeCLg3_m():
+    """
+    Initialize the CgL at N3LO massive function from the file in External
+    """
+    global CLg3m 
+    CLg3m_array_prov = np.array(readt.readND_Nic('./External/CLg_3_m/CLg.dat'))
+    CLg3m_array = CLg3m_array_prov.transpose()[:-1][:]
+    CLg3m = interp2d(ZList_Nic[:-1],QList_Nic,CLg3m_array.transpose(),kind='linear')
