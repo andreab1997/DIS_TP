@@ -72,14 +72,7 @@ def InitializeCLq2_til():
     global CLq2_til 
     CLq2_til_array = np.array(readt.readND_python('./External/CLq_2_til/CLq2til.txt')).transpose()
     CLq2_til = interp2d(ZList,QList,CLq2_til_array,kind='linear')
-#def InitializeCg3_m():
-#    global Cg3m 
-#    Cg3m_array = readt.readND('./External/Cg2_3_m/Cg.txt')
-#    Cg3m = interp2d(ZList,QList,Cg3m_array,kind='linear')
-#def InitializeCLg3_m():
-#    global CLg3m 
-#    CLg3m_array = readt.readND('./External/CgL_3_m/CgL.txt')
-#    CLg3m = interp2d(ZList,QList,CLg3m_array,kind='linear')
+
 def InitializeMbg2():
     """
     Initialize the Mbg at NNLO matching function from the file in External
@@ -297,3 +290,21 @@ def InitializeCLg3_m():
     CLg3m_array_prov = np.array(readt.readND_Nic('./External/CLg_3_m/CLg.dat'))
     CLg3m_array = CLg3m_array_prov.transpose()[:-1][:]
     CLg3m = interp2d(ZList_Nic[:-1],QList_Nic,CLg3m_array.transpose(),kind='linear')
+
+def InitializeCg3_til():
+    """
+    Initialize the C2g at N3LO tilde function from the file in External
+    """
+    global Cg3_til 
+    Cg3_til_array_prov = np.array(readt.readND_python('./External/Cg_3_til/Cg3til.txt'))[:-1][:]
+    Cg3_til_array = Cg3_til_array_prov.transpose()[:-1][:]
+    Cg3_til = interp2d(ZList[:-1],QList[:-1],Cg3_til_array,kind='linear')
+
+def InitializeCLg3_til():
+    """
+    Initialize the CLg at N3LO tilde function from the file in External
+    """
+    global CLg3_til 
+    CLg3_til_array_prov = np.array(readt.readND_python('./External/CLg_3_til/CLg3til.txt'))[:-1][:]
+    CLg3_til_array = CLg3_til_array_prov.transpose()[:-1][:]
+    CLg3_til = interp2d(ZList[:-1],QList[:-1],CLg3_til_array,kind='linear')
