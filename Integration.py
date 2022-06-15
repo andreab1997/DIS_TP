@@ -31,7 +31,7 @@ def Initialize_all():
     Ini.InitializeCg3_m()
     Ini.InitializeCLg3_m()
     Ini.InitializeCLq3_til()
-    Ini.InitializeCq3_til()
+    Ini.InitializeCLg3_til()
     Ini.InitializeCq3_til()
     Ini.InitializeCg3_til()
 
