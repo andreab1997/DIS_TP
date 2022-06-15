@@ -30,7 +30,7 @@ def Cg_2_til_reg(z,Q,p, grids=True):
         return Ini.Cg2_til(z,Q)[0]
     return Cg_2_m_reg(z,Q,p) - 2 * Cb_0_loc(z,Q) * (Mbg_2(z,q) - Mbg_1(z,q)*Mgg_1_loc(z,q))  -2 * np.log((Q**2)/(p[0]**2))*Cb1_Mbg1(z)
     
-def Cg_3_til_reg(z,Q,p, grids = False):
+def Cg_3_til_reg(z,Q,p, grids = True):
     q = [p[0],Q] 
     if grids:
         return Ini.Cg3_til(z,Q)[0]
@@ -41,7 +41,7 @@ def Cq_2_til_reg(z,Q,p, grids=True):
     if grids:
         return Ini.Cq2_til(z,Q)[0]
     return Cq_2_m_reg(z,Q,p) - 2 * Cb_0_loc(z,Q) * Mbq_2(z,q)
-def Cq_3_til_reg(z,Q,p, grids = False):
+def Cq_3_til_reg(z,Q,p, grids = True):
     q = [p[0],Q] 
     if grids:
         return Ini.Cq3_til(z,Q)[0]
@@ -55,7 +55,7 @@ def CLg_2_til_reg(z,Q,p,grids=True):
     if grids:
         return Ini.CLg2_til(z,Q)[0]
     return CLg_2_m_reg(z,Q,p) - 2 * np.log((Q**2)/(p[0]**2)) * CLb1_Mbg1(z)
-def CLg_3_til_reg(z,Q,p, grids = False):
+def CLg_3_til_reg(z,Q,p, grids = True):
     q = [p[0],Q] 
     if grids:
         return Ini.CLg3_til(z,Q)[0]
