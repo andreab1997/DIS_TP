@@ -307,6 +307,5 @@ def InitializeCLg3_til():
     Initialize the CLg at N3LO tilde function from the file in External
     """
     global CLg3_til 
-    CLg3_til_array_prov = np.array(readt.readND_python('./External/CLg_3_til/CLg3til.txt'))[:-1][:]
-    CLg3_til_array = CLg3_til_array_prov.transpose()[:-1][:]
-    CLg3_til = interp2d(ZList[:-1],QList[:-1],CLg3_til_array,kind='linear')
+    CLg3_til_array = np.array(readt.readND_python('./External/CLg_3_til/CLg3til.txt')).transpose()
+    CLg3_til = interp2d(ZList[:-1],QList,CLg3_til_array,kind='linear')
