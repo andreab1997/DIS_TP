@@ -270,9 +270,10 @@ def InitializeCLq3_til():
     Initialize the CLq at N3LO tilde function from the file in External
     """
     global CLq3_til 
-    CLq3_til_array_prov = np.array(readt.readND_python('./External/CLq_3_til/CLq3til.txt'))[:-1][:]
-    CLq3_til_array = CLq3_til_array_prov.transpose()[:-1][:]
-    CLq3_til = interp2d(ZList[:-1],QList[:-1],CLq3_til_array,kind='linear')
+    CLq3_til_array = np.array(readt.readND_python('./External/CLq_3_til/CLq3til.txt')).transpose()
+    #CLq3_til_array_prov = np.array(readt.readND_python('./External/CLq_3_til/CLq3til.txt'))[:-1][:]
+    #CLq3_til_array = CLq3_til_array_prov.transpose()[:-1][:]
+    CLq3_til = interp2d(ZList[:-1],QList,CLq3_til_array,kind='linear')
 
 def InitializeCg3_m():
     """
