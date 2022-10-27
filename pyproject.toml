@@ -24,3 +24,8 @@ classifiers = [
 dependencies = [
     "numpy",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ['tests/', 'benchmarks/']
+python_files = ['test_*.py', 'bench_*.py']
+python_functions = ['test_*', 'benchmark_*']
