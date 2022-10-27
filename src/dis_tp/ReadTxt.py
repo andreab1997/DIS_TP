@@ -17,7 +17,7 @@ def read1D(path_to_file):
     """
     for line in open(path_to_file):
         listWord = line.split(" ")
-    mylist = [float(item) for item in listWord[:-1]]
+    mylist = [float(item) for item in listWord]
     return mylist
 
 
