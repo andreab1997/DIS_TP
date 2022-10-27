@@ -173,7 +173,7 @@ def CLg_1_til_reg(z, Q, p):
     return CLg_1_m_reg(z, Q, p)
 
 
-def CLg_2_til_reg(z, Q, p, grids=True):
+def CLg_2_til_reg(z, Q, p, grids=False):
     q = [p[0], Q]
     if grids:
         return Ini.CLg2_til(z, Q)[0]
@@ -198,7 +198,7 @@ def CLg_3_til_reg(z, Q, p, grids=True):
     )
 
 
-def CLq_2_til_reg(z, Q, p, grids=True):
+def CLq_2_til_reg(z, Q, p, grids=False):
     q = [p[0], Q]
     if grids:
         return Ini.CLq2_til(z, Q)[0]

@@ -112,7 +112,7 @@ def readND_python(path_to_file):
             float(item)
             if item != "-nan" and item != "nan"
             else float(mylist[a][mylist[a].index(item)])
-            for item in mylist[a][:]
+            for item in mylist[a]
         ]
         for a in range(len(mylist))
     ]
