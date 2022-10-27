@@ -37,9 +37,3 @@ dependencies = [
 testpaths = ['tests/', 'benchmarks/']
 python_files = ['test_*.py', 'bench_*.py']
 python_functions = ['test_*', 'benchmark_*']
-addopts = [
-  '--cov=dis_tp',
-  '--cov-report=html',
-  '--cov-report=xml',
-  '--strict-markers',
-]
