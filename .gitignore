@@ -10,5 +10,5 @@ disn3lo/
 data/
 #Mac things
 .DS_Store
-#jupyter 
+#jupyter
 .ipynb_checkpoints/
