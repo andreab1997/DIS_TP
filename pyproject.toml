@@ -28,10 +28,18 @@ dependencies = [
     "mpmath >= 1.2.1",
     "matplotlib >= 3.5.2",
     "simple-term-menu >= 1.4.1",
-    "pre-commit"
+    "pre-commit >= 2.20.0",
+    "pytest >= 6.2.5",
+    "pytest-cov >= 2.12.1"
 ]
 
 [tool.pytest.ini_options]
 testpaths = ['tests/', 'benchmarks/']
 python_files = ['test_*.py', 'bench_*.py']
 python_functions = ['test_*', 'benchmark_*']
+addopts = [
+  '--cov=pineko',
+  '--cov-report=html',
+  '--cov-report=xml',
+  '--strict-markers',
+]
