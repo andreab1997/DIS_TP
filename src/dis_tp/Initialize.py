@@ -63,9 +63,8 @@ def InitializeCg2_til():
     global Cg2_til
     Cg2_til_array_prov = np.array(
         readt.readND_python(PATH_TO_GLOBAL + "/External/Cg_2_til/Cg2til.txt")
-    )[:-1][:]
-    Cg2_til_array = Cg2_til_array_prov.transpose()[:-1][:]
-    Cg2_til = interp2d(ZList[:-1], QList[:-1], Cg2_til_array, kind="linear")
+    )[:-1]
+    Cg2_til = interp2d(ZList[:-1], QList, Cg2_til_array_prov.transpose(), kind="linear")
 
 
 def InitializeCq2_til():
@@ -107,7 +106,8 @@ def InitializeMbg2():
     """
     global Mbg2
     Mbg2_array = readt.readND(PATH_TO_GLOBAL + "/External/Mbg_2/Mbg2.txt")
-    Mbg2 = interp2d(ZList, QList, Mbg2_array, kind="linear")
+    my_array = (np.array(Mbg2_array).transpose()[:-1]).transpose()
+    Mbg2 = interp2d(ZList[:-1], QList, my_array, kind="linear")
 
 
 def InitializeMbq2():
