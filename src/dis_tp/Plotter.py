@@ -23,7 +23,7 @@ for Sf in Stru_func:
     for meth in Methods:
         for order in orders:
             for x in X:
-                q,FO[Stru_func.index(Sf),Methods.index(meth),orders.index(order),X.index(x)] = zip(*((map(float, line.split()) for line in open('./data/FO/'+ Sf + '_FO_' + meth + '_' + order + '_x=' + str(x) + '.csv')))) 
+                q,FO[Stru_func.index(Sf),Methods.index(meth),orders.index(order),X.index(x)] = zip(*((map(float, line.split()) for line in open('../../data/FO/'+ Sf + '_FO_' + meth + '_' + order + '_x=' + str(x) + '.csv')))) 
                 for ratio in ratios: 
                     Q,R[Stru_func.index(Sf),Methods.index(meth),orders.index(order),ratios.index(ratio),X.index(x)] = zip(*((map(float, line.split()) for line in open('./data/R/'+ Sf + '_R_' + meth + '_' + order + '_x=' + str(x) + '_mub=' + ratio +'mb.csv'))))  
                     Q,M[Stru_func.index(Sf),Methods.index(meth),orders.index(order),ratios.index(ratio),X.index(x)] = zip(*((map(float, line.split()) for line in open('./data/M/'+ Sf + '_M_' + meth + '_' + order + '_x=' + str(x) + '_mub=' + ratio +'mb.csv')))) 
@@ -41,7 +41,7 @@ UncertM = np.array([[[[[(lambda q: abs(M_array[X.index(x)][0][orders.index(order
 for Sf in Stru_func:
     for meth in Methods:
         for order in orders:
-            with PdfPages('./plots/' + Sf + '_' + meth + '_' + order + '.pdf') as pdf:
+            with PdfPages('../../plots/' + Sf + '_' + meth + '_' + order + '.pdf') as pdf:
                     fig = plt.figure(figsize=(10, 8))
                     plt.rcParams['text.usetex'] = True
                     fig.suptitle(Sf+'_'+meth+'_'+order,fontsize=16)
@@ -82,7 +82,7 @@ for Sf in Stru_func:
 #Plotting comparison plot: our+fonll
 for Sf in Stru_func:
     for order in orders:
-        with PdfPages('./plots/Compare_' + Sf + '_' + order + '.pdf') as pdf:
+        with PdfPages('../../plots/Compare_' + Sf + '_' + order + '.pdf') as pdf:
                 fig = plt.figure(figsize=(10, 8))
                 plt.rcParams['text.usetex'] = True
                 fig.suptitle('Compare' + Sf+'_'+order,fontsize=16)
