@@ -7,6 +7,7 @@ import numpy as np
 from progress.bar import Bar
 
 from . import Integration as Int
+from .Initialize import PATH_TO_GLOBAL
 
 # Constructing the possibilities
 Stru_func = ["F2", "FL"]
@@ -455,7 +456,8 @@ for Sf in Stru_func:
         for order in orders:
             for x in X:
                 with open(
-                    "../../data/FO/"
+                    PATH_TO_GLOBAL
+                    + "/data/FO/"
                     + Sf
                     + "_FO_"
                     + meth
@@ -477,7 +479,8 @@ for Sf in Stru_func:
                     )
                 for thr in thre:
                     with open(
-                        "../../data/R/"
+                        PATH_TO_GLOBAL
+                        + "/data/R/"
                         + Sf
                         + "_R_"
                         + meth
@@ -501,7 +504,8 @@ for Sf in Stru_func:
                             )
                         )
                     with open(
-                        "../../data/M/"
+                        PATH_TO_GLOBAL
+                        + "/data/M/"
                         + Sf
                         + "_M_"
                         + meth

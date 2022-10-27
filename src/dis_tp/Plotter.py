@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
 
+from .Initialize import PATH_TO_GLOBAL
+
 FO = {}
 R = {}
 M = {}
@@ -35,7 +37,8 @@ for Sf in Stru_func:
                     *(
                         map(float, line.split())
                         for line in open(
-                            "../../data/FO/"
+                            PATH_TO_GLOBAL
+                            + "/data/FO/"
                             + Sf
                             + "_FO_"
                             + meth
@@ -61,7 +64,8 @@ for Sf in Stru_func:
                         *(
                             map(float, line.split())
                             for line in open(
-                                "../../data/R/"
+                                PATH_TO_GLOBAL
+                                + "/data/R/"
                                 + Sf
                                 + "_R_"
                                 + meth
@@ -88,7 +92,8 @@ for Sf in Stru_func:
                         *(
                             map(float, line.split())
                             for line in open(
-                                "../../data/M/"
+                                PATH_TO_GLOBAL
+                                + "/data/M/"
                                 + Sf
                                 + "_M_"
                                 + meth
@@ -282,7 +287,7 @@ for Sf in Stru_func:
     for meth in Methods:
         for order in orders:
             with PdfPages(
-                "../../plots/" + Sf + "_" + meth + "_" + order + ".pdf"
+                PATH_TO_GLOBAL + "/plots/" + Sf + "_" + meth + "_" + order + ".pdf"
             ) as pdf:
                 fig = plt.figure(figsize=(10, 8))
                 plt.rcParams["text.usetex"] = True
@@ -458,7 +463,9 @@ for Sf in Stru_func:
 # Plotting comparison plot: our+fonll
 for Sf in Stru_func:
     for order in orders:
-        with PdfPages("../../plots/Compare_" + Sf + "_" + order + ".pdf") as pdf:
+        with PdfPages(
+            PATH_TO_GLOBAL + "/plots/Compare_" + Sf + "_" + order + ".pdf"
+        ) as pdf:
             fig = plt.figure(figsize=(10, 8))
             plt.rcParams["text.usetex"] = True
             fig.suptitle("Compare" + Sf + "_" + order, fontsize=16)

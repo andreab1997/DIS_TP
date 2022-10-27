@@ -9,6 +9,7 @@ from progress.bar import Bar
 from simple_term_menu import TerminalMenu
 
 from . import Integration as Int
+from .Initialize import PATH_TO_GLOBAL
 
 
 def main():
@@ -380,7 +381,8 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
             for order in map_PDFsorder:
                 for x in X:
                     with open(
-                        "../../data/FO/"
+                        PATH_TO_GLOBAL
+                        + "/data/FO/"
                         + Sf
                         + "_FO_"
                         + meth
@@ -395,7 +397,8 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                         writer.writerows(zip(Q, FO[Sf][order][X.index(x)]))
                     for thr in thre:
                         with open(
-                            "../../data/R/"
+                            PATH_TO_GLOBAL
+                            + "/data/R/"
                             + Sf
                             + "_R_"
                             + meth
@@ -414,7 +417,8 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                                 zip(Q, R[Sf][order][meth][thre.index(thr)][X.index(x)])
                             )
                         with open(
-                            "../../data/M/"
+                            PATH_TO_GLOBAL
+                            + "/data/M/"
                             + Sf
                             + "_M_"
                             + meth
