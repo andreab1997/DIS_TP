@@ -28,6 +28,7 @@ dependencies = [
     "mpmath >= 1.2.1",
     "matplotlib >= 3.5.2",
     "simple-term-menu >= 1.4.1",
+    "pre-commit"
 ]
 
 [tool.pytest.ini_options]
