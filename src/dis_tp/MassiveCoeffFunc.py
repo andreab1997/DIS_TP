@@ -1,8 +1,9 @@
 #this contains the FO massive coefficients functions.
 
+from . import Initialize
+from . import parameters as para
+
 import numpy as np
-import Initialize
-import parameters as para
 
 #F2
 def Cg_1_m_reg(z,Q,p):

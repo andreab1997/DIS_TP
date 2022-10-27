@@ -1,5 +1,6 @@
 #This is an high-level interface to compute and plot structure functions.
-import Integration as Int
+from . import Integration as Int
+
 import numpy as np
 import lhapdf
 import csv

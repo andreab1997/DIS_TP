@@ -1,6 +1,8 @@
 #This contains the massless coefficients functions.
+from . import parameters as para
+
 import numpy as np
-import parameters as para
+
 #F2
 def Cb_0_loc(z,Q):
     e_b = para.parameters["e_b"]

@@ -1,10 +1,11 @@
 #This contains the matching conditions needed for the evaluation of the tilde coefficients functions.
 #notation: p[1] is Q^2 while p[0] is m_b^2
+from . import Initialize
+from . import zetas as zet
+from . import Harmonics as harm
+from . import Initialize as Ini
+
 import numpy as np
-import Initialize
-import zetas as zet
-import Harmonics as harm
-import Initialize as Ini
 
 def Mbg_1(z,p):
     TR = 1./2.

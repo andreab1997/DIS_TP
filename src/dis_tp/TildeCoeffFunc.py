@@ -1,14 +1,14 @@
 #This contains the tilde coefficents functions for the matched scheme.
 
-import numpy as np
+from .MassiveCoeffFunc import CLg_3_m_reg, CLq_3_m_reg, Cg_1_m_reg, CLg_1_m_reg, Cg_2_m_reg, Cg_3_m_reg, Cq_2_m_reg, CLg_2_m_reg, CLq_2_m_reg, Cq_3_m_reg
+from .MasslessCoeffFunc import CLb_2_loc, CLb_2_reg, Cb_0_loc, Cb_1_loc,Cb_1_reg,Cb_1_sing, CLb_1_reg, Cb_2_loc, Cb_2_reg, Cb_2_sing
+from .MatchingFunc import Mbg_1, Mbg_2, Mbg_3_reg, Mbq_2, Mbq_3_reg, Mgg_1_loc, Mgg_2_loc, Mgg_2_reg, Mgg_2_sing, Mgq_2_reg, P1, P2
+from . import parameters as para
+from .tools import Convolute, Convolute_matching, Convolute_plus_coeff, Convolute_plus_matching, Convolute_plus_matching_per_matching
+from . import Initialize as Ini
 
-from MassiveCoeffFunc import CLg_3_m_reg, CLq_3_m_reg, Cg_1_m_reg, CLg_1_m_reg, Cg_2_m_reg, Cg_3_m_reg, Cq_2_m_reg, CLg_2_m_reg, CLq_2_m_reg, Cq_3_m_reg
-from MasslessCoeffFunc import CLb_2_loc, CLb_2_reg, Cb_0_loc, Cb_1_loc,Cb_1_reg,Cb_1_sing, CLb_1_reg, Cb_2_loc, Cb_2_reg, Cb_2_sing
-from MatchingFunc import Mbg_1, Mbg_2, Mbg_3_reg, Mbq_2, Mbq_3_reg, Mgg_1_loc, Mgg_2_loc, Mgg_2_reg, Mgg_2_sing, Mgq_2_reg, P1, P2
+import numpy as np
 import scipy.special as special
-import parameters as para
-from tools import Convolute, Convolute_matching, Convolute_plus_coeff, Convolute_plus_matching, Convolute_plus_matching_per_matching
-import Initialize as Ini
 
 def Cb1_Mbg1(z):
     TR = 1./2.
