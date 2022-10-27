@@ -1,6 +1,7 @@
 #These are utility functions to read txt grids.
+from . import Initialize as Ini
+
 import numpy as np
-import Initialize as Ini
 def read1D(path_to_file):
     """
     Read a space-separated txt file and return a 1-Dimensional list of the values

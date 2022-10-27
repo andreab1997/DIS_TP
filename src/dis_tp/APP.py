@@ -1,6 +1,7 @@
 #Code for computing F2 and FL with all the possibilities.
 
-import Integration as Int
+from . import Integration as Int
+
 import numpy as np
 import lhapdf
 import csv

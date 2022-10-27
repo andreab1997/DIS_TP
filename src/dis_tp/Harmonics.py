@@ -1,8 +1,10 @@
 #This contains my implementation in python of the harmonic polylogs. Some of them are written in terms of polylogs, others are taken from mathematica grids.
+from . import Initialize as Ini
+
 import numpy as np
 from mpmath import *
 import zetas as zet
-import Initialize as Ini
+
 mp.dps = 15 
 mp.pretty = True
  
