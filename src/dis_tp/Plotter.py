@@ -61,7 +61,7 @@ for Sf in Stru_func:
                         *(
                             map(float, line.split())
                             for line in open(
-                                "./data/R/"
+                                "../../data/R/"
                                 + Sf
                                 + "_R_"
                                 + meth
@@ -88,7 +88,7 @@ for Sf in Stru_func:
                         *(
                             map(float, line.split())
                             for line in open(
-                                "./data/M/"
+                                "../../data/M/"
                                 + Sf
                                 + "_M_"
                                 + meth

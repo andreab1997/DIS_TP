@@ -455,7 +455,7 @@ for Sf in Stru_func:
         for order in orders:
             for x in X:
                 with open(
-                    "./data/FO/"
+                    "../../data/FO/"
                     + Sf
                     + "_FO_"
                     + meth
@@ -477,7 +477,7 @@ for Sf in Stru_func:
                     )
                 for thr in thre:
                     with open(
-                        "./data/R/"
+                        "../../data/R/"
                         + Sf
                         + "_R_"
                         + meth
@@ -501,7 +501,7 @@ for Sf in Stru_func:
                             )
                         )
                     with open(
-                        "./data/M/"
+                        "../../data/M/"
                         + Sf
                         + "_M_"
                         + meth

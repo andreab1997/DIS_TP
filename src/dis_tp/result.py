@@ -380,7 +380,7 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
             for order in map_PDFsorder:
                 for x in X:
                     with open(
-                        "./data/FO/"
+                        "../../data/FO/"
                         + Sf
                         + "_FO_"
                         + meth
@@ -395,7 +395,7 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                         writer.writerows(zip(Q, FO[Sf][order][X.index(x)]))
                     for thr in thre:
                         with open(
-                            "./data/R/"
+                            "../../data/R/"
                             + Sf
                             + "_R_"
                             + meth
@@ -414,7 +414,7 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                                 zip(Q, R[Sf][order][meth][thre.index(thr)][X.index(x)])
                             )
                         with open(
-                            "./data/M/"
+                            "../../data/M/"
                             + Sf
                             + "_M_"
                             + meth

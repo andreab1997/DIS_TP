@@ -12,8 +12,8 @@ def InitializeQX():
     """
     global QList
     global ZList
-    QList = readt.read1D("./External/Cg2_2_m/Q.txt")
-    ZList = readt.read1D("./External/Cg2_2_m/x.txt")
+    QList = readt.read1D("../../External/Cg2_2_m/Q.txt")
+    ZList = readt.read1D("../../External/Cg2_2_m/x.txt")
 
 
 def InitializeCg2_m():
@@ -21,7 +21,7 @@ def InitializeCg2_m():
     Initialize the Cg2 at NNLO massive function from the file in External
     """
     global Cg2m
-    Cg2m_array = readt.readND("./External/Cg2_2_m/Cg.txt")
+    Cg2m_array = readt.readND("../../External/Cg2_2_m/Cg.txt")
     Cg2m = interp2d(ZList, QList, Cg2m_array, kind="linear")
 
 
@@ -30,7 +30,7 @@ def InitializeCq2_m():
     Initialize the Cq2 at NNLO massive function from the file in External
     """
     global Cq2m
-    Cq2m_array = readt.readND("./External/Cq2_2_m/Cq.txt")
+    Cq2m_array = readt.readND("../../External/Cq2_2_m/Cq.txt")
     Cq2m = interp2d(ZList, QList, Cq2m_array, kind="linear")
 
 
@@ -39,7 +39,7 @@ def InitializeCLg2_m():
     Initialize the CgL at NNLO massive function from the file in External
     """
     global CLg2m
-    CLg2m_array = readt.readND("./External/CgL_2_m/CgL.txt")
+    CLg2m_array = readt.readND("../../External/CgL_2_m/CgL.txt")
     CLg2m = interp2d(ZList, QList, CLg2m_array, kind="linear")
 
 
@@ -48,7 +48,7 @@ def InitializeCLq2_m():
     Initialize the CqL at NNLO massive function from the file in External
     """
     global CLq2m
-    CLq2m_array = readt.readND("./External/CqL_2_m/CqL.txt")
+    CLq2m_array = readt.readND("../../External/CqL_2_m/CqL.txt")
     CLq2m = interp2d(ZList, QList, CLq2m_array, kind="linear")
 
 
@@ -58,7 +58,7 @@ def InitializeCg2_til():
     """
     global Cg2_til
     Cg2_til_array_prov = np.array(
-        readt.readND_python("./External/Cg_2_til/Cg2til.txt")
+        readt.readND_python("../../External/Cg_2_til/Cg2til.txt")
     )[:-1][:]
     Cg2_til_array = Cg2_til_array_prov.transpose()[:-1][:]
     Cg2_til = interp2d(ZList[:-1], QList[:-1], Cg2_til_array, kind="linear")
@@ -70,7 +70,7 @@ def InitializeCq2_til():
     """
     global Cq2_til
     Cq2_til_array = np.array(
-        readt.readND_python("./External/Cq_2_til/Cq2til.txt")
+        readt.readND_python("../../External/Cq_2_til/Cq2til.txt")
     ).transpose()
     Cq2_til = interp2d(ZList, QList, Cq2_til_array, kind="linear")
 
@@ -81,7 +81,7 @@ def InitializeCLg2_til():
     """
     global CLg2_til
     CLg2_til_array = np.array(
-        readt.readND_python("./External/CLg_2_til/CLg2til.txt")
+        readt.readND_python("../../External/CLg_2_til/CLg2til.txt")
     ).transpose()
     CLg2_til = interp2d(ZList, QList, CLg2_til_array, kind="linear")
 
@@ -92,7 +92,7 @@ def InitializeCLq2_til():
     """
     global CLq2_til
     CLq2_til_array = np.array(
-        readt.readND_python("./External/CLq_2_til/CLq2til.txt")
+        readt.readND_python("../../External/CLq_2_til/CLq2til.txt")
     ).transpose()
     CLq2_til = interp2d(ZList, QList, CLq2_til_array, kind="linear")
 
@@ -102,7 +102,7 @@ def InitializeMbg2():
     Initialize the Mbg at NNLO matching function from the file in External
     """
     global Mbg2
-    Mbg2_array = readt.readND("./External/Mbg_2/Mbg2.txt")
+    Mbg2_array = readt.readND("../../External/Mbg_2/Mbg2.txt")
     Mbg2 = interp2d(ZList, QList, Mbg2_array, kind="linear")
 
 
@@ -111,129 +111,129 @@ def InitializeMbq2():
     Initialize the Mbg at NNLO matching function from the file in External
     """
     global Mbq2
-    Mbq2_array = readt.readND("./External/Mbq_2/Mbq2.txt")
+    Mbq2_array = readt.readND("../../External/Mbq_2/Mbq2.txt")
     Mbq2 = interp2d(ZList, QList, Mbq2_array, kind="linear")
 
 
 def InitializeHPL():
     global HPL_x_array
     global HPL_0011
-    HPL_x_array = readt.read1D("./External/HPL/HPL_x.txt")
-    HPL_0011_array = readt.read1D("./External/HPL/HPL_0011.txt")
+    HPL_x_array = readt.read1D("../../External/HPL/HPL_x.txt")
+    HPL_0011_array = readt.read1D("../../External/HPL/HPL_0011.txt")
     HPL_0011 = interp1d(HPL_x_array, HPL_0011_array)
     global HPL_00011
-    HPL_00011_array = readt.read1D("./External/HPL/HPL_00011.txt")
+    HPL_00011_array = readt.read1D("../../External/HPL/HPL_00011.txt")
     HPL_00011 = interp1d(HPL_x_array, HPL_00011_array)
     global HPL_00101
-    HPL_00101_array = readt.read1D("./External/HPL/HPL_00101.txt")
+    HPL_00101_array = readt.read1D("../../External/HPL/HPL_00101.txt")
     HPL_00101 = interp1d(HPL_x_array, HPL_00101_array)
     global HPL_00111
-    HPL_00111_array = readt.read1D("./External/HPL/HPL_00111.txt")
+    HPL_00111_array = readt.read1D("../../External/HPL/HPL_00111.txt")
     HPL_00111 = interp1d(HPL_x_array, HPL_00111_array)
     global HPL_01011
-    HPL_01011_array = readt.read1D("./External/HPL/HPL_01011.txt")
+    HPL_01011_array = readt.read1D("../../External/HPL/HPL_01011.txt")
     HPL_01011 = interp1d(HPL_x_array, HPL_01011_array)
     global HPL_0m1m1m1
-    HPL_0m1m1m1_array = readt.read1D("./External/HPL/HPL_0m1m1m1.txt")
+    HPL_0m1m1m1_array = readt.read1D("../../External/HPL/HPL_0m1m1m1.txt")
     HPL_0m1m1m1 = interp1d(HPL_x_array, HPL_0m1m1m1_array)
     global HPL_0m101
-    HPL_0m101_array = readt.read1D("./External/HPL/HPL_0m101.txt")
+    HPL_0m101_array = readt.read1D("../../External/HPL/HPL_0m101.txt")
     HPL_0m101 = interp1d(HPL_x_array, HPL_0m101_array)
     global HPL_00m1m1
-    HPL_00m1m1_array = readt.read1D("./External/HPL/HPL_00m1m1.txt")
+    HPL_00m1m1_array = readt.read1D("../../External/HPL/HPL_00m1m1.txt")
     HPL_00m1m1 = interp1d(HPL_x_array, HPL_00m1m1_array)
     global HPL_00m11
-    HPL_00m11_array = readt.read1D("./External/HPL/HPL_00m11.txt")
+    HPL_00m11_array = readt.read1D("../../External/HPL/HPL_00m11.txt")
     HPL_00m11 = interp1d(HPL_x_array, HPL_00m11_array)
     global HPL_001m1
-    HPL_001m1_array = readt.read1D("./External/HPL/HPL_001m1.txt")
+    HPL_001m1_array = readt.read1D("../../External/HPL/HPL_001m1.txt")
     HPL_001m1 = interp1d(HPL_x_array, HPL_001m1_array)
     global HPL_0m10m1m1
-    HPL_0m10m1m1_array = readt.read1D("./External/HPL/HPL_0m10m1m1.txt")
+    HPL_0m10m1m1_array = readt.read1D("../../External/HPL/HPL_0m10m1m1.txt")
     HPL_0m10m1m1 = interp1d(HPL_x_array, HPL_0m10m1m1_array)
     global HPL_00m1m1m1
-    HPL_00m1m1m1_array = readt.read1D("./External/HPL/HPL_00m1m1m1.txt")
+    HPL_00m1m1m1_array = readt.read1D("../../External/HPL/HPL_00m1m1m1.txt")
     HPL_00m1m1m1 = interp1d(HPL_x_array, HPL_00m1m1m1_array)
     global HPL_00m10m1
-    HPL_00m10m1_array = readt.read1D("./External/HPL/HPL_00m10m1.txt")
+    HPL_00m10m1_array = readt.read1D("../../External/HPL/HPL_00m10m1.txt")
     HPL_00m10m1 = interp1d(HPL_x_array, HPL_00m10m1_array)
     global HPL_00m101
-    HPL_00m101_array = readt.read1D("./External/HPL/HPL_00m101.txt")
+    HPL_00m101_array = readt.read1D("../../External/HPL/HPL_00m101.txt")
     HPL_00m101 = interp1d(HPL_x_array, HPL_00m101_array)
     global HPL_000m1m1
-    HPL_000m1m1_array = readt.read1D("./External/HPL/HPL_000m1m1.txt")
+    HPL_000m1m1_array = readt.read1D("../../External/HPL/HPL_000m1m1.txt")
     HPL_000m1m1 = interp1d(HPL_x_array, HPL_000m1m1_array)
     global HPL_000m11
-    HPL_000m11_array = readt.read1D("./External/HPL/HPL_000m11.txt")
+    HPL_000m11_array = readt.read1D("../../External/HPL/HPL_000m11.txt")
     HPL_000m11 = interp1d(HPL_x_array, HPL_000m11_array)
     global HPL_0001m1
-    HPL_0001m1_array = readt.read1D("./External/HPL/HPL_0001m1.txt")
+    HPL_0001m1_array = readt.read1D("../../External/HPL/HPL_0001m1.txt")
     HPL_0001m1 = interp1d(HPL_x_array, HPL_0001m1_array)
     global HPL_0010m1
-    HPL_0010m1_array = readt.read1D("./External/HPL/HPL_0010m1.txt")
+    HPL_0010m1_array = readt.read1D("../../External/HPL/HPL_0010m1.txt")
     HPL_0010m1 = interp1d(HPL_x_array, HPL_0010m1_array)
     global HPL_0m1m11
-    HPL_0m1m11_array = readt.read1D("./External/HPL/HPL_0m1m11.txt")
+    HPL_0m1m11_array = readt.read1D("../../External/HPL/HPL_0m1m11.txt")
     HPL_0m1m11 = interp1d(HPL_x_array, HPL_0m1m11_array)
     global HPL_0m11m1
-    HPL_0m11m1_array = readt.read1D("./External/HPL/HPL_0m11m1.txt")
+    HPL_0m11m1_array = readt.read1D("../../External/HPL/HPL_0m11m1.txt")
     HPL_0m11m1 = interp1d(HPL_x_array, HPL_0m11m1_array)
     global HPL_01m1m1
-    HPL_01m1m1_array = readt.read1D("./External/HPL/HPL_01m1m1.txt")
+    HPL_01m1m1_array = readt.read1D("../../External/HPL/HPL_01m1m1.txt")
     HPL_01m1m1 = interp1d(HPL_x_array, HPL_01m1m1_array)
     global HPL_0m111
-    HPL_0m111_array = readt.read1D("./External/HPL/HPL_0m111.txt")
+    HPL_0m111_array = readt.read1D("../../External/HPL/HPL_0m111.txt")
     HPL_0m111 = interp1d(HPL_x_array, HPL_0m111_array)
     global HPL_01m11
-    HPL_01m11_array = readt.read1D("./External/HPL/HPL_01m11.txt")
+    HPL_01m11_array = readt.read1D("../../External/HPL/HPL_01m11.txt")
     HPL_01m11 = interp1d(HPL_x_array, HPL_01m11_array)
     global HPL_011m1
-    HPL_011m1_array = readt.read1D("./External/HPL/HPL_011m1.txt")
+    HPL_011m1_array = readt.read1D("../../External/HPL/HPL_011m1.txt")
     HPL_011m1 = interp1d(HPL_x_array, HPL_011m1_array)
     global HPL_0m1011
-    HPL_0m1011_array = readt.read1D("./External/HPL/HPL_0m1011.txt")
+    HPL_0m1011_array = readt.read1D("../../External/HPL/HPL_0m1011.txt")
     HPL_0m1011 = interp1d(HPL_x_array, HPL_0m1011_array)
     global HPL_0m1m101
-    HPL_0m1m101_array = readt.read1D("./External/HPL/HPL_0m1m101.txt")
+    HPL_0m1m101_array = readt.read1D("../../External/HPL/HPL_0m1m101.txt")
     HPL_0m1m101 = interp1d(HPL_x_array, HPL_0m1m101_array)
     global HPL_0m1m11m1
-    HPL_0m1m11m1_array = readt.read1D("./External/HPL/HPL_0m1m11m1.txt")
+    HPL_0m1m11m1_array = readt.read1D("../../External/HPL/HPL_0m1m11m1.txt")
     HPL_0m1m11m1 = interp1d(HPL_x_array, HPL_0m1m11m1_array)
     global HPL_0m10m11
-    HPL_0m10m11_array = readt.read1D("./External/HPL/HPL_0m10m11.txt")
+    HPL_0m10m11_array = readt.read1D("../../External/HPL/HPL_0m10m11.txt")
     HPL_0m10m11 = interp1d(HPL_x_array, HPL_0m10m11_array)
     global HPL_0m101m1
-    HPL_0m101m1_array = readt.read1D("./External/HPL/HPL_0m101m1.txt")
+    HPL_0m101m1_array = readt.read1D("../../External/HPL/HPL_0m101m1.txt")
     HPL_0m101m1 = interp1d(HPL_x_array, HPL_0m101m1_array)
     global HPL_0m11m1m1
-    HPL_0m11m1m1_array = readt.read1D("./External/HPL/HPL_0m11m1m1.txt")
+    HPL_0m11m1m1_array = readt.read1D("../../External/HPL/HPL_0m11m1m1.txt")
     HPL_0m11m1m1 = interp1d(HPL_x_array, HPL_0m11m1m1_array)
     global HPL_00m1m11
-    HPL_00m1m11_array = readt.read1D("./External/HPL/HPL_00m1m11.txt")
+    HPL_00m1m11_array = readt.read1D("../../External/HPL/HPL_00m1m11.txt")
     HPL_00m1m11 = interp1d(HPL_x_array, HPL_00m1m11_array)
     global HPL_00m11m1
-    HPL_00m11m1_array = readt.read1D("./External/HPL/HPL_00m11m1.txt")
+    HPL_00m11m1_array = readt.read1D("../../External/HPL/HPL_00m11m1.txt")
     HPL_00m11m1 = interp1d(HPL_x_array, HPL_00m11m1_array)
     global HPL_00m111
-    HPL_00m111_array = readt.read1D("./External/HPL/HPL_00m111.txt")
+    HPL_00m111_array = readt.read1D("../../External/HPL/HPL_00m111.txt")
     HPL_00m111 = interp1d(HPL_x_array, HPL_00m111_array)
     global HPL_001m1m1
-    HPL_001m1m1_array = readt.read1D("./External/HPL/HPL_001m1m1.txt")
+    HPL_001m1m1_array = readt.read1D("../../External/HPL/HPL_001m1m1.txt")
     HPL_001m1m1 = interp1d(HPL_x_array, HPL_001m1m1_array)
     global HPL_001m11
-    HPL_001m11_array = readt.read1D("./External/HPL/HPL_001m11.txt")
+    HPL_001m11_array = readt.read1D("../../External/HPL/HPL_001m11.txt")
     HPL_001m11 = interp1d(HPL_x_array, HPL_001m11_array)
     global HPL_0011m1
-    HPL_0011m1_array = readt.read1D("./External/HPL/HPL_0011m1.txt")
+    HPL_0011m1_array = readt.read1D("../../External/HPL/HPL_0011m1.txt")
     HPL_0011m1 = interp1d(HPL_x_array, HPL_0011m1_array)
     global HPL_01m1m1m1
-    HPL_01m1m1m1_array = readt.read1D("./External/HPL/HPL_01m1m1m1.txt")
+    HPL_01m1m1m1_array = readt.read1D("../../External/HPL/HPL_01m1m1m1.txt")
     HPL_01m1m1m1 = interp1d(HPL_x_array, HPL_01m1m1m1_array)
     global HPL_0m1m1m1m1
-    HPL_0m1m1m1m1_array = readt.read1D("./External/HPL/HPL_0m1m1m1m1.txt")
+    HPL_0m1m1m1m1_array = readt.read1D("../../External/HPL/HPL_0m1m1m1m1.txt")
     HPL_0m1m1m1m1 = interp1d(HPL_x_array, HPL_0m1m1m1m1_array)
     global HPL_0m1m1m11
-    HPL_0m1m1m11_array = readt.read1D("./External/HPL/HPL_0m1m1m11.txt")
+    HPL_0m1m1m11_array = readt.read1D("../../External/HPL/HPL_0m1m1m11.txt")
     HPL_0m1m1m11 = interp1d(HPL_x_array, HPL_0m1m1m11_array)
 
 
@@ -242,7 +242,9 @@ def InitializeMbg_3():
     Initialize the Mbg at N3LO matching condition from the file in External
     """
     global Mbg3
-    Mbg3_array = np.array(readt.readND_python("./External/Mbg_3/Mbg3.txt")).transpose()
+    Mbg3_array = np.array(
+        readt.readND_python("../../External/Mbg_3/Mbg3.txt")
+    ).transpose()
     Mbg3 = interp2d(HPL_x_array, QList, Mbg3_array, kind="linear")
 
 
@@ -251,7 +253,9 @@ def InitializeMbq_3():
     Initialize the Mbg at N3LO matching condition from the file in External
     """
     global Mbq3
-    Mbq3_array = np.array(readt.readND_python("./External/Mbq_3/Mbq3.txt")).transpose()
+    Mbq3_array = np.array(
+        readt.readND_python("../../External/Mbq_3/Mbq3.txt")
+    ).transpose()
     Mbq3 = interp2d(HPL_x_array, QList, Mbq3_array, kind="linear")
 
 
@@ -265,8 +269,8 @@ def InitializeQX_Nic():
     """
     global QList_Nic
     global ZList_Nic
-    QList_Nic = readt.read1D("./External/Cg_3_m/Q.txt")
-    ZList_Nic = readt.read1D_Nic("./External/Cg_3_m/x_NEW.txt")
+    QList_Nic = readt.read1D("../../External/Cg_3_m/Q.txt")
+    ZList_Nic = readt.read1D_Nic("../../External/Cg_3_m/x_NEW.txt")
 
 
 def InitializeCq3_m():
@@ -274,7 +278,7 @@ def InitializeCq3_m():
     Initialize the Cq2 at N3LO massive function from the file in External
     """
     global Cq3m
-    Cq3m_array_prov = np.array(readt.readND_Nic("./External/Cq_3_m/C2q.dat"))
+    Cq3m_array_prov = np.array(readt.readND_Nic("../../External/Cq_3_m/C2q.dat"))
     Cq3m_array = Cq3m_array_prov.transpose()[:-1][:]
     Cq3m = interp2d(ZList_Nic[:-1], QList_Nic, Cq3m_array.transpose(), kind="linear")
 
@@ -287,7 +291,7 @@ def InitializeCq3_til():
     # Cq3_til_array_prov = np.array(readt.readND_python('./External/Cq_3_til/Cq3til.txt'))[:-1][:]
     # Cq3_til_array = Cq3_til_array_prov.transpose()[:-1][:]
     Cq3_til_array = np.array(
-        readt.readND_python("./External/Cq_3_til/Cq3til.txt")
+        readt.readND_python("../../External/Cq_3_til/Cq3til.txt")
     ).transpose()
     Cq3_til = interp2d(ZList[:-1], QList, Cq3_til_array, kind="linear")
 
@@ -297,7 +301,7 @@ def InitializeCLq3_m():
     Initialize the CqL at N3LO massive function from the file in External
     """
     global CLq3m
-    CLq3m_array_prov = np.array(readt.readND_Nic("./External/CLq_3_m/CLq.dat"))
+    CLq3m_array_prov = np.array(readt.readND_Nic("../../External/CLq_3_m/CLq.dat"))
     CLq3m_array = CLq3m_array_prov.transpose()[:-1][:]
     CLq3m = interp2d(ZList_Nic[:-1], QList_Nic, CLq3m_array.transpose(), kind="linear")
 
@@ -308,7 +312,7 @@ def InitializeCLq3_til():
     """
     global CLq3_til
     CLq3_til_array = np.array(
-        readt.readND_python("./External/CLq_3_til/CLq3til.txt")
+        readt.readND_python("../../External/CLq_3_til/CLq3til.txt")
     ).transpose()
     # CLq3_til_array_prov = np.array(readt.readND_python('./External/CLq_3_til/CLq3til.txt'))[:-1][:]
     # CLq3_til_array = CLq3_til_array_prov.transpose()[:-1][:]
@@ -320,7 +324,7 @@ def InitializeCg3_m():
     Initialize the Cg2 at N3LO massive function from the file in External
     """
     global Cg3m
-    Cg3m_array_prov = np.array(readt.readND_Nic("./External/Cg_3_m/C2g.dat"))
+    Cg3m_array_prov = np.array(readt.readND_Nic("../../External/Cg_3_m/C2g.dat"))
     Cg3m_array = Cg3m_array_prov.transpose()[:-1][:]
     Cg3m = interp2d(ZList_Nic[:-1], QList_Nic, Cg3m_array.transpose(), kind="linear")
 
@@ -330,7 +334,7 @@ def InitializeCLg3_m():
     Initialize the CgL at N3LO massive function from the file in External
     """
     global CLg3m
-    CLg3m_array_prov = np.array(readt.readND_Nic("./External/CLg_3_m/CLg.dat"))
+    CLg3m_array_prov = np.array(readt.readND_Nic("../../External/CLg_3_m/CLg.dat"))
     CLg3m_array = CLg3m_array_prov.transpose()[:-1][:]
     CLg3m = interp2d(ZList_Nic[:-1], QList_Nic, CLg3m_array.transpose(), kind="linear")
 
@@ -343,7 +347,7 @@ def InitializeCg3_til():
     # Cg3_til_array_prov = np.array(readt.readND_python('./External/Cg_3_til/Cg3til.txt'))[:-1][:]
     # Cg3_til_array = Cg3_til_array_prov.transpose()[:-1][:]
     Cg3_til_array = np.array(
-        readt.readND_python("./External/Cg_3_til/Cg3til.txt")
+        readt.readND_python("../../External/Cg_3_til/Cg3til.txt")
     ).transpose()
     Cg3_til = interp2d(ZList[:-1], QList, Cg3_til_array, kind="linear")
 
@@ -354,6 +358,6 @@ def InitializeCLg3_til():
     """
     global CLg3_til
     CLg3_til_array = np.array(
-        readt.readND_python("./External/CLg_3_til/CLg3til.txt")
+        readt.readND_python("../../External/CLg_3_til/CLg3til.txt")
     ).transpose()
     CLg3_til = interp2d(ZList[:-1], QList, CLg3_til_array, kind="linear")
