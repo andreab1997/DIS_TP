@@ -1,9 +1,0 @@
-\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {section}{\numberline {2}DIS cross section for PDF fitting}{1}{section.2}%
-\contentsline {section}{\numberline {3}How to achieve N$^3$LO accuracy}{1}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Comparison with FONLL}{1}{subsection.3.1}%
-\contentsline {section}{\numberline {4}\boldmath Approximate N$^3$LO coefficient functions with mass effects}{2}{section.4}%
-\contentsline {section}{\numberline {5}The VFNS}{6}{section.5}%
-\contentsline {section}{\numberline {6}Conclusions}{6}{section.6}%
-\contentsline {section}{\numberline {A}\boldmath Appendix}{6}{appendix.A}%
-\contentsline {section}{References}{6}{section*.3}%
