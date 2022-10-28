@@ -34,7 +34,7 @@ def read1D_Nic(path_to_file):
     """
     for line in open(path_to_file):
         listWord = line.split("   ")
-    mylist = [float(item) for item in listWord[:-1]]
+    mylist = [float(item) for item in listWord]
     return mylist
 
 
@@ -85,7 +85,7 @@ def readND_Nic(path_to_file):
             float(item)
             if item != "-nan" and item != "nan"
             else float(mylist[a][mylist[a].index(item) - 1])
-            for item in mylist[a][:-1]
+            for item in mylist[a]
         ]
         for a in range(len(mylist))
     ]
