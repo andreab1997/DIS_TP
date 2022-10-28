@@ -17,7 +17,7 @@ def read1D(path_to_file):
     """
     for line in open(path_to_file):
         listWord = line.split(" ")
-    mylist = [float(item) for item in listWord[:-1]]
+    mylist = [float(item) for item in listWord]
     return mylist
 
 
@@ -34,7 +34,7 @@ def read1D_Nic(path_to_file):
     """
     for line in open(path_to_file):
         listWord = line.split("   ")
-    mylist = [float(item) for item in listWord[:-1]]
+    mylist = [float(item) for item in listWord]
     return mylist
 
 
@@ -58,7 +58,7 @@ def readND(path_to_file):
             float(item)
             if item != "-nan" and item != "nan"
             else float(mylist[a][mylist[a].index(item) - 1])
-            for item in mylist[a][:-1]
+            for item in mylist[a]
         ]
         for a in range(len(mylist))
     ]
@@ -85,7 +85,7 @@ def readND_Nic(path_to_file):
             float(item)
             if item != "-nan" and item != "nan"
             else float(mylist[a][mylist[a].index(item) - 1])
-            for item in mylist[a][:-1]
+            for item in mylist[a]
         ]
         for a in range(len(mylist))
     ]
@@ -112,7 +112,7 @@ def readND_python(path_to_file):
             float(item)
             if item != "-nan" and item != "nan"
             else float(mylist[a][mylist[a].index(item)])
-            for item in mylist[a][:]
+            for item in mylist[a]
         ]
         for a in range(len(mylist))
     ]
@@ -136,12 +136,12 @@ def construct_grid_matching(func, mass, path):
 def construct_grid_tilde(func, mass, path):
     func_values = []
     p = [mass]
-    for z in Ini.ZList[:-1]:
-        print(float(Ini.ZList[:-1].index(z)) / Ini.ZList[:-1].__len__())
+    for z in Ini.ZList:
+        print(float(Ini.ZList.index(z)) / Ini.ZList.__len__())
         z_func_values = []
         for q in np.array(Ini.QList):
-            z_func_values.append(func(z, q, p)[0])
-            # z_func_values.append(func(z,q,p))
+            # z_func_values.append(func(z, q, p)[0])
+            z_func_values.append(func(z, q, p))
         func_values.append(z_func_values)
     np.savetxt(path, func_values)
     return func_values

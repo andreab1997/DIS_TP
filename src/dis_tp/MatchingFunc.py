@@ -69,7 +69,7 @@ def a_Qg_30(x, v):
         )
 
 
-def Mbg_3_reg(z, p, grids=True):
+def Mbg_3_reg(z, p, grids=False):
     if grids:
         return Ini.Mbg3(z, p[1])[0]
     CF = 4.0 / 3.0
@@ -2927,7 +2927,7 @@ def aQqPS30(x):
     )
 
 
-def Mbq_3_reg(z, p, grids=True):
+def Mbq_3_reg(z, p, grids=False):
     if grids:
         return Ini.Mbq3(z, p[1])[0]
     CF = 4.0 / 3.0

@@ -19,8 +19,8 @@ def Initialize_all():
     Ini.InitializeMbg2()
     Ini.InitializeMbq2()
     Ini.InitializeHPL()
-    Ini.InitializeMbg_3()
-    Ini.InitializeMbq_3()
+    # Ini.InitializeMbg_3()
+    # Ini.InitializeMbq_3()
     Ini.InitializeCg2_til()
     Ini.InitializeCq2_til()
     Ini.InitializeCLg2_til()
@@ -30,10 +30,10 @@ def Initialize_all():
     Ini.InitializeCLq3_m()
     Ini.InitializeCg3_m()
     Ini.InitializeCLg3_m()
-    Ini.InitializeCLq3_til()
-    Ini.InitializeCLg3_til()
-    Ini.InitializeCq3_til()
-    Ini.InitializeCg3_til()
+    # Ini.InitializeCLq3_til()
+    # Ini.InitializeCLg3_til()
+    # Ini.InitializeCq3_til()
+    # Ini.InitializeCg3_til()
 
 
 def F2_FO(order, pdf, x, Q, muF_ratio=1, muR_ratio=1):
