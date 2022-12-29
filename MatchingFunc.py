@@ -5,6 +5,8 @@ import Initialize
 import zetas as zet
 import Harmonics as harm
 import Initialize as Ini
+from InverseMellin.Integration import inverse_mellin
+from InverseMellin.MatchingFuncN import Mbg_3_l1, Mbg_3_l2, Mbg_3_l3
 
 def Mbg_1(z,p):
     TR = 1./2.
@@ -552,6 +554,19 @@ def Mgg_2_sing(z,p):
 def Mbq_2(z,p):
     return Initialize.Mbq2(z,p[1])
 
+def aQgPS30(x, v):
+    L = np.log(x)
+    L2 = L**2
+    L1 = np.log(1 - x)
+    L12 = L1 **2 
+    L13 = L1 ** 3
+    if v == 0 :
+        return 0.5*( aQgPS30(x,1) + aQgPS30(x,2))
+    if v == 1 :
+        return 354.1002*L13 + 479.3838*L12 - 7856.784*(2-x) - 6233.530*L2 + 9416.621/x + 1548.891/x*L
+    if v == 2 :
+        return 226.3840*L13 - 652.2045*L12 - 2686.387*L1 - 7714.786*(2-x) - 2841.851*L2 + 7721.120/x + 1548.891/x*L
+
 def aQqPS30(x):
     #Approximation of scale independent part of Mbq_3_reg
     CF = 4./3.
@@ -1024,7 +1039,31 @@ def Mgq_2_reg(z,p):
     L1 = np.log(z1)
     return CF*TR*(((16./(3*z))- (16./3.) +z*(8./3.))*(L**2) + ((160./(9*z)) - (160./9.) +z*(128./9.) + L1*((32./(3*z)) - (32./3.) + z*(16./3.)))*L + (4./3.)*((2./z)-2+z)*(L1**2) + (8./9.)*((10./z)-10+8*z)*L1 + (1./27.)*((448./z)-448+344*z))
 
+def Mbg_3_l1(x, nf=5, r=None, s=None):
+    if r is None:
+        r = 0.4 * 16.0 / (1.0 - np.log(x))
+    if s is None:
+        s = 1.
+    return inverse_mellin(Mbg_3_l1, x, nf, r, s)
 
+def Mbg_3_l2(x, nf=5, r=None, s=None):
+    if r is None:
+        r = 0.4 * 16.0 / (1.0 - np.log(x))
+    if s is None:
+        s = 1.
+    return inverse_mellin(Mbg_3_l2, x, nf, r, s)
+
+def Mbg_3_l3(x, nf=5, r=None, s=None):
+    if r is None:
+        r = 0.4 * 16.0 / (1.0 - np.log(x))
+    if s is None:
+        s = 1.
+    return inverse_mellin(Mbg_3_l3, x, nf, r, s)
+
+def Mbg_3_reg(x, p):
+    L = np.log((p[1]**2)/(p[0]**2))
+    res = aQgPS30(x, 0) + Mbg_3_l1(x) * L + Mbg_3_l2(x) * L**2 + Mbg_3_l3(x) * L**3
+    return res / (4 * np.pi)**3
 
 #alphas[4] to alphas[5] pieces---> alphas[5] = alphas[4](1+alphas[4]P(1)+(alphas[4]**2)P(2)+...)
 

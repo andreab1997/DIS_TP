@@ -1506,7 +1506,7 @@ def Mbg_3_l2(n, nf):
     )
     return tmp
 
-def Mbg_3_l1(n, nf):
+def Mbg_3_l3(n, nf):
     # TODO : check the harmonic sums
     sx = harmonics.compute_cache(n, 5, True)
     S1, _ = sx[0]
