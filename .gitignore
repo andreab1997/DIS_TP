@@ -1,0 +1,14 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+#plots
+plots/
+#paper
+disn3lo/
+#data
+data/
+#Mac things
+.DS_Store
+#jupyter
+.ipynb_checkpoints/
