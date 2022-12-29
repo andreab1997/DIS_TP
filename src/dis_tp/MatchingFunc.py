@@ -6,8 +6,8 @@ from . import Harmonics as harm
 from . import Initialize
 from . import Initialize as Ini
 from . import zetas as zet
-from InverseMellin.Integration import inverse_mellin
-from InverseMellin.MatchingFuncN import Mbg_3_l1, Mbg_3_l2, Mbg_3_l3
+from .InverseMellin.Integration import inverse_mellin
+from .InverseMellin.MatchingFuncN import Mbg_3_l1_N, Mbg_3_l2_N, Mbg_3_l3_N
 
 
 def Mbg_1(z, p):
@@ -3673,27 +3673,31 @@ def Mbg_3_l1(x, nf=5, r=None, s=None):
         r = 0.4 * 16.0 / (1.0 - np.log(x))
     if s is None:
         s = 1.
-    return inverse_mellin(Mbg_3_l1, x, nf, r, s)
+    return inverse_mellin(Mbg_3_l1_N, x, nf, r, s)
 
 def Mbg_3_l2(x, nf=5, r=None, s=None):
     if r is None:
         r = 0.4 * 16.0 / (1.0 - np.log(x))
     if s is None:
         s = 1.
-    return inverse_mellin(Mbg_3_l2, x, nf, r, s)
+    return inverse_mellin(Mbg_3_l2_N, x, nf, r, s)
 
 def Mbg_3_l3(x, nf=5, r=None, s=None):
     if r is None:
         r = 0.4 * 16.0 / (1.0 - np.log(x))
     if s is None:
         s = 1.
-    return inverse_mellin(Mbg_3_l3, x, nf, r, s)
+    return inverse_mellin(Mbg_3_l3_N, x, nf, r, s)
 
-def Mbg_3_reg(x, p):
+# Matching conditions obtained from inverse mellin transform
+
+def Mbg_3_reg_inv(x, p, grids=False):
+    if grids:
+        return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1]**2)/(p[0]**2))
+    # TODO : integrate the 3 contributions in parallel with multiprocessing.Pool
     res = a_Qg_30(x, 0) + Mbg_3_l1(x) * L + Mbg_3_l2(x) * L**2 + Mbg_3_l3(x) * L**3
     return res / (4 * np.pi)**3
-
 
 # alphas[4] to alphas[5] pieces---> alphas[5] = alphas[4](1+alphas[4]P(1)+(alphas[4]**2)P(2)+...)
 

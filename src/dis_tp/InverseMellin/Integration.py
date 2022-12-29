@@ -14,4 +14,4 @@ def quad_ker(theta, func, x, nf, r, s):
     return np.real(np.exp(- np.log(x) * n) * func(n, nf) * jac)
 
 def inverse_mellin(func, x, nf, r, s):
-    return integrate.quad(quad_ker, 0., np.pi, args=(func, x, nf, r, s)) / np.pi
+    return integrate.quad(quad_ker, 0.0, np.pi, args=(func, x, nf, r, s))[0] / np.pi

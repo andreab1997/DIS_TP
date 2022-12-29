@@ -2,7 +2,7 @@
 import numpy as np
 from eko import harmonics
 
-def Mbg_3_l1(n, nf):
+def Mbg_3_l1_N(n, nf):
     # TODO : check the harmonic sums
     sx = harmonics.compute_cache(n, 5, True)
     S1, Sm1 = sx[0]
@@ -1053,7 +1053,7 @@ def Mbg_3_l1(n, nf):
     )
     return tmp
 
-def Mbg_3_l2(n, nf):
+def Mbg_3_l2_N(n, nf):
     # TODO : check the harmonic sums
     sx = harmonics.compute_cache(n, 5, True)
     S1, _ = sx[0]
@@ -1506,7 +1506,7 @@ def Mbg_3_l2(n, nf):
     )
     return tmp
 
-def Mbg_3_l3(n, nf):
+def Mbg_3_l3_N(n, nf):
     # TODO : check the harmonic sums
     sx = harmonics.compute_cache(n, 5, True)
     S1, _ = sx[0]
