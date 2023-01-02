@@ -8,8 +8,8 @@ import numpy as np
 from progress.bar import Bar
 from simple_term_menu import TerminalMenu
 
-from . import Integration as Int
-from .Initialize import PATH_TO_GLOBAL
+from dis_tp import Integration as Int
+from dis_tp.Initialize import PATH_TO_GLOBAL
 
 
 def main():
