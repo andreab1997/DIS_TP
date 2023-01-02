@@ -3674,11 +3674,7 @@ def Mbg_3_l0(x, nf=5, r=None, s=None):
         r = 0.4 * 16.0 / (1.0 - np.log(x))
     if s is None:
         s = 1.0
-
-    def abg3(x, nf):
-        return 0.0
-
-    return inverse_mellin(Mbg_3_l0_N, x, nf, r, s) + abg3(x, nf)
+    return inverse_mellin(Mbg_3_l0_N_incomplete, x, nf, r, s) + a_Qg_30(x, 0)
 
 
 def Mbg_3_l1(x, nf=5, r=None, s=None):
@@ -3712,7 +3708,7 @@ def Mbg_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None):
     if grids:
         return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    # TODO : integrate the 3 contributions in parallel with multiprocessing.Pool
+    # TODO : integrate the 4 contributions in parallel with multiprocessing.Pool
     return (
         Mbg_3_l0(x, nf, r, s)
         + Mbg_3_l1(x, nf, r, s) * L
@@ -3757,7 +3753,7 @@ def Mbq_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None):
     if grids:
         return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    # TODO : integrate the 3 contributions in parallel with multiprocessing.Pool
+    # TODO : integrate the 4 contributions in parallel with multiprocessing.Pool
     return (
         Mbq_3_l0(x, nf, r, s)
         + Mbq_3_l1(x, nf, r, s) * L
