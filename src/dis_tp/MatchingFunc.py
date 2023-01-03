@@ -3669,6 +3669,9 @@ def Mgq_2_reg(z, p):
     )
 
 
+# Matching conditions obtained from inverse mellin transform
+
+
 def Mbg_3_l0(x, nf=5, r=None, s=None):
     if r is None:
         r = 0.4 * 16.0 / (1.0 - np.log(x))
@@ -3699,9 +3702,6 @@ def Mbg_3_l3(x, nf=5, r=None, s=None):
     if s is None:
         s = 1.0
     return inverse_mellin(Mbg_3_l3_N, x, nf, r, s)
-
-
-# Matching conditions obtained from inverse mellin transform
 
 
 def Mbg_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None):
