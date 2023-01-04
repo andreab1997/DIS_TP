@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
 
-from .Initialize import PATH_TO_GLOBAL
+from dis_tp.Initialize import PATH_TO_GLOBAL
 
 FO = {}
 R = {}
@@ -19,7 +19,8 @@ Stru_func = ["F2", "FL"]
 Methods = ["our", "fonll"]
 X = [0.1, 0.01, 0.001, 0.0001]
 ratios = ["0.5", "", "2"]
-orders = ["nlo", "nnlo", "n3lo"]
+# orders = ["nlo", "nnlo", "n3lo"]
+orders = ["nlo", "nnlo"]
 # Importing data
 for Sf in Stru_func:
     for meth in Methods:
