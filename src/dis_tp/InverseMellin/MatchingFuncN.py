@@ -492,7 +492,7 @@ def a_Qg_31(n, sx, nf):
 
 
 def Mbg_3_l0_N_incomplete(n, nf):
-    """Mbg_3_l0 without the term a_Qg_30 (i.e., the term of a_Qg_3 that is not proportional to nf."""
+    """Mbg_3_l0 without the term a_Qg_30 (i.e., the term of a_Qg_3 that is not proportional to nf)."""
     sx = harmonics.compute_cache(n, 5, True)
     S1, _ = sx[0]
     S2, Sm2 = sx[1]

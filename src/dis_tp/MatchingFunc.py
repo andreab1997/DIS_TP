@@ -3672,93 +3672,61 @@ def Mgq_2_reg(z, p):
 # Matching conditions obtained from inverse mellin transform
 
 
-def Mbg_3_l0(x, nf=5, r=None, s=None):
-    if r is None:
-        r = 0.4 * 16.0 / (1.0 - np.log(x))
-    if s is None:
-        s = 1.0
-    return inverse_mellin(Mbg_3_l0_N_incomplete, x, nf, r, s) + a_Qg_30(x, 0)
+def Mbg_3_l0(x, nf, r, s, path):
+    return inverse_mellin(Mbg_3_l0_N_incomplete, x, nf, r, s, path) + a_Qg_30(x, 0)
 
 
-def Mbg_3_l1(x, nf=5, r=None, s=None):
-    if r is None:
-        r = 0.4 * 16.0 / (1.0 - np.log(x))
-    if s is None:
-        s = 1.0
-    return inverse_mellin(Mbg_3_l1_N, x, nf, r, s)
+def Mbg_3_l1(x, nf, r, s, path):
+    return inverse_mellin(Mbg_3_l1_N, x, nf, r, s, path)
 
 
-def Mbg_3_l2(x, nf=5, r=None, s=None):
-    if r is None:
-        r = 0.4 * 16.0 / (1.0 - np.log(x))
-    if s is None:
-        s = 1.0
-    return inverse_mellin(Mbg_3_l2_N, x, nf, r, s)
+def Mbg_3_l2(x, nf, r, s, path):
+    return inverse_mellin(Mbg_3_l2_N, x, nf, r, s, path)
 
 
-def Mbg_3_l3(x, nf=5, r=None, s=None):
-    if r is None:
-        r = 0.4 * 16.0 / (1.0 - np.log(x))
-    if s is None:
-        s = 1.0
-    return inverse_mellin(Mbg_3_l3_N, x, nf, r, s)
+def Mbg_3_l3(x, nf, r, s, path):
+    return inverse_mellin(Mbg_3_l3_N, x, nf, r, s, path)
 
 
-def Mbg_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None):
+def Mbg_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None, path="talbot"):
     if grids:
         return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     # TODO : integrate the 4 contributions in parallel with multiprocessing.Pool
     return (
-        Mbg_3_l0(x, nf, r, s)
-        + Mbg_3_l1(x, nf, r, s) * L
-        + Mbg_3_l2(x, nf, r, s) * L**2
-        + Mbg_3_l3(x, nf, r, s) * L**3
+        Mbg_3_l0(x, nf, r, s, path)
+        + Mbg_3_l1(x, nf, r, s, path) * L
+        + Mbg_3_l2(x, nf, r, s, path) * L**2
+        + Mbg_3_l3(x, nf, r, s, path) * L**3
     )
 
 
-def Mbq_3_l0(x, nf=5, r=None, s=None):
-    if r is None:
-        r = 0.4 * 16.0 / (1.0 - np.log(x))
-    if s is None:
-        s = 1.0
-    return inverse_mellin(Mbq_3_l0_N, x, nf, r, s)
+def Mbq_3_l0(x, nf, r, s, path):
+    return inverse_mellin(Mbq_3_l0_N, x, nf, r, s, path)
 
 
-def Mbq_3_l1(x, nf=5, r=None, s=None):
-    if r is None:
-        r = 0.4 * 16.0 / (1.0 - np.log(x))
-    if s is None:
-        s = 1.0
-    return inverse_mellin(Mbq_3_l1_N, x, nf, r, s)
+def Mbq_3_l1(x, nf, r, s, path):
+    return inverse_mellin(Mbq_3_l1_N, x, nf, r, s, path)
 
 
-def Mbq_3_l2(x, nf=5, r=None, s=None):
-    if r is None:
-        r = 0.4 * 16.0 / (1.0 - np.log(x))
-    if s is None:
-        s = 1.0
-    return inverse_mellin(Mbq_3_l2_N, x, nf, r, s)
+def Mbq_3_l2(x, nf, r, s, path):
+    return inverse_mellin(Mbq_3_l2_N, x, nf, r, s, path)
 
 
-def Mbq_3_l3(x, nf=5, r=None, s=None):
-    if r is None:
-        r = 0.4 * 16.0 / (1.0 - np.log(x))
-    if s is None:
-        s = 1.0
-    return inverse_mellin(Mbq_3_l3_N, x, nf, r, s)
+def Mbq_3_l3(x, nf, r, s, path):
+    return inverse_mellin(Mbq_3_l3_N, x, nf, r, s, path)
 
 
-def Mbq_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None):
+def Mbq_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None, path="talbot"):
     if grids:
         return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     # TODO : integrate the 4 contributions in parallel with multiprocessing.Pool
     return (
-        Mbq_3_l0(x, nf, r, s)
-        + Mbq_3_l1(x, nf, r, s) * L
-        + Mbq_3_l2(x, nf, r, s) * L**2
-        + Mbq_3_l3(x, nf, r, s) * L**3
+        Mbq_3_l0(x, nf, r, s, path)
+        + Mbq_3_l1(x, nf, r, s, path) * L
+        + Mbq_3_l2(x, nf, r, s, path) * L**2
+        + Mbq_3_l3(x, nf, r, s, path) * L**3
     )
 
 
