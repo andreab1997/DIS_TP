@@ -1,6 +1,8 @@
 import numpy as np
 from scipy import integrate
 
+# Talbot path
+
 
 def talbot_path(theta, r, s):
     return s + r * complex(theta * np.cos(theta) / np.sin(theta), theta)

@@ -9,6 +9,9 @@ from . import zetas as zet
 from .InverseMellin.Integration import inverse_mellin
 from .InverseMellin.MatchingFuncN import *
 
+# from multiprocessing import Pool
+# from functools import partial
+
 
 def Mbg_1(z, p):
     TR = 1.0 / 2.0
@@ -3728,6 +3731,26 @@ def Mbq_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None, path="talbot"):
         + Mbq_3_l2(x, nf, r, s, path) * L**2
         + Mbq_3_l3(x, nf, r, s, path) * L**3
     )
+
+
+# def Mbq_3_reg_inv_par(x, p, grids=False, nf=5, r=None, s=None, path="talbot"):
+#     if grids:
+#         return Ini.Mbq3(x, p[1])[0]
+#     L = np.log((p[1] ** 2) / (p[0] ** 2))
+
+#     vec = [Mbq_3_l0_N, Mbq_3_l1_N, Mbq_3_l2_N, Mbq_3_l3_N]
+
+#     integrate = partial(inverse_mellin, x=x, nf=nf, r=r, s=s, path=path)
+
+#     args = (integrate, vec)
+#     with Pool(4) as pool:
+#         res=pool.map(*args)
+#     return (
+#         res[0]
+#         + res[1] * L
+#         + res[2] * L**2
+#         + res[3] * L**3
+#     )
 
 
 # alphas[4] to alphas[5] pieces---> alphas[5] = alphas[4](1+alphas[4]P(1)+(alphas[4]**2)P(2)+...)

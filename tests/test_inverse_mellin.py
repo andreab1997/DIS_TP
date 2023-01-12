@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 from numpy.testing import assert_allclose
 
 from dis_tp.MatchingFunc import Mbg_3_reg_inv, Mbq_3_reg_inv
@@ -26,7 +27,7 @@ for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
 
 for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
     tmp1 = Mbg_3_reg_inv(x, [Q, 5])
-    tmp2 = Mbg_3_reg_inv(x, [Q, 5], r=1.0, s=1.5, path="linear")
+    tmp2 = Mbg_3_reg_inv(x, [Q, 5], path="linear")
     assert_allclose(tmp1, tmp2, rtol=1e-6)
 
 # benchmark variation of the parameters of the linear path
@@ -40,3 +41,8 @@ for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
     tmp1 = Mbg_3_reg_inv(x, [Q, 5], path="linear")
     tmp2 = Mbg_3_reg_inv(x, [Q, 5], r=2.0, s=2.5, path="linear")
     assert_allclose(tmp1, tmp2, rtol=1e-6)
+
+# test error
+
+with pytest.raises(NotImplementedError):
+    Mbg_3_reg_inv(x, [Q, 5], path="qesti_nso_du_dorsali_so_du_ali_de_pipistrello")
