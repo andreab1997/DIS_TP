@@ -6,7 +6,7 @@ from . import Harmonics as harm
 from . import Initialize
 from . import Initialize as Ini
 from . import zetas as zet
-from .InverseMellin.Integration import inverse_mellin
+from .InverseMellin import inverse_mellin
 
 from eko.matching_conditions.as3 import A_Hq, A_Hg
 
