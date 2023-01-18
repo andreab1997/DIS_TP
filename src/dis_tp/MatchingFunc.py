@@ -7,10 +7,8 @@ from . import Initialize
 from . import Initialize as Ini
 from . import zetas as zet
 from .InverseMellin.Integration import inverse_mellin
-from .InverseMellin.MatchingFuncN import *
 
-# from multiprocessing import Pool
-# from functools import partial
+from eko.matching_conditions.as3 import A_Hq, A_Hg
 
 
 def Mbg_1(z, p):
@@ -3673,87 +3671,18 @@ def Mgq_2_reg(z, p):
 
 
 # Matching conditions obtained from inverse mellin transform
-
-
-def Mbg_3_l0(x, nf, r, s, path):
-    return inverse_mellin(Mbg_3_l0_N_incomplete, x, nf, r, s, path) + a_Qg_30(x, 0)
-
-
-def Mbg_3_l1(x, nf, r, s, path):
-    return inverse_mellin(Mbg_3_l1_N, x, nf, r, s, path)
-
-
-def Mbg_3_l2(x, nf, r, s, path):
-    return inverse_mellin(Mbg_3_l2_N, x, nf, r, s, path)
-
-
-def Mbg_3_l3(x, nf, r, s, path):
-    return inverse_mellin(Mbg_3_l3_N, x, nf, r, s, path)
-
-
 def Mbg_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None, path="talbot"):
     if grids:
         return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    # TODO : integrate the 4 contributions in parallel with multiprocessing.Pool
-    return (
-        Mbg_3_l0(x, nf, r, s, path)
-        + Mbg_3_l1(x, nf, r, s, path) * L
-        + Mbg_3_l2(x, nf, r, s, path) * L**2
-        + Mbg_3_l3(x, nf, r, s, path) * L**3
-    )
-
-
-def Mbq_3_l0(x, nf, r, s, path):
-    return inverse_mellin(Mbq_3_l0_N, x, nf, r, s, path)
-
-
-def Mbq_3_l1(x, nf, r, s, path):
-    return inverse_mellin(Mbq_3_l1_N, x, nf, r, s, path)
-
-
-def Mbq_3_l2(x, nf, r, s, path):
-    return inverse_mellin(Mbq_3_l2_N, x, nf, r, s, path)
-
-
-def Mbq_3_l3(x, nf, r, s, path):
-    return inverse_mellin(Mbq_3_l3_N, x, nf, r, s, path)
+    return inverse_mellin(A_Hq, x, nf, r, s, path, L)
 
 
 def Mbq_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None, path="talbot"):
     if grids:
         return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    # TODO : integrate the 4 contributions in parallel with multiprocessing.Pool
-    return (
-        Mbq_3_l0(x, nf, r, s, path)
-        + Mbq_3_l1(x, nf, r, s, path) * L
-        + Mbq_3_l2(x, nf, r, s, path) * L**2
-        + Mbq_3_l3(x, nf, r, s, path) * L**3
-    )
-
-
-# def Mbq_3_reg_inv_par(x, p, grids=False, nf=5, r=None, s=None, path="talbot"):
-#     if grids:
-#         return Ini.Mbq3(x, p[1])[0]
-#     L = np.log((p[1] ** 2) / (p[0] ** 2))
-
-#     vec = [Mbq_3_l0_N, Mbq_3_l1_N, Mbq_3_l2_N, Mbq_3_l3_N]
-
-#     integrate = partial(inverse_mellin, x=x, nf=nf, r=r, s=s, path=path)
-
-#     args = (integrate, vec)
-#     with Pool(4) as pool:
-#         res=pool.map(*args)
-#     return (
-#         res[0]
-#         + res[1] * L
-#         + res[2] * L**2
-#         + res[3] * L**3
-#     )
-
-
-# alphas[4] to alphas[5] pieces---> alphas[5] = alphas[4](1+alphas[4]P(1)+(alphas[4]**2)P(2)+...)
+    return inverse_mellin(A_Hg, x, nf, r, s, path, L)
 
 
 def P1(p):

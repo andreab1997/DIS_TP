@@ -6,43 +6,46 @@ from dis_tp.MatchingFunc import Mbg_3_reg_inv, Mbq_3_reg_inv
 
 Q = 10.0
 
-# benchmark variation of the parameters of the Talbot path
 
-for x in np.geomspace(1e-4, 1, 10, endpoint=False):
-    tmp1 = Mbq_3_reg_inv(x, [Q, 5], r=2, s=0)
-    tmp2 = Mbq_3_reg_inv(x, [Q, 5])
-    assert_allclose(tmp1, tmp2, rtol=1e-6)
+def test_Talbot_parameters():
+    """benchmark variation of the parameters of the Talbot path"""
+    for x in np.geomspace(1e-4, 1, 10, endpoint=False):
+        tmp1 = Mbq_3_reg_inv(x, [Q, 5], r=2, s=0)
+        tmp2 = Mbq_3_reg_inv(x, [Q, 5])
+        assert_allclose(tmp1, tmp2, rtol=1e-6)
 
-for x in np.geomspace(1e-4, 1, 10, endpoint=False):
-    tmp1 = Mbg_3_reg_inv(x, [Q, 5], r=2, s=0)
-    tmp2 = Mbg_3_reg_inv(x, [Q, 5])
-    assert_allclose(tmp1, tmp2, rtol=1e-6)
+    for x in np.geomspace(1e-4, 1, 10, endpoint=False):
+        tmp1 = Mbg_3_reg_inv(x, [Q, 5], r=2, s=0)
+        tmp2 = Mbg_3_reg_inv(x, [Q, 5])
+        assert_allclose(tmp1, tmp2, rtol=1e-6)
 
-# benchmark Talbot path against linear path
 
-for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
-    tmp1 = Mbq_3_reg_inv(x, [Q, 5])
-    tmp2 = Mbq_3_reg_inv(x, [Q, 5], path="linear")
-    assert_allclose(tmp1, tmp2, rtol=1e-6)
+def test_Talbot_linear_path():
+    """benchmark Talbot path against linear path"""
+    for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
+        tmp1 = Mbq_3_reg_inv(x, [Q, 5])
+        tmp2 = Mbq_3_reg_inv(x, [Q, 5], path="linear")
+        assert_allclose(tmp1, tmp2, rtol=1e-6)
 
-for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
-    tmp1 = Mbg_3_reg_inv(x, [Q, 5])
-    tmp2 = Mbg_3_reg_inv(x, [Q, 5], path="linear")
-    assert_allclose(tmp1, tmp2, rtol=1e-6)
+    for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
+        tmp1 = Mbg_3_reg_inv(x, [Q, 5])
+        tmp2 = Mbg_3_reg_inv(x, [Q, 5], path="linear")
+        assert_allclose(tmp1, tmp2, rtol=1e-6)
 
-# benchmark variation of the parameters of the linear path
 
-for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
-    tmp1 = Mbq_3_reg_inv(x, [Q, 5], path="linear")
-    tmp2 = Mbq_3_reg_inv(x, [Q, 5], r=2.0, s=2.5, path="linear")
-    assert_allclose(tmp1, tmp2, rtol=1e-6)
+def test_linear_parameters():
+    """benchmark variation of the parameters of the linear path"""
+    for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
+        tmp1 = Mbq_3_reg_inv(x, [Q, 5], path="linear")
+        tmp2 = Mbq_3_reg_inv(x, [Q, 5], r=2.0, s=2.5, path="linear")
+        assert_allclose(tmp1, tmp2, rtol=1e-6)
 
-for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
-    tmp1 = Mbg_3_reg_inv(x, [Q, 5], path="linear")
-    tmp2 = Mbg_3_reg_inv(x, [Q, 5], r=2.0, s=2.5, path="linear")
-    assert_allclose(tmp1, tmp2, rtol=1e-6)
+    for x in np.geomspace(1e-4, 1.0, 10, endpoint=False):
+        tmp1 = Mbg_3_reg_inv(x, [Q, 5], path="linear")
+        tmp2 = Mbg_3_reg_inv(x, [Q, 5], r=2.0, s=2.5, path="linear")
+        assert_allclose(tmp1, tmp2, rtol=1e-6)
 
-# test error
 
-with pytest.raises(NotImplementedError):
-    Mbg_3_reg_inv(x, [Q, 5], path="qesti_nso_du_dorsali_so_du_ali_de_pipistrello")
+def test_error():
+    with pytest.raises(NotImplementedError):
+        Mbg_3_reg_inv(0.1, [Q, 5], path="qesti_nso_du_dorsali_so_du_ali_de_pipistrello")
