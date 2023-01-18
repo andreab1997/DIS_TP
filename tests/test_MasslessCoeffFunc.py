@@ -4,7 +4,7 @@ from numpy.testing import assert_allclose
 from yadism.coefficient_functions.light import f2_nc, fl_nc
 from dis_tp import MasslessCoeffFunc as cf
 
-NF = 4
+NF = 5
 e_b = -1 / 3
 
 
@@ -55,8 +55,7 @@ class Test_F2:
             # ns reg
             yad = f2_ns.reg(x, f2_ns.args["reg"])
             my = cf.Cb_2_reg(x, self.Q, None) / e_b**2
-            # TODO: check this ???
-            # assert_allclose(my, yad)
+            assert_allclose(my, yad)
             # ns loc
             yad = f2_ns.loc(x, f2_ns.args["loc"])
             my = cf.Cb_2_loc(x, self.Q) / e_b**2
@@ -65,8 +64,7 @@ class Test_F2:
             # ns sing
             yad = f2_ns.sing(x, f2_ns.args["sing"])
             my = cf.Cb_2_sing(x, self.Q, None) / e_b**2
-            # TODO: not passing?
-            # assert_allclose(my, yad)
+            assert_allclose(my, yad)
 
             f2_g = f2_nc.Gluon(esf, NF).NNLO()
             # g reg
@@ -79,6 +77,32 @@ class Test_F2:
             yad = f2_s.reg(x, f2_s.args["reg"])
             my = NF * cf.Cq_2_reg(x, self.Q, None) / e_b**2
             assert_allclose(my, yad, rtol=5e-3)
+
+    def test_n3lo(self):
+        for x in self.xs:
+            esf = MockESF(x, self.Q**2)
+
+            f2_g = f2_nc.Gluon(esf, NF).N3LO()
+            # g reg
+            yad = f2_g.reg(x, f2_g.args["reg"])
+            my = NF * cf.Cg_3_reg(x, self.Q, None) / e_b**2
+            # TODO: different??
+            # assert_allclose(my, yad)
+            # g loc
+            yad = f2_g.loc(x, f2_g.args["loc"])
+            my = NF * cf.Cg_3_loc(x, self.Q) / e_b**2
+            assert_allclose(my, yad)
+
+            f2_s = f2_nc.Singlet(esf, NF).N3LO()
+            # singlet reg
+            yad = f2_s.reg(x, f2_s.args["reg"])
+            my = NF * cf.Cq_3_reg(x, self.Q, None) / e_b**2
+            assert_allclose(my, yad, rtol=5e-2)
+            # singlet loc
+            yad = f2_s.loc(x, f2_s.args["loc"])
+            my = NF * cf.Cq_3_loc(x, self.Q) / e_b**2
+            # TODO: different?
+            # assert_allclose(my, yad)
 
 
 class Test_FL:
@@ -107,8 +131,7 @@ class Test_FL:
             # ns reg
             yad = fl_ns.reg(x, fl_ns.args["reg"])
             my = cf.CLb_2_reg(x, self.Q, None) / e_b**2
-            # TODO: not passing?
-            # assert_allclose(my, yad)
+            assert_allclose(my, yad)
 
             # ns loc
             yad = fl_ns.loc(x, fl_ns.args["loc"])
@@ -126,3 +149,19 @@ class Test_FL:
             yad = fl_s.reg(x, fl_s.args["reg"])
             my = NF * cf.CLq_2_reg(x, self.Q, None) / e_b**2
             assert_allclose(my, yad)
+
+    def test_n3lo(self):
+        for x in self.xs:
+            esf = MockESF(x, self.Q**2)
+
+            fl_g = fl_nc.Gluon(esf, NF).N3LO()
+            # g reg
+            yad = fl_g.reg(x, fl_g.args["reg"])
+            my = NF * cf.CLg_3_reg(x, self.Q, None) / e_b**2
+            assert_allclose(my, yad, rtol=7e-5)
+
+            fl_s = fl_nc.Singlet(esf, NF).N3LO()
+            # singlet reg
+            yad = fl_s.reg(x, fl_s.args["reg"])
+            my = NF * cf.CLq_3_reg(x, self.Q, None) / e_b**2
+            assert_allclose(my, yad, rtol=6e-3)
