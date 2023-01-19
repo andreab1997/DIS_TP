@@ -3,9 +3,9 @@ from numpy.testing import assert_allclose
 
 from yadism.coefficient_functions.light import f2_nc, fl_nc
 from dis_tp import MasslessCoeffFunc as cf
-
+from dis_tp.parameters import parameters
 NF = 5
-e_b = -1 / 3
+e_b = parameters["e_b"]
 
 
 class MockSF:
@@ -31,11 +31,13 @@ class Test_F2:
             yad = f2_ns.reg(x, f2_ns.args["reg"])
             my = cf.Cb_1_reg(x, self.Q, None) / e_b**2
             assert_allclose(my, yad)
+            
             # ns loc
-            yad = f2_ns.loc(x, f2_ns.args["loc"])
-            my = cf.Cb_1_loc(x, self.Q) / e_b**2
-            # TODO: not passing?
-            # assert_allclose(my, yad, rtol=3e-3)
+            # this is x indepentent, but yadism treat it 
+            # differenly adding the singluar piece
+            yad = f2_ns.loc(0.001, f2_ns.args["loc"])
+            my = cf.Cb_1_loc(0.001, self.Q) / e_b**2
+            assert_allclose(my, yad, rtol=3e-3)
             # ns sing
             yad = f2_ns.sing(x, f2_ns.args["sing"])
             my = cf.Cb_1_sing(x, self.Q, None) / e_b**2
@@ -44,7 +46,6 @@ class Test_F2:
             f2_g = f2_nc.Gluon(esf, NF).NLO()
             # g reg
             yad = f2_g.reg(x, f2_g.args["reg"])
-            # TODO: is this NF correct?
             my = NF * cf.Cg_1_reg(x, self.Q, None) / e_b**2
             assert_allclose(my, yad)
 
@@ -56,11 +57,10 @@ class Test_F2:
             yad = f2_ns.reg(x, f2_ns.args["reg"])
             my = cf.Cb_2_reg(x, self.Q, None) / e_b**2
             assert_allclose(my, yad)
-            # ns loc
-            yad = f2_ns.loc(x, f2_ns.args["loc"])
-            my = cf.Cb_2_loc(x, self.Q) / e_b**2
-            # TODO: not passing?
-            # assert_allclose(my, yad)
+            # ns loc, see comment NLO
+            yad = f2_ns.loc(0.0001, f2_ns.args["loc"])
+            my = cf.Cb_2_loc(0.0001, self.Q) / e_b**2
+            assert_allclose(my, yad, rtol=3e-4)
             # ns sing
             yad = f2_ns.sing(x, f2_ns.args["sing"])
             my = cf.Cb_2_sing(x, self.Q, None) / e_b**2
@@ -70,7 +70,7 @@ class Test_F2:
             # g reg
             yad = f2_g.reg(x, f2_g.args["reg"])
             my = NF * cf.Cg_2_reg(x, self.Q, None) / e_b**2
-            assert_allclose(my, yad, rtol=1e-2)
+            assert_allclose(my, yad, rtol=9.1e-3)
 
             f2_s = f2_nc.Singlet(esf, NF).NNLO()
             # singlet reg
@@ -86,8 +86,7 @@ class Test_F2:
             # g reg
             yad = f2_g.reg(x, f2_g.args["reg"])
             my = NF * cf.Cg_3_reg(x, self.Q, None) / e_b**2
-            # TODO: different??
-            # assert_allclose(my, yad)
+            assert_allclose(my, yad)
             # g loc
             yad = f2_g.loc(x, f2_g.args["loc"])
             my = NF * cf.Cg_3_loc(x, self.Q) / e_b**2
@@ -97,12 +96,11 @@ class Test_F2:
             # singlet reg
             yad = f2_s.reg(x, f2_s.args["reg"])
             my = NF * cf.Cq_3_reg(x, self.Q, None) / e_b**2
-            assert_allclose(my, yad, rtol=5e-2)
+            assert_allclose(my, yad)
             # singlet loc
             yad = f2_s.loc(x, f2_s.args["loc"])
             my = NF * cf.Cq_3_loc(x, self.Q) / e_b**2
-            # TODO: different?
-            # assert_allclose(my, yad)
+            assert_allclose(my, yad)
 
 
 class Test_FL:
@@ -158,7 +156,7 @@ class Test_FL:
             # g reg
             yad = fl_g.reg(x, fl_g.args["reg"])
             my = NF * cf.CLg_3_reg(x, self.Q, None) / e_b**2
-            assert_allclose(my, yad, rtol=7e-5)
+            assert_allclose(my, yad)
 
             fl_s = fl_nc.Singlet(esf, NF).N3LO()
             # singlet reg
