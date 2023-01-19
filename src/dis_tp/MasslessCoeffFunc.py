@@ -105,6 +105,36 @@ def Cb_2_sing(z, Q, p):
     )
 
 
+def Cb_3_reg(z, Q, p):
+    e_b = para.parameters["e_b"]
+    z1 = 1 - z
+    dl = np.log(z)
+    dl1 = np.log(z1)
+    dl_2 = dl * dl
+    dl_3 = dl_2 * dl
+    dl1_2 = dl1 * dl1
+    dl1_3 = dl1_2 * dl1
+    return 0.0  # just for the moment
+
+
+def Cb_3_loc(z, Q):
+    e_b = para.parameters["e_b"]
+    nf = 5
+    return 0.0  # just for the moment
+
+
+def Cb_3_sing(z, Q, p):
+    e_b = para.parameters["e_b"]
+    z1 = 1 - z
+    dl = np.log(z)
+    dl1 = np.log(z1)
+    dl_2 = dl * dl
+    dl_3 = dl_2 * dl
+    dl1_2 = dl1 * dl1
+    dl1_3 = dl1_2 * dl1
+    return 0.0  # just for the moment
+
+
 def Cg_1_reg(z, Q, p):
     TR = 1.0 / 2.0
     e_b = para.parameters["e_b"]
@@ -430,6 +460,21 @@ def CLb_2_reg(z, Q, p):
 def CLb_2_loc(z, Q):
     e_b = para.parameters["e_b"]
     return e_b * e_b * (-0.164)
+
+
+def CLb_3_reg(z, Q, p):
+    e_b = para.parameters["e_b"]
+    z1 = 1.0 - z
+    dl = np.log(z)
+    dl1 = np.log(z1)
+    dl_2 = dl * dl
+    dl1_2 = dl1 * dl1
+    return 0.0  # for the moment
+
+
+def CLb_3_loc(z, Q):
+    e_b = para.parameters["e_b"]
+    return 0.0  # for the moment
 
 
 def CLq_2_reg(z, Q, p):

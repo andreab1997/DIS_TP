@@ -420,7 +420,53 @@ def F2_M(order, meth, pdf, x, Q, muF_ratio=1, muR_ratio=1):
             )
             res += nnlo_nnll_reg + nnlo_nnll_local + nnlo_nnll_sing
         if order >= 3:
-            res += 0
+            n3lo_n3ll_reg = (
+                (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (
+                    PDFConvolute(
+                        TildeCoeffFunc.Cg_3_til_reg,
+                        Mypdf,
+                        x,
+                        Q,
+                        21,
+                        p1=[Mypdf.quarkMass(5)],
+                    )
+                    + PDFConvolute(
+                        TildeCoeffFunc.Cq_3_til_reg,
+                        Mypdf,
+                        x,
+                        Q,
+                        1,
+                        p1=[Mypdf.quarkMass(5)],
+                    )
+                    + PDFConvolute(MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, 5)
+                )
+            )
+            n3lo_n3ll_local = (
+                (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * MasslessCoeffFunc.Cb_3_loc(x, Q)
+                * (Mypdf.xfxQ2(5, x, Q * Q) + Mypdf.xfxQ2(-5, x, Q * Q))
+            )
+            n3lo_n3ll_sing = (
+                (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * PDFConvolute_plus(MasslessCoeffFunc.Cb_3_sing, Mypdf, x, Q, 5)
+            )
+            res += n3lo_n3ll_reg + n3lo_n3ll_local + n3lo_n3ll_sing
     return res
 
 
@@ -728,5 +774,42 @@ def FL_M(order, meth, pdf, x, Q, muF_ratio=1, muR_ratio=1):
             )
             res += nnlo_nnll_reg + nnlo_nnll_loc
         if order >= 3:
-            res += 0
+            n3lo_n3ll_reg = (
+                (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (
+                    PDFConvolute(
+                        TildeCoeffFunc.CLg_3_til_reg,
+                        Mypdf,
+                        x,
+                        Q,
+                        21,
+                        p1=[Mypdf.quarkMass(5)],
+                    )
+                    + PDFConvolute(
+                        TildeCoeffFunc.CLq_3_til_reg,
+                        Mypdf,
+                        x,
+                        Q,
+                        1,
+                        p1=[Mypdf.quarkMass(5)],
+                    )
+                    + PDFConvolute(MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, 5)
+                )
+            )
+            n3lo_n3ll_loc = (
+                (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * (1 / (4 * np.pi))
+                * Mypdf.alphasQ(muR)
+                * MasslessCoeffFunc.CLb_3_loc(x, Q)
+                * (Mypdf.xfxQ2(5, x, Q * Q) + Mypdf.xfxQ2(-5, x, Q * Q))
+            )
+            res += n3lo_n3ll_reg + n3lo_n3ll_loc
     return res
