@@ -1,6 +1,6 @@
 # This contains the massless coefficients functions.
 import numpy as np
-
+from yadism.coefficient_functions.light.n3lo import xc2ns3p, xclns3p
 from . import parameters as para
 
 nf = 5
@@ -103,36 +103,6 @@ def Cb_2_sing(z, Q, p):
             + 5 * (1.77778 * dl1_2 - 8.5926 * dl1 + 6.3489)
         )
     )
-
-
-def Cb_3_reg(z, Q, p):
-    e_b = para.parameters["e_b"]
-    z1 = 1 - z
-    dl = np.log(z)
-    dl1 = np.log(z1)
-    dl_2 = dl * dl
-    dl_3 = dl_2 * dl
-    dl1_2 = dl1 * dl1
-    dl1_3 = dl1_2 * dl1
-    return 0.0  # just for the moment
-
-
-def Cb_3_loc(z, Q):
-    e_b = para.parameters["e_b"]
-    nf = 5
-    return 0.0  # just for the moment
-
-
-def Cb_3_sing(z, Q, p):
-    e_b = para.parameters["e_b"]
-    z1 = 1 - z
-    dl = np.log(z)
-    dl1 = np.log(z1)
-    dl_2 = dl * dl
-    dl_3 = dl_2 * dl
-    dl1_2 = dl1 * dl1
-    dl1_3 = dl1_2 * dl1
-    return 0.0  # just for the moment
 
 
 def Cg_1_reg(z, Q, p):
@@ -336,6 +306,28 @@ def Cq_3_loc(z, Q):
     return e_b * e_b * fl11ps * (-11.888)
 
 
+def Cb_3_reg(z, Q, p):
+    nf = 5
+    e_b = para.parameters["e_b"]
+    args = np.array([nf, True], dtype=float)
+    return e_b**2 * xc2ns3p.c2np3a(z, args=args)
+
+
+def Cb_3_loc(z, Q, p):
+    nf = 5
+    e_b = para.parameters["e_b"]
+    args = np.array([nf, True], dtype=float)
+    # NOTE: here with our convention we need the non log part
+    return e_b**2 * xc2ns3p.c2np3c(0, args=args)
+
+
+def Cb_3_sing(z, Q, p):
+    nf = 5
+    e_b = para.parameters["e_b"]
+    args = np.array([nf, True], dtype=float)
+    return e_b**2 * xc2ns3p.c2ns3b(z, args=args)
+
+
 # FL
 def CLg_1_reg(z, Q, p):
     TR = 1.0 / 2.0
@@ -462,21 +454,6 @@ def CLb_2_loc(z, Q):
     return e_b * e_b * (-0.164)
 
 
-def CLb_3_reg(z, Q, p):
-    e_b = para.parameters["e_b"]
-    z1 = 1.0 - z
-    dl = np.log(z)
-    dl1 = np.log(z1)
-    dl_2 = dl * dl
-    dl1_2 = dl1 * dl1
-    return 0.0  # for the moment
-
-
-def CLb_3_loc(z, Q):
-    e_b = para.parameters["e_b"]
-    return 0.0  # for the moment
-
-
 def CLq_2_reg(z, Q, p):
     e_b = para.parameters["e_b"]
     omz = 1.0 - z
@@ -536,3 +513,17 @@ def CLq_3_reg(z, Q, p):
             )
         )
     )
+
+
+def CLb_3_reg(z, Q, p):
+    nf = 5
+    e_b = para.parameters["e_b"]
+    args = np.array([nf, True], dtype=float)
+    return e_b**2 * xclns3p.clnp3a(z, args=args)
+
+
+def CLb_3_loc(z, Q, p):
+    nf = 5
+    e_b = para.parameters["e_b"]
+    args = np.array([nf], dtype=float)
+    return e_b**2 * xclns3p.clnp3c(z, args=args)

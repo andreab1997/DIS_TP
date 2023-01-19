@@ -30,7 +30,8 @@ dependencies = [
     "simple-term-menu >= 1.4.1",
     "pre-commit >= 2.20.0",
     "pytest >= 6.2.5",
-    "pytest-cov >= 2.12.1"
+    "pytest-cov >= 2.12.1",
+    "yadism >= 0.12.2"
 ]
 
 [tool.pytest.ini_options]

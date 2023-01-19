@@ -82,6 +82,20 @@ class Test_F2:
         for x in self.xs:
             esf = MockESF(x, self.Q**2)
 
+            f2_ns = f2_nc.NonSinglet(esf, NF).N3LO()
+            # ns reg
+            yad = f2_ns.reg(x, f2_ns.args["reg"])
+            my = cf.Cb_3_reg(x, self.Q, None) / e_b**2
+            assert_allclose(my, yad)
+            # ns loc, see comment NLO
+            yad = f2_ns.loc(0.0001, f2_ns.args["loc"])
+            my = cf.Cb_3_loc(0.0001, self.Q, None) / e_b**2
+            assert_allclose(my, yad, rtol=3e-4)
+            # ns sing
+            yad = f2_ns.sing(x, f2_ns.args["sing"])
+            my = cf.Cb_3_sing(x, self.Q, None) / e_b**2
+            assert_allclose(my, yad)
+
             f2_g = f2_nc.Gluon(esf, NF).N3LO()
             # g reg
             yad = f2_g.reg(x, f2_g.args["reg"])
@@ -151,6 +165,16 @@ class Test_FL:
     def test_n3lo(self):
         for x in self.xs:
             esf = MockESF(x, self.Q**2)
+            fl_ns = fl_nc.NonSinglet(esf, NF).N3LO()
+            # ns reg
+            yad = fl_ns.reg(x, fl_ns.args["reg"])
+            my = cf.CLb_3_reg(x, self.Q, None) / e_b**2
+            assert_allclose(my, yad)
+
+            # ns loc
+            yad = fl_ns.loc(x, fl_ns.args["loc"])
+            my = cf.CLb_3_loc(x, self.Q, None) / e_b**2
+            assert_allclose(my, yad)
 
             fl_g = fl_nc.Gluon(esf, NF).N3LO()
             # g reg
