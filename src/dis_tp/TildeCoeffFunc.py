@@ -3,8 +3,8 @@
 import numpy as np
 import scipy.special as special
 
+from eko.constants import TR, CF
 from . import Initialize as Ini
-from . import parameters as para
 from .MassiveCoeffFunc import (
     Cg_1_m_reg,
     Cg_2_m_reg,
@@ -52,15 +52,13 @@ from .tools import (
 )
 
 
-def Cb1_Mbg1(z):
-    TR = 1.0 / 2.0
-    CF = 4.0 / 3.0
-    e_b = para.parameters["e_b"]
+def Cb1_Mbg1(z, p):
+    e_h = p[-1]
     return (
         4
         * CF
         * TR
-        * pow(e_b, 2)
+        * pow(e_h, 2)
         * (
             -(5.0 / 2.0)
             + 2 * z * (3 - 4 * z)
@@ -77,11 +75,9 @@ def Cb1_Mbg1(z):
     )
 
 
-def CLb1_Mbg1(z):
-    TR = 1.0 / 2.0
-    CF = 4.0 / 3.0
-    e_b = para.parameters["e_b"]
-    return 8 * CF * TR * pow(e_b, 2) * (1 + z - 2 * pow(z, 2) + 2 * z * np.log(z))
+def CLb1_Mbg1(z, p):
+    e_h = p[-1]
+    return 8 * CF * TR * pow(e_h, 2) * (1 + z - 2 * pow(z, 2) + 2 * z * np.log(z))
 
 
 # F2
@@ -97,11 +93,11 @@ def Cg_2_til_reg(z, Q, p, grids=True):
     return (
         Cg_2_m_reg(z, Q, p)
         - 2 * Cb_0_loc(z, Q) * (Mbg_2(z, q) - Mbg_1(z, q) * Mgg_1_loc(z, q))
-        - 2 * np.log((Q**2) / (p[0] ** 2)) * Cb1_Mbg1(z)
+        - 2 * np.log((Q**2) / (p[0] ** 2)) * Cb1_Mbg1(z, p)
     )
 
 
-def Cg_3_til_reg(z, Q, p, grids=False):
+def Cg_3_til_reg(z, Q, p, nf, grids=False):
     q = [p[0], Q]
     if grids:
         return Ini.Cg3_til(z, Q)[0]
@@ -131,11 +127,11 @@ def Cg_3_til_reg(z, Q, p, grids=False):
             Cb_1_loc(z, Q) * Mbg_2(z, q)
             + Convolute(Cb_1_reg, Mbg_2, z, Q, p)
             + Convolute_plus_coeff(Cb_1_sing, Mbg_2, z, Q, p)
-            - Cb1_Mbg1(z) * Mgg_1_loc(z, q)
+            - Cb1_Mbg1(z, p) * Mgg_1_loc(z, q)
         )
         - 2
         * (
-            Mbg_1(z, q) * Cb_2_loc(z, Q)
+            Mbg_1(z, q) * Cb_2_loc(z, Q, nf)
             + Convolute(Cb_2_reg, Mbg_1, z, Q, p)
             + Convolute_plus_coeff(Cb_2_sing, Mbg_1, z, Q, p)
         )
@@ -177,7 +173,7 @@ def CLg_2_til_reg(z, Q, p, grids=True):
     q = [p[0], Q]
     if grids:
         return Ini.CLg2_til(z, Q)[0]
-    return CLg_2_m_reg(z, Q, p) - 2 * np.log((Q**2) / (p[0] ** 2)) * CLb1_Mbg1(z)
+    return CLg_2_m_reg(z, Q, p) - 2 * np.log((Q**2) / (p[0] ** 2)) * CLb1_Mbg1(z, p)
 
 
 def CLg_3_til_reg(z, Q, p, grids=False):
@@ -193,7 +189,7 @@ def CLg_3_til_reg(z, Q, p, grids=False):
             + Convolute(CLg_1_m_reg, Mgg_2_reg, z, Q, p)
             + Convolute_plus_matching(CLg_1_m_reg, Mgg_2_sing, z, Q, p)
         )
-        - 2 * (Convolute(CLb_1_reg, Mbg_2, z, Q, p) - CLb1_Mbg1(z) * Mgg_1_loc(z, q))
+        - 2 * (Convolute(CLb_1_reg, Mbg_2, z, Q, p) - CLb1_Mbg1(z, p) * Mgg_1_loc(z, q))
         - 2 * (CLb_2_loc(z, Q) * Mbg_1(z, q) + Convolute(CLb_2_reg, Mbg_1, z, Q, p))
     )
 

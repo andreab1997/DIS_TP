@@ -31,7 +31,7 @@ dependencies = [
     "pre-commit >= 2.20.0",
     "pytest >= 6.2.5",
     "pytest-cov >= 2.12.1",
-    "eko >= 0.11.1 "
+    'yadism @ git+https://github.com/NNPDF/yadism.git@develop',
 ]
 
 [tool.pytest.ini_options]
