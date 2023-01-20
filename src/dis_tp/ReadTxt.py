@@ -126,8 +126,8 @@ class Construct_Grid():
         self.func = func
         self.mass = mass
         self.path = path
-        self.xgrid = [0.0001,0.001,0.1,1]# Ini.HPL_x_array
-        self.qgrid = [1,10,100]# Ini.QList
+        self.xgrid = Ini.HPL_x_array # [0.0001,0.001,0.1,1]# 
+        self.qgrid = Ini.QList # [1,10,100]
         self.n_pools = n_pools
         self.nf = nf
         
