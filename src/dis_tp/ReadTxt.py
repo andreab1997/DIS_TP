@@ -1,5 +1,6 @@
 # These are utility functions to read txt grids.
 import numpy as np
+from multiprocessing import Pool
 
 from . import Initialize as Ini
 
@@ -119,18 +120,40 @@ def readND_python(path_to_file):
     return list
 
 
-def construct_grid_matching(func, mass, path):
-    func_values = []
-    p = []
-    for z in Ini.HPL_x_array:
-        print(float(Ini.HPL_x_array.index(z)) / Ini.HPL_x_array.__len__())
+class Construct_Grid():
+
+    def __init__(self, func, mass, nf, path, n_pools=8):
+        self.func = func
+        self.mass = mass
+        self.path = path
+        self.xgrid = [0.0001,0.001,0.1,1]# Ini.HPL_x_array
+        self.qgrid = [1,10,100]# Ini.QList
+        self.n_pools = n_pools
+        self.nf = nf
+        
+
+    def construct_single_x(self, z):
         z_func_values = []
-        for q in np.array(Ini.QList):
-            p = [mass, q]
-            z_func_values.append(func(z, p))
-        func_values.append(z_func_values)
-    np.savetxt(path, func_values)
-    return func_values
+        p = []
+        i = self.xgrid.index(z)
+        print(f"Computing x = {z},  {i}/{len(self.xgrid)}")
+        for q in self.qgrid:
+            p = [self.mass, q]
+            z_func_values.append(self.func(z, p, self.nf))
+        return z_func_values
+
+
+    def construct_grid_matching(self):
+
+        args = (self.construct_single_x, self.xgrid)
+        with Pool(self.n_pools) as pool:
+            result = pool.map(*args)
+
+        func_values = []
+        for res in result:
+            func_values.append(res)
+        np.savetxt(self.path, func_values)
+        return func_values
 
 
 def construct_grid_tilde(func, mass, path):

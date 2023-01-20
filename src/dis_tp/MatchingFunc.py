@@ -3671,14 +3671,14 @@ def Mgq_2_reg(z, p):
 
 
 # Matching conditions obtained from inverse mellin transform
-def Mbg_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None, path="talbot"):
+def Mbg_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
     if grids:
         return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return inverse_mellin(A_Hq, x, nf, r, s, path, L)
 
 
-def Mbq_3_reg_inv(x, p, grids=False, nf=5, r=None, s=None, path="talbot"):
+def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
     if grids:
         return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
