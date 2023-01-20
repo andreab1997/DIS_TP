@@ -1,6 +1,7 @@
 # This contains the matching conditions needed for the evaluation of the tilde coefficients functions.
 # notation: p[1] is Q^2 while p[0] is m_b^2
 import numpy as np
+from eko.constants import CA, TR, CF
 
 from . import Harmonics as harm
 from . import Initialize
@@ -9,8 +10,6 @@ from . import zetas as zet
 
 
 def Mbg_1(z, p):
-    TR = 1.0 / 2.0
-
     return 2 * TR * np.log((p[1] ** 2) / (p[0] ** 2)) * (z * z + (1 - z) * (1 - z))
 
 
@@ -22,7 +21,6 @@ def a_Qg_30(x, v):
     # Approssimazione della parte scale independent della matching Mbg_3
     L = np.log(x)
     L2 = L * L
-    CA = 3.0
     x1 = 1 - x
 
     L1 = np.log(x1)
@@ -69,13 +67,9 @@ def a_Qg_30(x, v):
         )
 
 
-def Mbg_3_reg(z, p, grids=False):
+def Mbg_3_reg(z, p, nf, grids=False):
     if grids:
         return Ini.Mbg3(z, p[1])[0]
-    CF = 4.0 / 3.0
-    TR = 1.0 / 2.0
-    CA = 3.0
-    NF = 5.0
     L_M = np.log((p[0] ** 2) / (p[1] ** 2))
     H_0 = harm.H_0(z)
     H_1 = harm.H_1(z)
@@ -337,7 +331,7 @@ def Mbg_3_reg(z, p, grids=False):
         )
         + CA
         * (TR**2)
-        * NF
+        * nf
         * (
             -(4.0 / 9.0) * (2 * z + 1) * (H_0**4)
             + (8.0 / 27.0) * (23 * (z**2) + 12 * z + 3) * (H_0**3)
@@ -1486,7 +1480,7 @@ def Mbg_3_reg(z, p, grids=False):
         )
         + CF
         * (TR**2)
-        * NF
+        * nf
         * (
             -(4.0 / 9.0) * (z - 2) * (6 * z + 1) * (H_0**4)
             + (4.0 / 27.0) * (404 * (z**2) - 54 * z + 69) * (H_0**3)
@@ -2163,14 +2157,10 @@ def Mbg_3_reg(z, p, grids=False):
 
 
 def Mgg_1_loc(z, p):
-    TR = 1.0 / 2.0
     return -(4.0 / 3.0) * TR * np.log((p[1] ** 2) / (p[0] ** 2))
 
 
 def Mgg_2_reg(z, p):
-    CF = 4.0 / 3.0
-    TR = 1.0 / 2.0
-    CA = 3.0
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     LO = np.log(z)
     return (
@@ -2239,9 +2229,6 @@ def Mgg_2_reg(z, p):
 
 
 def Mgg_2_loc(z, p):
-    CF = 4.0 / 3.0
-    TR = 1.0 / 2.0
-    CA = 3.0
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return (
         (L**2) * ((TR**2) * (16.0 / 9.0))
@@ -2252,9 +2239,6 @@ def Mgg_2_loc(z, p):
 
 
 def Mgg_2_sing(z, p):
-    CF = 4.0 / 3.0
-    TR = 1.0 / 2.0
-    CA = 3.0
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
     return (
@@ -2268,13 +2252,8 @@ def Mbq_2(z, p):
     return Initialize.Mbq2(z, p[1])
 
 
-def aQqPS30(x):
+def aQqPS30(x, nf):
     # Approximation of scale independent part of Mbq_3_reg
-    CF = 4.0 / 3.0
-    TR = 1.0 / 2.0
-    CA = 3.0
-    nf = 5
-
     x2 = x * x
     x3 = x2 * x
     x4 = x3 * x
@@ -2927,13 +2906,9 @@ def aQqPS30(x):
     )
 
 
-def Mbq_3_reg(z, p, grids=False):
+def Mbq_3_reg(z, p, nf, grids=False):
     if grids:
         return Ini.Mbq3(z, p[1])[0]
-    CF = 4.0 / 3.0
-    TR = 1.0 / 2.0
-    CA = 3.0
-    N_F = 5.0
     L_M = np.log((p[0] ** 2) / (p[1] ** 2))
     H_0 = harm.H_0(z)
     H_1 = harm.H_1(z)
@@ -3198,7 +3173,7 @@ def Mbq_3_reg(z, p, grids=False):
         )
         + CF
         * (TR**2)
-        * N_F
+        * nf
         * (
             (L_M**2)
             * (
@@ -3643,8 +3618,6 @@ def Mbq_3_reg(z, p, grids=False):
 
 # In the one above maybe there is a minus sign missing in front
 def Mgq_2_reg(z, p):
-    CF = 4.0 / 3.0
-    TR = 1.0 / 2.0
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
     L1 = np.log(z1)

@@ -1,54 +1,44 @@
 # This contains the splitting functions needed to compute some of the scale dependent term. Since at the moment
 # the code is using grids, these are not needed.
-import numpy as np
 
 from . import Harmonics as harm
 from . import zetas as zet
+from eko.constants import CF, CA
 
 # splitting funcs expanded in alpha_s/4pi
 
 
 def Pqq_0_plus(z):
-    CF = 4.0 / 3.0
     return 2 * CF * ((1 + z**2) / (1 - z))
 
 
-def Pqg_0_reg(z):
-    NF = 4.0
-    return 2 * NF * ((z**2) + ((1 - z) ** 2))
+def Pqg_0_reg(z, nf):
+    return 2 * nf * ((z**2) + ((1 - z) ** 2))
 
 
 def Pgq_0_reg(z):
-    CF = 4.0 / 3.0
     return 2 * CF * ((1 + ((1 - z) ** 2)) / z)
 
 
 def Pgg_0_reg(z):
-    CA = 3.0
     return 4 * CA * (((1 - z) / z) + z * (1 - z))
 
 
-def Pgg_0_local(z):
-    CA = 3.0
-    NF = 4.0
-    return 4 * CA * ((11.0 / 12.0) - (NF / (3 * 2 * CA)))
+def Pgg_0_local(z, nf):
+    return 4 * CA * ((11.0 / 12.0) - (nf / (3 * 2 * CA)))
 
 
 def Pgg_0_plus(z):
-    CA = 3.0
     return 4 * CA * (z * (1.0 / (1 - z)))
 
 
-def Pgg_1_reg(z):
-    CF = 4.0 / 3.0
-    CA = 3.0
-    NF = 4.0
+def Pgg_1_reg(z, nf):
     pgg_reg = (1.0 / z) - 2 + z - z**2
     pgg_reg_mz = (-1.0 / z) - 2 - z - z**2 + (1.0 / (1 + z))
     return (
         4
         * CA
-        * NF
+        * nf
         * (
             1
             - z
@@ -78,7 +68,7 @@ def Pgg_1_reg(z):
         )
         + 4
         * CF
-        * NF
+        * nf
         * (
             2 * harm.H_0(z)
             + (2.0 / (3 * z))
@@ -89,23 +79,17 @@ def Pgg_1_reg(z):
     )
 
 
-def Pgg_1_local(z):
-    CF = 4.0 / 3.0
-    CA = 3.0
-    NF = 4.0
+def Pgg_1_local(z, nf):
     return (
-        -4 * CA * NF * (2.0 / 3.0)
+        -4 * CA * nf * (2.0 / 3.0)
         + 4 * CA * CA * ((8.0 / 3.0) + 3 * zet.zeta_3)
-        - 4 * CF * NF * (1.0 / 2.0)
+        - 4 * CF * nf * (1.0 / 2.0)
     )
 
 
-def Pgg_1_plus(z):
-    CF = 4.0 / 3.0
-    CA = 3.0
-    NF = 4.0
+def Pgg_1_plus(z, nf):
     pgg_plus = 1.0 / (1 - z)
-    return 4 * CA * NF * (-(10.0 / 9.0) * pgg_plus) + 4 * CA * CA * (
+    return 4 * CA * nf * (-(10.0 / 9.0) * pgg_plus) + 4 * CA * CA * (
         2
         * pgg_plus
         * (
