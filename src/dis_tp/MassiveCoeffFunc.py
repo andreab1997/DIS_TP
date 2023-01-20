@@ -14,7 +14,7 @@ def Cg_1_m_reg(z, Q, p):
     thre = 4.0 * eps * z / (1 - z)
     v = np.sqrt(1 - thre)
     TR = 1.0 / 2.0
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     if thre > 1.0:
         return 0
     return (
@@ -79,7 +79,7 @@ def CLg_1_m_reg(z, Q, p):
     thre = 4.0 * eps * z / (1 - z)
     v = np.sqrt(1 - thre)
     TR = 1.0 / 2.0
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     if thre > 1.0:
         return 0
     return (

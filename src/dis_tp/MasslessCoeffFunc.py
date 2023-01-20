@@ -7,12 +7,12 @@ from eko.constants import CF
 
 # F2
 def Cb_0_loc(z, Q):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return e_b * e_b
 
 
 def Cb_1_reg(z, Q, p):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return (
         e_b
         * e_b
@@ -23,17 +23,17 @@ def Cb_1_reg(z, Q, p):
 
 
 def Cb_1_loc(z, Q):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return e_b * e_b * 2 * CF * (-(2 * zeta_2 + 9.0 / 2.0))
 
 
 def Cb_1_sing(z, Q, p):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return e_b * e_b * 2 * CF * (2 * np.log(1 - z) - 3.0 / 2.0) / (1 - z)
 
 
 def Cb_2_reg(z, Q, p):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     z1 = 1 - z
     dl = np.log(z)
     dl1 = np.log(z1)
@@ -71,12 +71,12 @@ def Cb_2_reg(z, Q, p):
 
 
 def Cb_2_loc(z, Q, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return e_b * e_b * (-338.046 + nf * (46.8405))
 
 
 def Cb_2_sing(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     z1 = 1 - z
     dl = np.log(z)
     dl1 = np.log(z1)
@@ -99,7 +99,7 @@ def Cb_2_sing(z, Q, p, nf):
 
 def Cg_1_reg(z, Q, p):
     TR = 1.0 / 2.0
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return (
         4
         * TR
@@ -110,7 +110,7 @@ def Cg_1_reg(z, Q, p):
 
 
 def Cg_2_reg(z, Q, p):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     z1 = 1 - z
     L0 = np.log(z)
     L1 = np.log(z1)
@@ -134,19 +134,19 @@ def Cg_2_reg(z, Q, p):
 
 
 def Cg_3_reg(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     args = np.array([nf, True], dtype=float)
     return e_b**2 * xc2sg3p.c2g3a(z, args=args) / nf
 
 
 def Cg_3_loc(z, Q, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     args = np.array([nf, True], dtype=float)
     return e_b**2 * xc2sg3p.c2g3c(z, args=args) / nf
 
 
 def Cq_2_reg(z, Q, p):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     z1 = 1 - z
     L0 = np.log(z)
     L1 = np.log(z1)
@@ -167,32 +167,32 @@ def Cq_2_reg(z, Q, p):
 
 
 def Cq_3_reg(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     args = np.array([nf, True], dtype=float)
     return e_b**2 * xc2sg3p.c2s3a(z, args=args) / nf
 
 
 def Cq_3_loc(z, Q, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     args = np.array([nf, True], dtype=float)
     return e_b**2 * xc2sg3p.c2s3c(z, args=args) / nf
 
 
 def Cb_3_reg(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     args = np.array([nf, True], dtype=float)
     return e_b**2 * xc2ns3p.c2np3a(z, args=args)
 
 
-def Cb_3_loc(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+def Cb_3_loc(z, Q, nf):
+    e_b = para.charges["e_b"]
     args = np.array([nf, True], dtype=float)
     # NOTE: here with our convention we need the non log part
     return e_b**2 * xc2ns3p.c2np3c(0, args=args)
 
 
 def Cb_3_sing(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     args = np.array([nf, True], dtype=float)
     return e_b**2 * xc2ns3p.c2ns3b(z, args=args)
 
@@ -200,12 +200,12 @@ def Cb_3_sing(z, Q, p, nf):
 # FL
 def CLg_1_reg(z, Q, p):
     TR = 1.0 / 2.0
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return 16 * TR * e_b * e_b * z * (1.0 - z)
 
 
 def CLg_2_reg(z, Q, p):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     omx = 1.0 - z
     dl = np.log(z)
     dl_2 = dl * dl
@@ -226,18 +226,18 @@ def CLg_2_reg(z, Q, p):
 
 
 def CLg_3_reg(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     args = np.array([nf, True], dtype=float)
     return e_b**2 * xclsg3p.clg3a(z, args=args) / nf
 
 
 def CLb_1_reg(z, Q, p):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return e_b * e_b * 4 * CF * z
 
 
 def CLb_2_reg(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     z1 = 1.0 - z
     dl = np.log(z)
     dl1 = np.log(z1)
@@ -260,12 +260,12 @@ def CLb_2_reg(z, Q, p, nf):
 
 
 def CLb_2_loc(z, Q):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return e_b * e_b * (-0.164)
 
 
 def CLq_2_reg(z, Q, p):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     omz = 1.0 - z
     dl = np.log(z)
     dl1 = np.log(omz)
@@ -285,18 +285,18 @@ def CLq_2_reg(z, Q, p):
 
 
 def CLq_3_reg(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     args = np.array([nf, True], dtype=float)
     return e_b**2 * xclsg3p.cls3a(z, args=args) / nf
 
 
 def CLb_3_reg(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     args = np.array([nf, True], dtype=float)
     return e_b**2 * xclns3p.clnp3a(z, args=args)
 
 
-def CLb_3_loc(z, Q, p, nf):
-    e_b = para.parameters["e_b"]
+def CLb_3_loc(z, Q, nf):
+    e_b = para.charges["e_b"]
     args = np.array([nf], dtype=float)
     return e_b**2 * xclns3p.clnp3c(z, args=args)

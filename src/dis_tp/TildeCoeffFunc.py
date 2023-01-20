@@ -55,7 +55,7 @@ from .tools import (
 def Cb1_Mbg1(z):
     TR = 1.0 / 2.0
     CF = 4.0 / 3.0
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return (
         4
         * CF
@@ -80,7 +80,7 @@ def Cb1_Mbg1(z):
 def CLb1_Mbg1(z):
     TR = 1.0 / 2.0
     CF = 4.0 / 3.0
-    e_b = para.parameters["e_b"]
+    e_b = para.charges["e_b"]
     return 8 * CF * TR * pow(e_b, 2) * (1 + z - 2 * pow(z, 2) + 2 * z * np.log(z))
 
 
@@ -101,7 +101,7 @@ def Cg_2_til_reg(z, Q, p, grids=True):
     )
 
 
-def Cg_3_til_reg(z, Q, p, grids=False):
+def Cg_3_til_reg(z, Q, p, nf, grids=False):
     q = [p[0], Q]
     if grids:
         return Ini.Cg3_til(z, Q)[0]
@@ -135,7 +135,7 @@ def Cg_3_til_reg(z, Q, p, grids=False):
         )
         - 2
         * (
-            Mbg_1(z, q) * Cb_2_loc(z, Q)
+            Mbg_1(z, q) * Cb_2_loc(z, Q, nf)
             + Convolute(Cb_2_reg, Mbg_1, z, Q, p)
             + Convolute_plus_coeff(Cb_2_sing, Mbg_1, z, Q, p)
         )
