@@ -3,8 +3,7 @@
 import numpy as np
 
 from . import Initialize
-from . import parameters as para
-
+from eko.constants import TR
 
 # F2
 def Cg_1_m_reg(z, Q, p):
@@ -13,15 +12,14 @@ def Cg_1_m_reg(z, Q, p):
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     v = np.sqrt(1 - thre)
-    TR = 1.0 / 2.0
-    e_b = para.charges["e_b"]
+    e_h = p[-1]
     if thre > 1.0:
         return 0
     return (
         4
         * TR
-        * e_b
-        * e_b
+        * e_h
+        * e_h
         * (
             v * (8 * z * (1 - z) - 1 - 4 * z * (1 - z) * eps)
             + np.log((1 + v) / (1 - v))
@@ -78,15 +76,14 @@ def CLg_1_m_reg(z, Q, p):
     z2 = z * z
     thre = 4.0 * eps * z / (1 - z)
     v = np.sqrt(1 - thre)
-    TR = 1.0 / 2.0
-    e_b = para.charges["e_b"]
+    e_h = p[-1]
     if thre > 1.0:
         return 0
     return (
         4
         * TR
-        * e_b
-        * e_b
+        * e_h
+        * e_h
         * (-8 * eps * z2 * np.log((1 + v) / (1 - v)) + 4 * v * z * (1 - z))
     )
 
