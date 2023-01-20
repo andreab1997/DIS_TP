@@ -6,6 +6,8 @@ pids = {"g": 21, "c": 4, "b": 5, "t": 6}
 def number_active_flavors(h_id):
     return np.abs(h_id)
 
+def number_light_flavors(h_id):
+    return np.abs(h_id) - 1
 
 def charges(h_id):
     ch = {

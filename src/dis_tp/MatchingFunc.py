@@ -3642,6 +3642,8 @@ def Mgq_2_reg(z, p):
 
 # alphas[4] to alphas[5] pieces---> alphas[5] = alphas[4](1+alphas[4]P(1)+(alphas[4]**2)P(2)+...)
 
+# TODO: this has to generalized!
+
 
 def P1(p):
     return Mgg_1_loc(0, p)
