@@ -3,6 +3,9 @@ import numpy as np
 
 from . import parameters as para
 
+nf = 5
+meane = (2 * (2.0 / 3.0) + 3 * (-1.0 / 3.0)) * 1.0 / nf
+meansque = (2 * (4.0 / 9.0) + 3 * (1.0 / 9.0)) * 1.0 / nf
 
 # F2
 def Cb_0_loc(z, Q):
@@ -75,7 +78,8 @@ def Cb_2_reg(z, Q, p):
 
 def Cb_2_loc(z, Q):
     e_b = para.parameters["e_b"]
-    return e_b * e_b * (-338.046 + 5 * (46.8405))
+    nf = 5
+    return e_b * e_b * (-338.046 + nf * (46.8405))
 
 
 def Cb_2_sing(z, Q, p):
@@ -143,8 +147,6 @@ def Cg_3_reg(z, Q, p):
     L0 = np.log(z)
     L1 = np.log(z1)
     nf = 5.0
-    meane = (-2.0 / 3.0) * 1.0 / nf
-    meansque = (2 * (4.0 / 9.0) + 3 * (1.0 / 9.0)) * 1.0 / nf
     fl11g = meane**2 / meansque
     return (
         e_b
@@ -208,13 +210,6 @@ def Cg_3_reg(z, Q, p):
 
 def Cg_3_loc(z, Q):
     e_b = para.parameters["e_b"]
-    z1 = 1 - z
-    L0 = np.log(z)
-    L1 = np.log(z1)
-    nf = 5.0
-    meane = (-2.0 / 3.0) * 1.0 / nf
-    meansque = (2 * (4.0 / 9.0) + 3 * (1.0 / 9.0)) * 1.0 / nf
-    fl11g = meane**2 / meansque
     return e_b * e_b * 0.625
 
 
@@ -247,8 +242,6 @@ def Cq_3_reg(z, Q, p):
     L0 = np.log(z)
     L1 = np.log(z1)
     nf = 5.0
-    meane = (-2.0 / 3.0) * 1.0 / nf
-    meansque = (2 * (4.0 / 9.0) + 3 * (1.0 / 9.0)) * 1.0 / nf
     fl11ps = (meane**2 / meansque) - 3 * meane
     return (
         e_b
@@ -309,12 +302,6 @@ def Cq_3_reg(z, Q, p):
 
 def Cq_3_loc(z, Q):
     e_b = para.parameters["e_b"]
-    z1 = 1 - z
-    L0 = np.log(z)
-    L1 = np.log(z1)
-    nf = 5.0
-    meane = (-2.0 / 3.0) * 1.0 / nf
-    meansque = (2 * (4.0 / 9.0) + 3 * (1.0 / 9.0)) * 1.0 / nf
     fl11ps = (meane**2 / meansque) - 3 * meane
     return e_b * e_b * fl11ps * (-11.888)
 
@@ -353,8 +340,6 @@ def CLg_3_reg(z, Q, p):
     L0 = np.log(z)
     L1 = np.log(z1)
     nf = 5.0
-    meane = (-2.0 / 3.0) * 1.0 / nf
-    meansque = (2 * (4.0 / 9.0) + 3 * (1.0 / 9.0)) * 1.0 / nf
     fl11g = meane**2 / meansque
     return (
         e_b
@@ -473,8 +458,6 @@ def CLq_3_reg(z, Q, p):
     L0 = np.log(z)
     L1 = np.log(z1)
     nf = 5.0
-    meane = (-2.0 / 3.0) * 1.0 / nf
-    meansque = (2 * (4.0 / 9.0) + 3 * (1.0 / 9.0)) * 1.0 / nf
     fl11ps = (meane**2 / meansque) - 3 * meane
     return (
         e_b
