@@ -137,7 +137,7 @@ class Test_FL:
             my = NF * cf.CLg_1_reg(x, self.Q, e_h, NF) / e_h**2
             assert_allclose(my, yad)
 
-    def test_fl_nnlo(self):
+    def test_nnlo(self):
         for x in self.xs:
             esf = MockESF(x, self.Q**2)
             fl_ns = fl_nc.NonSinglet(esf, NF).NNLO()
