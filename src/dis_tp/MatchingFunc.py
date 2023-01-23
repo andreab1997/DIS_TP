@@ -1,23 +1,25 @@
 # This contains the matching conditions needed for the evaluation of the tilde coefficients functions.
 # notation: p[1] is Q^2 while p[0] is m_b^2
 import numpy as np
-from eko.constants import CA, TR, CF
+from eko.constants import CA, CF, TR
+from eko.matching_conditions.as3 import A_Hg, A_Hq
 
 from . import Harmonics as harm
 from . import Initialize
 from . import Initialize as Ini
 from . import zetas as zet
+from .InverseMellin import inverse_mellin
 
 
-def Mbg_1(z, p):
+def Mbg_1(z, p, nf):
     return 2 * TR * np.log((p[1] ** 2) / (p[0] ** 2)) * (z * z + (1 - z) * (1 - z))
 
 
-def Mbg_2(z, p):
+def Mbg_2(z, p, nf):
     return Initialize.Mbg2(z, p[1])
 
 
-def a_Qg_30(x, v):
+def a_Qg_30(x, v, nf):
     # Approssimazione della parte scale independent della matching Mbg_3
     L = np.log(x)
     L2 = L * L
@@ -67,7 +69,7 @@ def a_Qg_30(x, v):
         )
 
 
-def Mbg_3_reg(z, p, nf, grids=False):
+def Mbg_3_reg(z, p, nf, grids=True):
     if grids:
         return Ini.Mbg3(z, p[1])[0]
     L_M = np.log((p[0] ** 2) / (p[1] ** 2))
@@ -2156,11 +2158,11 @@ def Mbg_3_reg(z, p, nf, grids=False):
     )
 
 
-def Mgg_1_loc(z, p):
+def Mgg_1_loc(z, p, nf):
     return -(4.0 / 3.0) * TR * np.log((p[1] ** 2) / (p[0] ** 2))
 
 
-def Mgg_2_reg(z, p):
+def Mgg_2_reg(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     LO = np.log(z)
     return (
@@ -2228,7 +2230,7 @@ def Mgg_2_reg(z, p):
     )
 
 
-def Mgg_2_loc(z, p):
+def Mgg_2_loc(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return (
         (L**2) * ((TR**2) * (16.0 / 9.0))
@@ -2238,7 +2240,7 @@ def Mgg_2_loc(z, p):
     )
 
 
-def Mgg_2_sing(z, p):
+def Mgg_2_sing(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
     return (
@@ -2248,7 +2250,7 @@ def Mgg_2_sing(z, p):
     )
 
 
-def Mbq_2(z, p):
+def Mbq_2(z, p, nf):
     return Initialize.Mbq2(z, p[1])
 
 
@@ -2906,7 +2908,7 @@ def aQqPS30(x, nf):
     )
 
 
-def Mbq_3_reg(z, p, nf, grids=False):
+def Mbq_3_reg(z, p, nf, grids=True):
     if grids:
         return Ini.Mbq3(z, p[1])[0]
     L_M = np.log((p[0] ** 2) / (p[1] ** 2))
@@ -3617,7 +3619,7 @@ def Mbq_3_reg(z, p, nf, grids=False):
 
 
 # In the one above maybe there is a minus sign missing in front
-def Mgq_2_reg(z, p):
+def Mgq_2_reg(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
     L1 = np.log(z1)
@@ -3640,15 +3642,26 @@ def Mgq_2_reg(z, p):
     )
 
 
-# alphas[4] to alphas[5] pieces---> alphas[5] = alphas[4](1+alphas[4]P(1)+(alphas[4]**2)P(2)+...)
+# Matching conditions obtained from inverse mellin transform
+def Mbg_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
+    if grids:
+        return Ini.Mbq3(x, p[1])[0]
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    return inverse_mellin(A_Hq, x, nf, r, s, path, L)
+
+
+def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
+    if grids:
+        return Ini.Mbq3(x, p[1])[0]
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    return inverse_mellin(A_Hg, x, nf, r, s, path, L)
+
 
 # TODO: this has to generalized!
-
-
-def P1(p):
-    return Mgg_1_loc(0, p)
+def P1(p, nf):
+    return -Mgg_1_loc(0, p, nf)
 
 
 def P2(p):
     fact = np.log((p[1] ** 2) / (p[0] ** 2))
-    return (2.0 / 9.0) * (2 * (fact**2) + 33 * fact - 7)
+    return (2.0 / 9.0) * (2 * (fact**2) + 19 * 3 * fact + 7 * 3)  # Thanks EKO
