@@ -6,7 +6,7 @@ from . import Initialize
 from eko.constants import TR
 
 # F2
-def Cg_1_m_reg(z, Q, p):
+def Cg_1_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -28,7 +28,7 @@ def Cg_1_m_reg(z, Q, p):
     )
 
 
-def Cg_2_m_reg(z, Q, p):
+def Cg_2_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -38,7 +38,7 @@ def Cg_2_m_reg(z, Q, p):
     return Initialize.Cg2m(z, Q)[0]
 
 
-def Cg_3_m_reg(z, Q, p):
+def Cg_3_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -48,7 +48,7 @@ def Cg_3_m_reg(z, Q, p):
     return Initialize.Cg3m(z, Q)[0]
 
 
-def Cq_2_m_reg(z, Q, p):
+def Cq_2_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -58,7 +58,7 @@ def Cq_2_m_reg(z, Q, p):
     return Initialize.Cq2m(z, Q)[0]
 
 
-def Cq_3_m_reg(z, Q, p):
+def Cq_3_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -69,7 +69,7 @@ def Cq_3_m_reg(z, Q, p):
 
 
 # FL
-def CLg_1_m_reg(z, Q, p):
+def CLg_1_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -88,7 +88,7 @@ def CLg_1_m_reg(z, Q, p):
     )
 
 
-def CLg_2_m_reg(z, Q, p):
+def CLg_2_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -98,7 +98,8 @@ def CLg_2_m_reg(z, Q, p):
     return Initialize.CLg2m(z, Q)[0]
 
 
-def CLg_3_m_reg(z, Q, p):
+def CLg_3_m_reg(z, Q, p, nf):
+    import pdb; pdb.set_trace()
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -108,7 +109,7 @@ def CLg_3_m_reg(z, Q, p):
     return Initialize.CLg3m(z, Q)[0]
 
 
-def CLq_2_m_reg(z, Q, p):
+def CLq_2_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -118,7 +119,7 @@ def CLq_2_m_reg(z, Q, p):
     return Initialize.CLq2m(z, Q)[0]
 
 
-def CLq_3_m_reg(z, Q, p):
+def CLq_3_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2

@@ -3,6 +3,7 @@ import numpy as np
 from multiprocessing import Pool
 
 from . import Initialize as Ini
+from .parameters import masses, number_active_flavors, charges
 
 
 def read1D(path_to_file):
@@ -122,14 +123,16 @@ def readND_python(path_to_file):
 
 class Construct_Grid():
 
-    def __init__(self, func, mass, nf, path, n_pools=8):
+    def __init__(self, func, h_id, path, grid_type, n_pools=8):
         self.func = func
-        self.mass = mass
+        self.mass = masses(h_id)
         self.path = path
-        self.xgrid = Ini.HPL_x_array # [0.0001,0.001,0.1,1]# 
-        self.qgrid = Ini.QList # [1,10,100]
+        self.xgrid = [0.0001,0.001,0.1,1] #Ini.HPL_x_array # 
+        self.qgrid = [1,10,100] # Ini.QList # 
         self.n_pools = n_pools
-        self.nf = nf
+        self.nf = number_active_flavors(h_id)
+        self.e_h = charges(h_id)
+        self.grid_type=grid_type
         
 
     def construct_single_x(self, z):
@@ -138,12 +141,15 @@ class Construct_Grid():
         i = self.xgrid.index(z)
         print(f"Computing x = {z},  {i}/{len(self.xgrid)}")
         for q in self.qgrid:
-            p = [self.mass, q]
-            z_func_values.append(self.func(z, p, self.nf))
+            p = [self.mass, q, self.e_h]
+            if self.grid_type == "matching":
+                z_func_values.append(self.func(z, p, self.nf))
+            elif self.grid_type == "tilde":
+                z_func_values.append(self.func(z, q, p, self.nf))
         return z_func_values
 
 
-    def construct_grid_matching(self):
+    def run(self):
 
         args = (self.construct_single_x, self.xgrid)
         with Pool(self.n_pools) as pool:
@@ -154,17 +160,3 @@ class Construct_Grid():
             func_values.append(res)
         np.savetxt(self.path, func_values)
         return func_values
-
-
-def construct_grid_tilde(func, mass, path):
-    func_values = []
-    p = [mass]
-    for z in Ini.ZList:
-        print(float(Ini.ZList.index(z)) / Ini.ZList.__len__())
-        z_func_values = []
-        for q in np.array(Ini.QList):
-            # z_func_values.append(func(z, q, p)[0])
-            z_func_values.append(func(z, q, p))
-        func_values.append(z_func_values)
-    np.savetxt(path, func_values)
-    return func_values

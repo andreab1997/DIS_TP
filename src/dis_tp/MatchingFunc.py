@@ -12,15 +12,15 @@ from .InverseMellin import inverse_mellin
 from eko.matching_conditions.as3 import A_Hq, A_Hg
 
 
-def Mbg_1(z, p):
+def Mbg_1(z, p, nf):
     return 2 * TR * np.log((p[1] ** 2) / (p[0] ** 2)) * (z * z + (1 - z) * (1 - z))
 
 
-def Mbg_2(z, p):
+def Mbg_2(z, p, nf):
     return Initialize.Mbg2(z, p[1])
 
 
-def a_Qg_30(x, v):
+def a_Qg_30(x, v, nf):
     # Approssimazione della parte scale independent della matching Mbg_3
     L = np.log(x)
     L2 = L * L
@@ -2159,11 +2159,11 @@ def Mbg_3_reg(z, p, nf, grids=False):
     )
 
 
-def Mgg_1_loc(z, p):
+def Mgg_1_loc(z, p, nf):
     return -(4.0 / 3.0) * TR * np.log((p[1] ** 2) / (p[0] ** 2))
 
 
-def Mgg_2_reg(z, p):
+def Mgg_2_reg(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     LO = np.log(z)
     return (
@@ -2231,7 +2231,7 @@ def Mgg_2_reg(z, p):
     )
 
 
-def Mgg_2_loc(z, p):
+def Mgg_2_loc(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return (
         (L**2) * ((TR**2) * (16.0 / 9.0))
@@ -2241,7 +2241,7 @@ def Mgg_2_loc(z, p):
     )
 
 
-def Mgg_2_sing(z, p):
+def Mgg_2_sing(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
     return (
@@ -2251,7 +2251,7 @@ def Mgg_2_sing(z, p):
     )
 
 
-def Mbq_2(z, p):
+def Mbq_2(z, p, nf):
     return Initialize.Mbq2(z, p[1])
 
 
@@ -3620,7 +3620,7 @@ def Mbq_3_reg(z, p, nf, grids=False):
 
 
 # In the one above maybe there is a minus sign missing in front
-def Mgq_2_reg(z, p):
+def Mgq_2_reg(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
     L1 = np.log(z1)
@@ -3658,10 +3658,8 @@ def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
     return inverse_mellin(A_Hg, x, nf, r, s, path, L)
 
 # TODO: this has to generalized!
-
-
-def P1(p):
-    return Mgg_1_loc(0, p)
+def P1(p, nf):
+    return Mgg_1_loc(0, p, nf)
 
 
 def P2(p):
