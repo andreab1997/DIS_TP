@@ -143,7 +143,7 @@ class Construct_Grid:
             if self.grid_type == "matching":
                 z_func_values.append(self.func(z, p, self.nf))
             elif self.grid_type == "tilde":
-                z_func_values.append(self.func(z, q, p, self.nf)[0])
+                z_func_values.append(self.func(z, q, p, self.nf))
         return z_func_values
 
     def run(self):
