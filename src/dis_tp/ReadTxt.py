@@ -127,8 +127,8 @@ class Construct_Grid():
         self.func = func
         self.mass = masses(h_id)
         self.path = path
-        self.xgrid = [0.0001,0.001,0.1,0.999] #Ini.HPL_x_array # 
-        self.qgrid = [1,10,100] # Ini.QList # 
+        self.xgrid = Ini.HPL_x_array # [0.0001,0.001,0.1,0.999] # 
+        self.qgrid = Ini.QList # [1,10,100] 
         self.n_pools = n_pools
         self.nf = number_active_flavors(h_id)
         self.e_h = charges(h_id)

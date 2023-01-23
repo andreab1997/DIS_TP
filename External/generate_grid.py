@@ -14,7 +14,7 @@ if __name__ == "__main__":
     n_cores = int(sys.argv[3])
     grid_type=sys.argv[4]
 
-    Integration.Initialize_all()
+    Integration.Initialize_all(h_id)
     if grid_type == "matching":
         if flavor == "bq":
             func = Mbq_3_reg_inv

@@ -110,7 +110,7 @@ def InitializeMbg2():
     Mbg2 = interp2d(ZList[:-1], QList, my_array, kind="linear")
 
 
-def InitializeMbq2(nf):
+def InitializeMbq2():
     """
     Initialize the Mbg at NNLO matching function from the file in External
     """
@@ -285,7 +285,7 @@ def InitializeCq3_m(nf):
     """
     global Cq3m
     Cq3m_array_prov = np.array(
-        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.dat")
+        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
     ).transpose()[:-1]
     Cq3m_array = Cq3m_array_prov.transpose()
     Cq3m = interp2d(ZList_Nic[:-1], QList_Nic, Cq3m_array, kind="linear")
@@ -310,7 +310,7 @@ def InitializeCLq3_m(nf):
     """
     global CLq3m
     CLq3m_array_prov = np.array(
-        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.dat")
+        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
     ).transpose()[:-1]
     CLq3m_array = CLq3m_array_prov.transpose()
     CLq3m = interp2d(ZList_Nic[:-1], QList_Nic, CLq3m_array, kind="linear")
@@ -335,7 +335,7 @@ def InitializeCg3_m(nf):
     """
     global Cg3m
     Cg3m_array_prov = np.array(
-        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.dat")
+        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
     ).transpose()[:-1]
     Cg3m_array = Cg3m_array_prov.transpose()
     Cg3m = interp2d(ZList_Nic[:-1], QList_Nic, Cg3m_array, kind="linear")
@@ -347,7 +347,7 @@ def InitializeCLg3_m(nf):
     """
     global CLg3m
     CLg3m_array_prov = np.array(
-        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.dat")
+        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
     ).transpose()[:-1]
     CLg3m_array = CLg3m_array_prov.transpose()
     CLg3m = interp2d(ZList_Nic[:-1], QList_Nic, CLg3m_array, kind="linear")
