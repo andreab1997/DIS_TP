@@ -296,8 +296,6 @@ def InitializeCq3_til(nf):
     Initialize the Cq at N3LO tilde function from the file in External
     """
     global Cq3_til
-    # Cq3_til_array_prov = np.array(readt.readND_python('./External/Cq_3_til/Cq3til.txt'))[:-1][:]
-    # Cq3_til_array = Cq3_til_array_prov.transpose()[:-1][:]
     Cq3_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Cq_3_til/Cq3til_nf{nf}.txt")
     ).transpose()
@@ -324,8 +322,6 @@ def InitializeCLq3_til(nf):
     CLq3_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/CLq_3_til/CLq3til_nf{nf}.txt")
     ).transpose()
-    # CLq3_til_array_prov = np.array(readt.readND_python('./External/CLq_3_til/CLq3til_nf{nf}.txt'))[:-1][:]
-    # CLq3_til_array = CLq3_til_array_prov.transpose()[:-1][:]
     CLq3_til = interp2d(ZList[:-1], QList, CLq3_til_array, kind="linear")
 
 
@@ -358,8 +354,6 @@ def InitializeCg3_til(nf):
     Initialize the C2g at N3LO tilde function from the file in External
     """
     global Cg3_til
-    # Cg3_til_array_prov = np.array(readt.readND_python('./External/Cg_3_til/Cg3til_nf{nf}.txt'))[:-1][:]
-    # Cg3_til_array = Cg3_til_array_prov.transpose()[:-1][:]
     Cg3_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Cg_3_til/Cg3til_nf{nf}.txt")
     ).transpose()

@@ -90,7 +90,9 @@ def Cg_2_til_reg(z, Q, p, nf, grids=True):
         return Ini.Cg2_til(z, Q)[0]
     return (
         Cg_2_m_reg(z, Q, p, nf)
-        - 2 * Cb_0_loc(z, Q, p, nf) * (Mbg_2(z, p,nf) - Mbg_1(z, p,nf) * Mgg_1_loc(z, p,nf))
+        - 2
+        * Cb_0_loc(z, Q, p, nf)
+        * (Mbg_2(z, p, nf) - Mbg_1(z, p, nf) * Mgg_1_loc(z, p, nf))
         - 2 * np.log((Q**2) / (p[0] ** 2)) * Cb1_Mbg1(z, p, nf)
     )
 
@@ -103,7 +105,7 @@ def Cg_3_til_reg(z, Q, p, nf, grids=False):
         + Cg_2_m_reg(z, Q, p, nf) * Mgg_1_loc(z, p, nf)
         + P2(p) * Cg_1_m_reg(z, Q, p, nf)
         - (
-            Cg_1_m_reg(z, Q, p, nf) * Mgg_2_loc(z, p,nf)
+            Cg_1_m_reg(z, Q, p, nf) * Mgg_2_loc(z, p, nf)
             + Convolute(Cg_1_m_reg, Mgg_2_reg, z, Q, p, nf)
             + Convolute_plus_matching(Cg_1_m_reg, Mgg_2_sing, z, Q, p, nf)
         )
@@ -167,7 +169,9 @@ def CLg_1_til_reg(z, Q, p, nf):
 def CLg_2_til_reg(z, Q, p, nf, grids=True):
     if grids:
         return Ini.CLg2_til(z, Q)[0]
-    return CLg_2_m_reg(z, Q, p, nf) - 2 * np.log((Q**2) / (p[0] ** 2)) * CLb1_Mbg1(z, p, nf)
+    return CLg_2_m_reg(z, Q, p, nf) - 2 * np.log((Q**2) / (p[0] ** 2)) * CLb1_Mbg1(
+        z, p, nf
+    )
 
 
 def CLg_3_til_reg(z, Q, p, nf, grids=False):
@@ -182,8 +186,16 @@ def CLg_3_til_reg(z, Q, p, nf, grids=False):
             + Convolute(CLg_1_m_reg, Mgg_2_reg, z, Q, p, nf)
             + Convolute_plus_matching(CLg_1_m_reg, Mgg_2_sing, z, Q, p, nf)
         )
-        - 2 * (Convolute(CLb_1_reg, Mbg_2, z, Q, p, nf) - CLb1_Mbg1(z, p, nf) * Mgg_1_loc(z, p, nf))
-        - 2 * (CLb_2_loc(z, Q, p, nf) * Mbg_1(z, p, nf) + Convolute(CLb_2_reg, Mbg_1, z, Q, p, nf))
+        - 2
+        * (
+            Convolute(CLb_1_reg, Mbg_2, z, Q, p, nf)
+            - CLb1_Mbg1(z, p, nf) * Mgg_1_loc(z, p, nf)
+        )
+        - 2
+        * (
+            CLb_2_loc(z, Q, p, nf) * Mbg_1(z, p, nf)
+            + Convolute(CLb_2_reg, Mbg_1, z, Q, p, nf)
+        )
     )
 
 

@@ -76,7 +76,7 @@ def Convolute_matching(matching1, matching2, x, Q, p1, nf):
     upper = 1.0
     q = [p1[0], Q]
     result, error = integrate.quad(
-        lambda z: (1.0 / z) * matching1(z, q) * matching2(x * (1.0 / z), q, nf),
+        lambda z: (1.0 / z) * matching1(z, q, nf) * matching2(x * (1.0 / z), q, nf),
         lower,
         upper,
         epsrel=1.0e-02,
@@ -181,7 +181,7 @@ def Convolute_plus_coeff(func1, matching, x, Q, p1, nf):
     q = [p1[0], Q]
     plus1, error1 = integrate.quad(
         lambda z: func1(z, Q, p1, nf)
-        * ((1.0 / z) * matching(x * (1.0 / z), q, nf) - matching(x, q,nf)),
+        * ((1.0 / z) * matching(x * (1.0 / z), q, nf) - matching(x, q, nf)),
         x,
         1.0,
         epsrel=1.0e-02,

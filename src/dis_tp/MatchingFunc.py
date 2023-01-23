@@ -70,7 +70,7 @@ def a_Qg_30(x, v, nf):
         )
 
 
-def Mbg_3_reg(z, p, nf, grids=False):
+def Mbg_3_reg(z, p, nf, grids=True):
     if grids:
         return Ini.Mbg3(z, p[1])[0]
     L_M = np.log((p[0] ** 2) / (p[1] ** 2))
@@ -2909,7 +2909,7 @@ def aQqPS30(x, nf):
     )
 
 
-def Mbq_3_reg(z, p, nf, grids=False):
+def Mbq_3_reg(z, p, nf, grids=True):
     if grids:
         return Ini.Mbq3(z, p[1])[0]
     L_M = np.log((p[0] ** 2) / (p[1] ** 2))
@@ -3656,6 +3656,7 @@ def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
         return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return inverse_mellin(A_Hg, x, nf, r, s, path, L)
+
 
 # TODO: this has to generalized!
 def P1(p, nf):
