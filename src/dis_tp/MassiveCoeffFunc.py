@@ -99,7 +99,6 @@ def CLg_2_m_reg(z, Q, p, nf):
 
 
 def CLg_3_m_reg(z, Q, p, nf):
-    import pdb; pdb.set_trace()
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2

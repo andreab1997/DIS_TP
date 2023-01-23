@@ -10,33 +10,33 @@ from .tools import PDFConvolute, PDFConvolute_plus
 g_id = pids["g"]
 
 
-def Initialize_all():
+def Initialize_all(nf):
     """
     Initialize all the needed global lists
     """
     Ini.InitializeQX()
-    Ini.InitializeCg2_m()
-    Ini.InitializeCq2_m()
-    Ini.InitializeCLg2_m()
-    Ini.InitializeCLq2_m()
+    Ini.InitializeCg2_m(nf)
+    Ini.InitializeCq2_m(nf)
+    Ini.InitializeCLg2_m(nf)
+    Ini.InitializeCLq2_m(nf)
     Ini.InitializeMbg2()
     Ini.InitializeMbq2()
     Ini.InitializeHPL()
-    # Ini.InitializeMbg_3()
-    # Ini.InitializeMbq_3()
-    Ini.InitializeCg2_til()
-    Ini.InitializeCq2_til()
-    Ini.InitializeCLg2_til()
-    Ini.InitializeCLq2_til()
+    Ini.InitializeMbg_3(nf)
+    Ini.InitializeMbq_3(nf)
+    Ini.InitializeCg2_til(nf)
+    Ini.InitializeCq2_til(nf)
+    Ini.InitializeCLg2_til(nf)
+    Ini.InitializeCLq2_til(nf)
     Ini.InitializeQX_Nic()
-    Ini.InitializeCq3_m()
-    Ini.InitializeCLq3_m()
-    Ini.InitializeCg3_m()
-    Ini.InitializeCLg3_m()
-    # Ini.InitializeCLq3_til()
-    # Ini.InitializeCLg3_til()
-    # Ini.InitializeCq3_til()
-    # Ini.InitializeCg3_til()
+    Ini.InitializeCq3_m(nf)
+    Ini.InitializeCLq3_m(nf)
+    Ini.InitializeCg3_m(nf)
+    Ini.InitializeCLg3_m(nf)
+    # Ini.InitializeCLq3_til(nf)
+    # Ini.InitializeCLg3_til(nf)
+    # Ini.InitializeCq3_til(nf)
+    # Ini.InitializeCg3_til(nf)
 
 
 def F2_FO(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
