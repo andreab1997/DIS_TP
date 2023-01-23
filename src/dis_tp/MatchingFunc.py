@@ -3657,7 +3657,6 @@ def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
     return inverse_mellin(A_Hg, x, nf, r, s, path, L)
 
 
-# TODO: this has to generalized!
 def P1(p, nf):
     return -Mgg_1_loc(0, p, nf)
 
