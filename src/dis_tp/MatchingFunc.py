@@ -1,15 +1,14 @@
 # This contains the matching conditions needed for the evaluation of the tilde coefficients functions.
 # notation: p[1] is Q^2 while p[0] is m_b^2
 import numpy as np
-from eko.constants import CA, TR, CF
+from eko.constants import CA, CF, TR
+from eko.matching_conditions.as3 import A_Hg, A_Hq
 
 from . import Harmonics as harm
 from . import Initialize
 from . import Initialize as Ini
 from . import zetas as zet
 from .InverseMellin import inverse_mellin
-
-from eko.matching_conditions.as3 import A_Hq, A_Hg
 
 
 def Mbg_1(z, p, nf):
@@ -3660,9 +3659,9 @@ def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
 
 # TODO: this has to generalized!
 def P1(p, nf):
-    return Mgg_1_loc(0, p, nf)
+    return -Mgg_1_loc(0, p, nf)
 
 
 def P2(p):
     fact = np.log((p[1] ** 2) / (p[0] ** 2))
-    return (2.0 / 9.0) * (2 * (fact**2) + 33 * fact - 7)
+    return (2.0 / 9.0) * (2 * (fact**2) + 19 * 3 * fact + 7 * 3)  # Thanks EKO
