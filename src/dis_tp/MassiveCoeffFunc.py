@@ -31,41 +31,45 @@ def Cg_1_m_reg(z, Q, p, nf):
 def Cg_2_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
+    e_h = p[-1]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0
-    return Initialize.Cg2m(z, Q)[0]
+    return e_h**2 * Initialize.Cg2m(z, Q)[0]
 
 
 def Cg_3_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
+    e_h = p[-1]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return Initialize.Cg3m(z, Q)[0]
+    return e_h**2 * Initialize.Cg3m(z, Q)[0]
 
 
 def Cq_2_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
+    e_h = p[-1]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0
-    return Initialize.Cq2m(z, Q)[0]
+    return e_h**2 * Initialize.Cq2m(z, Q)[0]
 
 
 def Cq_3_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
+    e_h = p[-1]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return Initialize.Cq3m(z, Q)[0]
+    return e_h**2 * Initialize.Cq3m(z, Q)[0]
 
 
 # FL
@@ -91,38 +95,42 @@ def CLg_1_m_reg(z, Q, p, nf):
 def CLg_2_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
+    e_h = p[-1]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0
-    return Initialize.CLg2m(z, Q)[0]
+    return e_h**2 * Initialize.CLg2m(z, Q)[0]
 
 
 def CLg_3_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
+    e_h = p[-1]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0
-    return Initialize.CLg3m(z, Q)[0]
+    return e_h**2 * Initialize.CLg3m(z, Q)[0]
 
 
 def CLq_2_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
+    e_h = p[-1]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0
-    return Initialize.CLq2m(z, Q)[0]
+    return e_h**2 * Initialize.CLq2m(z, Q)[0]
 
 
 def CLq_3_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
+    e_h = p[-1]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return Initialize.CLq3m(z, Q)[0]
+    return e_h**2 * Initialize.CLq3m(z, Q)[0]
