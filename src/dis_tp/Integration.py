@@ -241,7 +241,6 @@ def F2_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
     muF = muF_ratio * Q
     muR = muR_ratio * Q
     nf = number_active_flavors(h_id)
-    nl = number_light_flavors(h_id)
     p = [Mypdf.quarkMass(h_id), Q, charges(h_id)]
     res = 0.0
     if meth == "our":
