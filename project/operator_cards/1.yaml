@@ -11,4 +11,11 @@ q_grid:
 - 10.0
 
 obs:
-- "F2"
+ F2:
+   PDF: "NNPDF40_nnlo_as_01180"
+   restype: "M"
+   scalevar: "True"
+ FL:
+   PDF: "NNPDF40_nlo_as_01180"
+   restype: "R"
+   scalevar: "False"

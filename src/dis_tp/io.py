@@ -3,6 +3,16 @@ import yaml
 from .configs import defaults, detect, load
 
 
+class Observable:
+    """Class describing observable settings"""
+
+    def __init__(self, obs, pdf, restype, scalevar):
+        self.obs = obs
+        self.pdf = pdf
+        self.restype = restype
+        self.scalevar = scalevar
+
+
 def load_theory_parameters(configs, name):
     """Return a TheoryParameters object."""
     with open(
@@ -19,7 +29,19 @@ def load_operator_parameters(configs, name):
         configs["paths"]["operator_cards"] / (name + ".yaml"), encoding="utf-8"
     ) as f:
         loaded = yaml.safe_load(f)
-    return OperatorParameters(x_grid=loaded["x_grid"], q_grid=loaded["q_grid"])
+    observables = []
+    for ob in loaded["obs"]:
+        observables.append(
+            Observable(
+                obs=ob,
+                pdf=loaded["obs"][ob]["PDF"],
+                restype=loaded["obs"][ob]["restype"],
+                scalevar=loaded["obs"][ob]["scalevar"],
+            )
+        )
+    return OperatorParameters(
+        x_grid=loaded["x_grid"], q_grid=loaded["q_grid"], obs=observables
+    )
 
 
 class TheoryParameters:
