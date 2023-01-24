@@ -5,7 +5,6 @@ from eko.constants import CA, CF, TR
 from eko.matching_conditions.as3 import A_Hg, A_Hq
 
 from . import Harmonics as harm
-from . import Initialize
 from . import Initialize as Ini
 from . import zetas as zet
 from .InverseMellin import inverse_mellin
@@ -16,7 +15,7 @@ def Mbg_1(z, p, nf):
 
 
 def Mbg_2(z, p, nf):
-    return Initialize.Mbg2(z, p[1])
+    return Ini.Mbg2(z, p[1])[0]
 
 
 def a_Qg_30(x, v, nf):
@@ -30,7 +29,7 @@ def a_Qg_30(x, v, nf):
     L13 = L12 * L1
 
     if v == 0:
-        return 0.5 * (a_Qg_30(x, 1) + a_Qg_30(x, 2))
+        return 0.5 * (a_Qg_30(x, 1, nf) + a_Qg_30(x, 2, nf))
     if v == 1:
         return (
             354.1002 * L13
@@ -131,7 +130,7 @@ def Mbg_3_reg(z, p, nf, grids=True):
     H_0011m1 = harm.H_0011m1(z)
     H_01m1m1m1 = harm.H_01m1m1m1(z)
     gamma_qg0 = 0.0
-    a_Qg3 = a_Qg_30(z, 0)
+    a_Qg3 = a_Qg_30(z, 0, nf)
     return (
         a_Qg3
         + (TR**3)
@@ -2251,7 +2250,7 @@ def Mgg_2_sing(z, p, nf):
 
 
 def Mbq_2(z, p, nf):
-    return Initialize.Mbq2(z, p[1])
+    return Ini.Mbq2(z, p[1])[0]
 
 
 def aQqPS30(x, nf):
@@ -3618,7 +3617,7 @@ def Mbq_3_reg(z, p, nf, grids=True):
     )
 
 
-# In the one above maybe there is a minus sign missing in front
+# TODO: In the one above maybe there is a minus sign missing in front
 def Mgq_2_reg(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
@@ -3645,16 +3644,16 @@ def Mgq_2_reg(z, p, nf):
 # Matching conditions obtained from inverse mellin transform
 def Mbg_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
     if grids:
-        return Ini.Mbq3(x, p[1])[0]
+        return Ini.Mbg3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return inverse_mellin(A_Hq, x, nf, r, s, path, L)
+    return inverse_mellin(A_Hg, x, nf, r, s, path, L)
 
 
 def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
     if grids:
         return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return inverse_mellin(A_Hg, x, nf, r, s, path, L)
+    return inverse_mellin(A_Hq, x, nf, r, s, path, L)
 
 
 def P1(p, nf):
