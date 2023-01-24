@@ -265,7 +265,7 @@ def InitializeQX():
     global QList
     global ZList
     QList = readt.read1D(PATH_TO_GLOBAL + "/External/Q.txt")
-    ZList = readt.read1D_Nic(PATH_TO_GLOBAL + "/External/x_NEW.txt")
+    ZList = readt.read1D_Nic(PATH_TO_GLOBAL + "/External/x.txt")
 
 
 def InitializeCq3_m(nf):
