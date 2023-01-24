@@ -15,7 +15,7 @@ def InitializeCg2_m(nf):
     """
     global Cg2m
     Cg2m_array = readt.readND(PATH_TO_GLOBAL + f"/External/Cg2_2_m/Cg_nf{nf}.txt")
-    Cg2m = interp2d(ZList, QList, Cg2m_array, kind="linear")
+    Cg2m = interp2d(ZList, QList, Cg2m_array, kind="quintic")
 
 
 def InitializeCq2_m(nf):
@@ -24,7 +24,7 @@ def InitializeCq2_m(nf):
     """
     global Cq2m
     Cq2m_array = readt.readND(PATH_TO_GLOBAL + f"/External/Cq2_2_m/Cq_nf{nf}.txt")
-    Cq2m = interp2d(ZList, QList, Cq2m_array, kind="linear")
+    Cq2m = interp2d(ZList, QList, Cq2m_array, kind="quintic")
 
 
 def InitializeCLg2_m(nf):
@@ -33,7 +33,7 @@ def InitializeCLg2_m(nf):
     """
     global CLg2m
     CLg2m_array = readt.readND(PATH_TO_GLOBAL + f"/External/CgL_2_m/CgL_nf{nf}.txt")
-    CLg2m = interp2d(ZList, QList, CLg2m_array, kind="linear")
+    CLg2m = interp2d(ZList, QList, CLg2m_array, kind="quintic")
 
 
 def InitializeCLq2_m(nf):
@@ -42,7 +42,7 @@ def InitializeCLq2_m(nf):
     """
     global CLq2m
     CLq2m_array = readt.readND(PATH_TO_GLOBAL + f"/External/CqL_2_m/CqL_nf{nf}.txt")
-    CLq2m = interp2d(ZList, QList, CLq2m_array, kind="linear")
+    CLq2m = interp2d(ZList, QList, CLq2m_array, kind="quintic")
 
 
 def InitializeCg2_til(nf):
@@ -53,7 +53,7 @@ def InitializeCg2_til(nf):
     Cg2_til_array_prov = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Cg_2_til/Cg2til_nf{nf}.txt")
     )[:-1]
-    Cg2_til = interp2d(ZList[:-1], QList, Cg2_til_array_prov.transpose(), kind="linear")
+    Cg2_til = interp2d(ZList[:-1], QList, Cg2_til_array_prov.transpose(), kind="quintic")
 
 
 def InitializeCq2_til(nf):
@@ -64,7 +64,7 @@ def InitializeCq2_til(nf):
     Cq2_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Cq_2_til/Cq2til_nf{nf}.txt")
     ).transpose()
-    Cq2_til = interp2d(ZList, QList, Cq2_til_array, kind="linear")
+    Cq2_til = interp2d(ZList, QList, Cq2_til_array, kind="quintic")
 
 
 def InitializeCLg2_til(nf):
@@ -75,7 +75,7 @@ def InitializeCLg2_til(nf):
     CLg2_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/CLg_2_til/CLg2til_nf{nf}.txt")
     ).transpose()
-    CLg2_til = interp2d(ZList, QList, CLg2_til_array, kind="linear")
+    CLg2_til = interp2d(ZList, QList, CLg2_til_array, kind="quintic")
 
 
 def InitializeCLq2_til(nf):
@@ -86,7 +86,7 @@ def InitializeCLq2_til(nf):
     CLq2_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/CLq_2_til/CLq2til_nf{nf}.txt")
     ).transpose()
-    CLq2_til = interp2d(ZList, QList, CLq2_til_array, kind="linear")
+    CLq2_til = interp2d(ZList, QList, CLq2_til_array, kind="quintic")
 
 
 def InitializeMbg2():
@@ -96,7 +96,7 @@ def InitializeMbg2():
     global Mbg2
     Mbg2_array = readt.readND(PATH_TO_GLOBAL + "/External/Mbg_2/Mbg2.txt")
     my_array = (np.array(Mbg2_array).transpose()[:-1]).transpose()
-    Mbg2 = interp2d(ZList[:-1], QList, my_array, kind="linear")
+    Mbg2 = interp2d(ZList[:-1], QList, my_array, kind="quintic")
 
 
 def InitializeMbq2():
@@ -105,7 +105,7 @@ def InitializeMbq2():
     """
     global Mbq2
     Mbq2_array = readt.readND(PATH_TO_GLOBAL + "/External/Mbq_2/Mbq2.txt")
-    Mbq2 = interp2d(ZList, QList, Mbq2_array, kind="linear")
+    Mbq2 = interp2d(ZList, QList, Mbq2_array, kind="quintic")
 
 
 def InitializeHPL():
@@ -240,7 +240,7 @@ def InitializeMbg_3(nf):
     Mbg3_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Mbg_3/Mbg3_nf{nf}.txt")
     ).transpose()
-    Mbg3 = interp2d(HPL_x_array, QList, Mbg3_array, kind="linear")
+    Mbg3 = interp2d(HPL_x_array, QList, Mbg3_array, kind="quintic")
 
 
 def InitializeMbq_3(nf):
@@ -251,7 +251,7 @@ def InitializeMbq_3(nf):
     Mbq3_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Mbq_3/Mbq3_nf{nf}.txt")
     ).transpose()
-    Mbq3 = interp2d(HPL_x_array, QList, Mbq3_array, kind="linear")
+    Mbq3 = interp2d(HPL_x_array, QList, Mbq3_array, kind="quintic")
 
 
 # Niccolo functions
@@ -277,7 +277,7 @@ def InitializeCq3_m(nf):
         readt.readND_Nic(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
     ).transpose()[:-1]
     Cq3m_array = Cq3m_array_prov.transpose()
-    Cq3m = interp2d(ZList[:-1], QList, Cq3m_array, kind="linear")
+    Cq3m = interp2d(ZList[:-1], QList, Cq3m_array, kind="quintic")
 
 
 def InitializeCq3_til(nf):
@@ -288,7 +288,7 @@ def InitializeCq3_til(nf):
     Cq3_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Cq_3_til/Cq3til_nf{nf}.txt")
     ).transpose()
-    Cq3_til = interp2d(ZList[:-1], QList, Cq3_til_array, kind="linear")
+    Cq3_til = interp2d(ZList[:-1], QList, Cq3_til_array, kind="quintic")
 
 
 def InitializeCLq3_m(nf):
@@ -300,7 +300,7 @@ def InitializeCLq3_m(nf):
         readt.readND_Nic(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
     ).transpose()[:-1]
     CLq3m_array = CLq3m_array_prov.transpose()
-    CLq3m = interp2d(ZList[:-1], QList, CLq3m_array, kind="linear")
+    CLq3m = interp2d(ZList[:-1], QList, CLq3m_array, kind="quintic")
 
 
 def InitializeCLq3_til(nf):
@@ -311,7 +311,7 @@ def InitializeCLq3_til(nf):
     CLq3_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/CLq_3_til/CLq3til_nf{nf}.txt")
     ).transpose()
-    CLq3_til = interp2d(ZList[:-1], QList, CLq3_til_array, kind="linear")
+    CLq3_til = interp2d(ZList[:-1], QList, CLq3_til_array, kind="quintic")
 
 
 def InitializeCg3_m(nf):
@@ -323,7 +323,7 @@ def InitializeCg3_m(nf):
         readt.readND_Nic(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
     ).transpose()[:-1]
     Cg3m_array = Cg3m_array_prov.transpose()
-    Cg3m = interp2d(ZList[:-1], QList, Cg3m_array, kind="linear")
+    Cg3m = interp2d(ZList[:-1], QList, Cg3m_array, kind="quintic")
 
 
 def InitializeCLg3_m(nf):
@@ -335,7 +335,7 @@ def InitializeCLg3_m(nf):
         readt.readND_Nic(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
     ).transpose()[:-1]
     CLg3m_array = CLg3m_array_prov.transpose()
-    CLg3m = interp2d(ZList[:-1], QList, CLg3m_array, kind="linear")
+    CLg3m = interp2d(ZList[:-1], QList, CLg3m_array, kind="quintic")
 
 
 def InitializeCg3_til(nf):
@@ -346,7 +346,7 @@ def InitializeCg3_til(nf):
     Cg3_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Cg_3_til/Cg3til_nf{nf}.txt")
     ).transpose()
-    Cg3_til = interp2d(ZList[:-1], QList, Cg3_til_array, kind="linear")
+    Cg3_til = interp2d(ZList[:-1], QList, Cg3_til_array, kind="quintic")
 
 
 def InitializeCLg3_til(nf):
@@ -357,4 +357,4 @@ def InitializeCLg3_til(nf):
     CLg3_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/CLg_3_til/CLg3til_nf{nf}.txt")
     ).transpose()
-    CLg3_til = interp2d(ZList[:-1], QList, CLg3_til_array, kind="linear")
+    CLg3_til = interp2d(ZList[:-1], QList, CLg3_til_array, kind="quintic")

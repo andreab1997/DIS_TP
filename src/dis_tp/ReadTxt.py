@@ -155,5 +155,6 @@ class Construct_Grid:
         func_values = []
         for res in result:
             func_values.append(res)
+        print(f"Computation finished, saving to {self.path}")
         np.savetxt(self.path, func_values)
         return func_values
