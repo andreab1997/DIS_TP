@@ -2185,7 +2185,7 @@ def Mgg_2_reg(z, p, nf):
                 - (z**2) * (8.0 / 3.0)
             )
         )
-        + L
+        - L
         * (
             CF
             * TR
@@ -2233,7 +2233,7 @@ def Mgg_2_loc(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return (
         (L**2) * ((TR**2) * (16.0 / 9.0))
-        + L * (CF * TR * 4 + CA * TR * (16.0 / 3.0))
+        - L * (CF * TR * 4 + CA * TR * (16.0 / 3.0))
         - CF * TR * 15
         + CA * TR * (10.0 / 9.0)
     )
@@ -2244,7 +2244,7 @@ def Mgg_2_sing(z, p, nf):
     z1 = 1 - z
     return (
         (L**2) * (CA * TR * (8.0 / 3.0) * (1.0 / z1))
-        + L * (CA * TR * (80.0 / 9.0) * (1.0 / z1))
+        - L * (CA * TR * (80.0 / 9.0) * (1.0 / z1))
         + CA * TR * ((224.0 / 27.0) * (1.0 / z1))
     )
 
@@ -3617,7 +3617,6 @@ def Mbq_3_reg(z, p, nf, grids=True):
     )
 
 
-# TODO: In the one above maybe there is a minus sign missing in front
 def Mgq_2_reg(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
@@ -3627,7 +3626,7 @@ def Mgq_2_reg(z, p, nf):
         * TR
         * (
             ((16.0 / (3 * z)) - (16.0 / 3.0) + z * (8.0 / 3.0)) * (L**2)
-            + (
+            - (
                 (160.0 / (9 * z))
                 - (160.0 / 9.0)
                 + z * (128.0 / 9.0)
@@ -3644,14 +3643,16 @@ def Mgq_2_reg(z, p, nf):
 # Matching conditions obtained from inverse mellin transform
 def Mbg_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
     if grids:
-        return Ini.Mbg3(x, p[1])[0]
+        # NOTE: here there is a different convention on the use of matching conditions
+        return 0.5 * Ini.Mbg3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return inverse_mellin(A_Hg, x, nf, r, s, path, L)
 
 
 def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
     if grids:
-        return Ini.Mbq3(x, p[1])[0]
+        # NOTE: here there is a different convention on the use of matching conditions
+        return 0.5 * Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return inverse_mellin(A_Hq, x, nf, r, s, path, L)
 
