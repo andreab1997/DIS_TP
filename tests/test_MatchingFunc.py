@@ -71,8 +71,9 @@ class Test_Matching_Hg:
         eko = []
         for q in self.Qs:
             for x in self.xs:
-                p = [4.58, q]
-                my.append(2 * mf.Mbg_2(x, p, NF))
+                p = [mhq, q]
+                factor = 2 if self.grids else 1
+                my.append(factor * mf.Mbg_2(x, p, NF, self.grids))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):
@@ -102,7 +103,8 @@ class Test_Matching_Hg:
         for q in self.Qs:
             for x in self.xs:
                 p = [mhq, q]
-                my.append(2 * mf.Mbg_3_reg_inv(x, p, NF, grids=self.grids))
+                factor = 2 if self.grids else 1
+                my.append(factor * mf.Mbg_3_reg_inv(x, p, NF, grids=self.grids))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):
@@ -138,8 +140,9 @@ class Test_Matching_Hq:
         eko = []
         for q in self.Qs:
             for x in self.xs:
-                p = [4.58, q]
-                my.append(2 * mf.Mbq_2(x, p, NF))
+                p = [mhq, q]
+                factor = 2 if self.grids else 1
+                my.append(factor * mf.Mbq_2(x, p, NF,  self.grids))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):
@@ -169,7 +172,8 @@ class Test_Matching_Hq:
         for q in self.Qs:
             for x in self.xs:
                 p = [mhq, q]
-                my.append(2 * mf.Mbq_3_reg_inv(x, p, NF, grids=self.grids))
+                factor = 2 if self.grids else 1
+                my.append(factor * mf.Mbq_3_reg_inv(x, p, NF, grids=self.grids))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):

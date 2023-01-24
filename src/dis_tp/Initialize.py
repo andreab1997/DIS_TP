@@ -89,23 +89,23 @@ def InitializeCLq2_til(nf):
     CLq2_til = interp2d(ZList, QList, CLq2_til_array, kind="quintic")
 
 
-def InitializeMbg2():
+def InitializeMbg2(nf):
     """
     Initialize the Mbg at NNLO matching function from the file in External
     """
     global Mbg2
-    Mbg2_array = readt.readND(PATH_TO_GLOBAL + "/External/Mbg_2/Mbg2.txt")
-    my_array = (np.array(Mbg2_array).transpose()[:-1]).transpose()
+    Mbg2_array = readt.readND(PATH_TO_GLOBAL + f"/External/Mbg_2/Mbg2_nf{nf}.txt")
+    my_array = np.array(Mbg2_array)[:-1].T
     Mbg2 = interp2d(ZList[:-1], QList, my_array, kind="quintic")
 
 
-def InitializeMbq2():
+def InitializeMbq2(nf):
     """
     Initialize the Mbg at NNLO matching function from the file in External
     """
     global Mbq2
-    Mbq2_array = readt.readND(PATH_TO_GLOBAL + "/External/Mbq_2/Mbq2.txt")
-    Mbq2 = interp2d(ZList, QList, Mbq2_array, kind="quintic")
+    Mbq2_array = readt.readND(PATH_TO_GLOBAL + f"/External/Mbq_2/Mbq2_nf{nf}.txt")
+    Mbq2 = interp2d(ZList, QList, np.array(Mbq2_array).T, kind="quintic")
 
 
 def InitializeHPL():
@@ -240,7 +240,7 @@ def InitializeMbg_3(nf):
     Mbg3_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Mbg_3/Mbg3_nf{nf}.txt")
     ).transpose()
-    Mbg3 = interp2d(HPL_x_array, QList, Mbg3_array, kind="quintic")
+    Mbg3 = interp2d(ZList, QList, Mbg3_array, kind="quintic")
 
 
 def InitializeMbq_3(nf):
@@ -251,7 +251,7 @@ def InitializeMbq_3(nf):
     Mbq3_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Mbq_3/Mbq3_nf{nf}.txt")
     ).transpose()
-    Mbq3 = interp2d(HPL_x_array, QList, Mbq3_array, kind="quintic")
+    Mbq3 = interp2d(ZList, QList, Mbq3_array, kind="quintic")
 
 
 # Niccolo functions
