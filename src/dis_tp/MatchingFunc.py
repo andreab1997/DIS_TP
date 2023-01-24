@@ -15,7 +15,7 @@ def Mbg_1(z, p, nf):
 
 
 def Mbg_2(z, p, nf):
-    return Ini.Mbg2(z, p[1])
+    return Ini.Mbg2(z, p[1])[0]
 
 
 def a_Qg_30(x, v, nf):
