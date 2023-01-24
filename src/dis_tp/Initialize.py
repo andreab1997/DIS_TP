@@ -9,17 +9,6 @@ from . import ReadTxt as readt
 PATH_TO_GLOBAL = str(pathlib.Path(__file__).parent.parent.parent)
 
 
-def InitializeQX():
-    """
-    Initialize the Q and z grids over which the other functions are built
-    from the files in External
-    """
-    global QList
-    global ZList
-    QList = readt.read1D(PATH_TO_GLOBAL + "/External/Cg2_2_m/Q.txt")
-    ZList = readt.read1D(PATH_TO_GLOBAL + "/External/Cg2_2_m/x.txt")
-
-
 def InitializeCg2_m(nf):
     """
     Initialize the Cg2 at NNLO massive function from the file in External
@@ -268,15 +257,15 @@ def InitializeMbq_3(nf):
 # Niccolo functions
 
 
-def InitializeQX_Nic():
+def InitializeQX():
     """
     Initialize the Q and z grids over which the other functions are built
     from the files in External (for Niccolo functions)
     """
-    global QList_Nic
-    global ZList_Nic
-    QList_Nic = readt.read1D(PATH_TO_GLOBAL + "/External/Cg_3_m/Q.txt")
-    ZList_Nic = readt.read1D_Nic(PATH_TO_GLOBAL + "/External/Cg_3_m/x_NEW.txt")
+    global QList
+    global ZList
+    QList = readt.read1D(PATH_TO_GLOBAL + "/External/Q.txt")
+    ZList = readt.read1D_Nic(PATH_TO_GLOBAL + "/External/x_NEW.txt")
 
 
 def InitializeCq3_m(nf):
@@ -288,7 +277,7 @@ def InitializeCq3_m(nf):
         readt.readND_Nic(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
     ).transpose()[:-1]
     Cq3m_array = Cq3m_array_prov.transpose()
-    Cq3m = interp2d(ZList_Nic[:-1], QList_Nic, Cq3m_array, kind="linear")
+    Cq3m = interp2d(ZList[:-1], QList, Cq3m_array, kind="linear")
 
 
 def InitializeCq3_til(nf):
@@ -311,7 +300,7 @@ def InitializeCLq3_m(nf):
         readt.readND_Nic(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
     ).transpose()[:-1]
     CLq3m_array = CLq3m_array_prov.transpose()
-    CLq3m = interp2d(ZList_Nic[:-1], QList_Nic, CLq3m_array, kind="linear")
+    CLq3m = interp2d(ZList[:-1], QList, CLq3m_array, kind="linear")
 
 
 def InitializeCLq3_til(nf):
@@ -334,7 +323,7 @@ def InitializeCg3_m(nf):
         readt.readND_Nic(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
     ).transpose()[:-1]
     Cg3m_array = Cg3m_array_prov.transpose()
-    Cg3m = interp2d(ZList_Nic[:-1], QList_Nic, Cg3m_array, kind="linear")
+    Cg3m = interp2d(ZList[:-1], QList, Cg3m_array, kind="linear")
 
 
 def InitializeCLg3_m(nf):
@@ -346,7 +335,7 @@ def InitializeCLg3_m(nf):
         readt.readND_Nic(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
     ).transpose()[:-1]
     CLg3m_array = CLg3m_array_prov.transpose()
-    CLg3m = interp2d(ZList_Nic[:-1], QList_Nic, CLg3m_array, kind="linear")
+    CLg3m = interp2d(ZList[:-1], QList, CLg3m_array, kind="linear")
 
 
 def InitializeCg3_til(nf):
