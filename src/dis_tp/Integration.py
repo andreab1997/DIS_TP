@@ -4,7 +4,7 @@ import numpy as np
 
 from . import Initialize as Ini
 from . import MassiveCoeffFunc, MasslessCoeffFunc, TildeCoeffFunc
-from .parameters import charges, number_active_flavors, number_light_flavors, pids
+from .parameters import charges, number_active_flavors, number_light_flavors, pids, masses
 from .tools import PDFConvolute, PDFConvolute_plus
 
 g_id = pids["g"]
@@ -70,7 +70,7 @@ def F2_FO(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
         Mypdf = lhapdf.mkPDF(pdf, 0)
     muF = muF_ratio * Q
     muR = muR_ratio * Q
-    p = [Mypdf.quarkMass(h_id), Q, charges(h_id)]
+    p = [masses(h_id), Q, charges(h_id)]
     nf = number_active_flavors(h_id)
     res = 0.0
     if order >= 0:
@@ -126,7 +126,7 @@ def F2_R(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
     muF = muF_ratio * Q
     muR = muR_ratio * Q
     nf = number_active_flavors(h_id)
-    p = [Mypdf.quarkMass(h_id), Q, charges(h_id)]
+    p = [masses(h_id), Q, charges(h_id)]
     res = 0.0
     if order >= 0:
         res += 0.0
@@ -241,7 +241,7 @@ def F2_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
     muF = muF_ratio * Q
     muR = muR_ratio * Q
     nf = number_active_flavors(h_id)
-    p = [Mypdf.quarkMass(h_id), Q, charges(h_id)]
+    p = [masses(h_id), Q, charges(h_id)]
     res = 0.0
     if meth == "our":
         if order >= 0:
@@ -440,7 +440,7 @@ def FL_FO(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
         Mypdf = lhapdf.mkPDF(pdf, 0)
     muF = muF_ratio * Q
     muR = muR_ratio * Q
-    p = [Mypdf.quarkMass(h_id), Q, charges(h_id)]
+    p = [masses(h_id), Q, charges(h_id)]
     nf = number_active_flavors(h_id)
     res = 0.0
     if order >= 0:
@@ -495,7 +495,7 @@ def FL_R(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
         Mypdf = lhapdf.mkPDF(pdf, 0)
     muF = muF_ratio * Q
     muR = muR_ratio * Q
-    p = [Mypdf.quarkMass(h_id), Q, charges(h_id)]
+    p = [masses(h_id), Q, charges(h_id)]
     nf = number_active_flavors(h_id)
     res = 0.0
     if order >= 0:
@@ -574,7 +574,7 @@ def FL_M(order, meth, pdf, x, h_id, Q, muF_ratio=1, muR_ratio=1):
     muR = muR_ratio * Q
     nf = number_active_flavors(h_id)
     nl = number_light_flavors(h_id)
-    p = [Mypdf.quarkMass(h_id), Q, charges(h_id)]
+    p = [masses(h_id), Q, charges(h_id)]
     res = 0.0
     if meth == "our":
         if order >= 0:
