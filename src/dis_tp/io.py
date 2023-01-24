@@ -1,6 +1,16 @@
+import lhapdf
 import yaml
 
+from dis_tp import Integration as Int
+
 from .configs import defaults, detect, load
+from .parameters import number_active_flavors
+
+maporders = {"LO": 0, "NLO": 1, "NNLO": 2, "N3LO": 3}
+mapfunc = {
+    "F2": {"R": Int.F2_R, "M": Int.F2_M, "FO": Int.F2_FO},
+    "FL": {"R": Int.FL_R, "M": Int.FL_M, "FO": Int.FL_FO},
+}
 
 
 class Observable:
@@ -85,10 +95,33 @@ class RunParameters:
         self.resultpath = resultpath
 
     def theory_parameters(self):
-        return self.theory_parameters
+        return self.theoryparam
 
     def operator_parameters(self):
-        return self.operator_parameters
+        return self.operatorparam
 
     def resultpath(self):
         return self.resultpath
+
+
+def compute(runparameters):
+    # Initializing
+    hid = runparameters.theory_parameters().hid
+    nf = number_active_flavors(hid)
+    Int.Initialize_all(nf)
+
+    order = maporders[runparameters.theory_parameters().order]
+    results = {}
+    for ob in runparameters.operator_parameters().obs:
+        func_to_call = mapfunc[ob.obs][ob.restype]
+        thisob_res = []
+        for x in runparameters.operator_parameters().x_grid:
+            xfix_res = []
+            for q in runparameters.operator_parameters().q_grid:
+                if func_to_call in [Int.F2_M, Int.FL_M]:
+                    xfix_res.append(func_to_call(order, "our", ob.pdf, x, q, hid))
+                else:
+                    xfix_res.append(func_to_call(order, ob.pdf, x, q, hid))
+            thisob_res.append(xfix_res)
+        results[ob.obs] = thisob_res
+    print(results)
