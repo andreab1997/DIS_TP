@@ -15,11 +15,14 @@ def Mbg_1(z, p, nf):
     return 2 * TR * np.log((p[1] ** 2) / (p[0] ** 2)) * (z * z + (1 - z) * (1 - z))
 
 
+# NOTE: here there is a different convention on the use of
+#  matching conditions A_Hq and A_hg wrt EKO
 def Mbg_2(z, p, nf, grids=False, r=None, s=None, path="talbot"):
     if grids:
-        return 0.5 * Ini.Mbg2(z, p[1])[0]
+        return Ini.Mbg2(z, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return inverse_mellin(as2.A_hg, z, nf, r, s, path, L)
+    return 0.5 * inverse_mellin(as2.A_hg, z, nf, r, s, path, L)
+
 
 def a_Qg_30(x, v, nf):
     # Approssimazione della parte scale independent della matching Mbg_3
@@ -2166,97 +2169,74 @@ def Mgg_1_loc(z, p, nf):
 
 def Mgg_2_reg(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    LO = np.log(z)
-    return (
-        (L**2)
-        * (
-            CF
-            * TR
-            * (
-                8 * (1 + z) * LO
-                + (16.0 / (3 * z))
-                + 4
-                - 4 * z
-                - (z**2) * (16.0 / 3.0)
-            )
-            + CA
-            * TR
-            * (
-                (8.0 / (3 * z))
-                - (16.0 / 3.0)
-                + (8.0 / 3.0) * z
-                - (z**2) * (8.0 / 3.0)
-            )
-        )
-        - L
-        * (
-            CF
-            * TR
-            * (
-                8 * (1 + z) * (LO**2)
-                + LO * (24 + 40 * z)
-                - (16.0 / (3 * z))
-                + 64
-                - 32 * z
-                - (80.0 / 3.0) * (z**2)
-            )
-            + CA
-            * TR
-            * (
-                (16.0 / 3.0) * (1 + z) * LO
-                + (184.0 / (9 * z))
-                - (232.0 / 9.0)
-                + z * (152.0 / 9.0)
-                - (z**2) * (184.0 / 9.0)
-            )
-        )
-        + CF
+    z2 = z**2
+    lnz = np.log(z)
+    lnz2 = lnz**2
+    A01 = (
+        4.0 * (1.0 + z) * lnz**3 / 3.0
+        + (6.0 + 10.0 * z) * lnz2
+        + (32.0 + 48.0 * z) * lnz
+        - 8.0 / z
+        + 80.0
+        - 48.0 * z
+        - 24 * z2
+    )
+    A02 = (
+        4.0 * (1.0 + z) * lnz2 / 3.0
+        + (52.0 + 88.0 * z) * lnz / 9.0
+        - 4.0 * z * np.log(1.0 - z) / 3.0
+        + (556.0 / z - 628.0 + 548.0 * z - 700.0 * z2) / 27.0
+    )
+    AS2ggH_R = TR * (CF * A01 + CA * A02)
+    omeL1 = -(
+        CF
         * TR
         * (
-            (4.0 / 3.0) * (1 + z) * (LO**3)
-            + (LO**2) * (6 + 10 * z)
-            + LO * (32 + 48 * z)
-            - (8.0 / z)
-            + 80
-            - 48 * z
-            - 24 * (z**2)
+            8.0 * (1.0 + z) * lnz2
+            + (24.0 + 40.0 * z) * lnz
+            - 16.0 / 3.0 / z
+            + 64.0
+            - 32.0 * z
+            - 80.0 * z2 / 3.0
         )
         + CA
         * TR
         * (
-            (4.0 / 3.0) * (1 + z) * (LO**2)
-            + (1.0 / 9.0) * (52 + 88 * z) * LO
-            - (4.0 / 3.0) * LO * z
-            + (1.0 / 27.0) * ((556.0 / z) - 628 + 548 * z - 700 * (z**2))
+            16.0 * (1.0 + z) * lnz / 3.0
+            + 184.0 / 9.0 / z
+            - 232.0 / 9.0
+            + 152.0 * z / 9.0
+            - 184.0 * z2 / 9.0
         )
     )
+    omeL2 = CF * TR * (
+        8.0 * (1.0 + z) * lnz + 16.0 / 3.0 / z + 4.0 - 4.0 * z - 16.0 * z2 / 3.0
+    ) + CA * TR * (8.0 / 3.0 / z - 16.0 / 3.0 + 8.0 * z / 3.0 - 8.0 * z2 / 3.0)
+    return AS2ggH_R + L * omeL1 + L**2 * omeL2
 
 
 def Mgg_2_loc(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return (
-        (L**2) * ((TR**2) * (16.0 / 9.0))
-        - L * (CF * TR * 4 + CA * TR * (16.0 / 3.0))
-        - CF * TR * 15
-        + CA * TR * (10.0 / 9.0)
-    )
+    AS2ggH_L = TR * (-CF * 15.0 + CA * 10.0 / 9.0)
+    omeL1 = -TR * (CF * 4.0 + CA * 16.0 / 3.0)
+    omeL2 = TR**2 * 16.0 / 9.0
+    return AS2ggH_L + L * omeL1 + L**2 * omeL2
 
 
 def Mgg_2_sing(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
-    return (
-        (L**2) * (CA * TR * (8.0 / 3.0) * (1.0 / z1))
-        - L * (CA * TR * (80.0 / 9.0) * (1.0 / z1))
-        + CA * TR * ((224.0 / 27.0) * (1.0 / z1))
-    )
+    AS2ggH_S = 224.0 / 27.0 / z1
+    omeL1 = -80.0 / 9.0 / z1
+    omeL2 = 8.0 / 3.0 / z1
+    return CA * TR * (AS2ggH_S + L**2 * omeL2 + L * omeL1)
 
 
 def Mbq_2(z, p, nf, grids=False, r=None, s=None, path="talbot"):
     if grids:
-        return 0.5 * Ini.Mbq2(z, p[1])[0]
+        return Ini.Mbq2(z, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return inverse_mellin(as2.A_hq_ps, z, nf, r, s, path, L)
+    return 0.5 * inverse_mellin(as2.A_hq_ps, z, nf, r, s, path, L)
 
 
 def aQqPS30(x, nf):
@@ -3646,21 +3626,18 @@ def Mgq_2_reg(z, p, nf):
     )
 
 
-# Matching conditions obtained from inverse mellin transform
 def Mbg_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
     if grids:
-        # NOTE: here there is a different convention on the use of matching conditions
-        return 0.5 * Ini.Mbg3(x, p[1])[0]
+        return Ini.Mbg3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return inverse_mellin(as3.A_Hg, x, nf, r, s, path, L)
+    return 0.5 * inverse_mellin(as3.A_Hg, x, nf, r, s, path, L)
 
 
 def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
     if grids:
-        # NOTE: here there is a different convention on the use of matching conditions
-        return 0.5 * Ini.Mbq3(x, p[1])[0]
+        return Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return inverse_mellin(as3.A_Hq, x, nf, r, s, path, L)
+    return 0.5 * inverse_mellin(as3.A_Hq, x, nf, r, s, path, L)
 
 
 def P1(p, nf):

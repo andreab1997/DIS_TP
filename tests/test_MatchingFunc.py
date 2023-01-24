@@ -72,8 +72,7 @@ class Test_Matching_Hg:
         for q in self.Qs:
             for x in self.xs:
                 p = [mhq, q]
-                factor = 2 if self.grids else 1
-                my.append(factor * mf.Mbg_2(x, p, NF, self.grids))
+                my.append(2 * mf.Mbg_2(x, p, NF, self.grids))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):
@@ -95,7 +94,7 @@ class Test_Matching_Hg:
                         full_output=1,
                     )[0]
                 )
-        assert_allclose(my, eko, rtol=2e-3)
+        assert_allclose(my, eko)
 
     def test_n3lo(self):
         my = []
@@ -103,8 +102,7 @@ class Test_Matching_Hg:
         for q in self.Qs:
             for x in self.xs:
                 p = [mhq, q]
-                factor = 2 if self.grids else 1
-                my.append(factor * mf.Mbg_3_reg_inv(x, p, NF, grids=self.grids))
+                my.append(2 * mf.Mbg_3_reg_inv(x, p, NF, grids=self.grids))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):
@@ -126,7 +124,7 @@ class Test_Matching_Hg:
                         full_output=1,
                     )[0]
                 )
-        assert_allclose(my, eko, rtol=2e-2)
+        assert_allclose(my, eko, rtol=2e-5)
 
 
 class Test_Matching_Hq:
@@ -141,8 +139,7 @@ class Test_Matching_Hq:
         for q in self.Qs:
             for x in self.xs:
                 p = [mhq, q]
-                factor = 2 if self.grids else 1
-                my.append(factor * mf.Mbq_2(x, p, NF,  self.grids))
+                my.append(2 * mf.Mbq_2(x, p, NF, self.grids))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):
@@ -164,7 +161,7 @@ class Test_Matching_Hq:
                         full_output=1,
                     )[0]
                 )
-        assert_allclose(my, eko, rtol=6e-4)
+        assert_allclose(my, eko)
 
     def test_n3lo(self):
         my = []
@@ -172,8 +169,7 @@ class Test_Matching_Hq:
         for q in self.Qs:
             for x in self.xs:
                 p = [mhq, q]
-                factor = 2 if self.grids else 1
-                my.append(factor * mf.Mbq_3_reg_inv(x, p, NF, grids=self.grids))
+                my.append(2 * mf.Mbq_3_reg_inv(x, p, NF, grids=self.grids))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):
@@ -195,12 +191,12 @@ class Test_Matching_Hq:
                         full_output=1,
                     )[0]
                 )
-        assert_allclose(my, eko, rtol=5e-4)
+        assert_allclose(my, eko)
 
 
 class Test_Matching_gg:
     xs = np.geomspace(1e-4, 1, 10, endpoint=False)
-    Ns = [2,3,4,5,6,7]
+    Ns = [2, 3, 4, 5, 6, 7]
     Qs = [5, 10, 20]
     is_singlet = True
     grids = False
@@ -241,23 +237,28 @@ class Test_Matching_gg:
         for q in self.Qs:
             p = [mhq, q]
             L = np.log(p[1] ** 2 / p[0] ** 2)
-            for n in self.Ns:   
+            for n in self.Ns:
+
                 def mellin_integrate(n):
-                    return integrate.quad(
-                        lambda x: mf.Mgg_2_reg(x, p, NF) * x ** (n - 1),
-                        0,
-                        1,
-                        epsabs=1e-12,
-                        epsrel=1e-6,
-                        limit=200,
-                        full_output=1,
-                    )[0] - mf.Mgg_2_sing(0, p, NF) * S1(n-1) + mf.Mgg_2_loc(1, p, NF)
+                    return (
+                        integrate.quad(
+                            lambda x: mf.Mgg_2_reg(x, p, NF) * x ** (n - 1),
+                            0,
+                            1,
+                            epsabs=1e-12,
+                            epsrel=1e-6,
+                            limit=200,
+                            full_output=1,
+                        )[0]
+                        - mf.Mgg_2_sing(0, p, NF) * S1(n - 1)
+                        + mf.Mgg_2_loc(1, p, NF)
+                    )
 
                 my.append(mellin_integrate(n))
                 sx = compute_cache(n, 3, self.is_singlet)
                 sx = [np.array(s) for s in sx]
                 eko.append(as2.A_gg(n, sx, L))
-        assert_allclose(my, eko, rtol=1e-1)
+        assert_allclose(my, eko)
 
 
 class Test_Matching_gq:
