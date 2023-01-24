@@ -29,8 +29,6 @@ class Test_F2:
             f2_g = f2_nc.GluonVV(esf, NF, m2hq=mhq**2).NLO()
             # g reg
             yad = f2_g.reg(x, f2_g.args["reg"])
-            # TODO: here it seems there is no NF, as it was in the massless,
-            # is this consistent?
             my = cf.Cg_1_m_reg(x, self.Q, p, NF) / e_h**2
             assert_allclose(my, yad)
 

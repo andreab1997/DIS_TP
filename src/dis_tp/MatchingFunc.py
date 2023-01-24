@@ -2,7 +2,8 @@
 # notation: p[1] is Q^2 while p[0] is m_b^2
 import numpy as np
 from eko.constants import CA, CF, TR
-from eko.matching_conditions.as3 import A_Hg, A_Hq
+from eko.matching_conditions import as2
+from eko.matching_conditions import as3
 
 from . import Harmonics as harm
 from . import Initialize as Ini
@@ -14,9 +15,11 @@ def Mbg_1(z, p, nf):
     return 2 * TR * np.log((p[1] ** 2) / (p[0] ** 2)) * (z * z + (1 - z) * (1 - z))
 
 
-def Mbg_2(z, p, nf):
-    return Ini.Mbg2(z, p[1])[0]
-
+def Mbg_2(z, p, nf, grids=False, r=None, s=None, path="talbot"):
+    if grids:
+        return 0.5 * Ini.Mbg2(z, p[1])[0]
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    return inverse_mellin(as2.A_hg, z, nf, r, s, path, L)
 
 def a_Qg_30(x, v, nf):
     # Approssimazione della parte scale independent della matching Mbg_3
@@ -2249,8 +2252,11 @@ def Mgg_2_sing(z, p, nf):
     )
 
 
-def Mbq_2(z, p, nf):
-    return Ini.Mbq2(z, p[1])[0]
+def Mbq_2(z, p, nf, grids=False, r=None, s=None, path="talbot"):
+    if grids:
+        return 0.5 * Ini.Mbq2(z, p[1])[0]
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    return inverse_mellin(as2.A_hq_ps, z, nf, r, s, path, L)
 
 
 def aQqPS30(x, nf):
@@ -3646,7 +3652,7 @@ def Mbg_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
         # NOTE: here there is a different convention on the use of matching conditions
         return 0.5 * Ini.Mbg3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return inverse_mellin(A_Hg, x, nf, r, s, path, L)
+    return inverse_mellin(as3.A_Hg, x, nf, r, s, path, L)
 
 
 def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
@@ -3654,7 +3660,7 @@ def Mbq_3_reg_inv(x, p, nf, grids=False, r=None, s=None, path="talbot"):
         # NOTE: here there is a different convention on the use of matching conditions
         return 0.5 * Ini.Mbq3(x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return inverse_mellin(A_Hq, x, nf, r, s, path, L)
+    return inverse_mellin(as3.A_Hq, x, nf, r, s, path, L)
 
 
 def P1(p, nf):
