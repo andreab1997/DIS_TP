@@ -18,7 +18,10 @@ def quad_ker_talbot(u, func, x, nf, L):
     integrand = path.prefactor * x ** (-path.n) * path.jac
     sx = compute_cache(path.n, 5, is_singlet=is_singlet)
     sx = [np.array(s) for s in sx]
-    gamma = func(path.n, sx, nf, L)
+    try:
+        gamma = func(path.n, sx, nf, L)
+    except TypeError:
+        gamma = func(path.n, sx, L)
     return np.real(gamma * integrand)
 
 
