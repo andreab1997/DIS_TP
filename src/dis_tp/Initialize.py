@@ -52,7 +52,7 @@ def InitializeCg2_til(nf):
     global Cg2_til
     Cg2_til_array_prov = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Cg_2_til/Cg2til_nf{nf}.txt")
-    )[:-1]
+    )
     Cg2_til = interp2d(ZList[:-1], QList, Cg2_til_array_prov.transpose(), kind="quintic")
 
 
@@ -64,7 +64,7 @@ def InitializeCq2_til(nf):
     Cq2_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Cq_2_til/Cq2til_nf{nf}.txt")
     ).transpose()
-    Cq2_til = interp2d(ZList, QList, Cq2_til_array, kind="quintic")
+    Cq2_til = interp2d(ZList[:-1], QList, Cq2_til_array, kind="quintic")
 
 
 def InitializeCLg2_til(nf):
@@ -75,7 +75,7 @@ def InitializeCLg2_til(nf):
     CLg2_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/CLg_2_til/CLg2til_nf{nf}.txt")
     ).transpose()
-    CLg2_til = interp2d(ZList, QList, CLg2_til_array, kind="quintic")
+    CLg2_til = interp2d(ZList[:-1], QList, CLg2_til_array, kind="quintic")
 
 
 def InitializeCLq2_til(nf):
@@ -86,7 +86,7 @@ def InitializeCLq2_til(nf):
     CLq2_til_array = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/CLq_2_til/CLq2til_nf{nf}.txt")
     ).transpose()
-    CLq2_til = interp2d(ZList, QList, CLq2_til_array, kind="quintic")
+    CLq2_til = interp2d(ZList[:-1], QList, CLq2_til_array, kind="quintic")
 
 
 def InitializeMbg2(nf):
@@ -255,8 +255,6 @@ def InitializeMbq_3(nf):
 
 
 # Niccolo functions
-
-
 def InitializeQX():
     """
     Initialize the Q and z grids over which the other functions are built

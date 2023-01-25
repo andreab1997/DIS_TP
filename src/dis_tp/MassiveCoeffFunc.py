@@ -42,6 +42,9 @@ def Cg_2_m_reg(z, Q, p, nf, grids=False):
     xi = 1 / eps
     eta = xi / 4.0 * (1.0 / z - 1.0) - 1.0
     FHprefactor = Q2 / (np.pi * m_b**2) * e_h**2
+    if xi > 2499.9999999999995:
+        # FH grids are not defined above this
+        return 0.0
     return (
         FHprefactor
         / z
@@ -130,6 +133,9 @@ def CLg_2_m_reg(z, Q, p, nf, grids=False):
     xi = 1 / eps
     eta = xi / 4.0 * (1.0 / z - 1.0) - 1.0
     FHprefactor = Q2 / (np.pi * m_b**2) * e_h**2
+    if xi > 2499.9999999999995:
+        # FH grids are not defined above this
+        return 0.0
     return (
         FHprefactor
         / z

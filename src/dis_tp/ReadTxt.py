@@ -132,6 +132,9 @@ class Construct_Grid:
         self.nf = number_active_flavors(h_id)
         self.e_h = charges(h_id)
         self.grid_type = grid_type
+        if self.grid_type == "tilde":
+            self.xgrid = self.xgrid[:-1]
+
 
     def construct_single_x(self, z):
         z_func_values = []
