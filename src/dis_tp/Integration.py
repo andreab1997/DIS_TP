@@ -141,7 +141,7 @@ def F2_R(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
             * Mypdf.alphasQ(muR)
             * PDFConvolute(MasslessCoeffFunc.Cg_1_reg, Mypdf, x, Q, p, nf, g_id)
         )
-        nll_local = MasslessCoeffFunc.Cb_0_loc(x, Q, p) * (
+        nll_local = MasslessCoeffFunc.Cb_0_loc(x, Q, p, nf) * (
             Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q)
         )
         res += nll_reg + nll_local
@@ -162,7 +162,7 @@ def F2_R(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
         nnll_local = (
             (1 / (4 * np.pi))
             * Mypdf.alphasQ(muR)
-            * MasslessCoeffFunc.Cb_1_loc(x, Q, p)
+            * MasslessCoeffFunc.Cb_1_loc(x, Q, p, nf)
             * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
         )
         nnll_sing = (
@@ -257,7 +257,7 @@ def F2_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
                 * Mypdf.alphasQ(muR)
                 * PDFConvolute(TildeCoeffFunc.Cg_1_til_reg, Mypdf, x, Q, p, nf, g_id)
             )
-            nlo_nll_local = MasslessCoeffFunc.Cb_0_loc(x, Q, p) * (
+            nlo_nll_local = MasslessCoeffFunc.Cb_0_loc(x, Q, p, nf) * (
                 Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q)
             )
             res += nlo_nll_reg + nlo_nll_local
@@ -280,7 +280,7 @@ def F2_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
             nnlo_nnll_local = (
                 (1 / (4 * np.pi))
                 * Mypdf.alphasQ(muR)
-                * MasslessCoeffFunc.Cb_1_loc(x, Q, p)
+                * MasslessCoeffFunc.Cb_1_loc(x, Q, p, nf)
                 * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
             )
             nnlo_nnll_sing = (
@@ -318,7 +318,7 @@ def F2_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
             res += n3lo_n3ll_reg + n3lo_n3ll_local + n3lo_n3ll_sing
     if meth == "fonll":
         if order >= 0:
-            res += MasslessCoeffFunc.Cb_0_loc(x, Q, p) * (
+            res += MasslessCoeffFunc.Cb_0_loc(x, Q, p, nf) * (
                 Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q)
             )
         if order >= 1:
@@ -333,7 +333,7 @@ def F2_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
             nlo_nll_local = (
                 (1 / (4 * np.pi))
                 * Mypdf.alphasQ(muR)
-                * MasslessCoeffFunc.Cb_1_loc(x, Q, p)
+                * MasslessCoeffFunc.Cb_1_loc(x, Q, p, nf)
                 * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
             )
             nlo_nll_singular = (
@@ -537,14 +537,14 @@ def FL_R(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
             + PDFConvolute(MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nf, h_id)
         )
         n3ll_loc = (((1 / (4 * np.pi)) * Mypdf.alphasQ(muR)) ** 2) * (
-            MasslessCoeffFunc.CLb_2_loc(x, p, Q)
+            MasslessCoeffFunc.CLb_2_loc(x, p, Q, nf)
             * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
         )
         res += n3ll_reg + n3ll_loc
     return res
 
 
-def FL_M(order, meth, pdf, x, h_id, Q, muF_ratio=1, muR_ratio=1):
+def FL_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
     """
     Compute the M result for the structure function FL
 
@@ -624,7 +624,7 @@ def FL_M(order, meth, pdf, x, h_id, Q, muF_ratio=1, muR_ratio=1):
                 * Mypdf.alphasQ(muR)
                 * (1 / (4 * np.pi))
                 * Mypdf.alphasQ(muR)
-                * MasslessCoeffFunc.CLb_2_loc(x, Q, p)
+                * MasslessCoeffFunc.CLb_2_loc(x, Q, p, nf)
                 * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
             )
             res += n3lo_n3ll_loc + n3lo_n3ll_reg
@@ -659,7 +659,7 @@ def FL_M(order, meth, pdf, x, h_id, Q, muF_ratio=1, muR_ratio=1):
                 * Mypdf.alphasQ(muR)
                 * (1 / (4 * np.pi))
                 * Mypdf.alphasQ(muR)
-                * MasslessCoeffFunc.CLb_2_loc(x, Q, p)
+                * MasslessCoeffFunc.CLb_2_loc(x, Q, p, nf)
                 * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
             )
             res += nnlo_nnll_reg + nnlo_nnll_loc
