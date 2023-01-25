@@ -43,29 +43,29 @@ if __name__ == "__main__":
         if pto == 2:
             if flavor == "2q":
                 func = Cq_2_til_reg
-                path = here / f"C{flavor[-1]}_2_til/C{flavor[-1]}til_nf{h_id}.txt"
+                path = here / f"C{flavor[-1]}_2_til/C{flavor[-1]}2til_nf{h_id}.txt"
             elif flavor == "2g":
                 func = Cg_2_til_reg
-                path = here / f"C{flavor[-1]}_2_til/C{flavor[-1]}til_nf{h_id}.txt"
+                path = here / f"C{flavor[-1]}_2_til/C{flavor[-1]}2til_nf{h_id}.txt"
             elif flavor == "Lq":
                 func = CLq_2_til_reg
-                path = here / f"C{flavor}_2_til/C{flavor}til_nf{h_id}.txt"
+                path = here / f"C{flavor}_2_til/C{flavor}2til_nf{h_id}.txt"
             elif flavor == "Lg":
                 func = CLg_2_til_reg
-                path = here / f"C{flavor}_2_til/C{flavor}til_nf{h_id}.txt"
+                path = here / f"C{flavor}_2_til/C{flavor}2til_nf{h_id}.txt"
         if pto == 3:
             if flavor == "2q":
                 func = Cq_3_til_reg
-                path = here / f"C{flavor[-1]}_3_til/C{flavor[-1]}til_nf{h_id}.txt"
+                path = here / f"C{flavor[-1]}_3_til/C{flavor[-1]}3til_nf{h_id}.txt"
             elif flavor == "2g":
                 func = Cg_3_til_reg
-                path = here / f"C{flavor[-1]}_3_til/C{flavor[-1]}til_nf{h_id}.txt"
+                path = here / f"C{flavor[-1]}_3_til/C{flavor[-1]}3til_nf{h_id}.txt"
             elif flavor == "Lq":
                 func = CLq_3_til_reg
-                path = here / f"C{flavor}_3_til/C{flavor}til_nf{h_id}.txt"
+                path = here / f"C{flavor}_3_til/C{flavor}3til_nf{h_id}.txt"
             elif flavor == "Lg":
                 func = CLg_3_til_reg
-                path = here / f"C{flavor}_3_til/C{flavor}til_nf{h_id}.txt"
+                path = here / f"C{flavor}_3_til/C{flavor}3til_nf{h_id}.txt"
 
     obj = ReadTxt.Construct_Grid(
         func, h_id=h_id, path=path, grid_type=grid_type, n_pools=n_cores
