@@ -74,8 +74,9 @@ def generate_matching_grids(
 @subcommand.command("tilde")
 @heavy_id
 @flavor_entry
-@n_cores
 @pto
+@n_cores
+@dest_path
 def generate_matching_grids(
     h_id: int, flavor_entry: str, pto: int, n_cores: int, dest_path: pathlib.Path
 ):
