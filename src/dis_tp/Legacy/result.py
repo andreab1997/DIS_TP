@@ -177,7 +177,7 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
 
     eps = 0.5
     lhapdf.setVerbosity(0)
-    mine = lhapdf.mkPDF("MyPDF_mub=mb_nlo")
+    mine = lhapdf.mkPDF("NNPDF40_nlo_as_01180")
     thre = [mine.quarkMass(5)]
     if len(ratios) > 1:
         thre = [mine.quarkMass(5) * ratio for ratio in [0.5, 1.0, 2.0]]
@@ -208,7 +208,8 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
     with Bar("Processing...", max=numberofcalc) as bar:
         print("\nInitialization in progress...")
         # Initializing global data
-        Int.Initialize_all()
+        nf = 5
+        Int.Initialize_all(nf)
         bar.next()
         print("\nComputation of Structure Functions is starting...")
         for Sf in Stru_func:
@@ -219,9 +220,10 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                             [
                                 Int.F2_FO(
                                     intorders.index(ord) + 1,
-                                    "MyPDF_4F_" + map_PDFsorder[ord],
+                                    "NNPDF40_" + map_PDFsorder[ord] + "_as_01180_nf_4",
                                     x,
                                     q,
+                                    nf,
                                 )
                                 for q in Q
                             ]
@@ -235,9 +237,10 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                             [
                                 Int.FL_FO(
                                     intorders.index(ord) + 1,
-                                    "MyPDF_4F_" + map_PDFsorder[ord],
+                                    "NNPDF40_" + map_PDFsorder[ord] + "_as_01180_nf_4",
                                     x,
                                     q,
+                                    nf,
                                 )
                                 for q in Q
                             ]
@@ -260,12 +263,12 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                                             lambda q: Int.F2_M(
                                                 intorders.index(ord) + 1,
                                                 met,
-                                                "MyPDF_mub="
-                                                + ratio
-                                                + "mb_"
-                                                + map_PDFsorder[ord],
+                                                "NNPDF40_"
+                                                + map_PDFsorder[ord]
+                                                + "_as_01180",
                                                 x,
                                                 q,
+                                                nf,
                                             )
                                             if q > thre[list(ratios).index(ratio)]
                                             else FO[Sf][ord][X.index(x)][
@@ -287,12 +290,12 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                                             (
                                                 lambda q: Int.F2_R(
                                                     intorders.index(ord) + 1,
-                                                    "MyPDF_mub="
-                                                    + ratio
-                                                    + "mb_"
-                                                    + map_PDFsorder[ord],
+                                                    "NNPDF40_"
+                                                    + map_PDFsorder[ord]
+                                                    + "_as_01180",
                                                     x,
                                                     q,
+                                                    nf,
                                                 )
                                                 if q > thre[list(ratios).index(ratio)]
                                                 else 0.0
@@ -317,12 +320,12 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                                             lambda q: Int.FL_M(
                                                 intorders.index(ord) + 1,
                                                 met,
-                                                "MyPDF_mub="
-                                                + ratio
-                                                + "mb_"
-                                                + map_PDFsorder[ord],
+                                                "NNPDF40_"
+                                                + map_PDFsorder[ord]
+                                                + "_as_01180",
                                                 x,
                                                 q,
+                                                nf,
                                             )
                                             if q > thre[list(ratios).index(ratio)]
                                             else FO[Sf][ord][X.index(x)][
@@ -344,12 +347,12 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                                             (
                                                 lambda q: Int.FL_R(
                                                     intorders.index(ord) + 1,
-                                                    "MyPDF_mub="
-                                                    + ratio
-                                                    + "mb_"
-                                                    + map_PDFsorder[ord],
+                                                    "NNPDF40_"
+                                                    + map_PDFsorder[ord]
+                                                    + "_as_01180",
                                                     x,
                                                     q,
+                                                    nf,
                                                 )
                                                 if q > thre[list(ratios).index(ratio)]
                                                 else 0.0

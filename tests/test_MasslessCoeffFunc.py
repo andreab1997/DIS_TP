@@ -9,6 +9,7 @@ h_id = 4
 NF = h_id
 e_h = np.array([charges(h_id)])
 
+
 class MockSF:
     pass
 
@@ -32,13 +33,13 @@ class Test_F2:
             yad = f2_ns.reg(x, f2_ns.args["reg"])
             my = cf.Cb_1_reg(x, self.Q, e_h, NF) / e_h**2
             assert_allclose(my, yad)
-            
+
             # ns loc
-            # this is x indepentent, but yadism treat it 
+            # this is x indepentent, but yadism treat it
             # differenly adding the singluar piece
-            yad = f2_ns.loc(0.001, f2_ns.args["loc"])
-            my = cf.Cb_1_loc(0.001, self.Q, e_h, NF) / e_h**2
-            assert_allclose(my, yad, rtol=3e-3)
+            yad = f2_ns.loc(0, f2_ns.args["loc"])
+            my = cf.Cb_1_loc(0, self.Q, e_h, NF) / e_h**2
+            assert_allclose(my, yad)
             # ns sing
             yad = f2_ns.sing(x, f2_ns.args["sing"])
             my = cf.Cb_1_sing(x, self.Q, e_h, NF) / e_h**2
@@ -59,9 +60,9 @@ class Test_F2:
             my = cf.Cb_2_reg(x, self.Q, e_h, NF) / e_h**2
             assert_allclose(my, yad)
             # ns loc, see comment NLO
-            yad = f2_ns.loc(0.0001, f2_ns.args["loc"])
-            my = cf.Cb_2_loc(0.0001, self.Q, e_h, NF) / e_h**2
-            assert_allclose(my, yad, rtol=3e-4)
+            yad = f2_ns.loc(0, f2_ns.args["loc"])
+            my = cf.Cb_2_loc(0, self.Q, e_h, NF) / e_h**2
+            assert_allclose(my, yad)
             # ns sing
             yad = f2_ns.sing(x, f2_ns.args["sing"])
             my = cf.Cb_2_sing(x, self.Q, e_h, NF) / e_h**2
@@ -71,13 +72,13 @@ class Test_F2:
             # g reg
             yad = f2_g.reg(x, f2_g.args["reg"])
             my = NF * cf.Cg_2_reg(x, self.Q, e_h, NF) / e_h**2
-            assert_allclose(my, yad, rtol=9.1e-3)
+            assert_allclose(my, yad)
 
             f2_s = f2_nc.Singlet(esf, NF).NNLO()
             # singlet reg
             yad = f2_s.reg(x, f2_s.args["reg"])
             my = NF * cf.Cq_2_reg(x, self.Q, e_h, NF) / e_h**2
-            assert_allclose(my, yad, rtol=5e-3)
+            assert_allclose(my, yad)
 
     def test_n3lo(self):
         for x in self.xs:
@@ -89,9 +90,9 @@ class Test_F2:
             my = cf.Cb_3_reg(x, self.Q, e_h, NF) / e_h**2
             assert_allclose(my, yad)
             # ns loc, see comment NLO
-            yad = f2_ns.loc(0.0001, f2_ns.args["loc"])
-            my = cf.Cb_3_loc(0.0001, self.Q, e_h, NF) / e_h**2
-            assert_allclose(my, yad, rtol=3e-4)
+            yad = f2_ns.loc(0, f2_ns.args["loc"])
+            my = cf.Cb_3_loc(0, self.Q, e_h, NF) / e_h**2
+            assert_allclose(my, yad)
             # ns sing
             yad = f2_ns.sing(x, f2_ns.args["sing"])
             my = cf.Cb_3_sing(x, self.Q, e_h, NF) / e_h**2
@@ -137,7 +138,7 @@ class Test_FL:
             my = NF * cf.CLg_1_reg(x, self.Q, e_h, NF) / e_h**2
             assert_allclose(my, yad)
 
-    def test_fl_nnlo(self):
+    def test_nnlo(self):
         for x in self.xs:
             esf = MockESF(x, self.Q**2)
             fl_ns = fl_nc.NonSinglet(esf, NF).NNLO()

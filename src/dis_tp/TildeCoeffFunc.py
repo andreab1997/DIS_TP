@@ -134,7 +134,7 @@ def Cg_3_til_reg(z, Q, p, nf, grids=False):
             + Convolute(Cb_2_reg, Mbg_1, z, Q, p, nf)
             + Convolute_plus_coeff(Cb_2_sing, Mbg_1, z, Q, p, nf)
         )
-    )[0]
+    )
 
 
 def Cq_2_til_reg(z, Q, p, nf, grids=True):
@@ -158,7 +158,7 @@ def Cq_3_til_reg(z, Q, p, nf, grids=False):
             + Convolute_plus_coeff(Cb_1_sing, Mbq_2, z, Q, p, nf)
         )
         - 2 * (Cb_0_loc(z, Q, p, nf) * Mbq_3_reg(z, p, nf))
-    )[0]
+    )
 
 
 # FL
