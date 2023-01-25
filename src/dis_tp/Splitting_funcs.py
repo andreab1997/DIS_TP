@@ -2,7 +2,8 @@
 # the code is using grids, these are not needed.
 
 from . import Harmonics as harm
-from . import zetas as zet
+from eko.harmonics.constants import zeta2, zeta3
+
 from eko.constants import CF, CA
 
 # splitting funcs expanded in alpha_s/4pi
@@ -52,7 +53,7 @@ def Pgg_1_reg(z, nf):
         * (
             27
             + (1 + z) * ((11.0 / 3.0) * harm.H_0(z) + 8 * harm.H_00(z) - (27.0 / 2.0))
-            + 2 * pgg_reg_mz * (harm.H_00(z) - 2 * harm.H_m10(z) - zet.zeta_2)
+            + 2 * pgg_reg_mz * (harm.H_00(z) - 2 * harm.H_m10(z) - zeta2)
             - (67.0 / 9.0) * ((1.0 / z) - z**2)
             - 12 * harm.H_0(z)
             - (44.0 / 3.0) * z * z * harm.H_0(z)
@@ -60,7 +61,7 @@ def Pgg_1_reg(z, nf):
             * pgg_reg
             * (
                 (67.0 / 18.0)
-                - zet.zeta_2
+                - zeta2
                 + harm.H_00(z)
                 + 2 * harm.H_10(z)
                 + 2 * harm.H_01(z)
@@ -82,7 +83,7 @@ def Pgg_1_reg(z, nf):
 def Pgg_1_local(z, nf):
     return (
         -4 * CA * nf * (2.0 / 3.0)
-        + 4 * CA * CA * ((8.0 / 3.0) + 3 * zet.zeta_3)
+        + 4 * CA * CA * ((8.0 / 3.0) + 3 * zeta3)
         - 4 * CF * nf * (1.0 / 2.0)
     )
 
@@ -94,7 +95,7 @@ def Pgg_1_plus(z, nf):
         * pgg_plus
         * (
             (67.0 / 18.0)
-            - zet.zeta_2
+            - zeta2
             + harm.H_00(z)
             + 2 * harm.H_10(z)
             + 2 * harm.H_01(z)

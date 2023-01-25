@@ -1,7 +1,7 @@
 # This contains the massless coefficients functions.
 import numpy as np
 from yadism.coefficient_functions.light.n3lo import xc2ns3p, xclns3p, xc2sg3p, xclsg3p
-from .zetas import zeta_2
+from eko.harmonics.constants import zeta2
 from eko.constants import CF, TR
 
 # F2
@@ -23,7 +23,7 @@ def Cb_1_reg(z, Q, p, nf):
 
 def Cb_1_loc(z, Q, p, nf):
     e_h = p[-1]
-    return e_h * e_h * 2 * CF * (-(2 * zeta_2 + 9.0 / 2.0))
+    return e_h * e_h * 2 * CF * (-(2 * zeta2 + 9.0 / 2.0))
 
 
 def Cb_1_sing(z, Q, p, nf):
