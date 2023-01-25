@@ -1,4 +1,5 @@
 import yaml
+import numpy as np
 
 from dis_tp import Integration as Int
 
@@ -71,8 +72,11 @@ class OperatorParameters:
     """Class containing all the operator parameters."""
 
     def __init__(self, x_grid, q_grid, obs):
+
+        # TODO: fix kinematics in runcard
         self.x_grid = x_grid
         self.q_grid = q_grid
+        self.y_grid = None
         self.obs = obs
 
     def x_grid(self):
@@ -80,6 +84,9 @@ class OperatorParameters:
 
     def q_grid(self):
         return self.q_grid
+
+    def y_grid(self):
+        return self.y_grid
 
     def obs(self):
         return self.obs
@@ -127,26 +134,46 @@ class RunParameters:
             yaml.safe_dump(to_dump, f)
 
 
-def compute(runparameters):
+def compute(runparameters, n_cores):
     # Initializing
     hid = runparameters.theory_parameters().hid
     nf = number_active_flavors(hid)
     Int.Initialize_all(nf)
 
-    order = maporders[runparameters.theory_parameters().order]
+    o_par = runparameters.operator_parameters()
+    t_par = runparameters.theory_parameters()
+
+    order = maporders[t_par.order]
     results = {}
-    for ob in runparameters.operator_parameters().obs:
+    
+    # loop on observables
+    for ob in o_par.obs:
         func_to_call = mapfunc[ob.obs][ob.restype]
         thisob_res = []
-        for x in runparameters.operator_parameters().x_grid:
+        sfs = []
+
+        # loop o SF
+        for func in func_to_call:
             xfix_res = []
-            for q in runparameters.operator_parameters().q_grid:
-                if func_to_call in [Int.F2_M, Int.FL_M]:
-                    xfix_res.append(
-                        float(func_to_call(order, "our", ob.pdf, x, q, hid))
-                    )
-                else:
-                    xfix_res.append(float(func_to_call(order, ob.pdf, x, q, hid)))
-            thisob_res.append(xfix_res)
+
+            # TODO: parallelize here
+            for x in o_par.x_grid:
+                for q in o_par.q_grid:
+                    if func in [Int.F2_M, Int.FL_M]:
+                        xfix_res.append(
+                            float(func(order, "our", ob.pdf, x, q, hid))
+                        )
+                    else:
+                        xfix_res.append(float(func(order, ob.pdf, x, q, hid)))
+            sfs.append(xfix_res)
+        thisob_res.append(xfix_res)
+
+        # Assembly the XS if needed
+        if "XSHERANCAVG" in ob:
+            yp = 1.0 + (1.0 - o_par.y_grid) ** 2
+            # ym = 1.0 - (1.0 - y) ** 2
+            yL = o_par.y_grid**2
+            factors = np.array([1.0, -yL / yp])
+            thisob_res = factors @ thisob_res
         results[ob] = thisob_res
     runparameters.dump_results(results)
