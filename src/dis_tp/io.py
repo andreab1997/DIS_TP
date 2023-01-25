@@ -133,10 +133,18 @@ class RunParameters:
         with open(obs_path, "w", encoding="UTF-8") as f:
             yaml.safe_dump(to_dump, f)
 
+# TODO: load the PDF before computing
+# TODO: move this to a separate file
+# TODO: rename External to be grids
+# TODO: implemente the NUTEV cross section
+# TODO: fix kinematics in runcards
+
 
 def compute(runparameters, n_cores):
     # Initializing
     hid = runparameters.theory_parameters().hid
+
+    # TODO: this and the mass can be setted from runcard
     nf = number_active_flavors(hid)
     Int.Initialize_all(nf)
 
@@ -145,7 +153,6 @@ def compute(runparameters, n_cores):
 
     order = maporders[t_par.order]
     results = {}
-    
     # loop on observables
     for ob in o_par.obs:
         func_to_call = mapfunc[ob.obs][ob.restype]
