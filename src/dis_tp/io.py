@@ -1,4 +1,3 @@
-import lhapdf
 import yaml
 
 from dis_tp import Integration as Int
@@ -103,6 +102,30 @@ class RunParameters:
     def resultpath(self):
         return self.resultpath
 
+    def dump_results(self, results):
+        for ob in results:
+            self.dump_result(ob, results[ob])
+
+    def dump_result(self, ob, ob_result):
+        file_name = (
+            ob.obs
+            + "_"
+            + ob.restype
+            + "_"
+            + str(self.theory_parameters().order)
+            + "_"
+            + str(self.theory_parameters().hid)
+        )
+        obs_path = self.resultpath / (file_name + ".yaml")
+        # construct the object to dump
+        to_dump = dict(
+            x_grid=self.operator_parameters().x_grid,
+            q_grid=self.operator_parameters().q_grid,
+            obs=ob_result,
+        )
+        with open(obs_path, "w", encoding="UTF-8") as f:
+            yaml.safe_dump(to_dump, f)
+
 
 def compute(runparameters):
     # Initializing
@@ -119,9 +142,11 @@ def compute(runparameters):
             xfix_res = []
             for q in runparameters.operator_parameters().q_grid:
                 if func_to_call in [Int.F2_M, Int.FL_M]:
-                    xfix_res.append(func_to_call(order, "our", ob.pdf, x, q, hid))
+                    xfix_res.append(
+                        float(func_to_call(order, "our", ob.pdf, x, q, hid))
+                    )
                 else:
-                    xfix_res.append(func_to_call(order, ob.pdf, x, q, hid))
+                    xfix_res.append(float(func_to_call(order, ob.pdf, x, q, hid)))
             thisob_res.append(xfix_res)
-        results[ob.obs] = thisob_res
-    print(results)
+        results[ob] = thisob_res
+    runparameters.dump_results(results)
