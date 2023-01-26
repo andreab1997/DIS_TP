@@ -1,5 +1,4 @@
 import functools
-import pathlib
 from multiprocessing import Pool
 
 import numpy as np
@@ -27,14 +26,8 @@ class Runner:
         cfg = configs.load()
         cfg = configs.defaults(cfg)
         dest_path = cfg["paths"]["results"]
-        if isinstance(o_card, str):
-            obs_obj = io.load_operator_parameters(cfg, o_card)
-        else:
-            obs_obj = o_card
-        if isinstance(t_card, str):
-            th_obj = io.load_theory_parameters(cfg, t_card)
-        else:
-            th_obj = t_card
+        obs_obj = io.load_operator_parameters(cfg, o_card)
+        th_obj = io.load_theory_parameters(cfg, t_card)
         self.runparameters = io.RunParameters(th_obj, obs_obj, dest_path)
         self.o_par = self.runparameters.operator_parameters()
         self.t_par = self.runparameters.theory_parameters()
@@ -56,7 +49,7 @@ class Runner:
 
     def compute_sf(self, kins):
         x, q = kins
-        print(f"x={x}, Q={q}")
+        # print(f"x={x}, Q={q}")
         return float(self.partial_sf(x=x, Q=q))
 
     def compute(self, n_cores):
@@ -97,6 +90,16 @@ class Runner:
             if "XSHERANCAVG" in ob.name:
                 thisob_res = self.compute_xs(ob, thisob_res)
             self.runparameters.results[ob] = thisob_res
+
+    @property
+    def results(self):
+        """Return computed results as dictionary"""
+        log = {}
+        for ob, vals in self.runparameters.results.items():
+            df = ob.kinematics
+            df["result"] = vals.T
+            log[ob.name] = df
+        return log
 
     def save_results(self):
         self.runparameters.dump_results()

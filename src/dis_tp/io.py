@@ -1,5 +1,4 @@
 import yaml
-import lhapdf
 import pandas as pd
 
 from .configs import defaults, detect, load
@@ -28,23 +27,28 @@ class Observable:
     def y_grid(self):
         return self.kinematics.y.values
 
-
+# TODO: make this NNPDF compatible!!!
 def load_theory_parameters(configs, name):
     """Return a TheoryParameters object."""
-    with open(
-        configs["paths"]["theory_cards"] / (name + ".yaml"), encoding="utf-8"
-    ) as f:
-        loaded = yaml.safe_load(f)
+    if isinstance(name, str):
+        with open(
+            configs["paths"]["theory_cards"] / (name + ".yaml"), encoding="utf-8"
+        ) as f:
+            loaded = yaml.safe_load(f)
+    else:
+        loaded = name
     return TheoryParameters(order=loaded["order"], hid=loaded["hid"], fns=loaded["fns"])
 
 
 def load_operator_parameters(configs, name):
     """Return a OperatorParameters object."""
-
-    with open(
-        configs["paths"]["operator_cards"] / (name + ".yaml"), encoding="utf-8"
-    ) as f:
-        loaded = yaml.safe_load(f)
+    if isinstance(name, str):
+        with open(
+            configs["paths"]["operator_cards"] / (name + ".yaml"), encoding="utf-8"
+        ) as f:
+            loaded = yaml.safe_load(f)
+    else:
+        loaded = name
     observables = []
     for ob in loaded["obs"]:
         observables.append(
@@ -123,5 +127,6 @@ class RunParameters:
             q_grid=ob.q_grid.tolist(),
             obs=ob_result.tolist(),
         )
+        print(f"Saving results for {ob} in {obs_path}")
         with open(obs_path, "w", encoding="UTF-8") as f:
             yaml.safe_dump(to_dump, f)
