@@ -1,5 +1,7 @@
 import pathlib
 import numpy as np
+from multiprocessing import Pool
+import functools
 
 from dis_tp import Integration as Int
 
@@ -17,10 +19,7 @@ mapfunc = {
     },
 }
 
-
 # TODO: rename External to be grids
-
-
 class Runner:
     def __init__(self, o_card, t_card, dest_path: pathlib.Path) -> None:
 
@@ -43,6 +42,7 @@ class Runner:
         # TODO: this and the mass can be setted from runcard
         nf = number_active_flavors(hid)
         Int.Initialize_all(nf)
+        self.partial_sf = None
 
     def compute_xs(self, sfs):
         """Assembly the XS if needed according to 'XSHERANCAVG'"""
@@ -50,6 +50,11 @@ class Runner:
         yL = self.o_par.y_grid**2
         factors = np.array([1.0, -yL / yp])
         return factors @ sfs
+
+    def compute_sf(self, kins):
+        x, q = kins
+        print(f"x={x}, Q={q}")
+        return float(self.partial_sf(x=x, Q=q))
 
     def compute(self, n_cores):
         order = maporders[self.t_par.order]
@@ -60,17 +65,30 @@ class Runner:
 
             # loop on SF
             for func in func_to_call:
-                sf_res = []
+                # TODO: eliminate this if
+                if func in [Int.F2_M, Int.FL_M]:
+                    self.partial_sf = functools.partial(
+                        func,
+                        order=order,
+                        meth=self.t_par.fns,
+                        pdf=ob.pdf,
+                        h_id=self.t_par.hid,
+                    )
+                else:
+                    self.partial_sf = functools.partial(
+                        func,
+                        order=maporders[self.t_par.order],
+                        pdf=ob.pdf,
+                        h_id=self.t_par.hid,
+                    )
+                print(f"Start computation of {func.__name__} ...")
+                args = (self.compute_sf, zip(ob.x_grid, ob.q_grid))
+                if n_cores == 1:
+                    sf_res = map(*args)
+                else:
+                    with Pool(n_cores) as pool:
+                        sf_res = pool.map(*args)
 
-                # TODO: parallelize here
-                for x, q in zip(ob.x_grid, ob.q_grid):
-                    print(f"Computing {func.__name__} at x={x}, Q={q}")
-                    if func in [Int.F2_M, Int.FL_M]:
-                        sf_res.append(
-                            float(func(order, self.t_par.fns, ob.pdf, x, q, self.t_par.hid))
-                        )
-                    else:
-                        sf_res.append(float(func(order, ob.pdf, x, q, self.t_par.hid)))
                 thisob_res.append(sf_res)
             thisob_res = np.array(thisob_res)
             if "XSHERANCAVG" in ob.name:

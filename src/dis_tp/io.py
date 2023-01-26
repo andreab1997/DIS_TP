@@ -11,7 +11,7 @@ class Observable:
 
     def __init__(self, name, pdf, restype, scalevar, kinematics):
         self.name = name
-        self.pdf = lhapdf.mkPDF(pdf, 0)
+        self.pdf = pdf
         self.restype = restype
         self.scalevar = scalevar
         self.kinematics = pd.DataFrame(kinematics)
@@ -29,14 +29,13 @@ class Observable:
         return self.kinematics.y
 
 
-
 def load_theory_parameters(configs, name):
     """Return a TheoryParameters object."""
     with open(
         configs["paths"]["theory_cards"] / (name + ".yaml"), encoding="utf-8"
     ) as f:
         loaded = yaml.safe_load(f)
-    return TheoryParameters(order=loaded["order"], hid=loaded["hid"])
+    return TheoryParameters(order=loaded["order"], hid=loaded["hid"], fns=loaded["fns"])
 
 
 def load_operator_parameters(configs, name):
@@ -63,15 +62,19 @@ def load_operator_parameters(configs, name):
 class TheoryParameters:
     """Class containing all the theory parameters."""
 
-    def __init__(self, order, hid):
+    def __init__(self, order, hid, fns):
         self.order = order
         self.hid = hid
+        self.fns = fns
 
     def order(self):
         return self.order
 
     def hid(self):
         return self.hid
+
+    def fns(self):
+        return self.fns
 
 
 class OperatorParameters:
