@@ -8,8 +8,8 @@ from .parameters import number_active_flavors
 
 maporders = {"LO": 0, "NLO": 1, "NNLO": 2, "N3LO": 3}
 mapfunc = {
-    "F2": {"R": Int.F2_R, "M": Int.F2_M, "FO": Int.F2_FO},
-    "FL": {"R": Int.FL_R, "M": Int.FL_M, "FO": Int.FL_FO},
+    "F2": {"R": [Int.F2_R], "M": [Int.F2_M], "FO": [Int.F2_FO]},
+    "FL": {"R": [Int.FL_R], "M": [Int.FL_M], "FO": [Int.FL_FO]},
     "XSHERANCAVG": {
         "R": [Int.F2_R, Int.FL_R],
         "M": [Int.F2_M, Int.FL_M],
@@ -25,6 +25,7 @@ class Runner:
     def __init__(self, o_card, t_card, dest_path: pathlib.Path) -> None:
 
         cfg = configs.load()
+        cfg = configs.defaults(cfg)
         if isinstance(o_card, str):
             obs_obj = io.load_operator_parameters(cfg, o_card)
         else:
@@ -54,7 +55,7 @@ class Runner:
         order = maporders[self.t_par.order]
         # loop on observables
         for ob in self.o_par.obs:
-            func_to_call = mapfunc[ob.obs][ob.restype]
+            func_to_call = mapfunc[ob.name][ob.restype]
             thisob_res = []
 
             # loop on SF
@@ -62,7 +63,8 @@ class Runner:
                 sf_res = []
 
                 # TODO: parallelize here
-                for x, q in zip(self.o_par.x_grid, self.o_par.q_grid):
+                for x, q in zip(ob.x_grid, ob.q_grid):
+                    print(f"Computing {func.__name__} at x={x}, Q={q}")
                     if func in [Int.F2_M, Int.FL_M]:
                         sf_res.append(
                             float(func(order, "our", ob.pdf, x, q, self.t_par.hid))
@@ -71,7 +73,7 @@ class Runner:
                         sf_res.append(float(func(order, ob.pdf, x, q, self.t_par.hid)))
                 thisob_res.append(sf_res)
             thisob_res = np.array(thisob_res)
-            if "XSHERANCAVG" in ob:
+            if "XSHERANCAVG" in ob.name:
                 thisob_res = self.compute_xs(thisob_res, self.o_par)
             self.runparameters.results[ob] = thisob_res
 

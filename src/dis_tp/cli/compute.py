@@ -12,7 +12,7 @@ dest_path = click.option(
     "-d",
     "--dest_path",
     type=pathlib.Path,
-    default=root_path / "results",
+    default=root_path / "project/results",
     required=False,
     help="result path",
 )

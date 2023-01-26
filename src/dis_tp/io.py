@@ -9,12 +9,25 @@ from .parameters import number_active_flavors
 class Observable:
     """Class describing observable settings"""
 
-    def __init__(self, obs, pdf, restype, scalevar, kinematics):
-        self.obs = obs
+    def __init__(self, name, pdf, restype, scalevar, kinematics):
+        self.name = name
         self.pdf = lhapdf.mkPDF(pdf, 0)
         self.restype = restype
         self.scalevar = scalevar
         self.kinematics = pd.DataFrame(kinematics)
+
+    @property
+    def x_grid(self):
+        return self.kinematics.x
+
+    @property
+    def q_grid(self):
+        return self.kinematics.q
+
+    @property
+    def y_grid(self):
+        return self.kinematics.y
+
 
 
 def load_theory_parameters(configs, name):
@@ -37,7 +50,7 @@ def load_operator_parameters(configs, name):
     for ob in loaded["obs"]:
         observables.append(
             Observable(
-                obs=ob,
+                name=ob,
                 pdf=loaded["obs"][ob]["PDF"],
                 restype=loaded["obs"][ob]["restype"],
                 scalevar=loaded["obs"][ob]["scalevar"],
@@ -65,23 +78,7 @@ class OperatorParameters:
     """Class containing all the operator parameters."""
 
     def __init__(self, obs):
-
-        self.x_grid = obs.kinematics.x
-        self.q_grid = obs.kinematics.q
-        self.y_grid = obs.kinematics.y
         self.obs = obs
-
-    def x_grid(self):
-        return self.x_grid
-
-    def q_grid(self):
-        return self.q_grid
-
-    def y_grid(self):
-        return self.y_grid
-
-    def obs(self):
-        return self.obs
 
 
 class RunParameters:
@@ -108,7 +105,7 @@ class RunParameters:
 
     def dump_result(self, ob, ob_result):
         file_name = (
-            ob.obs
+            ob.name
             + "_"
             + ob.restype
             + "_"
@@ -119,9 +116,9 @@ class RunParameters:
         obs_path = self.resultpath / (file_name + ".yaml")
         # construct the object to dump
         to_dump = dict(
-            x_grid=self.operator_parameters().x_grid,
-            q_grid=self.operator_parameters().q_grid,
-            obs=ob_result,
+            x_grid=ob.x_grid.tolist(),
+            q_grid=ob.q_grid.tolist(),
+            obs=ob_result.tolist(),
         )
         with open(obs_path, "w", encoding="UTF-8") as f:
             yaml.safe_dump(to_dump, f)

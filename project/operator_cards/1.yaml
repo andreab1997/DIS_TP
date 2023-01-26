@@ -15,7 +15,7 @@ obs:
 
 
   FL:
-    PDF: "NNPDF40_nlo_as_01180"
+    PDF: "NNPDF40_nnlo_as_01180"
     restype: "R"
     scalevar: "False"
     kinematics:
