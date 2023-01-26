@@ -44,12 +44,13 @@ class Runner:
         Int.Initialize_all(nf)
         self.partial_sf = None
 
-    def compute_xs(self, sfs):
+    @staticmethod
+    def compute_xs(ob, sfs):
         """Assembly the XS if needed according to 'XSHERANCAVG'"""
-        yp = 1.0 + (1.0 - self.o_par.y_grid) ** 2
-        yL = self.o_par.y_grid**2
-        factors = np.array([1.0, -yL / yp])
-        return factors @ sfs
+        yp = 1.0 + (1.0 - ob.y_grid) ** 2
+        yL = ob.y_grid**2
+        factors = np.array([[1.0 for _ in ob.y_grid], (-yL / yp).tolist()])
+        return np.sum(factors.T @ sfs, axis=0)
 
     def compute_sf(self, kins):
         x, q = kins
@@ -92,7 +93,7 @@ class Runner:
                 thisob_res.append(sf_res)
             thisob_res = np.array(thisob_res)
             if "XSHERANCAVG" in ob.name:
-                thisob_res = self.compute_xs(thisob_res, self.o_par)
+                thisob_res = self.compute_xs(ob, thisob_res)
             self.runparameters.results[ob] = thisob_res
 
     def save_results(self):

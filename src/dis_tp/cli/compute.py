@@ -19,14 +19,19 @@ dest_path = click.option(
 
 
 @command.command("compute")
-@t_card
 @o_card
+@t_card
 @n_cores
 @dest_path
 def generate_matching_grids(
-    t_card: str, o_card: str, n_cores: int, dest_path: pathlib.Path
+    o_card: str, t_card: str, n_cores: int, dest_path: pathlib.Path
 ):
-    """Run a computation."""
+    """
+    Run a computation.
+    
+    USAGE dis_tp compute <o_card> <t_card>
+    """
+    
     obj = runner.Runner(o_card, t_card, dest_path)
     obj.compute(n_cores)
     obj.save_results()

@@ -18,15 +18,15 @@ class Observable:
 
     @property
     def x_grid(self):
-        return self.kinematics.x
+        return self.kinematics.x.values
 
     @property
     def q_grid(self):
-        return self.kinematics.q
+        return self.kinematics.q.values
 
     @property
     def y_grid(self):
-        return self.kinematics.y
+        return self.kinematics.y.values
 
 
 def load_theory_parameters(configs, name):

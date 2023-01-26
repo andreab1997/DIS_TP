@@ -327,7 +327,7 @@ def F2_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
                 * Mypdf.alphasQ(muR)
                 * (
                     PDFConvolute(TildeCoeffFunc.Cg_1_til_reg, Mypdf, x, Q, p, nf, g_id)
-                    + PDFConvolute(MasslessCoeffFunc.Cb_1_reg, Mypdf, x, Q, h_id, p1=p)
+                    + PDFConvolute(MasslessCoeffFunc.Cb_1_reg, Mypdf, x, Q, p, nf, h_id)
                 )
             )
             nlo_nll_local = (
