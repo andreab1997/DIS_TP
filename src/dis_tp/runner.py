@@ -67,7 +67,7 @@ class Runner:
                     print(f"Computing {func.__name__} at x={x}, Q={q}")
                     if func in [Int.F2_M, Int.FL_M]:
                         sf_res.append(
-                            float(func(order, "our", ob.pdf, x, q, self.t_par.hid))
+                            float(func(order, self.t_par.fns, ob.pdf, x, q, self.t_par.hid))
                         )
                     else:
                         sf_res.append(float(func(order, ob.pdf, x, q, self.t_par.hid)))
