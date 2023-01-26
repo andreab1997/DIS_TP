@@ -1,8 +1,8 @@
 obs:
   F2:
-    PDF: "NNPDF40_nnlo_as_01180"
+    PDF: "NNPDF40_nlo_as_01180"
     restype: "M"
-    scalevar: "True"
+    scalevar: "False"
     kinematics:
       - x: 0.001
         q: 1.0

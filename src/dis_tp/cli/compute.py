@@ -9,21 +9,11 @@ from .grids import n_cores
 t_card = click.argument("t_card", type=str)
 o_card = click.argument("o_card", type=str)
 
-dest_path = click.option(
-    "-d",
-    "--dest_path",
-    type=pathlib.Path,
-    default=root_path / "project/results",
-    required=False,
-    help="result path",
-)
-
 
 @command.command("compute")
 @o_card
 @t_card
 @n_cores
-@dest_path
 def generate_matching_grids(o_card: str, t_card: str, n_cores: int):
     """
     Run a computation.
