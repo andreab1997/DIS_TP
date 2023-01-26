@@ -53,7 +53,7 @@ def InitializeCg2_til(nf):
     Cg2_til_array_prov = np.array(
         readt.readND_python(PATH_TO_GLOBAL + f"/External/Cg_2_til/Cg2til_nf{nf}.txt")
     )
-    Cg2_til = interp2d(ZList[:-1], QList, Cg2_til_array_prov.T, kind="quintic")
+    Cg2_til = interp2d(ZList[:-1], QList, Cg2_til_array_prov.transpose(), kind="quintic")
 
 
 def InitializeCq2_til(nf):
