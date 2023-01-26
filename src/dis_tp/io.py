@@ -1,26 +1,20 @@
 import yaml
-import numpy as np
-
-from dis_tp import Integration as Int
+import lhapdf
+import pandas as pd
 
 from .configs import defaults, detect, load
 from .parameters import number_active_flavors
-
-maporders = {"LO": 0, "NLO": 1, "NNLO": 2, "N3LO": 3}
-mapfunc = {
-    "F2": {"R": Int.F2_R, "M": Int.F2_M, "FO": Int.F2_FO},
-    "FL": {"R": Int.FL_R, "M": Int.FL_M, "FO": Int.FL_FO},
-}
 
 
 class Observable:
     """Class describing observable settings"""
 
-    def __init__(self, obs, pdf, restype, scalevar):
+    def __init__(self, obs, pdf, restype, scalevar, kinematics):
         self.obs = obs
-        self.pdf = pdf
+        self.pdf = lhapdf.mkPDF(pdf, 0)
         self.restype = restype
         self.scalevar = scalevar
+        self.kinematics = pd.DataFrame(kinematics)
 
 
 def load_theory_parameters(configs, name):
@@ -47,11 +41,10 @@ def load_operator_parameters(configs, name):
                 pdf=loaded["obs"][ob]["PDF"],
                 restype=loaded["obs"][ob]["restype"],
                 scalevar=loaded["obs"][ob]["scalevar"],
+                kinematics=loaded["obs"][ob]["kinematics"],
             )
         )
-    return OperatorParameters(
-        x_grid=loaded["x_grid"], q_grid=loaded["q_grid"], obs=observables
-    )
+    return OperatorParameters(observables)
 
 
 class TheoryParameters:
@@ -71,12 +64,11 @@ class TheoryParameters:
 class OperatorParameters:
     """Class containing all the operator parameters."""
 
-    def __init__(self, x_grid, q_grid, obs):
+    def __init__(self, obs):
 
-        # TODO: fix kinematics in runcard
-        self.x_grid = x_grid
-        self.q_grid = q_grid
-        self.y_grid = None
+        self.x_grid = obs.kinematics.x
+        self.q_grid = obs.kinematics.q
+        self.y_grid = obs.kinematics.y
         self.obs = obs
 
     def x_grid(self):
@@ -99,6 +91,7 @@ class RunParameters:
         self.theoryparam = theoryparam
         self.operatorparam = operatorparam
         self.resultpath = resultpath
+        self.results = {}
 
     def theory_parameters(self):
         return self.theoryparam
@@ -109,9 +102,9 @@ class RunParameters:
     def resultpath(self):
         return self.resultpath
 
-    def dump_results(self, results):
-        for ob in results:
-            self.dump_result(ob, results[ob])
+    def dump_results(self):
+        for ob, res in self.results.items():
+            self.dump_result(ob, res)
 
     def dump_result(self, ob, ob_result):
         file_name = (
@@ -133,54 +126,6 @@ class RunParameters:
         with open(obs_path, "w", encoding="UTF-8") as f:
             yaml.safe_dump(to_dump, f)
 
-# TODO: load the PDF before computing
-# TODO: move this to a separate file
+
 # TODO: rename External to be grids
-# TODO: implemente the NUTEV cross section
 # TODO: fix kinematics in runcards
-
-
-def compute(runparameters, n_cores):
-    # Initializing
-    hid = runparameters.theory_parameters().hid
-
-    # TODO: this and the mass can be setted from runcard
-    nf = number_active_flavors(hid)
-    Int.Initialize_all(nf)
-
-    o_par = runparameters.operator_parameters()
-    t_par = runparameters.theory_parameters()
-
-    order = maporders[t_par.order]
-    results = {}
-    # loop on observables
-    for ob in o_par.obs:
-        func_to_call = mapfunc[ob.obs][ob.restype]
-        thisob_res = []
-        sfs = []
-
-        # loop o SF
-        for func in func_to_call:
-            xfix_res = []
-
-            # TODO: parallelize here
-            for x in o_par.x_grid:
-                for q in o_par.q_grid:
-                    if func in [Int.F2_M, Int.FL_M]:
-                        xfix_res.append(
-                            float(func(order, "our", ob.pdf, x, q, hid))
-                        )
-                    else:
-                        xfix_res.append(float(func(order, ob.pdf, x, q, hid)))
-            sfs.append(xfix_res)
-        thisob_res.append(xfix_res)
-
-        # Assembly the XS if needed
-        if "XSHERANCAVG" in ob:
-            yp = 1.0 + (1.0 - o_par.y_grid) ** 2
-            # ym = 1.0 - (1.0 - y) ** 2
-            yL = o_par.y_grid**2
-            factors = np.array([1.0, -yL / yp])
-            thisob_res = factors @ thisob_res
-        results[ob] = thisob_res
-    runparameters.dump_results(results)

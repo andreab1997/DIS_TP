@@ -1,7 +1,7 @@
 import click
 import pathlib
 
-from .. import io, configs
+from .. import runner, configs
 from .base import command, root_path
 from .grids import n_cores
 
@@ -17,6 +17,7 @@ dest_path = click.option(
     help="result path",
 )
 
+
 @command.command("compute")
 @t_card
 @o_card
@@ -26,9 +27,6 @@ def generate_matching_grids(
     t_card: str, o_card: str, n_cores: int, dest_path: pathlib.Path
 ):
     """Run a computation."""
-
-    cfg = configs.load()
-    obs_obj = io.load_operator_parameters(cfg, o_card)
-    th_obj = io.load_theory_parameters(cfg, t_card)
-    par_obj = io.RunParameters(th_obj, obs_obj, dest_path)
-    io.compute(par_obj, n_cores)
+    obj = runner.Runner(o_card, t_card, dest_path)
+    obj.compute(n_cores)
+    obj.save_results()

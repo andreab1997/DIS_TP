@@ -1,21 +1,29 @@
-x_grid:
-- 0.001
-- 0.01
-- 0.1
-- 0.90
-
-q_grid:
-- 1.0
-- 2.0
-- 5.0
-- 10.0
-
 obs:
- F2:
-   PDF: "NNPDF40_nnlo_as_01180"
-   restype: "M"
-   scalevar: "True"
- FL:
-   PDF: "NNPDF40_nlo_as_01180"
-   restype: "R"
-   scalevar: "False"
+  F2:
+    PDF: "NNPDF40_nnlo_as_01180"
+    restype: "M"
+    scalevar: "True"
+    kinematics:
+      - x: 0.001
+        q: 1.0
+      - x: 0.01
+        q: 2.0
+      - x: 0.1
+        q: 5.0
+      - x: 0.90
+        q: 10.0
+
+
+  FL:
+    PDF: "NNPDF40_nlo_as_01180"
+    restype: "R"
+    scalevar: "False"
+    kinematics:
+      - x: 0.001
+        q: 1.0
+      - x: 0.01
+        q: 2.0
+      - x: 0.1
+        q: 5.0
+      - x: 0.90
+        q: 10.0
