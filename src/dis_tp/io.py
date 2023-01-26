@@ -125,7 +125,3 @@ class RunParameters:
         )
         with open(obs_path, "w", encoding="UTF-8") as f:
             yaml.safe_dump(to_dump, f)
-
-
-# TODO: rename External to be grids
-# TODO: fix kinematics in runcards
