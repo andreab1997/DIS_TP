@@ -1,7 +1,8 @@
-import pathlib
-import numpy as np
-from multiprocessing import Pool
 import functools
+import pathlib
+from multiprocessing import Pool
+
+import numpy as np
 
 from dis_tp import Integration as Int
 
@@ -21,10 +22,11 @@ mapfunc = {
 
 # TODO: rename External to be grids
 class Runner:
-    def __init__(self, o_card, t_card, dest_path: pathlib.Path) -> None:
+    def __init__(self, o_card, t_card) -> None:
 
         cfg = configs.load()
         cfg = configs.defaults(cfg)
+        dest_path = cfg["paths"]["results"]
         if isinstance(o_card, str):
             obs_obj = io.load_operator_parameters(cfg, o_card)
         else:
