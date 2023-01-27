@@ -185,8 +185,7 @@ def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None):
             points=(x, 1.0),
         )
         plus2, error2 = integrate.quad(
-            lambda z: func1(z, Q, p1, nf)
-            * light_pdfs_2(z),
+            lambda z: func1(z, Q, p1, nf) * light_pdfs_2(z),
             0.0,
             x,
             epsabs=1e-12,

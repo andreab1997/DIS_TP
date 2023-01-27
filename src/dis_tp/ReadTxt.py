@@ -126,15 +126,14 @@ class Construct_Grid:
         self.func = func
         self.mass = masses(h_id)
         self.path = path
-        self.xgrid = Ini.ZList # [0.0001, 0.001, 0.1, 0.999] # # [0.0001, 0.001, 0.1, 0.999]  # 
-        self.qgrid = Ini.QList # [1, 10, 100] 
+        self.xgrid = Ini.ZList
+        self.qgrid = Ini.QList
         self.n_pools = n_pools
         self.nf = number_active_flavors(h_id)
         self.e_h = charges(h_id)
         self.grid_type = grid_type
         if self.grid_type == "tilde":
             self.xgrid = self.xgrid[:-1]
-
 
     def construct_single_x(self, z):
         z_func_values = []
