@@ -40,8 +40,8 @@ def Initialize_all(nf):
     # Ini.InitializeCLg3_m(nf)
     # Ini.InitializeCLq3_til(nf)
     # Ini.InitializeCLg3_til(nf)
-    # Ini.InitializeCq3_til(nf)
-    # Ini.InitializeCg3_til(nf)
+    Ini.InitializeCq3_til(nf)
+    Ini.InitializeCg3_til(nf)
 
 
 def F2_FO(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):

@@ -285,7 +285,7 @@ def InitializeCq3_til(nf):
     Cq3_til_array = np.array(
         readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_til/Cq3til_nf{nf}.txt")
     )
-    Cq3_til = interp2d(ZList, QList, Cq3_til_array, kind="quintic")
+    Cq3_til = interp2d(ZList[:-1], QList, Cq3_til_array.T, kind="quintic")
 
 
 def InitializeCLq3_m(nf):

@@ -97,7 +97,7 @@ def Cg_2_til_reg(z, Q, p, nf, grids=False):
     )
 
 
-def Cg_3_til_reg(z, Q, p, nf, grids=False):
+def Cg_3_til_reg(z, Q, p, nf, grids=True):
     if grids:
         return Ini.Cg3_til(z, Q)[0]
     return (
@@ -143,7 +143,7 @@ def Cq_2_til_reg(z, Q, p, nf, grids=False):
     return Cq_2_m_reg(z, Q, p, nf) - 2 * Cb_0_loc(z, Q, p, nf) * Mbq_2(z, p, nf)
 
 
-def Cq_3_til_reg(z, Q, p, nf, grids=False):
+def Cq_3_til_reg(z, Q, p, nf, grids=True):
     q = [p[0], Q]
     if grids:
         return Ini.Cq3_til(z, Q)[0]
