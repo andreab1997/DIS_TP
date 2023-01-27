@@ -1,5 +1,5 @@
-import yaml
 import pandas as pd
+import yaml
 
 from .configs import defaults, detect, load
 from .parameters import number_active_flavors
@@ -8,11 +8,10 @@ from .parameters import number_active_flavors
 class Observable:
     """Class describing observable settings"""
 
-    def __init__(self, name, pdf, restype, scalevar, kinematics):
+    def __init__(self, name, pdf, restype, kinematics):
         self.name = name
         self.pdf = pdf
         self.restype = restype
-        self.scalevar = scalevar
         self.kinematics = pd.DataFrame(kinematics)
 
     @property
@@ -26,6 +25,7 @@ class Observable:
     @property
     def y_grid(self):
         return self.kinematics.y.values
+
 
 # TODO: make this NNPDF compatible!!!
 def load_theory_parameters(configs, name):
@@ -56,7 +56,6 @@ def load_operator_parameters(configs, name):
                 name=ob,
                 pdf=loaded["obs"][ob]["PDF"],
                 restype=loaded["obs"][ob]["restype"],
-                scalevar=loaded["obs"][ob]["scalevar"],
                 kinematics=loaded["obs"][ob]["kinematics"],
             )
         )
