@@ -17,7 +17,7 @@ def Mbg_1(z, p, nf):
 
 # NOTE: here there is a different convention on the use of
 #  matching conditions A_Hq and A_hg wrt EKO
-def Mbg_2(z, p, nf, grids=False, r=None, s=None, path="talbot"):
+def Mbg_2(z, p, nf, grids=True, r=None, s=None, path="talbot"):
     if grids:
         return Ini.Mbg2(z, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
@@ -2232,7 +2232,7 @@ def Mgg_2_sing(z, p, nf):
     return CA * TR * (AS2ggH_S + L**2 * omeL2 + L * omeL1)
 
 
-def Mbq_2(z, p, nf, grids=False, r=None, s=None, path="talbot"):
+def Mbq_2(z, p, nf, grids=True, r=None, s=None, path="talbot"):
     if grids:
         return Ini.Mbq2(z, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
