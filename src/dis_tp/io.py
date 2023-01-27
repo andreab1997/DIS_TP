@@ -118,6 +118,8 @@ class RunParameters:
             + str(self.theory_parameters().order)
             + "_"
             + str(self.theory_parameters().hid)
+            + "_"
+            + str(ob.pdf)
         )
         obs_path = self.resultpath / (file_name + ".yaml")
         # construct the object to dump
