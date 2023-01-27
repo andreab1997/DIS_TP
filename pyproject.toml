@@ -30,10 +30,15 @@ dependencies = [
     "simple-term-menu >= 1.4.1",
     "pre-commit >= 2.20.0",
     "pytest >= 6.2.5",
-    "pytest-cov >= 2.12.1"
+    "pytest-cov >= 2.12.1",
+    'yadism @ git+https://github.com/NNPDF/yadism.git@develop',
+    "click >=8.1.3"
 ]
 
 [tool.pytest.ini_options]
 testpaths = ['tests/', 'benchmarks/']
 python_files = ['test_*.py', 'bench_*.py']
 python_functions = ['test_*', 'benchmark_*']
+
+[project.scripts]
+dis_tp = "dis_tp.cli:command"
