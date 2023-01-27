@@ -55,15 +55,19 @@ def readND(path_to_file):
     for line in open(path_to_file):
         listWord = line.split(" ")
         mylist.append(listWord)
-    list = [
-        [
-            float(item)
-            if item != "-nan" and item != "nan"
-            else float(mylist[a][mylist[a].index(item) - 1])
-            for item in mylist[a]
-        ]
-        for a in range(len(mylist))
-    ]
+    list = []
+    for row in mylist:
+        temp = []
+        for item in row:
+            if item == "\n":
+                continue
+            if item != "-nan" and item != "nan":
+                el = float(item)
+            else:
+                el = float(row[row.index(item) - 1])
+            temp.append(el)
+        list.append(temp)
+
     return list
 
 
