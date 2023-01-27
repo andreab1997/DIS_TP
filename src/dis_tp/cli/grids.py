@@ -1,15 +1,17 @@
-import click
 import pathlib
 
-from .. import ReadTxt, Integration
+import click
+
+from .. import Integration
 from .. import MatchingFunc as mcf
+from .. import ReadTxt
 from .. import TildeCoeffFunc as tcf
 from .base import command, root_path
 
 
 @command.group("grids")
 def subcommand():
-    """Genarate grids"""
+    """Generate grids"""
 
 
 heavy_id = click.argument("h_id", type=int)
