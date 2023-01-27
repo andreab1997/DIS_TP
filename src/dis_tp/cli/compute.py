@@ -4,9 +4,32 @@ import click
 import numpy as np
 import yaml
 
-from .. import configs, io, parameters, runner
+from .. import configs, io, parameters, plot, runner
 from .base import command, root_path
 from .grids import n_cores
+
+
+def provide_default_kinematics(h_id):
+    """Provide default kinematics for an observable."""
+    mass = parameters.masses(h_id)
+    Qlogmin = np.log10(1.0)
+    Qlogmax = np.log10(150.0)
+    Qlog = np.linspace(Qlogmin, Qlogmax, 200)
+    Qcommon = pow(10, Qlog)
+    eps = 0.5
+    thre = [mass * ratio for ratio in [0.5, 1.0, 2.0]]
+    Qsing = [np.linspace(thr - eps, thr + eps, 5) for thr in thre]
+    Q = np.sort(np.concatenate((Qcommon, Qsing[0], Qsing[1], Qsing[2]))).tolist()
+    X = [0.1, 0.01, 0.001, 0.0001]
+    kinematics = []
+    for x in X:
+        for q in Q:
+            dictx = {}
+            dictx["x"] = x
+            dictx["q"] = q
+            kinematics.append(dictx)
+    return kinematics
+
 
 t_card = click.argument("t_card", type=str)
 o_card = click.argument("o_card", type=str)
@@ -14,6 +37,9 @@ obs = click.argument("obs", type=str)
 restype = click.argument("restype", type=str)
 pdf = click.argument("pdf", type=str)
 scalevar = click.argument("scalevar", type=bool)
+plot_dir = click.argument("plot_dir", type=str)
+order = click.argument("order", type=str)
+h_id = click.argument("h_id", type=str)
 
 
 @command.command("compute")
@@ -73,23 +99,20 @@ def add_obs_opcard(
         yaml.safe_dump(old_ocard, f)
 
 
-def provide_default_kinematics(h_id):
-    """Provide default kinematics for an observable."""
-    mass = parameters.masses(h_id)
-    Qlogmin = np.log10(1.0)
-    Qlogmax = np.log10(150.0)
-    Qlog = np.linspace(Qlogmin, Qlogmax, 200)
-    Qcommon = pow(10, Qlog)
-    eps = 0.5
-    thre = [mass * ratio for ratio in [0.5, 1.0, 2.0]]
-    Qsing = [np.linspace(thr - eps, thr + eps, 5) for thr in thre]
-    Q = np.sort(np.concatenate((Qcommon, Qsing[0], Qsing[1], Qsing[2]))).tolist()
-    X = [0.1, 0.01, 0.001, 0.0001]
-    kinematics = []
-    for x in X:
-        for q in Q:
-            dictx = {}
-            dictx["x"] = x
-            dictx["q"] = q
-            kinematics.append(dictx)
-    return kinematics
+@command.command("plot")
+@plot_dir
+@obs
+@order
+@h_id
+def plot_observable(plot_dir: str, obs: str, order: str, h_id: str):
+    """
+    Plot (and save the results in plot_dir) an observable with all the method overimposed for a certain order
+    and heavy quark id.
+
+    USAGE dis_tp plot_observable <plot_dir> <obs> <order> <h_id>
+    """
+    cfg = configs.load()
+    cfg = configs.defaults(cfg)
+    plot_dir_path = cfg["paths"]["root"] / plot_dir
+    plotclass = plot.Plot(cfg, plot_dir_path)
+    plotclass.plot_single_obs(obs, order, h_id)
