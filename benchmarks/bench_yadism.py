@@ -1,6 +1,6 @@
 """Script to produce the Yadism benchmark."""
 import pathlib
-
+import yaml
 import lhapdf
 import numpy as np
 import pandas as pd
@@ -12,37 +12,47 @@ from dis_tp.runner import Runner
 from df_to_table import df_to_table
 from rich.console import Console
 
-from banana.data.theories import default_card as theory_default
 
 console = Console()
 
 here = pathlib.Path(__file__).absolute().parent
-pdf_name = "NNPDF40_nnlo_as_01180"
-obs_names = ["F2_bottom", "FL_bottom"]  # "XSHERANCAVG_bottom"]
-# obs_names = ["F2_charm", "XSHERANCAVG_charm"]
 
 
-def load_theory():
-    th = theory_default
-    # make dis_tp comatible
-    th["order"] = "NLO"
-    th["fns"] = "fonll"
-    th["hid"] = 5
+class TheoryCard:
+    def __init__(self, pto, hid):
+        with open(
+            here / "../project/theory_cards/400.yaml",
+            "r",
+        ) as file:
+            th = yaml.safe_load(file)
 
-    th["PTO"] = 1
-    th["TMC"] = 0
-    th["NfFF"] = 4
-    th["FNS"] = "FONLL-A"
-    return th
+        th["TMC"] = 0
+        th["PTO"] = pto
+        if pto == 1:
+            th["FNS"] = "FONLL-A"
+        if pto == 2:
+            th["FNS"] = "FONLL-C"
+
+        th["NfFF"] = hid
+        self.t_card = th
+
+    def yadism_like(self):
+        return self.t_card
+
+    def dis_tp_like(self):
+        new_t_card = {}
+        new_t_card["hid"] = self.t_card["NfFF"]
+        new_t_card["fns"] = "fonll"
+        new_t_card["order"] = "N" * self.t_card["PTO"] + "LO"
+        return new_t_card
 
 
 class Observable_card:
-    def __init__(self, obs_names) -> None:
+    def __init__(self, obs_names, q_min, q_max, restype, x_fixed=0.01, q_fixed=30):
 
         x_grid = make_grid(30, 30, x_min=1e-6)
-        q2_grid = np.geomspace(1**2, 30**2, 60)
-        x_fixed = 0.01
-        q2_fixed = 30**2
+        q2_grid = np.geomspace(q_min**2, q_max**2, 60)
+        q2_fixed = q_fixed**2
 
         obs = observables.default_card
         obs["interpolation_xgrid"] = x_grid.tolist()
@@ -59,11 +69,12 @@ class Observable_card:
         for fx in obs_names:
             obs["observables"][fx] = kinematics
         self.o_card = obs
+        self.restype = restype
 
     def yadism_like(self):
         return self.o_card
 
-    def dis_tp_like(self, pdf_name, restype="FO"):
+    def dis_tp_like(self, pdf_name):
         new_o_card = {}
         new_o_card["obs"] = {}
         for fx, kins in self.o_card["observables"].items():
@@ -73,50 +84,77 @@ class Observable_card:
             ]
             new_o_card["obs"][fx.split("_")[0]] = {
                 "PDF": pdf_name,
-                "restype": restype,
+                "restype": self.restype,
                 "scalevar": False,
                 "kinematics": new_kins,
             }
         return new_o_card
 
 
-def run_yadism(theory, observables, pdf):
-    output = yadism.run_yadism(theory, observables)
-    yad_pred = output.apply_pdf(pdf)
-    return yad_pred
+class BenchmarkRunner:
+    def __init__(self, theory, observables, pdf_name):
+        self.theory = theory
+        self.observables = observables
+        self.pdf_name = pdf_name
 
-
-def run_dis_tp(theory, observables):
-    runner = Runner(observables, theory)
-    runner.compute(n_cores=4)
-    return runner.results
-
-
-def run_bench(obs_names):
-    theory = load_theory()
-    obs_obj = Observable_card(obs_names)
-
-    yad_log = run_yadism(theory, obs_obj.yadism_like(), lhapdf.mkPDF(pdf_name))
-    dis_tp_log = run_dis_tp(theory, obs_obj.dis_tp_like(pdf_name))
-
-    for obs in obs_names:
-
-        my_obs = obs.split("_")[0]
-        yad_df = pd.DataFrame(yad_log[obs]).rename(columns={"result": "yadism"})
-        dis_tp_df = dis_tp_log[my_obs].rename(columns={"result": "dis_tp"})
-        benc_df = pd.concat([yad_df, dis_tp_df], axis=1).T.drop_duplicates().T
-
-        # construct some nice log table
-        benc_df.drop("q", axis=1, inplace=True)
-        benc_df.drop("y", axis=1, inplace=True)
-        benc_df.drop("error", axis=1, inplace=True)
-        benc_df["absolute error"] = np.abs(benc_df.dis_tp - benc_df.yadism)
-        benc_df["percent error"] = (
-            (benc_df.dis_tp - benc_df.yadism) / benc_df.yadism * 100
+    def run_yadism(self):
+        output = yadism.run_yadism(
+            self.theory.yadism_like(), self.observables.yadism_like()
         )
-        console.log(df_to_table(benc_df, obs))
+        yad_pred = output.apply_pdf(lhapdf.mkPDF(self.pdf_name))
+        return yad_pred
+
+    def run_dis_tp(self):
+        runner = Runner(
+            self.observables.dis_tp_like(self.pdf_name), self.theory.dis_tp_like()
+        )
+        runner.compute(n_cores=4)
+        return runner.results
+
+    def run(self):
+        yad_log = self.run_yadism()
+        dis_tp_log = self.run_dis_tp()
+        self.log(dis_tp_log, yad_log)
+
+    @staticmethod
+    def log(dis_tp_log, yad_log):
+        for obs in yad_log:
+            my_obs = obs.split("_")[0]
+            yad_df = pd.DataFrame(yad_log[obs]).rename(columns={"result": "yadism"})
+            dis_tp_df = dis_tp_log[my_obs].rename(columns={"result": "dis_tp"})
+            benc_df = pd.concat([yad_df, dis_tp_df], axis=1).T.drop_duplicates().T
+
+            # construct some nice log table
+            benc_df.drop("q", axis=1, inplace=True)
+            benc_df.drop("y", axis=1, inplace=True)
+            benc_df.drop("error", axis=1, inplace=True)
+            benc_df["absolute error"] = np.abs(benc_df.dis_tp - benc_df.yadism)
+            benc_df["percent error"] = (
+                (benc_df.dis_tp - benc_df.yadism) / benc_df.yadism * 100
+            )
+            console.log(df_to_table(benc_df, obs))
+
+
+def benchmarkF_M(pto, hid, pdf_name):
+    flavor = "bottom" if hid == 5 else "charm"
+    obs_names = [f"F2_{flavor}", f"FL_{flavor}"]  # , f"XSHERANCAVG_{flavor}"]
+    obs_obj = Observable_card(obs_names, q_min=20, q_max=100, restype="M")
+    th_obj = TheoryCard(pto, hid)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
+
+
+def benchmarkFO(pto, hid, pdf_name):
+    flavor = "bottom" if hid == 5 else "charm"
+    obs_names = [f"F2_{flavor}", f"FL_{flavor}"]  # , f"XSHERANCAVG_{flavor}"]
+    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=3, restype="FO")
+    th_obj = TheoryCard(pto, hid)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
 
 
 if __name__ == "__main__":
 
-    run_bench(obs_names)
+    pdf_name = "NNPDF40_nnlo_as_01180"
+    obj = benchmarkF_M(pto=1, hid=5, pdf_name=pdf_name)
+    obj = benchmarkFO(pto=1, hid=5, pdf_name=pdf_name)
