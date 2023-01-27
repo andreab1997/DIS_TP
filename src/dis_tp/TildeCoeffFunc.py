@@ -2,8 +2,8 @@
 
 import numpy as np
 import scipy.special as special
+from eko.constants import CF, TR
 
-from eko.constants import TR, CF
 from . import Initialize as Ini
 from .MassiveCoeffFunc import (
     Cg_1_m_reg,
@@ -85,7 +85,7 @@ def Cg_1_til_reg(z, Q, p, nf):
     return Cg_1_m_reg(z, Q, p, nf) - 2 * Cb_0_loc(z, Q, p, nf) * Mbg_1(z, p, nf)
 
 
-def Cg_2_til_reg(z, Q, p, nf, grids=True):
+def Cg_2_til_reg(z, Q, p, nf, grids=False):
     if grids:
         return Ini.Cg2_til(z, Q)[0]
     return (
@@ -137,7 +137,7 @@ def Cg_3_til_reg(z, Q, p, nf, grids=False):
     )
 
 
-def Cq_2_til_reg(z, Q, p, nf, grids=True):
+def Cq_2_til_reg(z, Q, p, nf, grids=False):
     if grids:
         return Ini.Cq2_til(z, Q)[0]
     return Cq_2_m_reg(z, Q, p, nf) - 2 * Cb_0_loc(z, Q, p, nf) * Mbq_2(z, p, nf)
@@ -166,7 +166,7 @@ def CLg_1_til_reg(z, Q, p, nf):
     return CLg_1_m_reg(z, Q, p, nf)
 
 
-def CLg_2_til_reg(z, Q, p, nf, grids=True):
+def CLg_2_til_reg(z, Q, p, nf, grids=False):
     if grids:
         return Ini.CLg2_til(z, Q)[0]
     return CLg_2_m_reg(z, Q, p, nf) - 2 * np.log((Q**2) / (p[0] ** 2)) * CLb1_Mbg1(
@@ -199,7 +199,7 @@ def CLg_3_til_reg(z, Q, p, nf, grids=False):
     )
 
 
-def CLq_2_til_reg(z, Q, p, nf, grids=True):
+def CLq_2_til_reg(z, Q, p, nf, grids=False):
     if grids:
         return Ini.CLq2_til(z, Q)[0]
     return CLq_2_m_reg(z, Q, p, nf)
