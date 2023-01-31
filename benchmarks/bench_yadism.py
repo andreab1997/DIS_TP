@@ -27,6 +27,7 @@ class TheoryCard:
             th = yaml.safe_load(file)
 
         th["TMC"] = 0
+        th["IC"] = 0
         th["PTO"] = pto
         if pto == 1:
             th["FNS"] = "FONLL-A"
@@ -135,20 +136,36 @@ class BenchmarkRunner:
             console.log(df_to_table(benc_df, obs))
 
 
-def benchmarkF_M(pto, hid, pdf_name):
-    flavor = "bottom" if hid == 5 else "charm"
-    obs_names = [f"F2_{flavor}", f"FL_{flavor}"]  # , f"XSHERANCAVG_{flavor}"]
-    obs_obj = Observable_card(obs_names, q_min=20, q_max=100, restype="M")
-    th_obj = TheoryCard(pto, hid)
+def benchmarkF_M_bottom(pto, pdf_name):
+    obs_names = [f"F2_bottom", f"FL_bottom"]  # , f"XSHERANCAVG_{flavor}"]
+    obs_obj = Observable_card(obs_names, q_min=5, q_max=100, restype="M")
+    th_obj = TheoryCard(pto, hid=5)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
 
-def benchmarkFO(pto, hid, pdf_name):
-    flavor = "bottom" if hid == 5 else "charm"
-    obs_names = [f"F2_{flavor}", f"FL_{flavor}"]  # , f"XSHERANCAVG_{flavor}"]
-    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=3, restype="FO")
-    th_obj = TheoryCard(pto, hid)
+def benchmarkFO_bottom(pto, pdf_name):
+    obs_names = [f"F2_bottom", f"FL_bottom"]  # , f"XSHERANCAVG_{flavor}"]
+    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=4.5, restype="FO")
+    th_obj = TheoryCard(pto, hid=5)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
+
+
+def benchmarkF_M_charm(pto, pdf_name):
+    obs_names = [f"F2_charm", f"FL_charm"]
+    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=100, restype="M")
+    th_obj = TheoryCard(pto, hid=4)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
+
+
+def benchmarkFO_charm(pto, pdf_name):
+    obs_names = [f"F2_charm", f"FL_charm"]
+    obs_obj = Observable_card(
+        obs_names, q_min=1.2, q_max=1.5, q_fixed=1.4, restype="FO"
+    )
+    th_obj = TheoryCard(pto, hid=4)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
@@ -156,5 +173,8 @@ def benchmarkFO(pto, hid, pdf_name):
 if __name__ == "__main__":
 
     pdf_name = "NNPDF40_nnlo_as_01180"
-    obj = benchmarkF_M(pto=1, hid=5, pdf_name=pdf_name)
-    obj = benchmarkFO(pto=1, hid=5, pdf_name=pdf_name)
+    # obj = benchmarkF_M_bottom(pto=1, pdf_name=pdf_name)
+    # obj = benchmarkFO_bottom(pto=1, pdf_name=pdf_name)
+
+    obj = benchmarkF_M_charm(pto=2, pdf_name=pdf_name)
+    obj = benchmarkFO_charm(pto=2, pdf_name=pdf_name)
