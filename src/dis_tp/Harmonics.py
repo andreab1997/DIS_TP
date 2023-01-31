@@ -3,7 +3,7 @@ import numpy as np
 from mpmath import *
 
 from . import Initialize as Ini
-from . import zetas as zet
+from eko.harmonics.constants import zeta3, zeta5
 
 mp.dps = 15
 mp.pretty = True
@@ -42,7 +42,7 @@ def H_011(x):
         (1.0 / 2.0) * (np.log(x)) * (np.log(1 - x) ** 2)
         + (np.log(1 - x)) * polylog(2, 1 - x)
         - polylog(3, 1 - x)
-        + zet.zeta_3
+        + zeta3
     )
 
 
@@ -91,7 +91,7 @@ def H_01111(x):
         - (1.0 / 2.0) * (np.log(1 - x) ** 2) * polylog(3, 1 - x)
         + np.log(1 - x) * polylog(4, 1 - x)
         - polylog(5, 1 - x)
-        + zet.zeta_5
+        + zeta5
     )
 
 
@@ -135,9 +135,9 @@ def H_0m11(x):
         - polylog(3, -x)
         + polylog(3, x)
         + polylog(3, -((2 * x) / (1 - x)))
-        - zet.zeta_3
+        - zeta3
         + (1.0 / 24.0)
-        * (-2 * (np.pi**2) * np.log(2) + 4 * (np.log(2) ** 3) + 21 * zet.zeta_3)
+        * (-2 * (np.pi**2) * np.log(2) + 4 * (np.log(2) ** 3) + 21 * zeta3)
     )
 
 
@@ -151,7 +151,7 @@ def H_01m1(x):
         + polylog(3, (2 * x) / (1 + x))
         - polylog(3, (1 + x) / 2)
         + (1.0 / 24.0)
-        * (-2 * (np.pi**2) * np.log(2) + 4 * (np.log(2) ** 3) + 21 * zet.zeta_3)
+        * (-2 * (np.pi**2) * np.log(2) + 4 * (np.log(2) ** 3) + 21 * zeta3)
     )
 
 
@@ -301,7 +301,7 @@ def H_01m1m1m1(x):  ##
 
 # Generalized Nielsen
 def S12(x):
-    ZETA3 = zet.zeta_3
+    ZETA3 = zeta3
     if x > 1:
         return (
             -polylog(3, (1.0 - x))

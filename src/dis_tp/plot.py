@@ -22,22 +22,26 @@ class Plot:
         restypes = {
             "FO": {
                 "color": "violet",
-                "pdf": "NNPDF_" + str(int(h_id) - 1) + "F_" + orderstrings[order],
+                "pdf": "NNPDF40_"
+                + orderstrings[order]
+                + "_as_01180"
+                + "_nf_"
+                + str(int(h_id) - 1),
             },
             "M": {
                 "color": "blue",
                 "pdf": [
-                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=05mb",
-                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=mb",
-                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=20mb",
+                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=05mb",
+                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=mb",
+                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=20mb",
                 ],
             },
             "R": {
                 "color": "green",
                 "pdf": [
-                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=05mb",
-                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=mb",
-                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=20mb",
+                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=05mb",
+                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=mb",
+                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=20mb",
                 ],
             },
         }
@@ -58,11 +62,11 @@ class Plot:
         results_M = {}
         for filepath in filenames_M:
             with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
-                string = filepath.split(orderstrings[order] + "_")[-1]
+                string = filepath.split("01180" + "_")[-1]
                 results_M[string] = yaml.safe_load(f)
         for filepath in filenames_R:
             with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
-                string = filepath.split(orderstrings[order] + "_")[-1]
+                string = filepath.split("01180" + "_")[-1]
                 results_R[string] = yaml.safe_load(f)
         # The x and qgrid should be the same across different restypes
         x_grid = result_FO["x_grid"]
@@ -109,6 +113,7 @@ class Plot:
                     for res in res_plot_tmp
                 ]
                 res_plot_M[sv] = res_plot
+            plt.xscale("log")
             plt.plot(
                 q_plot,
                 res_plot_FO,
