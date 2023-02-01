@@ -3,13 +3,8 @@ import lhapdf
 import numpy as np
 
 from . import Initialize as Ini
-from . import MassiveCoeffFunc, MasslessCoeffFunc, TildeCoeffFunc
-from .parameters import (
-    charges,
-    masses,
-    number_active_flavors,
-    pids,
-)
+from . import MassiveCoeffFunc, MasslessCoeffFunc, TildeCoeffFunc, parameters
+from .parameters import charges, masses, number_active_flavors, pids
 from .tools import PDFConvolute, PDFConvolute_plus
 
 g_id = pids["g"]
@@ -20,10 +15,6 @@ def Initialize_all(nf):
     Initialize all the needed global lists
     """
     Ini.InitializeQX()
-    # Ini.InitializeCg2_m(nf)
-    # Ini.InitializeCq2_m(nf)
-    # Ini.InitializeCLg2_m(nf)
-    # Ini.InitializeCLq2_m(nf)
     Ini.InitializeMbg2(nf)
     Ini.InitializeMbq2(nf)
     # Ini.InitializeHPL()

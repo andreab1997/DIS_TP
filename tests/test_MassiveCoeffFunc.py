@@ -1,22 +1,20 @@
-from numpy.testing import assert_allclose
 import numpy as np
-
-from yadism.coefficient_functions.heavy import f2_nc, fl_nc
-from dis_tp import MassiveCoeffFunc as cf
-from dis_tp.parameters import charges, masses
-from dis_tp.Integration import Initialize_all
-
+from numpy.testing import assert_allclose
 from test_MasslessCoeffFunc import MockESF
+from yadism.coefficient_functions.heavy import f2_nc, fl_nc
 
-h_id = 4
-NF = h_id
+from dis_tp import MassiveCoeffFunc as cf
+from dis_tp import io
+from dis_tp.Integration import Initialize_all
+from dis_tp.parameters import charges, default_masses, initialize_theory
+
+h_id = 5
+mhq = default_masses(h_id)
+thobj = io.TheoryParameters(None, h_id, None, mhq, True)
+initialize_theory(thobj)
 e_h = charges(h_id)
-mhq = masses(h_id)
 p = np.array([mhq, e_h])
-use_grids = False
-
-if use_grids:
-    Initialize_all(h_id)
+Initialize_all(h_id)
 
 
 class Test_F2:
@@ -26,25 +24,25 @@ class Test_F2:
     def test_nlo(self):
         for x in self.xs:
             esf = MockESF(x, self.Q**2)
-            f2_g = f2_nc.GluonVV(esf, NF, m2hq=mhq**2).NLO()
+            f2_g = f2_nc.GluonVV(esf, h_id, m2hq=mhq**2).NLO()
             # g reg
             yad = f2_g.reg(x, f2_g.args["reg"])
-            my = cf.Cg_1_m_reg(x, self.Q, p, NF) / e_h**2
+            my = cf.Cg_1_m_reg(x, self.Q, p, h_id) / e_h**2
             assert_allclose(my, yad)
 
     def test_nnlo(self):
         for x in self.xs:
             esf = MockESF(x, self.Q**2)
-            f2_g = f2_nc.GluonVV(esf, NF, m2hq=mhq**2).NNLO()
+            f2_g = f2_nc.GluonVV(esf, h_id, m2hq=mhq**2).NNLO()
             # g reg
             yad = f2_g.reg(x, f2_g.args["reg"])
-            my = cf.Cg_2_m_reg(x, self.Q, p, NF, use_grids) / e_h**2
+            my = cf.Cg_2_m_reg(x, self.Q, p, h_id) / e_h**2
             assert_allclose(my, yad)
 
-            f2_s = f2_nc.SingletVV(esf, NF, m2hq=mhq**2).NNLO()
+            f2_s = f2_nc.SingletVV(esf, h_id, m2hq=mhq**2).NNLO()
             # singlet reg
             yad = f2_s.reg(x, f2_s.args["reg"])
-            my = cf.Cq_2_m_reg(x, self.Q, p, NF, use_grids) / e_h**2
+            my = cf.Cq_2_m_reg(x, self.Q, p, h_id) / e_h**2
             assert_allclose(my, yad)
 
 
@@ -55,23 +53,23 @@ class Test_FL:
     def test_nlo(self):
         for x in self.xs:
             esf = MockESF(x, self.Q**2)
-            fl_g = fl_nc.GluonVV(esf, NF, m2hq=mhq**2).NLO()
+            fl_g = fl_nc.GluonVV(esf, h_id, m2hq=mhq**2).NLO()
             # g reg
             yad = fl_g.reg(x, fl_g.args["reg"])
-            my = cf.CLg_1_m_reg(x, self.Q, p, NF) / e_h**2
+            my = cf.CLg_1_m_reg(x, self.Q, p, h_id) / e_h**2
             assert_allclose(my, yad)
 
     def test_nnlo(self):
         for x in self.xs:
             esf = MockESF(x, self.Q**2)
-            fl_g = fl_nc.GluonVV(esf, NF, m2hq=mhq**2).NNLO()
+            fl_g = fl_nc.GluonVV(esf, h_id, m2hq=mhq**2).NNLO()
             # g reg
             yad = fl_g.reg(x, fl_g.args["reg"])
-            my = cf.CLg_2_m_reg(x, self.Q, p, NF, use_grids) / e_h**2
+            my = cf.CLg_2_m_reg(x, self.Q, p, h_id) / e_h**2
             assert_allclose(my, yad)
 
-            fl_s = fl_nc.SingletVV(esf, NF, m2hq=mhq**2).NNLO()
+            fl_s = fl_nc.SingletVV(esf, h_id, m2hq=mhq**2).NNLO()
             # singlet reg
             yad = fl_s.reg(x, fl_s.args["reg"])
-            my = cf.CLq_2_m_reg(x, self.Q, p, NF, use_grids) / e_h**2
+            my = cf.CLq_2_m_reg(x, self.Q, p, h_id) / e_h**2
             assert_allclose(my, yad)

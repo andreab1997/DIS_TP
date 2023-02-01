@@ -1,9 +1,10 @@
 # These are utility functions to read txt grids.
-import numpy as np
 from multiprocessing import Pool
 
+import numpy as np
+
 from . import Initialize as Ini
-from .parameters import masses, number_active_flavors, charges
+from .parameters import charges, default_masses, number_active_flavors
 
 
 def read1D(path_to_file):
@@ -74,7 +75,7 @@ def readND(path_to_file):
 class Construct_Grid:
     def __init__(self, func, h_id, path, grid_type, n_pools=8):
         self.func = func
-        self.mass = masses(h_id)
+        self.mass = default_masses(h_id)
         self.path = path
         self.xgrid = Ini.ZList
         self.qgrid = Ini.QList

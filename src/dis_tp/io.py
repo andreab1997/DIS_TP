@@ -37,7 +37,13 @@ def load_theory_parameters(configs, name):
             loaded = yaml.safe_load(f)
     else:
         loaded = name
-    return TheoryParameters(order=loaded["order"], hid=loaded["hid"], fns=loaded["fns"])
+    return TheoryParameters(
+        order=loaded["order"],
+        hid=loaded["hid"],
+        fns=loaded["fns"],
+        grids=loaded["grids"],
+        mass=loaded["mass"],
+    )
 
 
 def load_operator_parameters(configs, name):
@@ -65,10 +71,12 @@ def load_operator_parameters(configs, name):
 class TheoryParameters:
     """Class containing all the theory parameters."""
 
-    def __init__(self, order, hid, fns):
+    def __init__(self, order, hid, fns, mass, grids):
         self.order = order
         self.hid = hid
         self.fns = fns
+        self.mass = mass
+        self.grids = grids
 
     def order(self):
         return self.order

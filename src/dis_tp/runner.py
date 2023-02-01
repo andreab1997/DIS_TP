@@ -6,7 +6,7 @@ import numpy as np
 from dis_tp import Integration as Int
 
 from . import configs, io
-from .parameters import number_active_flavors
+from .parameters import initialize_theory, number_active_flavors
 
 maporders = {"LO": 0, "NLO": 1, "NNLO": 2, "N3LO": 3}
 mapfunc = {
@@ -34,8 +34,8 @@ class Runner:
 
         # Initializing
         hid = self.t_par.hid
-        # TODO: this and the mass can be setted from runcard
         nf = number_active_flavors(hid)
+        initialize_theory(th_obj)
         Int.Initialize_all(nf)
         self.partial_sf = None
 

@@ -1,17 +1,18 @@
 """Script to produce the Yadism benchmark."""
 import pathlib
-import yaml
+
 import lhapdf
 import numpy as np
 import pandas as pd
 import yadism
-from eko.interpolation import make_grid
-from yadmark.data import observables
-from dis_tp.runner import Runner
-
+import yaml
 from df_to_table import df_to_table
+from eko.interpolation import make_grid
 from rich.console import Console
+from yadmark.data import observables
 
+from dis_tp import parameters
+from dis_tp.runner import Runner
 
 console = Console()
 
@@ -22,7 +23,6 @@ class TheoryCard:
     def __init__(self, pto, hid):
         with open(
             here / "../project/theory_cards/400.yaml",
-            "r",
         ) as file:
             th = yaml.safe_load(file)
 
@@ -42,7 +42,9 @@ class TheoryCard:
 
     def dis_tp_like(self):
         new_t_card = {}
+        new_t_card["grids"] = True
         new_t_card["hid"] = self.t_card["NfFF"]
+        new_t_card["mass"] = parameters.default_masses(new_t_card["hid"])
         new_t_card["fns"] = "fonll"
         new_t_card["order"] = "N" * self.t_card["PTO"] + "LO"
         return new_t_card
