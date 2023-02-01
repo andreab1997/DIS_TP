@@ -19,7 +19,7 @@ class Plot:
 
     def plot_single_obs(self, obs, order, h_id):
         mass = parameters.masses(int(h_id))
-        orderstrings = {"NLO": "nlo", "NNLO": "nnlo"}
+        orderstrings = {"NLO": "nlo", "NNLO": "nnlo", "N3LO": "nnlo"}
         restypes = {
             "FO": {
                 "color": "violet",

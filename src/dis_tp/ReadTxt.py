@@ -1,9 +1,10 @@
 # These are utility functions to read txt grids.
-import numpy as np
 from multiprocessing import Pool
 
+import numpy as np
+
 from . import Initialize as Ini
-from .parameters import masses, number_active_flavors, charges
+from .parameters import charges, masses, number_active_flavors
 
 
 def read1D(path_to_file):
@@ -80,8 +81,12 @@ def readND_Nic(path_to_file):
     """
     mylist = []
     for line in open(path_to_file):
-        listWord = line.split("  ")
+        listWord = line.split(" ")
         mylist.append(listWord)
+    mylist = [
+        mylistline[:-1] if mylist.index(mylistline) != (len(mylist) - 1) else mylistline
+        for mylistline in mylist
+    ]
     list = [
         [
             float(item)
