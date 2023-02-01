@@ -136,6 +136,6 @@ class RunParameters:
             q_grid=ob.q_grid.tolist(),
             obs=ob_result.tolist(),
         )
-        print(f"Saving results for {ob} in {obs_path}")
+        print(f"Saving results for {ob.name} in {obs_path}")
         with open(obs_path, "w", encoding="UTF-8") as f:
             yaml.safe_dump(to_dump, f)

@@ -80,7 +80,8 @@ class Runner:
                 print(f"Start computation of {func.__name__} ...")
                 args = (self.compute_sf, zip(ob.x_grid, ob.q_grid))
                 if n_cores == 1:
-                    sf_res = map(*args)
+                    sf_map = map(*args)
+                    sf_res = np.array([res for res in sf_map])
                 else:
                     with Pool(n_cores) as pool:
                         sf_res = pool.map(*args)
