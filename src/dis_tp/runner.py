@@ -1,7 +1,7 @@
 import functools
-from multiprocessing import Pool
 
 import numpy as np
+from multiprocess import Pool
 
 from dis_tp import Integration as Int
 

@@ -2,6 +2,7 @@ import pathlib
 
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
+import numpy as np
 import yaml
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
@@ -24,24 +25,23 @@ class Plot:
                 "color": "violet",
                 "pdf": "NNPDF40_"
                 + orderstrings[order]
-                + "_as_01180"
-                + "_nf_"
+                + "_as_01180_nf_"
                 + str(int(h_id) - 1),
             },
             "M": {
                 "color": "blue",
                 "pdf": [
-                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=05mb",
-                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=mb",
-                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=20mb",
+                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=05mb",
+                    "NNPDF_" + h_id + "F_" + orderstrings[order],
+                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=2mb",
                 ],
             },
             "R": {
                 "color": "green",
                 "pdf": [
-                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=05mb",
-                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=mb",
-                    "NNPDF40_" + orderstrings[order] + "_as_01180_mub=20mb",
+                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=05mb",
+                    "NNPDF_" + h_id + "F_" + orderstrings[order],
+                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=2mb",
                 ],
             },
         }
@@ -62,11 +62,11 @@ class Plot:
         results_M = {}
         for filepath in filenames_M:
             with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
-                string = filepath.split("01180" + "_")[-1]
+                string = filepath.split(orderstrings[order])[-1]
                 results_M[string] = yaml.safe_load(f)
         for filepath in filenames_R:
             with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
-                string = filepath.split("01180" + "_")[-1]
+                string = filepath.split(orderstrings[order])[-1]
                 results_R[string] = yaml.safe_load(f)
         # The x and qgrid should be the same across different restypes
         x_grid = result_FO["x_grid"]
@@ -95,21 +95,21 @@ class Plot:
             res_plot_R = {}
             res_plot_M = {}
             shifts = {
-                "mub=05mb": 0.5,
-                "mub=mb": 1.0,
-                "mub=20mb": 2.0,
+                "_mub=05mb": 0.5,
+                "": 1.0,
+                "_mub=2mb": 2.0,
             }
             for sv in ordered_result_R:
                 res_plot_tmp = [res for res in ordered_result_R[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] > shifts[sv] * mass else None
+                    res["res"] if res["q"] > shifts[sv] * mass else np.nan
                     for res in res_plot_tmp
                 ]
                 res_plot_R[sv] = res_plot
             for sv in ordered_result_M:
                 res_plot_tmp = [res for res in ordered_result_M[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] > shifts[sv] * mass else None
+                    res["res"] if res["q"] > shifts[sv] * mass else np.nan
                     for res in res_plot_tmp
                 ]
                 res_plot_M[sv] = res_plot
@@ -119,21 +119,82 @@ class Plot:
                 res_plot_FO,
                 label="FO",
                 color="violet",
+                linestyle="--",
+                linewidth=3.5,
             )
             plt.plot(
                 q_plot,
                 res_plot_R[list(shifts.keys())[1]],
                 label="R",
                 color="green",
+                linewidth=0.8,
             )
             plt.plot(
                 q_plot,
                 res_plot_M[list(shifts.keys())[1]],
                 label="M",
                 color="blue",
+                linewidth=2.2,
+            )
+            to_fill_R = [
+                (
+                    lambda q: abs(
+                        res_plot_R[list(shifts.keys())[0]][q_plot.index(q)]
+                        - res_plot_R[list(shifts.keys())[1]][q_plot.index(q)]
+                    )
+                    if abs(
+                        res_plot_R[list(shifts.keys())[0]][q_plot.index(q)]
+                        - res_plot_R[list(shifts.keys())[1]][q_plot.index(q)]
+                    )
+                    > abs(
+                        res_plot_R[list(shifts.keys())[2]][q_plot.index(q)]
+                        - res_plot_R[list(shifts.keys())[1]][q_plot.index(q)]
+                    )
+                    else abs(
+                        res_plot_R[list(shifts.keys())[2]][q_plot.index(q)]
+                        - res_plot_R[list(shifts.keys())[1]][q_plot.index(q)]
+                    )
+                )(q)
+                for q in q_plot
+            ]
+            to_fill_M = [
+                (
+                    lambda q: abs(
+                        res_plot_M[list(shifts.keys())[0]][q_plot.index(q)]
+                        - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
+                    )
+                    if abs(
+                        res_plot_M[list(shifts.keys())[0]][q_plot.index(q)]
+                        - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
+                    )
+                    > abs(
+                        res_plot_M[list(shifts.keys())[2]][q_plot.index(q)]
+                        - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
+                    )
+                    else abs(
+                        res_plot_M[list(shifts.keys())[2]][q_plot.index(q)]
+                        - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
+                    )
+                )(q)
+                for q in q_plot
+            ]
+            plt.fill_between(
+                q_plot,
+                np.array(res_plot_R[list(shifts.keys())[1]]) + np.array(to_fill_R),
+                np.array(res_plot_R[list(shifts.keys())[1]]) - np.array(to_fill_R),
+                color="green",
+                alpha=0.25,
+            )
+            plt.fill_between(
+                q_plot,
+                np.array(res_plot_M[list(shifts.keys())[1]]) + np.array(to_fill_M),
+                np.array(res_plot_M[list(shifts.keys())[1]]) - np.array(to_fill_M),
+                color="blue",
+                alpha=0.25,
             )
             plt.xlabel("Q[GeV]")
             plt.ylabel("x" + obs)
             plt.legend()
+            plt.grid(alpha=0.75)
             plt.savefig(plot_path)
             plt.close()

@@ -1,6 +1,6 @@
 obs:
   F2:
-    PDF: NNPDF40_nnlo_as_01180
+    PDF: NNPDF_5F_nnlo_mub=2mb
     kinematics:
     - q: 1.0
       x: 0.1
@@ -1724,7 +1724,7 @@ obs:
       x: 0.0001
     restype: M
   FL:
-    PDF: NNPDF40_nnlo_as_01180
+    PDF: NNPDF_5F_nnlo_mub=2mb
     kinematics:
     - q: 1.0
       x: 0.1
