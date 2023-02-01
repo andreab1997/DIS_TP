@@ -1,7 +1,7 @@
 import functools
-from multiprocessing import Pool
 
 import numpy as np
+from multiprocess import Pool
 
 from dis_tp import Integration as Int
 
@@ -49,7 +49,7 @@ class Runner:
 
     def compute_sf(self, kins):
         x, q = kins
-        # print(f"x={x}, Q={q}")
+        # print(f"x={x}, Q={q}")
         return float(self.partial_sf(x=x, Q=q))
 
     def compute(self, n_cores):
