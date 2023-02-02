@@ -56,19 +56,15 @@ def readND(path_to_file):
     for line in open(path_to_file):
         listWord = line.split(" ")
         mylist.append(listWord)
-    list = []
-    for row in mylist:
-        temp = []
-        for item in row:
-            if item == "\n":
-                continue
-            if item != "-nan" and item != "nan":
-                el = float(item)
-            else:
-                el = float(row[row.index(item) - 1])
-            temp.append(el)
-        list.append(temp)
-
+    list = [
+        [
+            float(item)
+            if item != "-nan" and item != "nan"
+            else float(mylist[a][mylist[a].index(item) - 1])
+            for item in mylist[a]
+        ]
+        for a in range(len(mylist))
+    ]
     return list
 
 
@@ -94,9 +90,9 @@ class Construct_Grid:
         for q in self.qgrid:
             p = [self.mass, q, self.e_h]
             if self.grid_type == "matching":
-                z_func_values.append(self.func(z, p, self.nf))
+                z_func_values.append(self.func(z, p, self.nf, is_generation=True))
             elif self.grid_type == "tilde":
-                z_func_values.append(self.func(z, q, p, self.nf))
+                z_func_values.append(self.func(z, q, p, self.nf, is_generation=True))
         return z_func_values
 
     def run(self):
