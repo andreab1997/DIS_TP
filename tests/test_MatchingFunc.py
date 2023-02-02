@@ -7,14 +7,12 @@ from numpy.testing import assert_allclose
 from scipy import integrate
 
 from dis_tp import MatchingFunc as mf
-from dis_tp import io
 from dis_tp.Integration import Initialize_all
 from dis_tp.parameters import charges, default_masses, initialize_theory
 
 h_id = 5
 mhq = default_masses(h_id)
-thobj = io.TheoryParameters(None, h_id, None, mhq, True)
-initialize_theory(thobj)
+initialize_theory(use_grids=True, h_id=h_id, mass=mhq)
 e_h = charges(h_id)
 p = np.array([mhq, e_h])
 Initialize_all(h_id)

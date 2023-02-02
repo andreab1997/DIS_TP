@@ -3,10 +3,12 @@ import pytest
 from numpy.testing import assert_allclose
 
 from dis_tp.MatchingFunc import Mbg_3_reg_inv, Mbq_3_reg_inv
+from dis_tp.parameters import initialize_theory
 
 Q = 10.0
 nf = 4
 mass = 1.51
+initialize_theory(use_grids=False, h_id=nf, mass=mass)
 
 
 def test_Talbot_parameters():
