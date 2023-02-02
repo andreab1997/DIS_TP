@@ -35,7 +35,7 @@ class Runner:
         # Initializing
         hid = self.t_par.hid
         nf = number_active_flavors(hid)
-        initialize_theory(th_obj)
+        initialize_theory(th_obj.grids, hid, th_obj.mass)
         Int.Initialize_all(nf)
         self.partial_sf = None
 

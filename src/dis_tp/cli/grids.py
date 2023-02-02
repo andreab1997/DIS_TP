@@ -6,6 +6,7 @@ from .. import Integration
 from .. import MatchingFunc as mcf
 from .. import ReadTxt
 from .. import TildeCoeffFunc as tcf
+from .. import parameters
 from .base import command, root_path
 
 
@@ -104,6 +105,7 @@ def generate_matching_grids(
 
     path = dest_path / f"C{flavor}_{pto}_til/C{flavor}{pto}til_nf{h_id}.txt"
     Integration.Initialize_all(h_id)
+    parameters.initialize_theory(use_grids=True, h_id=h_id)
     obj = ReadTxt.Construct_Grid(
         func, h_id=h_id, path=path, grid_type="tilde", n_pools=n_cores
     )

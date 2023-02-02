@@ -86,8 +86,8 @@ def Cg_1_til_reg(z, Q, p, nf):
     return Cg_1_m_reg(z, Q, p, nf) - 2 * Cb_0_loc(z, Q, p, nf) * Mbg_1(z, p, nf)
 
 
-def Cg_2_til_reg(z, Q, p, nf):
-    if parameters.grids:
+def Cg_2_til_reg(z, Q, p, nf, use_analytic=False):
+    if parameters.grids and not use_analytic:
         return Ini.Cg2_til(z, Q)[0]
     return (
         Cg_2_m_reg(z, Q, p, nf)
@@ -98,8 +98,8 @@ def Cg_2_til_reg(z, Q, p, nf):
     )
 
 
-def Cg_3_til_reg(z, Q, p, nf):
-    if parameters.grids:
+def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
+    if parameters.grids and not use_analytic:
         return Ini.Cg3_til(z, Q)[0]
     return (
         Cg_3_m_reg(z, Q, p, nf)
@@ -138,15 +138,15 @@ def Cg_3_til_reg(z, Q, p, nf):
     )
 
 
-def Cq_2_til_reg(z, Q, p, nf):
-    if parameters.grids:
+def Cq_2_til_reg(z, Q, p, nf, use_analytic=False):
+    if parameters.grids and not use_analytic:
         return Ini.Cq2_til(z, Q)[0]
     return Cq_2_m_reg(z, Q, p, nf) - 2 * Cb_0_loc(z, Q, p, nf) * Mbq_2(z, p, nf)
 
 
-def Cq_3_til_reg(z, Q, p, nf):
+def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
     q = [p[0], Q]
-    if parameters.grids:
+    if parameters.grids and not use_analytic:
         return Ini.Cq3_til(z, Q)[0]
     return (
         Cq_3_m_reg(z, Q, p, nf)
@@ -167,16 +167,16 @@ def CLg_1_til_reg(z, Q, p, nf):
     return CLg_1_m_reg(z, Q, p, nf)
 
 
-def CLg_2_til_reg(z, Q, p, nf):
-    if parameters.grids:
+def CLg_2_til_reg(z, Q, p, nf, use_analytic=False):
+    if parameters.grids and not use_analytic:
         return Ini.CLg2_til(z, Q)[0]
     return CLg_2_m_reg(z, Q, p, nf) - 2 * np.log((Q**2) / (p[0] ** 2)) * CLb1_Mbg1(
         z, p, nf
     )
 
 
-def CLg_3_til_reg(z, Q, p, nf):
-    if parameters.grids:
+def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
+    if parameters.grids and not use_analytic:
         return Ini.CLg3_til(z, Q)[0]
     return (
         CLg_3_m_reg(z, Q, p, nf)
@@ -200,14 +200,14 @@ def CLg_3_til_reg(z, Q, p, nf):
     )
 
 
-def CLq_2_til_reg(z, Q, p, nf):
-    if parameters.grids:
+def CLq_2_til_reg(z, Q, p, nf, use_analytic=False):
+    if parameters.grids and not use_analytic:
         return Ini.CLq2_til(z, Q)[0]
     return CLq_2_m_reg(z, Q, p, nf)
 
 
-def CLq_3_til_reg(z, Q, p, nf):
-    if parameters.grids:
+def CLq_3_til_reg(z, Q, p, nf, use_analytic=False):
+    if parameters.grids and not use_analytic:
         return Ini.CLq3_til(z, Q)[0]
     return (
         CLq_3_m_reg(z, Q, p, nf)

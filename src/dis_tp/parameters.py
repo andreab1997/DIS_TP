@@ -27,15 +27,25 @@ def default_masses(h_id):
     return m[h_id]
 
 
-def initialize_theory(th_obj):
-    if th_obj.grids and not np.isclose(th_obj.mass, default_masses(th_obj.hid)):
+def initialize_theory(use_grids, h_id=None, mass=None):
+    if not use_grids and mass is None:
         raise ValueError(
-            f"Grids are only available for the default mass {default_masses(th_obj.hid)}"
+            f"Need to specify heavy particle mass when grids are not used."
         )
+    if use_grids and h_id is None:
+        raise ValueError(f"Need to specify heavy particle id in order to use grids.")
+    if use_grids and mass is not None:
+        if not np.isclose(mass, default_masses(h_id)):
+            raise ValueError(
+                f"Grids are only available for the default mass {default_masses(h_id)}."
+            )
     global grids
     global _mass
-    grids = th_obj.grids
-    _mass = th_obj.mass
+    grids = use_grids
+    if mass is None:
+        _mass = default_masses(h_id)
+    else:
+        _mass = mass
 
 
 def masses(h_id):

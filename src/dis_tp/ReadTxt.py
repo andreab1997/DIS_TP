@@ -90,9 +90,9 @@ class Construct_Grid:
         for q in self.qgrid:
             p = [self.mass, q, self.e_h]
             if self.grid_type == "matching":
-                z_func_values.append(self.func(z, p, self.nf, is_generation=True))
+                z_func_values.append(self.func(z, p, self.nf, use_analytic=True))
             elif self.grid_type == "tilde":
-                z_func_values.append(self.func(z, q, p, self.nf, is_generation=True))
+                z_func_values.append(self.func(z, q, p, self.nf, use_analytic=True))
         return z_func_values
 
     def run(self):
