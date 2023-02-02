@@ -95,8 +95,7 @@ def InitializeMbg2(nf):
     """
     global Mbg2
     Mbg2_array = readt.readND(PATH_TO_GLOBAL + f"/External/Mbg_2/Mbg2_nf{nf}.txt")
-    my_array = np.array(Mbg2_array)[:-1].T
-    Mbg2 = interp2d(ZList[:-1], QList, my_array, kind="quintic")
+    Mbg2 = interp2d(ZList, QList, np.array(Mbg2_array).T, kind="quintic")
 
 
 def InitializeMbq2(nf):
@@ -254,7 +253,6 @@ def InitializeMbq_3(nf):
     Mbq3 = interp2d(ZList, QList, Mbq3_array.T, kind="quintic")
 
 
-# Niccolo functions
 def InitializeQX():
     """
     Initialize the Q and z grids over which the other functions are built
