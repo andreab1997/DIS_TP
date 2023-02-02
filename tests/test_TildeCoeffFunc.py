@@ -27,6 +27,17 @@ class Test_F2:
             my = tf.Cq_2_til_reg(x, self.Q, p, h_id, use_analytic=True)
             assert_allclose(my, my_grid, rtol=7e-7)
 
+    def test_n3lo(self):
+        for x in self.xs:
+            p = np.array([mhq, self.Q, e_h])
+            my_grid = tf.Cg_3_til_reg(x, self.Q, p, h_id)
+            my = tf.Cg_3_til_reg(x, self.Q, p, h_id, use_analytic=True)
+            assert_allclose(my, my_grid, rtol=2e-5)
+
+            my_grid = tf.Cq_3_til_reg(x, self.Q, p, h_id)
+            my = tf.Cq_3_til_reg(x, self.Q, p, h_id, use_analytic=True)
+            assert_allclose(my, my_grid, rtol=5e-7, atol=3e-5)
+
 
 class Test_FL:
     xs = [0.0001, 0.001, 0.01, 0.1, 0.2, 0.456, 0.7]
