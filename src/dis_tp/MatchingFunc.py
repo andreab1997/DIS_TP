@@ -1,11 +1,9 @@
 # This contains the matching conditions needed for the evaluation of the tilde coefficients functions.
-# notation: p[1] is Q^2 while p[0] is m_b^2
+# notation: p[1] is Q while p[0] is m_b
 import numpy as np
 from eko.constants import CA, CF, TR
-from eko.harmonics.constants import zeta2, zeta3, zeta4, zeta5
 from eko.matching_conditions import as2, as3
 
-from . import Harmonics as harm
 from . import Initialize as Ini
 from . import parameters
 from .InverseMellin import inverse_mellin
@@ -27,6 +25,7 @@ def Mbg_2(z, p, nf, r=None, s=None, path="talbot", use_analytic=False):
 def Mbg_3_reg(z, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.Mbg3(z, p[1])[0]
+    return Mbg_3_reg_inv(z,p,nf,use_analytic=use_analytic)
 
 
 def Mgg_1_loc(z, p, nf):
@@ -108,6 +107,7 @@ def Mbq_2(z, p, nf, r=None, s=None, path="talbot", use_analytic=False):
 def Mbq_3_reg(z, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.Mbq3(z, p[1])[0]
+    return Mbq_3_reg_inv(z,p,nf,use_analytic=use_analytic)
 
 
 def Mgq_2_reg(z, p, nf):

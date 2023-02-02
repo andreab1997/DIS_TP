@@ -4,7 +4,7 @@ import LeProHQ
 import numpy as np
 from eko.constants import TR
 
-from . import Initialize, parameters
+from . import Initialize
 
 
 # F2
