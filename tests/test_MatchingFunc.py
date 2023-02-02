@@ -286,3 +286,30 @@ class Test_Matching_gq:
                     )[0]
                 )
         assert_allclose(my, eko)
+
+
+class Test_Grids:
+    xs = [0.0001, 0.001, 0.01, 0.1, 0.2, 0.456, 0.7]
+    Q = 10
+
+    def test_nnlo(self):
+        for x in self.xs:
+            p = np.array([mhq, self.Q, e_h])
+            my_grid = mf.Mbg_2(x, p, h_id)
+            my = mf.Mbg_2(x, p, h_id, use_analytic=True)
+            assert_allclose(my, my_grid)
+
+            my_grid = mf.Mbq_2(x, p, h_id)
+            my = mf.Mbq_2(x, p, h_id, use_analytic=True)
+            assert_allclose(my, my_grid)
+
+    def test_n3lo(self):
+        for x in self.xs:
+            p = np.array([mhq, self.Q, e_h])
+            my_grid = mf.Mbg_3_reg(x, p, h_id)
+            my = mf.Mbg_3_reg(x, p, h_id, use_analytic=True)
+            assert_allclose(my, my_grid)
+
+            my_grid = mf.Mbq_3_reg(x, p, h_id)
+            my = mf.Mbq_3_reg(x, p, h_id, use_analytic=True)
+            assert_allclose(my, my_grid)
