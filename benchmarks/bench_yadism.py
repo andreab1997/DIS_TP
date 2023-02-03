@@ -42,7 +42,7 @@ class TheoryCard:
 
     def dis_tp_like(self):
         new_t_card = {}
-        new_t_card["grids"] = True
+        new_t_card["grids"] = False
         new_t_card["hid"] = self.t_card["NfFF"]
         new_t_card["mass"] = parameters.default_masses(new_t_card["hid"])
         new_t_card["fns"] = "fonll"
