@@ -9,6 +9,8 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 from . import parameters
 
+orderstrings = {"NLO": "nlo", "NNLO": "nnlo", "N3LO": "nnlo"}
+
 
 class Plot:
     """Class for handling plots"""
@@ -17,9 +19,7 @@ class Plot:
         self.result_path = configs["paths"]["results"]
         self.plot_dir = plot_dir
 
-    def plot_single_obs(self, obs, order, h_id):
-        mass = parameters.masses(int(h_id))
-        orderstrings = {"NLO": "nlo", "NNLO": "nnlo", "N3LO": "nnlo"}
+    def get_restypes(self, order, h_id, restype):
         restypes = {
             "FO": {
                 "color": "violet",
@@ -45,47 +45,77 @@ class Plot:
                 ],
             },
         }
+        return restypes[restype]
+
+    def x_q_grids(self, obs, order, h_id):
+        _, x_grid, q_grid = self.get_FO_result(obs, order, h_id)
+        return (x_grid, q_grid)
+
+    def get_FO_result(self, obs, order, h_id):
         filename_FO = (
-            obs + "_" + "FO" + "_" + order + "_" + h_id + "_" + restypes["FO"]["pdf"]
+            obs
+            + "_"
+            + "FO"
+            + "_"
+            + order
+            + "_"
+            + h_id
+            + "_"
+            + self.get_restypes(order, h_id, "FO")["pdf"]
         )
-        filenames_R = [
-            obs + "_" + "R" + "_" + order + "_" + h_id + "_" + pdf
-            for pdf in restypes["R"]["pdf"]
-        ]
-        filenames_M = [
-            obs + "_" + "M" + "_" + order + "_" + h_id + "_" + pdf
-            for pdf in restypes["M"]["pdf"]
-        ]
         with open(self.result_path / (filename_FO + ".yaml"), encoding="utf-8") as f:
             result_FO = yaml.safe_load(f)
-        results_R = {}
-        results_M = {}
-        for filepath in filenames_M:
-            with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
-                string = filepath.split(orderstrings[order])[-1]
-                results_M[string] = yaml.safe_load(f)
-        for filepath in filenames_R:
-            with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
-                string = filepath.split(orderstrings[order])[-1]
-                results_R[string] = yaml.safe_load(f)
-        # The x and qgrid should be the same across different restypes
         x_grid = result_FO["x_grid"]
         q_grid = result_FO["q_grid"]
         ordered_result_FO = []
         for x, q, res in zip(x_grid, q_grid, result_FO["obs"][0]):
             ordered_result_FO.append(dict(x=x, q=q, res=res))
+        return (ordered_result_FO, x_grid, q_grid)
+
+    def get_R_results(self, obs, order, h_id):
+        filenames_R = [
+            obs + "_" + "R" + "_" + order + "_" + h_id + "_" + pdf
+            for pdf in self.get_restypes(order, h_id, "R")["pdf"]
+        ]
+        results_R = {}
+        for filepath in filenames_R:
+            with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
+                string = filepath.split(orderstrings[order])[-1]
+                results_R[string] = yaml.safe_load(f)
+        x_grid, q_grid = self.x_q_grids(obs, order, h_id)
         ordered_result_R = {}
-        ordered_result_M = {}
         for result in results_R:
             ordered_result = []
             for x, q, res in zip(x_grid, q_grid, results_R[result]["obs"][0]):
                 ordered_result.append(dict(x=x, q=q, res=res))
             ordered_result_R[result] = ordered_result
+        return ordered_result_R
+
+    def get_M_results(self, obs, order, h_id):
+        filenames_M = [
+            obs + "_" + "M" + "_" + order + "_" + h_id + "_" + pdf
+            for pdf in self.get_restypes(order, h_id, "M")["pdf"]
+        ]
+        results_M = {}
+        for filepath in filenames_M:
+            with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
+                string = filepath.split(orderstrings[order])[-1]
+                results_M[string] = yaml.safe_load(f)
+        x_grid, q_grid = self.x_q_grids(obs, order, h_id)
+        ordered_result_M = {}
         for result in results_M:
             ordered_result = []
             for x, q, res in zip(x_grid, q_grid, results_M[result]["obs"][0]):
                 ordered_result.append(dict(x=x, q=q, res=res))
             ordered_result_M[result] = ordered_result
+        return ordered_result_M
+
+    def plot_single_obs(self, obs, order, h_id):
+        parameters.initialize_theory(True, int(h_id), None)
+        mass = parameters.masses(int(h_id))
+        ordered_result_FO, x_grid, _q_grid = self.get_FO_result(obs, order, h_id)
+        ordered_result_M = self.get_M_results(obs, order, h_id)
+        ordered_result_R = self.get_R_results(obs, order, h_id)
         diff_x_points = list(set(x_grid))
         for x in diff_x_points:
             plot_name = obs + "_" + order + "_" + h_id
