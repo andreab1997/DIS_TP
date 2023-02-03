@@ -15,7 +15,6 @@ mhq = default_masses(h_id)
 initialize_theory(use_grids=False, h_id=h_id, mass=mhq)
 e_h = charges(h_id)
 p = np.array([mhq, e_h])
-Initialize_all(h_id)
 
 
 class Test_Matching_Hg:
