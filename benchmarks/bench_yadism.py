@@ -1,17 +1,18 @@
 """Script to produce the Yadism benchmark."""
 import pathlib
-import yaml
+
 import lhapdf
 import numpy as np
 import pandas as pd
 import yadism
-from eko.interpolation import make_grid
-from yadmark.data import observables
-from dis_tp.runner import Runner
-
+import yaml
 from df_to_table import df_to_table
+from eko.interpolation import make_grid
 from rich.console import Console
+from yadmark.data import observables
 
+from dis_tp import parameters
+from dis_tp.runner import Runner
 
 console = Console()
 
@@ -22,11 +23,11 @@ class TheoryCard:
     def __init__(self, pto, hid):
         with open(
             here / "../project/theory_cards/400.yaml",
-            "r",
         ) as file:
             th = yaml.safe_load(file)
 
         th["TMC"] = 0
+        th["IC"] = 0
         th["PTO"] = pto
         if pto == 1:
             th["FNS"] = "FONLL-A"
@@ -41,7 +42,9 @@ class TheoryCard:
 
     def dis_tp_like(self):
         new_t_card = {}
+        new_t_card["grids"] = True
         new_t_card["hid"] = self.t_card["NfFF"]
+        new_t_card["mass"] = parameters.default_masses(new_t_card["hid"])
         new_t_card["fns"] = "fonll"
         new_t_card["order"] = "N" * self.t_card["PTO"] + "LO"
         return new_t_card
@@ -135,20 +138,36 @@ class BenchmarkRunner:
             console.log(df_to_table(benc_df, obs))
 
 
-def benchmarkF_M(pto, hid, pdf_name):
-    flavor = "bottom" if hid == 5 else "charm"
-    obs_names = [f"F2_{flavor}", f"FL_{flavor}"]  # , f"XSHERANCAVG_{flavor}"]
-    obs_obj = Observable_card(obs_names, q_min=20, q_max=100, restype="M")
-    th_obj = TheoryCard(pto, hid)
+def benchmarkF_M_bottom(pto, pdf_name):
+    obs_names = [f"F2_bottom", f"FL_bottom"]  # , f"XSHERANCAVG_{flavor}"]
+    obs_obj = Observable_card(obs_names, q_min=5, q_max=100, restype="M")
+    th_obj = TheoryCard(pto, hid=5)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
 
-def benchmarkFO(pto, hid, pdf_name):
-    flavor = "bottom" if hid == 5 else "charm"
-    obs_names = [f"F2_{flavor}", f"FL_{flavor}"]  # , f"XSHERANCAVG_{flavor}"]
-    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=3, restype="FO")
-    th_obj = TheoryCard(pto, hid)
+def benchmarkFO_bottom(pto, pdf_name):
+    obs_names = [f"F2_bottom", f"FL_bottom"]  # , f"XSHERANCAVG_{flavor}"]
+    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=4.5, restype="FO")
+    th_obj = TheoryCard(pto, hid=5)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
+
+
+def benchmarkF_M_charm(pto, pdf_name):
+    obs_names = [f"F2_charm", f"FL_charm"]
+    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=100, restype="M")
+    th_obj = TheoryCard(pto, hid=4)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
+
+
+def benchmarkFO_charm(pto, pdf_name):
+    obs_names = [f"F2_charm", f"FL_charm"]
+    obs_obj = Observable_card(
+        obs_names, q_min=1.2, q_max=1.5, q_fixed=1.4, restype="FO"
+    )
+    th_obj = TheoryCard(pto, hid=4)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
@@ -156,5 +175,8 @@ def benchmarkFO(pto, hid, pdf_name):
 if __name__ == "__main__":
 
     pdf_name = "NNPDF40_nnlo_as_01180"
-    obj = benchmarkF_M(pto=1, hid=5, pdf_name=pdf_name)
-    obj = benchmarkFO(pto=1, hid=5, pdf_name=pdf_name)
+    # obj = benchmarkF_M_bottom(pto=1, pdf_name=pdf_name)
+    # obj = benchmarkFO_bottom(pto=1, pdf_name=pdf_name)
+
+    obj = benchmarkF_M_charm(pto=2, pdf_name=pdf_name)
+    obj = benchmarkFO_charm(pto=2, pdf_name=pdf_name)

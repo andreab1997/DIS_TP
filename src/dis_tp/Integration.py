@@ -3,14 +3,8 @@ import lhapdf
 import numpy as np
 
 from . import Initialize as Ini
-from . import MassiveCoeffFunc, MasslessCoeffFunc, TildeCoeffFunc
-from .parameters import (
-    charges,
-    masses,
-    number_active_flavors,
-    number_light_flavors,
-    pids,
-)
+from . import MassiveCoeffFunc, MasslessCoeffFunc, TildeCoeffFunc, parameters
+from .parameters import charges, masses, number_active_flavors, pids
 from .tools import PDFConvolute, PDFConvolute_plus
 
 g_id = pids["g"]
@@ -21,27 +15,23 @@ def Initialize_all(nf):
     Initialize all the needed global lists
     """
     Ini.InitializeQX()
-    # Ini.InitializeCg2_m(nf)
-    # Ini.InitializeCq2_m(nf)
-    # Ini.InitializeCLg2_m(nf)
-    # Ini.InitializeCLq2_m(nf)
     Ini.InitializeMbg2(nf)
     Ini.InitializeMbq2(nf)
     # Ini.InitializeHPL()
     Ini.InitializeMbg_3(nf)
     Ini.InitializeMbq_3(nf)
-    # Ini.InitializeCg2_til(nf)
-    # Ini.InitializeCq2_til(nf)
-    # Ini.InitializeCLg2_til(nf)
-    # Ini.InitializeCLq2_til(nf)
-    # Ini.InitializeCq3_m(nf)
+    Ini.InitializeCg2_til(nf)
+    Ini.InitializeCq2_til(nf)
+    Ini.InitializeCLg2_til(nf)
+    Ini.InitializeCLq2_til(nf)
+    Ini.InitializeCq3_m(nf)
     # Ini.InitializeCLq3_m(nf)
-    # Ini.InitializeCg3_m(nf)
+    Ini.InitializeCg3_m(nf)
     # Ini.InitializeCLg3_m(nf)
     # Ini.InitializeCLq3_til(nf)
     # Ini.InitializeCLg3_til(nf)
-    # Ini.InitializeCq3_til(nf)
-    # Ini.InitializeCg3_til(nf)
+    Ini.InitializeCq3_til(nf)
+    Ini.InitializeCg3_til(nf)
 
 
 def F2_FO(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
@@ -578,7 +568,6 @@ def FL_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
     muF = muF_ratio * Q
     muR = muR_ratio * Q
     nf = number_active_flavors(h_id)
-    nl = number_light_flavors(h_id)
     p = [masses(h_id), Q, charges(h_id)]
     res = 0.0
     if meth == "our":

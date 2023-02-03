@@ -18,6 +18,7 @@ class Plot:
         self.plot_dir = plot_dir
 
     def plot_single_obs(self, obs, order, h_id):
+        parameters.initialize_theory(True, int(h_id), None)
         mass = parameters.masses(int(h_id))
         orderstrings = {"NLO": "nlo", "NNLO": "nnlo", "N3LO": "nnlo"}
         restypes = {

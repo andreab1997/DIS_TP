@@ -4,7 +4,7 @@ from multiprocessing import Pool
 import numpy as np
 
 from . import Initialize as Ini
-from .parameters import charges, masses, number_active_flavors
+from .parameters import charges, default_masses, number_active_flavors
 
 
 def read1D(path_to_file):
@@ -68,68 +68,10 @@ def readND(path_to_file):
     return list
 
 
-def readND_Nic(path_to_file):
-    """
-    Read a space-separated txt file and return a N-Dimensional list of the values (for double space separated files)
-
-    Input:
-        path_to_file : str
-            file to open
-    Returns:
-            : list
-        list of values
-    """
-    mylist = []
-    for line in open(path_to_file):
-        listWord = line.split(" ")
-        mylist.append(listWord)
-    mylist = [
-        mylistline[:-1] if mylist.index(mylistline) != (len(mylist) - 1) else mylistline
-        for mylistline in mylist
-    ]
-    list = [
-        [
-            float(item)
-            if item != "-nan" and item != "nan"
-            else float(mylist[a][mylist[a].index(item) - 1])
-            for item in mylist[a]
-        ]
-        for a in range(len(mylist))
-    ]
-    return list
-
-
-def readND_python(path_to_file):
-    """
-    Read a space-separated txt file and return a N-Dimensional list of the values
-
-    Input:
-        path_to_file : str
-            file to open
-    Returns:
-            : list
-        list of values
-    """
-    mylist = []
-    for line in open(path_to_file):
-        listWord = line.split(" ")
-        mylist.append(listWord)
-    list = [
-        [
-            float(item)
-            if item != "-nan" and item != "nan"
-            else float(mylist[a][mylist[a].index(item)])
-            for item in mylist[a]
-        ]
-        for a in range(len(mylist))
-    ]
-    return list
-
-
 class Construct_Grid:
     def __init__(self, func, h_id, path, grid_type, n_pools=8):
         self.func = func
-        self.mass = masses(h_id)
+        self.mass = default_masses(h_id)
         self.path = path
         self.xgrid = Ini.ZList
         self.qgrid = Ini.QList
@@ -148,9 +90,9 @@ class Construct_Grid:
         for q in self.qgrid:
             p = [self.mass, q, self.e_h]
             if self.grid_type == "matching":
-                z_func_values.append(self.func(z, p, self.nf))
+                z_func_values.append(self.func(z, p, self.nf, use_analytic=True))
             elif self.grid_type == "tilde":
-                z_func_values.append(self.func(z, q, p, self.nf))
+                z_func_values.append(self.func(z, q, p, self.nf, use_analytic=True))
         return z_func_values
 
     def run(self):

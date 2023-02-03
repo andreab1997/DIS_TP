@@ -50,10 +50,10 @@ def InitializeCg2_til(nf):
     Initialize the Cg at NNLO tilde function from the file in External
     """
     global Cg2_til
-    Cg2_til_array_prov = np.array(
-        readt.readND_python(PATH_TO_GLOBAL + f"/External/Cg_2_til/Cg2til_nf{nf}.txt")
+    Cg2_til_array = np.array(
+        readt.readND(PATH_TO_GLOBAL + f"/External/Cg_2_til/Cg2til_nf{nf}.txt")
     )
-    Cg2_til = interp2d(ZList[:-1], QList, Cg2_til_array_prov.T, kind="quintic")
+    Cg2_til = interp2d(ZList[:-1], QList, Cg2_til_array.T, kind="quintic")
 
 
 def InitializeCq2_til(nf):
@@ -62,9 +62,9 @@ def InitializeCq2_til(nf):
     """
     global Cq2_til
     Cq2_til_array = np.array(
-        readt.readND_python(PATH_TO_GLOBAL + f"/External/Cq_2_til/Cq2til_nf{nf}.txt")
-    ).transpose()
-    Cq2_til = interp2d(ZList[:-1], QList, Cq2_til_array, kind="quintic")
+        readt.readND(PATH_TO_GLOBAL + f"/External/Cq_2_til/Cq2til_nf{nf}.txt")
+    )
+    Cq2_til = interp2d(ZList[:-1], QList, Cq2_til_array.T, kind="quintic")
 
 
 def InitializeCLg2_til(nf):
@@ -73,9 +73,9 @@ def InitializeCLg2_til(nf):
     """
     global CLg2_til
     CLg2_til_array = np.array(
-        readt.readND_python(PATH_TO_GLOBAL + f"/External/CLg_2_til/CLg2til_nf{nf}.txt")
-    ).transpose()
-    CLg2_til = interp2d(ZList[:-1], QList, CLg2_til_array, kind="quintic")
+        readt.readND(PATH_TO_GLOBAL + f"/External/CLg_2_til/CLg2til_nf{nf}.txt")
+    )
+    CLg2_til = interp2d(ZList[:-1], QList, CLg2_til_array.T, kind="quintic")
 
 
 def InitializeCLq2_til(nf):
@@ -84,9 +84,9 @@ def InitializeCLq2_til(nf):
     """
     global CLq2_til
     CLq2_til_array = np.array(
-        readt.readND_python(PATH_TO_GLOBAL + f"/External/CLq_2_til/CLq2til_nf{nf}.txt")
-    ).transpose()
-    CLq2_til = interp2d(ZList[:-1], QList, CLq2_til_array, kind="quintic")
+        readt.readND(PATH_TO_GLOBAL + f"/External/CLq_2_til/CLq2til_nf{nf}.txt")
+    )
+    CLq2_til = interp2d(ZList[:-1], QList, CLq2_til_array.T, kind="quintic")
 
 
 def InitializeMbg2(nf):
@@ -95,8 +95,7 @@ def InitializeMbg2(nf):
     """
     global Mbg2
     Mbg2_array = readt.readND(PATH_TO_GLOBAL + f"/External/Mbg_2/Mbg2_nf{nf}.txt")
-    my_array = np.array(Mbg2_array)[:-1].T
-    Mbg2 = interp2d(ZList[:-1], QList, my_array, kind="quintic")
+    Mbg2 = interp2d(ZList, QList, np.array(Mbg2_array).T, kind="quintic")
 
 
 def InitializeMbq2(nf):
@@ -238,9 +237,9 @@ def InitializeMbg_3(nf):
     """
     global Mbg3
     Mbg3_array = np.array(
-        readt.readND_python(PATH_TO_GLOBAL + f"/External/Mbg_3/Mbg3_nf{nf}.txt")
-    ).transpose()
-    Mbg3 = interp2d(ZList, QList, Mbg3_array, kind="quintic")
+        readt.readND(PATH_TO_GLOBAL + f"/External/Mbg_3/Mbg3_nf{nf}.txt")
+    )
+    Mbg3 = interp2d(ZList, QList, Mbg3_array.T, kind="quintic")
 
 
 def InitializeMbq_3(nf):
@@ -249,12 +248,11 @@ def InitializeMbq_3(nf):
     """
     global Mbq3
     Mbq3_array = np.array(
-        readt.readND_python(PATH_TO_GLOBAL + f"/External/Mbq_3/Mbq3_nf{nf}.txt")
-    ).transpose()
-    Mbq3 = interp2d(ZList, QList, Mbq3_array, kind="quintic")
+        readt.readND(PATH_TO_GLOBAL + f"/External/Mbq_3/Mbq3_nf{nf}.txt")
+    )
+    Mbq3 = interp2d(ZList, QList, Mbq3_array.T, kind="quintic")
 
 
-# Niccolo functions
 def InitializeQX():
     """
     Initialize the Q and z grids over which the other functions are built
@@ -271,11 +269,10 @@ def InitializeCq3_m(nf):
     Initialize the Cq2 at N3LO massive function from the file in External
     """
     global Cq3m
-    Cq3m_array_prov = np.array(
-        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
-    ).transpose()[:-1]
-    Cq3m_array = Cq3m_array_prov.transpose()
-    Cq3m = interp2d(ZList[:-1], QList, Cq3m_array, kind="quintic")
+    Cq3m_array = np.array(
+        readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
+    )
+    Cq3m = interp2d(ZList[:-1], QList, Cq3m_array[:, :-1], kind="quintic")
 
 
 def InitializeCq3_til(nf):
@@ -284,9 +281,9 @@ def InitializeCq3_til(nf):
     """
     global Cq3_til
     Cq3_til_array = np.array(
-        readt.readND_python(PATH_TO_GLOBAL + f"/External/Cq_3_til/Cq3til_nf{nf}.txt")
-    ).transpose()
-    Cq3_til = interp2d(ZList[:-1], QList, Cq3_til_array, kind="quintic")
+        readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_til/Cq3til_nf{nf}.txt")
+    )
+    Cq3_til = interp2d(ZList[:-1], QList, Cq3_til_array.T, kind="quintic")
 
 
 def InitializeCLq3_m(nf):
@@ -294,11 +291,10 @@ def InitializeCLq3_m(nf):
     Initialize the CqL at N3LO massive function from the file in External
     """
     global CLq3m
-    CLq3m_array_prov = np.array(
-        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
-    ).transpose()[:-1]
-    CLq3m_array = CLq3m_array_prov.transpose()
-    CLq3m = interp2d(ZList[:-1], QList, CLq3m_array, kind="quintic")
+    CLq3m_array = np.array(
+        readt.readND(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
+    )
+    CLq3m = interp2d(ZList, QList, CLq3m_array, kind="quintic")
 
 
 def InitializeCLq3_til(nf):
@@ -307,9 +303,9 @@ def InitializeCLq3_til(nf):
     """
     global CLq3_til
     CLq3_til_array = np.array(
-        readt.readND_python(PATH_TO_GLOBAL + f"/External/CLq_3_til/CLq3til_nf{nf}.txt")
-    ).transpose()
-    CLq3_til = interp2d(ZList[:-1], QList, CLq3_til_array, kind="quintic")
+        readt.readND(PATH_TO_GLOBAL + f"/External/CLq_3_til/CLq3til_nf{nf}.txt")
+    )
+    CLq3_til = interp2d(ZList[:-1], QList, CLq3_til_array.T, kind="quintic")
 
 
 def InitializeCg3_m(nf):
@@ -317,11 +313,10 @@ def InitializeCg3_m(nf):
     Initialize the Cg2 at N3LO massive function from the file in External
     """
     global Cg3m
-    Cg3m_array_prov = np.array(
-        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
-    ).transpose()[:-1]
-    Cg3m_array = Cg3m_array_prov.transpose()
-    Cg3m = interp2d(ZList[:-1], QList, Cg3m_array, kind="quintic")
+    Cg3m_array = np.array(
+        readt.readND(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
+    )
+    Cg3m = interp2d(ZList[:-1], QList, Cg3m_array[:, :-1], kind="quintic")
 
 
 def InitializeCLg3_m(nf):
@@ -329,11 +324,10 @@ def InitializeCLg3_m(nf):
     Initialize the CgL at N3LO massive function from the file in External
     """
     global CLg3m
-    CLg3m_array_prov = np.array(
-        readt.readND_Nic(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
-    ).transpose()[:-1]
-    CLg3m_array = CLg3m_array_prov.transpose()
-    CLg3m = interp2d(ZList[:-1], QList, CLg3m_array, kind="quintic")
+    CLg3m_array = np.array(
+        readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
+    )
+    CLg3m = interp2d(ZList, QList, CLg3m_array, kind="quintic")
 
 
 def InitializeCg3_til(nf):
@@ -342,9 +336,9 @@ def InitializeCg3_til(nf):
     """
     global Cg3_til
     Cg3_til_array = np.array(
-        readt.readND_python(PATH_TO_GLOBAL + f"/External/Cg_3_til/Cg3til_nf{nf}.txt")
-    ).transpose()
-    Cg3_til = interp2d(ZList[:-1], QList, Cg3_til_array, kind="quintic")
+        readt.readND(PATH_TO_GLOBAL + f"/External/Cg_3_til/Cg3til_nf{nf}.txt")
+    )
+    Cg3_til = interp2d(ZList[:-1], QList, Cg3_til_array.T, kind="quintic")
 
 
 def InitializeCLg3_til(nf):
@@ -353,6 +347,6 @@ def InitializeCLg3_til(nf):
     """
     global CLg3_til
     CLg3_til_array = np.array(
-        readt.readND_python(PATH_TO_GLOBAL + f"/External/CLg_3_til/CLg3til_nf{nf}.txt")
-    ).transpose()
-    CLg3_til = interp2d(ZList[:-1], QList, CLg3_til_array, kind="quintic")
+        readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_til/CLg3til_nf{nf}.txt")
+    )
+    CLg3_til = interp2d(ZList[:-1], QList, CLg3_til_array.T, kind="quintic")

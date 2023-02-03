@@ -6,7 +6,7 @@ from multiprocess import Pool
 from dis_tp import Integration as Int
 
 from . import configs, io
-from .parameters import number_active_flavors
+from .parameters import initialize_theory, number_active_flavors
 
 maporders = {"LO": 0, "NLO": 1, "NNLO": 2, "N3LO": 3}
 mapfunc = {
@@ -34,8 +34,8 @@ class Runner:
 
         # Initializing
         hid = self.t_par.hid
-        # TODO: this and the mass can be setted from runcard
         nf = number_active_flavors(hid)
+        initialize_theory(th_obj.grids, hid, th_obj.mass)
         Int.Initialize_all(nf)
         self.partial_sf = None
 
@@ -80,7 +80,8 @@ class Runner:
                 print(f"Start computation of {func.__name__} ...")
                 args = (self.compute_sf, zip(ob.x_grid, ob.q_grid))
                 if n_cores == 1:
-                    sf_res = map(*args)
+                    sf_map = map(*args)
+                    sf_res = np.array([res for res in sf_map])
                 else:
                     with Pool(n_cores) as pool:
                         sf_res = pool.map(*args)

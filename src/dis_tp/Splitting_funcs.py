@@ -93,11 +93,5 @@ def Pgg_1_plus(z, nf):
     return 4 * CA * nf * (-(10.0 / 9.0) * pgg_plus) + 4 * CA * CA * (
         2
         * pgg_plus
-        * (
-            (67.0 / 18.0)
-            - zeta2
-            + harm.H_00(z)
-            + 2 * harm.H_10(z)
-            + 2 * harm.H_01(z)
-        )
+        * ((67.0 / 18.0) - zeta2 + harm.H_00(z) + 2 * harm.H_10(z) + 2 * harm.H_01(z))
     )
