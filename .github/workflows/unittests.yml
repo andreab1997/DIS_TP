@@ -10,7 +10,7 @@ jobs:
       matrix:
         python-version: ["3.8", "3.9", "3.10"]
     container:
-          image: ghcr.io/n3pdf/bench-evol:v2
+          image: ghcr.io/nnpdf/lhapdf:v2.2.8
           credentials:
             username: ${{ github.repository_owner }}
             password: ${{ secrets.GITHUB_TOKEN }}
