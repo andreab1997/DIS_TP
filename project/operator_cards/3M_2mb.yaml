@@ -1,6 +1,6 @@
 obs:
   F2:
-    PDF: NNPDF_5F_nnlo
+    PDF: NNPDF_5F_nnlo_mub=2mb
     kinematics:
     - q: 1.0
       x: 0.1
