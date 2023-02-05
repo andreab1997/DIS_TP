@@ -1,7 +1,6 @@
 # These are utility functions to read txt grids.
-from multiprocessing import Pool
-
 import numpy as np
+from multiprocess import Pool
 
 from . import Initialize as Ini
 from .parameters import charges, default_masses, number_active_flavors
