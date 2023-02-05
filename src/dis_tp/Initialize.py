@@ -292,7 +292,7 @@ def InitializeCLq3_m(nf):
     """
     global CLq3m
     CLq3m_array = np.array(
-        readt.readND(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
+        readt.readND_test(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
     )
     CLq3m = interp2d(ZList, QList, CLq3m_array, kind="quintic")
 
@@ -325,7 +325,7 @@ def InitializeCLg3_m(nf):
     """
     global CLg3m
     CLg3m_array = np.array(
-        readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
+        readt.readND_test(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
     )
     CLg3m = interp2d(ZList, QList, CLg3m_array, kind="quintic")
 
