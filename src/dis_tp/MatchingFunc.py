@@ -82,9 +82,10 @@ def Mgg_2_reg(z, p, nf):
 
 def Mgg_2_loc(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    AS2ggH_L = TR * (-CF * 15.0 + CA * 10.0 / 9.0)
-    omeL1 = -TR * (CF * 4.0 + CA * 16.0 / 3.0)
-    omeL2 = TR**2 * 16.0 / 9.0
+    lm1 = np.log(1 - z)
+    AS2ggH_L = TR * (-CF * 15.0 + CA * (10.0 / 9.0 + 224 * lm1 / 27))
+    omeL1 = -TR * (CF * 4.0 + CA * (16.0 / 3.0 + 80 * lm1 / 9))
+    omeL2 = TR**2 * 16.0 / 9.0 + CA * TR * 8 * lm1 / 3
     return AS2ggH_L + L * omeL1 + L**2 * omeL2
 
 

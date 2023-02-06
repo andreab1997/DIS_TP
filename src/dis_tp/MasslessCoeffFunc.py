@@ -23,7 +23,12 @@ def Cb_1_reg(z, Q, p, nf):
 
 def Cb_1_loc(z, Q, p, nf):
     e_h = p[-1]
-    return e_h * e_h * 2 * CF * (-(2 * zeta2 + 9.0 / 2.0))
+    return (
+        e_h
+        * e_h
+        * CF
+        * (-4 * zeta2 - 9.0 - 3.0 * np.log(1 - z) + 2.0 * np.log(1 - z) ** 2)
+    )
 
 
 def Cb_1_sing(z, Q, p, nf):
@@ -71,7 +76,21 @@ def Cb_2_reg(z, Q, p, nf):
 
 def Cb_2_loc(z, Q, p, nf):
     e_h = p[-1]
-    return e_h * e_h * (-338.046 + nf * (46.8405))
+    dl1 = np.log(1.0 - z)
+    return (
+        e_h
+        * e_h
+        * (
+            3.55555 * dl1**4
+            - 20.4444 * dl1**3
+            - 15.5525 * dl1**2
+            + 188.64 * dl1
+            - 338.531
+            + 0.485
+            + nf
+            * (0.592593 * dl1**3 - 4.2963 * dl1**2 + 6.3489 * dl1 + 46.844 - 0.0035)
+        )
+    )
 
 
 def Cb_2_sing(z, Q, p, nf):
@@ -175,8 +194,7 @@ def Cb_3_reg(z, Q, p, nf):
 def Cb_3_loc(z, Q, p, nf):
     e_h = p[-1]
     args = np.array([nf, True], dtype=float)
-    # NOTE: here with our convention we need the non log part
-    return e_h**2 * xc2ns3p.c2np3c(0, args=args)
+    return e_h**2 * xc2ns3p.c2np3c(z, args=args)
 
 
 def Cb_3_sing(z, Q, p, nf):

@@ -102,15 +102,6 @@ def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None):
             limit=200,
             points=(x, 1.0),
         )
-        plus2, error2 = integrate.quad(
-            lambda z: func1(z, Q, p1, nf) * pdf.xfxQ2(pid, x, Q * Q),
-            0.0,
-            x,
-            epsabs=1e-12,
-            epsrel=1e-6,
-            limit=200,
-            points=(0.0, x),
-        )
     elif pid in [4, 5, 6]:
         plus1, error1 = integrate.quad(
             lambda z: func1(z, Q, p1, nf)
@@ -127,49 +118,20 @@ def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None):
             limit=200,
             points=(x, 1.0),
         )
-        plus2, error2 = integrate.quad(
-            lambda z: func1(z, Q, p1, nf)
-            * (pdf.xfxQ2(pid, x, Q * Q) + pdf.xfxQ2(-pid, x, Q * Q)),
-            0.0,
-            x,
-            epsabs=1e-12,
-            epsrel=1e-6,
-            limit=200,
-            points=(0.0, x),
-        )
     else:
 
         def light_pdfs(z):
-            light_f = np.sum(
+            light_f = [-1, -2, -3, 1, 2, 3]
+            if nf > 4:
+                light_f.extend([-4, 4])
+            if nf > 5:
+                light_f.extend([-5, 5])
+            return np.sum(
                 [
-                    pdf.xfxQ2(nl, x * (1.0 / z), Q * Q) - pdf.xfxQ2(nl, x, Q * Q)
-                    for nl in [-1, -2, -3, 1, 2, 3]
+                    pdf.xfxQ2(nl, x / z, Q * Q) / z- pdf.xfxQ2(nl, x, Q * Q)
+                    for nl in light_f
                 ]
             )
-            if nf > 4:
-                light_f += np.sum(
-                    [
-                        pdf.xfxQ2(nl, x * (1.0 / z), Q * Q) - pdf.xfxQ2(nl, x, Q * Q)
-                        for nl in [-4, 4]
-                    ]
-                )
-            if nf > 5:
-                light_f += np.sum(
-                    [
-                        pdf.xfxQ2(nl, x * (1.0 / z), Q * Q) - pdf.xfxQ2(nl, x, Q * Q)
-                        for nl in [-5, 5]
-                    ]
-                )
-            return light_f
-
-        def light_pdfs_2(z):
-            light_f = np.sum([pdf.xfxQ2(nl, x, Q * Q) for nl in [-1, -2, -3, 1, 2, 3]])
-            if nf > 4:
-                light_f += np.sum([pdf.xfxQ2(nl, x, Q * Q) for nl in [-4, 4]])
-            if nf > 5:
-                light_f += np.sum([pdf.xfxQ2(nl, x, Q * Q) for nl in [-5, 5]])
-            return light_f
-
         plus1, error1 = integrate.quad(
             lambda z: func1(z, Q, p1, nf) * light_pdfs(z),
             x,
@@ -179,16 +141,7 @@ def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None):
             limit=200,
             points=(x, 1.0),
         )
-        plus2, error2 = integrate.quad(
-            lambda z: func1(z, Q, p1, nf) * light_pdfs_2(z),
-            0.0,
-            x,
-            epsabs=1e-12,
-            epsrel=1e-6,
-            limit=200,
-            points=(0.0, x),
-        )
-    return plus1 - plus2
+    return plus1
 
 
 def Convolute_plus_coeff(func1, matching, x, Q, p1, nf):
@@ -202,16 +155,7 @@ def Convolute_plus_coeff(func1, matching, x, Q, p1, nf):
         limit=200,
         points=(x, 1.0),
     )
-    plus2, error2 = integrate.quad(
-        lambda z: func1(z, Q, p1, nf) * matching(x, p1, nf),
-        0.0,
-        x,
-        epsabs=1e-12,
-        epsrel=1e-6,
-        limit=200,
-        points=(0.0, x),
-    )
-    return plus1 - plus2
+    return plus1
 
 
 def Convolute_plus_matching(func1, matching, x, Q, p1, nf):
@@ -225,16 +169,7 @@ def Convolute_plus_matching(func1, matching, x, Q, p1, nf):
         limit=200,
         points=(x, 1.0),
     )
-    plus2, error2 = integrate.quad(
-        lambda z: matching(z, p1, nf) * func1(x, Q, p1, nf),
-        0.0,
-        x,
-        epsabs=1e-12,
-        epsrel=1e-6,
-        limit=200,
-        points=(0.0, x),
-    )
-    return plus1 - plus2
+    return plus1
 
 
 def Convolute_plus_matching_per_matching(matchingplus, matching2, x, Q, p1, nf):
@@ -248,13 +183,4 @@ def Convolute_plus_matching_per_matching(matchingplus, matching2, x, Q, p1, nf):
         limit=200,
         points=(x, 1.0),
     )
-    plus2, error2 = integrate.quad(
-        lambda z: matchingplus(z, p1, nf) * matching2(x, p1, nf),
-        0.0,
-        x,
-        epsabs=1e-12,
-        epsrel=1e-6,
-        limit=200,
-        points=(0.0, x),
-    )
-    return plus1 - plus2
+    return plus1

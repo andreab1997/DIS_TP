@@ -53,27 +53,36 @@ from .tools import (
 )
 
 
-def Cb1_Mbg1(z, p, nf):
+def Cb1_Mbg1(x, p, nf):
     e_h = p[-1]
-    return (
+    res = -(
         4
         * CF
         * TR
-        * pow(e_h, 2)
+        * e_h**2
         * (
-            -(5.0 / 2.0)
-            + 2 * z * (3 - 4 * z)
-            + (pow(np.pi, 2) / 6.0) * (-1 + 2 * z - 4 * pow(z, 2))
-            + pow(np.log(1 - z), 2) * (1 - 2 * z * (1 - z))
-            - (1.0 / 2.0)
-            * np.log(1 - z)
-            * (7 + 4 * z * (3 * z - 4) + (4 - 8 * z * (1 - z)) * np.log(z))
-            + (1.0 / 2.0)
-            * np.log(z)
-            * (-1 + 4 * z * (3 * z - 2) + (1 - 2 * z + 4 * pow(z, 2)) * np.log(z))
-            + (2 * z - 1) * special.spence(z)
+            -1 / 2
+            + np.pi**2 / 2
+            - 5 * x
+            - np.pi**2 * x
+            + (11 * x**2) / 2
+            + (2 * np.pi**2 * x**2) / 3
+            + 2 * np.log(x)
+            + 3j * np.pi * np.log(x)
+            - 3 * x * np.log(x)
+            - 6j * np.pi * x * np.log(x)
+            + 3 * x**2 * np.log(x)
+            + 4j * np.pi * x**2 * np.log(x)
+            + 3 * np.log(-1 + 1 / x) * np.log(x)
+            - 6 * x * np.log(-1 + 1 / x) * np.log(x)
+            + 4 * x**2 * np.log(-1 + 1 / x) * np.log(x)
+            + np.log(x) ** 2
+            - 2 * x * np.log(x) ** 2
+            - np.log(1 - x) * (3 * (-1 + x) * x + (1 - 2 * x) * np.log(x))
+            + (-3 + 6 * x - 4 * x**2) * special.spence(complex(1 - 1 / x))
         )
     )
+    return np.real(res)
 
 
 def CLb1_Mbg1(z, p, nf):

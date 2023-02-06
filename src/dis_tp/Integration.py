@@ -640,7 +640,9 @@ def FL_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
                 * (
                     PDFConvolute(TildeCoeffFunc.CLg_2_til_reg, Mypdf, x, Q, p, nf, g_id)
                     + PDFConvolute(TildeCoeffFunc.CLq_2_til_reg, Mypdf, x, Q, p, nf)
-                    + PDFConvolute(MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, h_id)
+                    + PDFConvolute(
+                        MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nf, h_id
+                    )
                 )
             )
             nnlo_nnll_loc = (

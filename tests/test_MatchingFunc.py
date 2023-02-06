@@ -242,7 +242,7 @@ class Test_Matching_gg:
                             full_output=1,
                         )[0]
                         - mf.Mgg_2_sing(0, p, h_id) * S1(n - 1)
-                        + mf.Mgg_2_loc(1, p, h_id)
+                        + mf.Mgg_2_loc(0, p, h_id)
                     )
 
                 my.append(mellin_integrate(n))

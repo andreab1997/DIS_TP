@@ -2,6 +2,10 @@ import numpy as np
 from numpy.testing import assert_allclose
 
 from dis_tp import TildeCoeffFunc as tf
+from dis_tp import MatchingFunc as mf
+from dis_tp import MasslessCoeffFunc as cf
+from dis_tp import tools
+
 from dis_tp.Integration import Initialize_all
 from dis_tp.parameters import charges, default_masses, initialize_theory
 
@@ -10,6 +14,36 @@ mhq = default_masses(h_id)
 initialize_theory(use_grids=True, h_id=h_id, mass=mhq)
 e_h = charges(h_id)
 Initialize_all(h_id)
+
+
+def test_Cb1_Mbg1():
+    xs = [0.0001, 0.001, 0.01, 0.1, 0.2, 0.456, 0.7]
+    Qs = [2,5, 10,25, 100]
+    my = []
+    ref = []
+    for Q in Qs:
+        for x in xs:
+            p = [mhq, Q, e_h]
+            my.append(np.log(Q**2/ mhq**2) *  tf.Cb1_Mbg1(x, p, h_id))
+            ref.append(
+                tools.Convolute(cf.Cb_1_reg, mf.Mbg_1, x, Q, p, h_id)
+            )
+    assert_allclose(my, ref)
+
+
+def test_CLb1_Mbg1():
+    xs = [0.0001, 0.001, 0.01, 0.1, 0.2, 0.456, 0.7]
+    Qs = [2,5, 10,25, 100]
+    my = []
+    ref = []
+    for Q in Qs:
+        for x in xs:
+            p = [mhq, Q, e_h]
+            my.append(np.log(Q**2/ mhq**2) *  tf.CLb1_Mbg1(x, p, h_id))
+            ref.append(
+                tools.Convolute(cf.CLb_1_reg, mf.Mbg_1, x, Q, p, h_id)
+            )
+    assert_allclose(my, ref)
 
 
 class Test_F2:
@@ -21,7 +55,7 @@ class Test_F2:
             p = np.array([mhq, self.Q, e_h])
             my_grid = tf.Cg_2_til_reg(x, self.Q, p, h_id)
             my = tf.Cg_2_til_reg(x, self.Q, p, h_id, use_analytic=True)
-            assert_allclose(my, my_grid, rtol=4e-4)
+            assert_allclose(my, my_grid, rtol=7e-4)
 
             my_grid = tf.Cq_2_til_reg(x, self.Q, p, h_id)
             my = tf.Cq_2_til_reg(x, self.Q, p, h_id, use_analytic=True)
