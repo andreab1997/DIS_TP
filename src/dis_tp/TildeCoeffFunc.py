@@ -108,9 +108,8 @@ def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
         + P2(p) * Cg_1_m_reg(z, Q, p, nf - 1)
         - (
             Cg_1_m_reg(z, Q, p, nf - 1) * Mgg_2_loc(z, p, nf)
-            # TODO: fix me
-            + Convolute(Cg_1_m_reg, Mgg_2_reg, z, Q, p, nf)
-            + Convolute_plus_matching(Cg_1_m_reg, Mgg_2_sing, z, Q, p, nf)
+            + Convolute(Cg_1_m_reg, Mgg_2_reg, z, Q, p, nf, nf-1)
+            + Convolute_plus_matching(Cg_1_m_reg, Mgg_2_sing, z, Q, p, nf, nf-1)
         )
         - 2
         * Cb_0_loc(z, Q, p, nf)
@@ -153,8 +152,7 @@ def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
     return (
         Cq_3_m_reg(z, Q, p, nf - 1)
         + 2 * Cq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
-        # TODO: fix me
-        - Convolute(Cg_1_m_reg, Mgq_2_reg, z, Q, p, nf)
+        - Convolute(Cg_1_m_reg, Mgq_2_reg, z, Q, p, nf, nf-1)
         - 2
         * (
             Cb_1_loc(z, Q, p, nf) * Mbq_2(z, p, nf)
@@ -187,9 +185,8 @@ def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
         + P2(p) * CLg_1_m_reg(z, Q, p, nf - 1)
         - (
             CLg_1_m_reg(z, Q, p, nf - 1) * Mgg_2_loc(z, p, nf)
-            # TODO: fix me, nf
-            + Convolute(CLg_1_m_reg, Mgg_2_reg, z, Q, p, nf - 1)
-            + Convolute_plus_matching(CLg_1_m_reg, Mgg_2_sing, z, Q, p, nf - 1)
+            + Convolute(CLg_1_m_reg, Mgg_2_reg, z, Q, p, nf, nf-1)
+            + Convolute_plus_matching(CLg_1_m_reg, Mgg_2_sing, z, Q, p, nf, nf - 1)
         )
         - 2
         * (
@@ -216,7 +213,6 @@ def CLq_3_til_reg(z, Q, p, nf, use_analytic=False):
     return (
         CLq_3_m_reg(z, Q, p, nf - 1)
         + 2 * CLq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
-        # TODO: fix me
-        - Convolute(CLg_1_m_reg, Mgq_2_reg, z, Q, p, nf - 1)
+        - Convolute(CLg_1_m_reg, Mgq_2_reg, z, Q, p, nf, nf - 1)
         - 2 * Convolute(CLb_1_reg, Mbq_2, z, Q, p, nf)
     )

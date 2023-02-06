@@ -60,11 +60,12 @@ def PDFConvolute(func1, pdf, x, Q, p1, nf, pid=None):
     return result
 
 
-def Convolute(func1, matching, x, Q, p1, nf):
+def Convolute(func1, matching, x, Q, p1, nf, nl=None):
     lower = x
     upper = 1.0
-    result, error = integrate.quad(
-        lambda z: (1.0 / z) * func1(z, Q, p1, nf) * matching(x * (1.0 / z), p1, nf),
+    nl = nf if nl is None else nl
+    result, _ = integrate.quad(
+        lambda z: (1.0 / z) * func1(z, Q, p1, nl) * matching(x * (1.0 / z), p1, nf),
         lower,
         upper,
         epsabs=1e-12,
@@ -158,10 +159,11 @@ def Convolute_plus_coeff(func1, matching, x, Q, p1, nf):
     return plus1
 
 
-def Convolute_plus_matching(func1, matching, x, Q, p1, nf):
+def Convolute_plus_matching(func1, matching, x, Q, p1, nf, nl=None):
+    nl = nf if nl is None else nl
     plus1, error1 = integrate.quad(
         lambda z: matching(z, p1, nf)
-        * ((1.0 / z) * func1(x * (1.0 / z), Q, p1, nf) - func1(x, Q, p1, nf)),
+        * ((1.0 / z) * func1(x * (1.0 / z), Q, p1, nl) - func1(x, Q, p1, nf)),
         x,
         1.0,
         epsabs=1e-12,
