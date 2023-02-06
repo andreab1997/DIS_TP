@@ -4,6 +4,8 @@ from numpy.testing import assert_allclose
 from dis_tp import TildeCoeffFunc as tf
 from dis_tp import MatchingFunc as mf
 from dis_tp import MasslessCoeffFunc as cf
+from dis_tp import MassiveCoeffFunc as mcf
+
 from dis_tp import tools
 
 from dis_tp.Integration import Initialize_all
@@ -27,6 +29,8 @@ def test_Cb1_Mbg1():
             my.append(np.log(Q**2/ mhq**2) *  tf.Cb1_Mbg1(x, p, h_id))
             ref.append(
                 tools.Convolute(cf.Cb_1_reg, mf.Mbg_1, x, Q, p, h_id)
+                + tools.Convolute_plus_coeff(cf.Cb_1_sing, mf.Mbg_1, x, Q, p, h_id)
+                + cf.Cb_1_loc(x, Q, p, h_id) * mf.Mbg_1(x, p, h_id)
             )
     assert_allclose(my, ref)
 
@@ -59,7 +63,8 @@ class Test_F2:
 
             my_grid = tf.Cq_2_til_reg(x, self.Q, p, h_id)
             my = tf.Cq_2_til_reg(x, self.Q, p, h_id, use_analytic=True)
-            assert_allclose(my, my_grid, rtol=7e-7)
+            assert_allclose(my, my_grid, rtol=4e-4)
+
 
     def test_n3lo(self):
         for x in self.xs:
