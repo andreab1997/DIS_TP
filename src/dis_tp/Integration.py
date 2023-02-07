@@ -25,11 +25,11 @@ def Initialize_all(nf):
     Ini.InitializeCLg2_til(nf)
     Ini.InitializeCLq2_til(nf)
     Ini.InitializeCq3_m(nf)
-    # Ini.InitializeCLq3_m(nf)
+    Ini.InitializeCLq3_m(nf)
     Ini.InitializeCg3_m(nf)
-    # Ini.InitializeCLg3_m(nf)
-    # Ini.InitializeCLq3_til(nf)
-    # Ini.InitializeCLg3_til(nf)
+    Ini.InitializeCLg3_m(nf)
+    Ini.InitializeCLq3_til(nf)
+    Ini.InitializeCLg3_til(nf)
     Ini.InitializeCq3_til(nf)
     Ini.InitializeCg3_til(nf)
 
@@ -527,7 +527,7 @@ def FL_R(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
             + PDFConvolute(MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nf, h_id)
         )
         n3ll_loc = (((1 / (4 * np.pi)) * Mypdf.alphasQ(muR)) ** 2) * (
-            MasslessCoeffFunc.CLb_2_loc(x, p, Q, nf)
+            MasslessCoeffFunc.CLb_2_loc(x, Q, p, nf)
             * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
         )
         res += n3ll_reg + n3ll_loc
