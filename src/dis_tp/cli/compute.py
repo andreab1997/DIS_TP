@@ -4,8 +4,8 @@ import click
 import numpy as np
 import yaml
 
-from .. import configs, io, parameters, plot, runner
-from .base import command, root_path
+from .. import configs, io, parameters, plot, runner, k_factors
+from .base import command
 from .grids import n_cores
 
 
@@ -116,3 +116,22 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str):
     plot_dir_path = cfg["paths"]["root"] / plot_dir
     plotclass = plot.Plot(cfg, plot_dir_path)
     plotclass.plot_single_obs(obs, order, h_id)
+
+
+@command.command("k-factors")
+@o_card
+@t_card
+@pdf
+@h_id
+@n_cores
+def generate_matching_grids(
+    o_card: str, t_card: str, pdf: str, h_id: int, n_cores: int
+):
+    """Generate k-factors.
+    
+    USAGE: dis_tp k-factors HERA_NC_318GEV_EAVG_SIGMARED_CHARM 400 NNPDF40_nnlo_as_01180 4 -n 4
+    """
+
+    obj = k_factors.KfactorRunner(t_card, o_card, pdf)
+    obj.compute(int(h_id), n_cores)
+    obj.save_results()

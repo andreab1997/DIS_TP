@@ -34,10 +34,8 @@ class Test_F2:
             assert_allclose(my, yad)
 
             # ns loc
-            # this is x indepentent, but yadism treat it
-            # differenly adding the singluar piece
-            yad = f2_ns.loc(0, f2_ns.args["loc"])
-            my = cf.Cb_1_loc(0, self.Q, e_h, h_id) / e_h**2
+            yad = f2_ns.loc(x, f2_ns.args["loc"])
+            my = cf.Cb_1_loc(x, self.Q, e_h, h_id) / e_h**2
             assert_allclose(my, yad)
             # ns sing
             yad = f2_ns.sing(x, f2_ns.args["sing"])
@@ -59,8 +57,8 @@ class Test_F2:
             my = cf.Cb_2_reg(x, self.Q, e_h, h_id) / e_h**2
             assert_allclose(my, yad)
             # ns loc, see comment NLO
-            yad = f2_ns.loc(0, f2_ns.args["loc"])
-            my = cf.Cb_2_loc(0, self.Q, e_h, h_id) / e_h**2
+            yad = f2_ns.loc(x, f2_ns.args["loc"])
+            my = cf.Cb_2_loc(x, self.Q, e_h, h_id) / e_h**2
             assert_allclose(my, yad)
             # ns sing
             yad = f2_ns.sing(x, f2_ns.args["sing"])
@@ -89,8 +87,8 @@ class Test_F2:
             my = cf.Cb_3_reg(x, self.Q, e_h, h_id) / e_h**2
             assert_allclose(my, yad)
             # ns loc, see comment NLO
-            yad = f2_ns.loc(0, f2_ns.args["loc"])
-            my = cf.Cb_3_loc(0, self.Q, e_h, h_id) / e_h**2
+            yad = f2_ns.loc(x, f2_ns.args["loc"])
+            my = cf.Cb_3_loc(x, self.Q, e_h, h_id) / e_h**2
             assert_allclose(my, yad)
             # ns sing
             yad = f2_ns.sing(x, f2_ns.args["sing"])

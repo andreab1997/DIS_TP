@@ -29,10 +29,6 @@ class TheoryCard:
         th["TMC"] = 0
         th["IC"] = 0
         th["PTO"] = pto
-        if pto == 1:
-            th["FNS"] = "FONLL-A"
-        if pto == 2:
-            th["FNS"] = "FONLL-C"
 
         th["NfFF"] = hid
         self.t_card = th
@@ -153,10 +149,10 @@ def benchmarkFO_bottom(pto, pdf_name):
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
-
+# TODO: how do we check bottom mass effects in this code?
 def benchmarkF_M_charm(pto, pdf_name):
     obs_names = [f"F2_charm", f"FL_charm"]
-    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=100, restype="M")
+    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=3, restype="M")
     th_obj = TheoryCard(pto, hid=4)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
@@ -174,9 +170,9 @@ def benchmarkFO_charm(pto, pdf_name):
 
 if __name__ == "__main__":
 
-    pdf_name = "NNPDF40_nnlo_as_01180"
+    pdf_name = "NNPDF40_nnlo_pch_as_01180"
     # obj = benchmarkF_M_bottom(pto=1, pdf_name=pdf_name)
     # obj = benchmarkFO_bottom(pto=1, pdf_name=pdf_name)
 
     obj = benchmarkF_M_charm(pto=2, pdf_name=pdf_name)
-    obj = benchmarkFO_charm(pto=2, pdf_name=pdf_name)
+    # obj = benchmarkFO_charm(pto=2, pdf_name=pdf_name)
