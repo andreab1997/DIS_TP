@@ -129,7 +129,7 @@ def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None):
                 light_f.extend([-5, 5])
             return np.sum(
                 [
-                    pdf.xfxQ2(nl, x / z, Q * Q) / z- pdf.xfxQ2(nl, x, Q * Q)
+                    pdf.xfxQ2(nl, x / z, Q * Q) - pdf.xfxQ2(nl, x, Q * Q)
                     for nl in light_f
                 ]
             )
