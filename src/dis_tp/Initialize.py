@@ -270,9 +270,9 @@ def InitializeCq3_m(nf):
     """
     global Cq3m
     Cq3m_array = np.array(
-        readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
+        readt.readND_test(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
     )
-    Cq3m = interp2d(ZList[:-1], QList, Cq3m_array[:, :-1], kind="quintic")
+    Cq3m = interp2d(ZList, QList, Cq3m_array, kind="quintic")
 
 
 def InitializeCq3_til(nf):
@@ -314,9 +314,9 @@ def InitializeCg3_m(nf):
     """
     global Cg3m
     Cg3m_array = np.array(
-        readt.readND(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
+        readt.readND_test(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
     )
-    Cg3m = interp2d(ZList[:-1], QList, Cg3m_array[:, :-1], kind="quintic")
+    Cg3m = interp2d(ZList, QList, Cg3m_array, kind="quintic")
 
 
 def InitializeCLg3_m(nf):
