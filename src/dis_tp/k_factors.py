@@ -108,7 +108,7 @@ class KfactorRunner:
         return runner.results
 
     def compute(self, hid, n_cores):
-        # TODO: cache results somewahere
+        # TODO: cache results somewhere
         yad_log = self.run_yadism()
         dis_tp_log = self.run_dis_tp(hid, n_cores)
         self._results = self._log(dis_tp_log, yad_log)
@@ -125,7 +125,7 @@ class KfactorRunner:
             log_df.drop("q", axis=1, inplace=True)
             log_df.drop("y", axis=1, inplace=True)
             log_df.drop("error", axis=1, inplace=True)
-            log_df["k-factor"] = np.abs(log_df.dis_tp - log_df.yadism)
+            log_df["k-factor"] = log_df.dis_tp / log_df.yadism
         return log_df
 
     # TODO: add a save mathod
