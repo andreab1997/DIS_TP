@@ -35,18 +35,12 @@ def PDFConvolute(func1, pdf, x, Q, p1, nf, pid=None):
     else:
 
         def light_pdfs(z):
-            light_f = np.sum(
-                [pdf.xfxQ2(nl, x * (1.0 / z), Q * Q) for nl in [-1, -2, -3, 1, 2, 3]]
-            )
+            light_f = [-1, -2, -3, 1, 2, 3]
             if nf > 4:
-                light_f += np.sum(
-                    [pdf.xfxQ2(nl, x * (1.0 / z), Q * Q) for nl in [-4, 4]]
-                )
+                light_f.extend([-4, 4])
             if nf > 5:
-                light_f += np.sum(
-                    [pdf.xfxQ2(nl, x * (1.0 / z), Q * Q) for nl in [-5, 5]]
-                )
-            return light_f
+                light_f.extend([-5, 5])
+            return np.sum([pdf.xfxQ2(nl, x / z, Q * Q) for nl in light_f])
 
         result, error = integrate.quad(
             lambda z: func1(z, Q, p1, nf) * light_pdfs(z),
@@ -133,6 +127,7 @@ def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None):
                     for nl in light_f
                 ]
             )
+
         plus1, error1 = integrate.quad(
             lambda z: func1(z, Q, p1, nf) * light_pdfs(z),
             x,

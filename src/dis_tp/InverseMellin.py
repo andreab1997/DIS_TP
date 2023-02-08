@@ -32,7 +32,7 @@ def inverse_mellin_talbot(func, x, nf, L):
         0.5,
         1.0 - mellin_cut,
         epsabs=1e-12,
-        epsrel=1e-6,
+        epsrel=1e-10,
         limit=200,
         full_output=1,
     )[0]
@@ -64,7 +64,7 @@ def inverse_mellin_linear(func, x, nf, r, s, L):
         0,
         np.inf,
         epsabs=1e-12,
-        epsrel=1e-6,
+        epsrel=1e-10,
         limit=200,
         full_output=1,
     )[0]

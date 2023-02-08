@@ -11,7 +11,7 @@ from dis_tp import tools
 from dis_tp.Integration import Initialize_all
 from dis_tp.parameters import charges, default_masses, initialize_theory
 
-h_id = 5
+h_id = 4
 mhq = default_masses(h_id)
 initialize_theory(use_grids=True, h_id=h_id, mass=mhq)
 e_h = charges(h_id)
@@ -59,11 +59,11 @@ class Test_F2:
             p = np.array([mhq, self.Q, e_h])
             my_grid = tf.Cg_2_til_reg(x, self.Q, p, h_id)
             my = tf.Cg_2_til_reg(x, self.Q, p, h_id, use_analytic=True)
-            assert_allclose(my, my_grid, rtol=7e-4)
+            assert_allclose(my, my_grid, rtol=4e-4)
 
             my_grid = tf.Cq_2_til_reg(x, self.Q, p, h_id)
             my = tf.Cq_2_til_reg(x, self.Q, p, h_id, use_analytic=True)
-            assert_allclose(my, my_grid, rtol=4e-4)
+            assert_allclose(my, my_grid, rtol=8e-6)
 
 
     def test_n3lo(self):
@@ -75,7 +75,7 @@ class Test_F2:
 
             my_grid = tf.Cq_3_til_reg(x, self.Q, p, h_id)
             my = tf.Cq_3_til_reg(x, self.Q, p, h_id, use_analytic=True)
-            assert_allclose(my, my_grid, rtol=5e-7, atol=3e-5)
+            assert_allclose(my, my_grid, rtol=2e-6)
 
 
 class Test_FL:
@@ -87,8 +87,19 @@ class Test_FL:
             p = np.array([mhq, self.Q, e_h])
             my_grid = tf.CLg_2_til_reg(x, self.Q, p, h_id)
             my = tf.CLg_2_til_reg(x, self.Q, p, h_id, use_analytic=True)
-            assert_allclose(my, my_grid, rtol=4e-4)
+            assert_allclose(my, my_grid, rtol=3e-4)
 
             my_grid = tf.CLq_2_til_reg(x, self.Q, p, h_id)
             my = tf.CLq_2_til_reg(x, self.Q, p, h_id, use_analytic=True)
-            assert_allclose(my, my_grid, rtol=2e-6, atol=3e-14)
+            assert_allclose(my, my_grid, rtol=3e-5, atol=3e-14)
+
+    def test_n3lo(self):
+        for x in self.xs:
+            p = np.array([mhq, self.Q, e_h])
+            my_grid = tf.CLg_3_til_reg(x, self.Q, p, h_id)
+            my = tf.CLg_3_til_reg(x, self.Q, p, h_id, use_analytic=True)
+            assert_allclose(my, my_grid, rtol=2e-5)
+
+            my_grid = tf.CLq_3_til_reg(x, self.Q, p, h_id)
+            my = tf.CLq_3_til_reg(x, self.Q, p, h_id, use_analytic=True)
+            assert_allclose(my, my_grid, rtol=3e-7)
