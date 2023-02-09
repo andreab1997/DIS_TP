@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import yadism
 import yaml
+from datetime import date
 
 from .runner import Runner
 from . import configs, parameters
@@ -39,6 +40,8 @@ class TheoryCard:
         new_t_card["mass"] = parameters.default_masses(hid)
         new_t_card["fns"] = "fonll"
         new_t_card["order"] = "N" * self.t_card["PTO"] + "LO"
+        if self.t_card["PTO"] == 3:
+            new_t_card["order"] = "N3LO"
         return new_t_card
 
 
@@ -60,6 +63,7 @@ class Observable_card:
             print("Warning, setting TargetDIS = proton")
         obs["TargetDIS"] = "proton"
         self.o_card = obs
+        self.dataset_name = name
 
     def yadism_like(self):
         return self.o_card
@@ -82,12 +86,13 @@ class Observable_card:
 
 
 class KfactorRunner:
-    def __init__(self, t_card_name, o_card_name, pdf_name):
+    def __init__(self, t_card_name, o_card_name, pdf_name, use_yadism):
         cfg = configs.load()
         cfg = configs.defaults(cfg)
         self.theory = TheoryCard(cfg, t_card_name)
         self.observables = Observable_card(cfg, o_card_name)
         self.pdf_name = pdf_name
+        self.use_yadism = use_yadism
         self._results = None
 
     def run_yadism(self):
@@ -98,8 +103,9 @@ class KfactorRunner:
         return yad_pred
 
     def run_dis_tp(self, hid, n_cores):
-        # TODO: here we nned to run FO and M type
-        restype = "FO"
+        # TODO: how do we treat bottom mass effects in this code?
+        # TODO: here we need to run FO and M type
+        restype = "M"
         runner = Runner(
             self.observables.dis_tp_like(self.pdf_name, restype),
             self.theory.dis_tp_like(hid),
@@ -109,25 +115,62 @@ class KfactorRunner:
 
     def compute(self, hid, n_cores):
         # TODO: cache results somewhere
-        yad_log = self.run_yadism()
-        dis_tp_log = self.run_dis_tp(hid, n_cores)
-        self._results = self._log(dis_tp_log, yad_log)
+        mumerator_log = self.run_dis_tp(hid, n_cores)
+        if self.use_yadism:
+            denominator_log = self.run_yadism()
+        else:
+            self.theory.t_card["PTO"] -= 1
+            denominator_log = self.run_dis_tp(hid, n_cores)
+        self._results = self._log(mumerator_log, denominator_log, self.use_yadism)
+        print(self._results)
 
     @staticmethod
-    def _log(dis_tp_log, yad_log):
-        for obs in yad_log:
+    def _log(mumerator_log, denominator_log, use_yadism):
+        for obs in denominator_log:
             my_obs = obs.split("_")[0]
-            yad_df = pd.DataFrame(yad_log[obs]).rename(columns={"result": "yadism"})
-            dis_tp_df = dis_tp_log[my_obs].rename(columns={"result": "dis_tp"})
-            log_df = pd.concat([yad_df, dis_tp_df], axis=1).T.drop_duplicates().T
+            if use_yadism:
+                den_df = pd.DataFrame(denominator_log[obs]).rename(
+                    columns={"result": "yadism"}
+                )
+                num_df = mumerator_log[my_obs].rename(columns={"result": "dis_tp"})
+            else:
+                den_df = denominator_log[my_obs].rename(columns={"result": "NNLO"})
+                num_df = mumerator_log[my_obs].rename(columns={"result": "N3LO"})
+            log_df = pd.concat([den_df, num_df], axis=1).T.drop_duplicates().T
 
             # construct some nice log table
-            log_df.drop("q", axis=1, inplace=True)
             log_df.drop("y", axis=1, inplace=True)
-            log_df.drop("error", axis=1, inplace=True)
-            log_df["k-factor"] = log_df.dis_tp / log_df.yadism
+            if use_yadism:
+                log_df.drop("q", axis=1, inplace=True)
+                log_df.drop("error", axis=1, inplace=True)
+                log_df["k-factor"] = log_df.dis_tp / log_df.yadism
+            else:
+                log_df["Q2"] = log_df.q**2
+                log_df.drop("q", axis=1, inplace=True)
+                log_df["k-factor"] = log_df.N3LO / log_df.NNLO
+
         return log_df
 
-    # TODO: add a save mathod
-    def save_results(self):
-        print(self._results)
+    def save_results(self, author, th_input):
+        cfg = configs.load()
+        cfg = configs.defaults(cfg)
+
+        if self.use_yadism:
+            k_fatctor_type = "N3LO FONLL DIS_TP / N3LO ZM-VFNS Yadism"
+        else:
+            k_fatctor_type = "N3LO FONLL DIS_TP / NNLO FONLL DIS_TP"
+        intro = [
+            "********************************************************************************\n",
+            f"SetName: {self.observables.dataset_name}\n",
+            f"Author: {author}" f"Date: {date.today()}",
+            "CodesUsed: https://github.com/andreab1997/DIS_TP\n",
+            f"TheoryInput: {th_input}\n",
+            f"PDFset: {self.pdf_name}\n",
+            f"Warinings: {k_fatctor_type}\n"
+            "********************************************************************************\n",
+        ]
+        res_path = cfg["paths"]["results"] / f"CF_QCD_{self.observables.dataset_name}.dat"
+        print(f"Saving the k-factors in: {res_path}")
+        with open(res_path, "w", encoding="utf-8") as f:
+            f.writelines(intro)
+            f.writelines([f"{k:4f}   0.0000\n" for k in self._results["k-factor"]])

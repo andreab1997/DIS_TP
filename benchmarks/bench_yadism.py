@@ -38,7 +38,7 @@ class TheoryCard:
 
     def dis_tp_like(self):
         new_t_card = {}
-        new_t_card["grids"] = True
+        new_t_card["grids"] = False
         new_t_card["hid"] = self.t_card["NfFF"]
         new_t_card["mass"] = parameters.default_masses(new_t_card["hid"])
         new_t_card["fns"] = "fonll"
@@ -50,7 +50,7 @@ class Observable_card:
     def __init__(self, obs_names, q_min, q_max, restype, x_fixed=0.01, q_fixed=30):
 
         x_grid = make_grid(30, 30, x_min=1e-6)
-        q2_grid = np.geomspace(q_min**2, q_max**2, 60)
+        q2_grid = np.geomspace(q_min**2, q_max**2, 30)
         q2_fixed = q_fixed**2
 
         obs = observables.default_card
@@ -63,7 +63,7 @@ class Observable_card:
             {"x": float(x_fixed), "Q2": float(q2), "y": 0.5} for q2 in q2_grid
         ]
         kinematics.extend(
-            [{"x": float(x), "Q2": float(q2_fixed), "y": 0.5} for x in x_grid[4:-3]]
+            [{"x": float(x), "Q2": float(q2_fixed), "y": 0.5} for x in x_grid[15:-15]]
         )
         for fx in obs_names:
             obs["observables"][fx] = kinematics
@@ -149,9 +149,8 @@ def benchmarkFO_bottom(pto, pdf_name):
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
-# TODO: how do we check bottom mass effects in this code?
 def benchmarkF_M_charm(pto, pdf_name):
-    obs_names = [f"F2_charm", f"FL_charm"]
+    obs_names = ["XSHERANCAVG_charm"] #[f"F2_charm", f"FL_charm"]
     obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=3, restype="M")
     th_obj = TheoryCard(pto, hid=4)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
@@ -159,7 +158,7 @@ def benchmarkF_M_charm(pto, pdf_name):
 
 
 def benchmarkFO_charm(pto, pdf_name):
-    obs_names = [f"F2_charm", f"FL_charm"]
+    obs_names = ["XSHERANCAVG_charm"] # [f"F2_charm", f"FL_charm"]
     obs_obj = Observable_card(
         obs_names, q_min=1.2, q_max=1.5, q_fixed=1.4, restype="FO"
     )
@@ -171,8 +170,8 @@ def benchmarkFO_charm(pto, pdf_name):
 if __name__ == "__main__":
 
     pdf_name = "NNPDF40_nnlo_pch_as_01180"
-    # obj = benchmarkF_M_bottom(pto=1, pdf_name=pdf_name)
+    # obj = benchmarkF_M_bottom(pto=2, pdf_name=pdf_name)
     # obj = benchmarkFO_bottom(pto=1, pdf_name=pdf_name)
 
     obj = benchmarkF_M_charm(pto=2, pdf_name=pdf_name)
-    # obj = benchmarkFO_charm(pto=2, pdf_name=pdf_name)
+    obj = benchmarkFO_charm(pto=2, pdf_name=pdf_name)
