@@ -44,7 +44,7 @@ class Runner:
         """Assembly the XS if needed according to 'XSHERANCAVG'"""
         yp = 1.0 + (1.0 - ob.y_grid) ** 2
         yL = ob.y_grid**2
-        xs = sfs[0] -yL / yp * sfs[1]
+        xs = sfs[0] - yL / yp * sfs[1]
         return xs
 
     def compute_sf(self, kins):

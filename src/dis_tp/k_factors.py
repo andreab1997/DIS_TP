@@ -86,13 +86,26 @@ class Observable_card:
 
 
 class KfactorRunner:
-    def __init__(self, t_card_name, o_card_name, pdf_name, use_yadism):
+    def __init__(self, t_card_name, dataset_name, pdf_name, use_yadism):
         cfg = configs.load()
         cfg = configs.defaults(cfg)
+
+        # Load the ymldb file
+        with open(
+            cfg["paths"]["ymldb"] / f"{dataset_name}.yaml", encoding="utf-8"
+        ) as f:
+            ymldb = yaml.safe_load(f)
+
         self.theory = TheoryCard(cfg, t_card_name)
+
+        # TODO: do we need to support operations between FKtables?
+        o_card_name = ymldb["operands"][0][0]
         self.observables = Observable_card(cfg, o_card_name)
+
         self.pdf_name = pdf_name
         self.use_yadism = use_yadism
+        self.result_path = cfg["paths"]["results"]
+        self.dataset_name = ymldb["target_dataset"]
         self._results = None
 
     def run_yadism(self):
@@ -152,8 +165,6 @@ class KfactorRunner:
         return log_df
 
     def save_results(self, author, th_input):
-        cfg = configs.load()
-        cfg = configs.defaults(cfg)
 
         if self.use_yadism:
             k_fatctor_type = "N3LO FONLL DIS_TP / N3LO ZM-VFNS Yadism"
@@ -161,15 +172,16 @@ class KfactorRunner:
             k_fatctor_type = "N3LO FONLL DIS_TP / NNLO FONLL DIS_TP"
         intro = [
             "********************************************************************************\n",
-            f"SetName: {self.observables.dataset_name}\n",
-            f"Author: {author}" f"Date: {date.today()}",
+            f"SetName: {self.dataset_name}\n",
+            f"Author: {author}\n",
+            f"Date: {date.today()}\n",
             "CodesUsed: https://github.com/andreab1997/DIS_TP\n",
             f"TheoryInput: {th_input}\n",
             f"PDFset: {self.pdf_name}\n",
             f"Warinings: {k_fatctor_type}\n"
             "********************************************************************************\n",
         ]
-        res_path = cfg["paths"]["results"] / f"CF_QCD_{self.observables.dataset_name}.dat"
+        res_path = self.result_path / f"CF_QCD_{self.dataset_name}.dat"
         print(f"Saving the k-factors in: {res_path}")
         with open(res_path, "w", encoding="utf-8") as f:
             f.writelines(intro)
