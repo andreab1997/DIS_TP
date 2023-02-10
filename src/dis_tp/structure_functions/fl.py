@@ -3,10 +3,13 @@ import lhapdf
 import numpy as np
 
 from .. import MassiveCoeffFunc, MasslessCoeffFunc, TildeCoeffFunc
-from ..parameters import charges, masses, number_active_flavors, pids
-from ..tools import PDFConvolute, PDFConvolute_plus
+from ..parameters import (charges, masses, number_active_flavors,
+                          number_light_flavors, pids)
+from ..tools import PDFConvolute
+from .tools import PDFConvolute_light, mkPDF, non_singlet_pdf
 
 g_id = pids["g"]
+
 
 def FL_FO(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
     """
@@ -31,19 +34,12 @@ def FL_FO(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
             : float
             result
     """
-    lhapdf.setVerbosity(0)
-    Mypdf = None
-    if isinstance(pdf, list):
-        Mypdf = lhapdf.mkPDF(pdf[order - 1], 0)
-    elif isinstance(pdf, str):
-        Mypdf = lhapdf.mkPDF(pdf, 0)
-    muF = muF_ratio * Q
+    Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
     p = [masses(h_id), Q, charges(h_id)]
     nf = number_active_flavors(h_id)
-    res = 0.0
     if order >= 0:
-        res += 0.0
+        res = 0.0
     if order >= 1:
         res += (
             (1 / (4 * np.pi))
@@ -86,19 +82,13 @@ def FL_R(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
             : float
             result
     """
-    lhapdf.setVerbosity(0)
-    Mypdf = None
-    if isinstance(pdf, list):
-        Mypdf = lhapdf.mkPDF(pdf[order - 1], 0)
-    elif isinstance(pdf, str):
-        Mypdf = lhapdf.mkPDF(pdf, 0)
-    muF = muF_ratio * Q
+    Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
     p = [masses(h_id), Q, charges(h_id)]
     nf = number_active_flavors(h_id)
     res = 0.0
     if order >= 0:
-        res += 0.0
+        res = 0.0
     if order >= 1:
         res += (
             (1 / (4 * np.pi))
@@ -163,20 +153,13 @@ def FL_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
             : float
             result
     """
-    lhapdf.setVerbosity(0)
-    Mypdf = None
-    if isinstance(pdf, list):
-        Mypdf = lhapdf.mkPDF(pdf[order - 1], 0)
-    elif isinstance(pdf, str):
-        Mypdf = lhapdf.mkPDF(pdf, 0)
-    muF = muF_ratio * Q
+    Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
     nf = number_active_flavors(h_id)
     p = [masses(h_id), Q, charges(h_id)]
-    res = 0.0
     if meth == "our":
         if order >= 0:
-            res += 0.0
+            res = 0.0
         if order >= 1:
             res += (
                 (1 / (4 * np.pi))
@@ -223,7 +206,7 @@ def FL_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
             res += n3lo_n3ll_loc + n3lo_n3ll_reg
     if meth == "fonll":
         if order >= 0:
-            res += 0.0
+            res = 0.0
         if order >= 1:
             res += (
                 (1 / (4 * np.pi))
@@ -285,4 +268,65 @@ def FL_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
                 * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
             )
             res += n3lo_n3ll_reg + n3lo_n3ll_loc
+    return res
+
+
+def FL_Light(order, pdf, x, Q, h_id, muR_ratio=1):
+    """
+    Compute the light contribution for the structure function F2
+
+    Parameters:
+        order : int
+            requested perturbative order (0 == LO, 1 == NLO,...)
+        pdf : str or list(str)
+            pdf(s) to be used
+        x : float
+            x-value
+        Q : float
+            Q-value
+        h_id : int
+            heavy quark id
+        muR_ratio : float
+            ratio to Q of the renormalization scale
+    Returns:
+            : float
+            result
+    """
+    Mypdf = mkPDF(pdf, order)
+    muR = muR_ratio * Q
+    p = [0, Q, 1]
+    nl = number_light_flavors(h_id)
+    alphas = 1 / (4 * np.pi) * Mypdf.alphasQ(muR)
+    meansq_e = np.mean([charges(nl) ** 2 for nl in range(1, nl + 1)])
+    if order >= 0:
+        res = 0.0
+    if order >= 1:
+        reg = PDFConvolute_light(
+            MasslessCoeffFunc.CLb_1_reg, Mypdf, x, Q, p, nl
+        ) + nl * meansq_e * PDFConvolute(
+            MasslessCoeffFunc.CLg_1_reg, Mypdf, x, Q, p, nl, g_id
+        )
+        res += alphas * reg
+    if order >= 2:
+        reg = PDFConvolute_light(
+            MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nl
+        ) + nl * meansq_e * (
+            PDFConvolute(MasslessCoeffFunc.CLg_2_reg, Mypdf, x, Q, p, nl, g_id)
+            + PDFConvolute(MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl)
+        )
+        loc = MasslessCoeffFunc.CLb_2_loc(x, Q, p, nl) * non_singlet_pdf(
+            Mypdf, x, Q, nl
+        )
+        res += alphas**2 * (reg + loc)
+    if order >= 3:
+        reg = PDFConvolute_light(
+            MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, p, nl
+        ) + nl * meansq_e * (
+            PDFConvolute(MasslessCoeffFunc.CLg_3_reg, Mypdf, x, Q, p, nl, g_id)
+            + PDFConvolute(MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl)
+        )
+        loc = MasslessCoeffFunc.CLb_3_loc(x, Q, p, nl) * non_singlet_pdf(
+            Mypdf, x, Q, nl
+        )
+        res += alphas**3 * (reg + loc)
     return res

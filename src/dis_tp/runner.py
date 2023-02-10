@@ -11,8 +11,8 @@ from .parameters import initialize_theory, number_active_flavors
 
 maporders = {"LO": 0, "NLO": 1, "NNLO": 2, "N3LO": 3}
 mapfunc = {
-    "F2": {"R": [f2.F2_R], "M": [f2.F2_M], "FO": [f2.F2_FO]},
-    "FL": {"R": [fl.FL_R], "M": [fl.FL_M], "FO": [fl.FL_FO]},
+    "F2": {"R": [f2.F2_R], "M": [f2.F2_M], "FO": [f2.F2_FO], "light": [f2.F2_Light]},
+    "FL": {"R": [fl.FL_R], "M": [fl.FL_M], "FO": [fl.FL_FO], "light": [fl.FL_Light]},
     "XSHERANCAVG": {
         "R": [f2.F2_R, fl.FL_R],
         "M": [f2.F2_M, fl.FL_M],

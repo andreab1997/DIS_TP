@@ -38,11 +38,13 @@ class TheoryCard:
 
     def dis_tp_like(self):
         new_t_card = {}
-        new_t_card["grids"] = False
+        new_t_card["grids"] = True
         new_t_card["hid"] = self.t_card["NfFF"]
         new_t_card["mass"] = parameters.default_masses(new_t_card["hid"])
         new_t_card["fns"] = "fonll"
         new_t_card["order"] = "N" * self.t_card["PTO"] + "LO"
+        if self.t_card["PTO"] == 3:
+            new_t_card["order"] =  "N3LO"
         return new_t_card
 
 
@@ -166,6 +168,15 @@ def benchmarkFO_charm(pto, pdf_name):
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
+def benchmarkF_light(pto, pdf_name):
+    obs_names = ["F2_light", "FL_light"]
+    obs_obj = Observable_card(
+        obs_names, q_min=1.5, q_max=5, q_fixed=3, restype="light"
+    )
+    th_obj = TheoryCard(pto, hid=4)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
+
 
 if __name__ == "__main__":
 
@@ -173,5 +184,6 @@ if __name__ == "__main__":
     # obj = benchmarkF_M_bottom(pto=2, pdf_name=pdf_name)
     # obj = benchmarkFO_bottom(pto=1, pdf_name=pdf_name)
 
-    obj = benchmarkF_M_charm(pto=2, pdf_name=pdf_name)
-    obj = benchmarkFO_charm(pto=2, pdf_name=pdf_name)
+    # obj = benchmarkF_M_charm(pto=2, pdf_name=pdf_name)
+    # obj = benchmarkFO_charm(pto=2, pdf_name=pdf_name)
+    benchmarkF_light(pto=3, pdf_name=pdf_name)
