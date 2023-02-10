@@ -7,7 +7,7 @@ from numpy.testing import assert_allclose
 from scipy import integrate
 
 from dis_tp import MatchingFunc as mf
-from dis_tp.Integration import Initialize_all
+from dis_tp.Initialize import Initialize_all
 from dis_tp.parameters import charges, default_masses, initialize_theory
 
 h_id = 5

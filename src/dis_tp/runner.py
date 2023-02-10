@@ -3,19 +3,20 @@ import functools
 import numpy as np
 from multiprocess import Pool
 
-from dis_tp import Integration as Int
+from dis_tp import Initialize as Ini
+from .structure_functions import f2, fl
 
 from . import configs, io
 from .parameters import initialize_theory, number_active_flavors
 
 maporders = {"LO": 0, "NLO": 1, "NNLO": 2, "N3LO": 3}
 mapfunc = {
-    "F2": {"R": [Int.F2_R], "M": [Int.F2_M], "FO": [Int.F2_FO]},
-    "FL": {"R": [Int.FL_R], "M": [Int.FL_M], "FO": [Int.FL_FO]},
+    "F2": {"R": [f2.F2_R], "M": [f2.F2_M], "FO": [f2.F2_FO]},
+    "FL": {"R": [fl.FL_R], "M": [fl.FL_M], "FO": [fl.FL_FO]},
     "XSHERANCAVG": {
-        "R": [Int.F2_R, Int.FL_R],
-        "M": [Int.F2_M, Int.FL_M],
-        "FO": [Int.F2_FO, Int.FL_FO],
+        "R": [f2.F2_R, fl.FL_R],
+        "M": [f2.F2_M, fl.FL_M],
+        "FO": [f2.F2_FO, fl.FL_FO],
     },
 }
 
@@ -36,7 +37,7 @@ class Runner:
         hid = self.t_par.hid
         nf = number_active_flavors(hid)
         initialize_theory(th_obj.grids, hid, th_obj.mass)
-        Int.Initialize_all(nf)
+        Ini.Initialize_all(nf)
         self.partial_sf = None
 
     @staticmethod
@@ -62,7 +63,7 @@ class Runner:
             # loop on SF
             for func in func_to_call:
                 # TODO: eliminate this if
-                if func in [Int.F2_M, Int.FL_M]:
+                if func in [f2.F2_M, fl.FL_M]:
                     self.partial_sf = functools.partial(
                         func,
                         order=order,

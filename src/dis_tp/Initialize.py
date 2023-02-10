@@ -350,3 +350,26 @@ def InitializeCLg3_til(nf):
         readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_til/CLg3til_nf{nf}.txt")
     )
     CLg3_til = interp2d(ZList[:-1], QList, CLg3_til_array.T, kind="quintic")
+
+def Initialize_all(nf):
+    """
+    Initialize all the needed global lists
+    """
+    InitializeQX()
+    InitializeMbg2(nf)
+    InitializeMbq2(nf)
+    # InitializeHPL()
+    InitializeMbg_3(nf)
+    InitializeMbq_3(nf)
+    InitializeCg2_til(nf)
+    InitializeCq2_til(nf)
+    InitializeCLg2_til(nf)
+    InitializeCLq2_til(nf)
+    InitializeCq3_m(nf)
+    InitializeCLq3_m(nf)
+    InitializeCg3_m(nf)
+    InitializeCLg3_m(nf)
+    InitializeCLq3_til(nf)
+    InitializeCLg3_til(nf)
+    InitializeCq3_til(nf)
+    InitializeCg3_til(nf)

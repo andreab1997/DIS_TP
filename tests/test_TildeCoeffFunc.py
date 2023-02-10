@@ -8,7 +8,7 @@ from dis_tp import MassiveCoeffFunc as mcf
 
 from dis_tp import tools
 
-from dis_tp.Integration import Initialize_all
+from dis_tp.Initialize import Initialize_all
 from dis_tp.parameters import charges, default_masses, initialize_theory
 
 h_id = 4

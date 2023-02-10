@@ -2,7 +2,7 @@ import pathlib
 
 import click
 
-from .. import Integration
+from .. import Initialize
 from .. import MatchingFunc as mcf
 from .. import ReadTxt
 from .. import TildeCoeffFunc as tcf
@@ -65,7 +65,7 @@ def generate_matching_grids(
         elif flavor_entry == "bg":
             func = mcf.Mbg_3_reg_inv
     path = dest_path / f"M{flavor_entry}_{pto}/M{flavor_entry}{pto}_nf{h_id}.txt"
-    Integration.Initialize_all(h_id)
+    Initialize.Initialize_all(h_id)
     parameters.initialize_theory(use_grids=True, h_id=h_id)
     obj = ReadTxt.Construct_Grid(
         func, h_id=h_id, path=path, grid_type="matching", n_pools=n_cores
@@ -105,7 +105,7 @@ def generate_matching_grids(
             func = tcf.CLg_3_til_reg
 
     path = dest_path / f"C{flavor}_{pto}_til/C{flavor}{pto}til_nf{h_id}.txt"
-    Integration.Initialize_all(h_id)
+    Initialize.Initialize_all(h_id)
     parameters.initialize_theory(use_grids=True, h_id=h_id)
     obj = ReadTxt.Construct_Grid(
         func, h_id=h_id, path=path, grid_type="tilde", n_pools=n_cores

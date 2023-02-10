@@ -6,7 +6,8 @@ import lhapdf
 import numpy as np
 from progress.bar import Bar
 
-from . import Integration as Int
+from dis_tp import Initialize as Ini
+from dis_tp.structure_functions import f2, fl
 from .Initialize import PATH_TO_GLOBAL
 
 # Constructing the possibilities
@@ -37,20 +38,20 @@ numberofcalc = len(Stru_func) * len(Methods) * len(orders) * 3 + 1
 with Bar("Processing...", max=numberofcalc) as bar:
     print("\nInitialization in progress...")
     # Initializing global data
-    Int.Initialize_all()
+    Ini.Initialize_all()
     bar.next()
     print("\nComputation of Structure Functions is starting...")
     # NLO
     ##F2
     ###Our
-    F2_FO_nlo = np.array([[Int.F2_FO(1, pdf_FO, x, q) for q in Q] for x in X])
+    F2_FO_nlo = np.array([[f2.F2_FO(1, pdf_FO, x, q) for q in Q] for x in X])
     bar.next()
     F2_R_nlo = [
         np.array(
             [
                 [
                     (
-                        lambda q: Int.F2_R(1, pdf_R[thre.index(thr)], x, q)
+                        lambda q: f2.F2_R(1, pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else 0.0
                     )(q)
@@ -67,7 +68,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.F2_M(1, "our", pdf_R[thre.index(thr)], x, q)
+                        lambda q: f2.F2_M(1, "our", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else F2_FO_nlo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -89,7 +90,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.F2_M(1, "fonll", pdf_R[thre.index(thr)], x, q)
+                        lambda q: f2.F2_M(1, "fonll", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else F2_FO_fonll_nlo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -103,14 +104,14 @@ with Bar("Processing...", max=numberofcalc) as bar:
     bar.next()
     ##FL
     ###Our
-    FL_FO_nlo = np.array([[Int.FL_FO(1, pdf_FO, x, q) for q in Q] for x in X])
+    FL_FO_nlo = np.array([[fl.FL_FO(1, pdf_FO, x, q) for q in Q] for x in X])
     bar.next()
     FL_R_nlo = [
         np.array(
             [
                 [
                     (
-                        lambda q: Int.FL_R(1, pdf_R[thre.index(thr)], x, q)
+                        lambda q: fl.FL_R(1, pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else 0.0
                     )(q)
@@ -127,7 +128,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.FL_M(1, "our", pdf_R[thre.index(thr)], x, q)
+                        lambda q: fl.FL_M(1, "our", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else FL_FO_nlo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -149,7 +150,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.FL_M(1, "fonll", pdf_R[thre.index(thr)], x, q)
+                        lambda q: fl.FL_M(1, "fonll", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else FL_FO_fonll_nlo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -166,14 +167,14 @@ with Bar("Processing...", max=numberofcalc) as bar:
 
     ##F2
     ###Our
-    F2_FO_nnlo = np.array([[Int.F2_FO(2, pdf_FO, x, q) for q in Q] for x in X])
+    F2_FO_nnlo = np.array([[f2.F2_FO(2, pdf_FO, x, q) for q in Q] for x in X])
     bar.next()
     F2_R_nnlo = [
         np.array(
             [
                 [
                     (
-                        lambda q: Int.F2_R(2, pdf_R[thre.index(thr)], x, q)
+                        lambda q: f2.F2_R(2, pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else 0.0
                     )(q)
@@ -190,7 +191,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.F2_M(2, "our", pdf_R[thre.index(thr)], x, q)
+                        lambda q: f2.F2_M(2, "our", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else F2_FO_nnlo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -212,7 +213,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.F2_M(2, "fonll", pdf_R[thre.index(thr)], x, q)
+                        lambda q: f2.F2_M(2, "fonll", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else F2_FO_fonll_nnlo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -226,14 +227,14 @@ with Bar("Processing...", max=numberofcalc) as bar:
     bar.next()
     ##FL
     ###Our
-    FL_FO_nnlo = np.array([[Int.FL_FO(2, pdf_FO, x, q) for q in Q] for x in X])
+    FL_FO_nnlo = np.array([[fl.FL_FO(2, pdf_FO, x, q) for q in Q] for x in X])
     bar.next()
     FL_R_nnlo = [
         np.array(
             [
                 [
                     (
-                        lambda q: Int.FL_R(2, pdf_R[thre.index(thr)], x, q)
+                        lambda q: fl.FL_R(2, pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else 0.0
                     )(q)
@@ -250,7 +251,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.FL_M(2, "our", pdf_R[thre.index(thr)], x, q)
+                        lambda q: fl.FL_M(2, "our", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else FL_FO_nnlo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -272,7 +273,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.FL_M(2, "fonll", pdf_R[thre.index(thr)], x, q)
+                        lambda q: fl.FL_M(2, "fonll", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else FL_FO_fonll_nnlo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -289,14 +290,14 @@ with Bar("Processing...", max=numberofcalc) as bar:
 
     ##F2
     ###Our
-    F2_FO_n3lo = np.array([[Int.F2_FO(3, pdf_FO, x, q) for q in Q] for x in X])
+    F2_FO_n3lo = np.array([[f2.F2_FO(3, pdf_FO, x, q) for q in Q] for x in X])
     bar.next()
     F2_R_n3lo = [
         np.array(
             [
                 [
                     (
-                        lambda q: Int.F2_R(3, pdf_R[thre.index(thr)], x, q)
+                        lambda q: f2.F2_R(3, pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else 0.0
                     )(q)
@@ -313,7 +314,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.F2_M(3, "our", pdf_R[thre.index(thr)], x, q)
+                        lambda q: f2.F2_M(3, "our", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else F2_FO_n3lo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -335,7 +336,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.F2_M(3, "fonll", pdf_R[thre.index(thr)], x, q)
+                        lambda q: f2.F2_M(3, "fonll", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else F2_FO_fonll_n3lo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -349,14 +350,14 @@ with Bar("Processing...", max=numberofcalc) as bar:
     bar.next()
     ##FL
     ###Our
-    FL_FO_n3lo = np.array([[Int.FL_FO(3, pdf_FO, x, q) for q in Q] for x in X])
+    FL_FO_n3lo = np.array([[fl.FL_FO(3, pdf_FO, x, q) for q in Q] for x in X])
     bar.next()
     FL_R_n3lo = [
         np.array(
             [
                 [
                     (
-                        lambda q: Int.FL_R(3, pdf_R[thre.index(thr)], x, q)
+                        lambda q: fl.FL_R(3, pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else 0.0
                     )(q)
@@ -373,7 +374,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.FL_M(3, "our", pdf_R[thre.index(thr)], x, q)
+                        lambda q: fl.FL_M(3, "our", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else FL_FO_n3lo[list(X).index(x)][list(Q).index(q)]
                     )(q)
@@ -395,7 +396,7 @@ with Bar("Processing...", max=numberofcalc) as bar:
             [
                 [
                     (
-                        lambda q: Int.FL_M(3, "fonll", pdf_R[thre.index(thr)], x, q)
+                        lambda q: fl.FL_M(3, "fonll", pdf_R[thre.index(thr)], x, q)
                         if q > thr
                         else FL_FO_fonll_n3lo[list(X).index(x)][list(Q).index(q)]
                     )(q)

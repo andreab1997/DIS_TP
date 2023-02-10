@@ -178,7 +178,7 @@ class KfactorRunner:
             "CodesUsed: https://github.com/andreab1997/DIS_TP\n",
             f"TheoryInput: {th_input}\n",
             f"PDFset: {self.pdf_name}\n",
-            f"Warinings: {k_fatctor_type}\n"
+            f"Warnings: {k_fatctor_type}\n"
             "********************************************************************************\n",
         ]
         res_path = self.result_path / f"CF_QCD_{self.dataset_name}.dat"

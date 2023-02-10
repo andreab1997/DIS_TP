@@ -4,7 +4,7 @@ from test_MasslessCoeffFunc import MockESF
 from yadism.coefficient_functions.heavy import f2_nc, fl_nc
 
 from dis_tp import MassiveCoeffFunc as cf
-from dis_tp.Integration import Initialize_all
+from dis_tp.Initialize import Initialize_all
 from dis_tp.parameters import charges, default_masses, initialize_theory
 
 h_id = 5
