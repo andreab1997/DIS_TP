@@ -1,8 +1,64 @@
+import numpy as np
 import pandas as pd
 import yaml
 
-from .configs import defaults, detect, load
-from .parameters import number_active_flavors
+from . import parameters
+
+
+class TheoryParameters:
+    """Class containing all the theory parameters."""
+
+    def __init__(self, order, hid, fns, masses, grids, full_card=None):
+        self.order = order
+        self.hid = hid
+        self.fns = fns
+        # TODO: fix masses
+        self.mass = masses[hid - 4]
+        self.grids = grids
+        self._t_card = full_card
+
+    def yadism_like(self):
+        return self._t_card
+
+    @classmethod
+    def load_card(cls, configs, name, hid):
+        """Return a TheoryParameters object."""
+        if isinstance(name, str):
+            with open(
+                configs["paths"]["theory_cards"] / (name + ".yaml"), encoding="utf-8"
+            ) as f:
+                th = yaml.safe_load(f)
+        else:
+            th = name
+
+        # Disable some NNPDF features not included here
+        if "TMC" in th and th["TMC"] == 1:
+            print("Warning, disable Target Mass Corrections, TMC=0")
+            th["TMC"] = 0
+        if "IC" in th and th["IC"] == 1:
+            print("Warning, disable Intrinsic Charm, IC=0")
+            th["IC"] = 0
+
+        # compatibility layer
+        if "order" in th:
+            order = th["order"]
+        else:
+            order = th["PTO"]
+
+        if "hid" in th:
+            hid = th["hid"]
+
+        fns = th.get("fns", "fonll")
+        grids = th.get("grids", True)
+        mc = th.get("mc", parameters.default_masses(4))
+        mb = th.get("mb", parameters.default_masses(5))
+        mt = th.get("mt", parameters.default_masses(6))
+        masses = [mc, mb, mt]
+        # TODO: add here also some settings for alpha_s
+
+        return cls(
+            order=order, hid=hid, fns=fns, grids=grids, masses=masses, full_card=th
+        )
 
 
 class Observable:
@@ -27,72 +83,90 @@ class Observable:
         return self.kinematics.y.values
 
 
-# TODO: make this NNPDF compatible!!!
-def load_theory_parameters(configs, name):
-    """Return a TheoryParameters object."""
-    if isinstance(name, str):
-        with open(
-            configs["paths"]["theory_cards"] / (name + ".yaml"), encoding="utf-8"
-        ) as f:
-            loaded = yaml.safe_load(f)
-    else:
-        loaded = name
-    return TheoryParameters(
-        order=loaded["order"],
-        hid=loaded["hid"],
-        fns=loaded["fns"],
-        grids=loaded["grids"],
-        mass=loaded["mass"],
-    )
-
-
-def load_operator_parameters(configs, name):
-    """Return a OperatorParameters object."""
-    if isinstance(name, str):
-        with open(
-            configs["paths"]["operator_cards"] / (name + ".yaml"), encoding="utf-8"
-        ) as f:
-            loaded = yaml.safe_load(f)
-    else:
-        loaded = name
-    observables = []
-    for ob in loaded["obs"]:
-        observables.append(
-            Observable(
-                name=ob,
-                pdf=loaded["obs"][ob]["PDF"],
-                restype=loaded["obs"][ob]["restype"],
-                kinematics=loaded["obs"][ob]["kinematics"],
-            )
-        )
-    return OperatorParameters(observables)
-
-
-class TheoryParameters:
-    """Class containing all the theory parameters."""
-
-    def __init__(self, order, hid, fns, mass, grids):
-        self.order = order
-        self.hid = hid
-        self.fns = fns
-        self.mass = mass
-        self.grids = grids
-
-    def order(self):
-        return self.order
-
-    def hid(self):
-        return self.hid
-
-    def fns(self):
-        return self.fns
-
-
 class OperatorParameters:
     """Class containing all the operator parameters."""
 
-    def __init__(self, obs):
+    def __init__(self, obs, name, full_card=None):
         self.obs = obs
+        self._o_card = full_card
+        self.dataset_name = name
+
+    def yadism_like(self):
+        return self._o_card
+
+    def dis_tp_like(self, pdf_name, restype):
+        new_o_card = {}
+        new_o_card["obs"] = {}
+        for fx, kins in self.o_card["observables"].items():
+            new_kins = [
+                {"x": point["x"], "q": np.sqrt(point["Q2"]), "y": point["y"]}
+                for point in kins
+            ]
+            new_o_card["obs"][fx.split("_")[0]] = {
+                "PDF": pdf_name,
+                "restype": restype,
+                "scalevar": False,
+                "kinematics": new_kins,
+            }
+        return new_o_card
+
+    @classmethod
+    def load_card(cls, configs, name, pdf_name=None):
+        """Return a OperatorParameters object."""
+        if isinstance(name, str):
+            with open(
+                configs["paths"]["operator_cards"] / (name + ".yaml"), encoding="utf-8"
+            ) as f:
+                obs = yaml.safe_load(f)
+        else:
+            obs = name
+
+        # Disables some NNPDF settings
+        if "prDIS" in obs and obs["prDIS"] != "EM":
+            print("Warning, setting prDIS = EM")
+        if "ProjectileDIS" in obs and obs["ProjectileDIS"] not in [
+            "electron",
+            "positron",
+        ]:
+            print("Warning, setting ProjectileDIS = electron")
+        if "TargetDIS" in obs and obs["TargetDIS"] != "proton":
+            print("Warning, setting TargetDIS = proton")
+            obs["TargetDIS"] = "proton"
+
+        # DIS_TP runcards
+        observables = []
+        if "obs" in obs:
+            observables = []
+            for ob in obs["obs"]:
+                observables.append(
+                    Observable(
+                        name=ob,
+                        pdf=obs["obs"][ob]["PDF"],
+                        restype=obs["obs"][ob]["restype"],
+                        kinematics=obs["obs"][ob]["kinematics"],
+                    )
+                )
+        # Yadism runcard
+        else:
+            for fx, kins in obs["observables"].items():
+                new_kins = [
+                    {"x": point["x"], "q": np.sqrt(point["Q2"]), "y": point["y"]}
+                    for point in kins
+                ]
+                # TODO: here you are introducing an inconsistency.
+                # Heaviness and fns should not coincide ...
+                restype = fx.split("_")[1]
+                if restype in ["charm", "bottom"]:
+                    restype = "FONLL"
+                observables.append(
+                    Observable(
+                        name=fx.split("_")[0],
+                        pdf=pdf_name,
+                        restype=restype,
+                        kinematics=new_kins,
+                    )
+                )
+        return cls(observables, name, obs)
 
 
 class RunParameters:

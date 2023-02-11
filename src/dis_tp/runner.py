@@ -9,8 +9,6 @@ from .structure_functions import f2, fl
 from . import configs, io
 from .parameters import initialize_theory, number_active_flavors
 
-# TODO: drop this mass ordering mapping which is useless
-maporders = {"LO": 0, "NLO": 1, "NNLO": 2, "N3LO": 3}
 mapfunc = {
     "F2": {
         "R": [f2.F2_R],
@@ -25,13 +23,16 @@ mapfunc = {
         "M": [fl.FL_M],
         "FO": [fl.FL_FO],
         "light": [fl.FL_Light],
-        "total": [fl.FL_Total],
+        # "total": [fl.FL_Total],
         "FONLL": [fl.FL_FONLL],
     },
     "XSHERANCAVG": {
         "R": [f2.F2_R, fl.FL_R],
         "M": [f2.F2_M, fl.FL_M],
         "FO": [f2.F2_FO, fl.FL_FO],
+        "FONLL": [f2.F2_FONLL, fl.FL_FONLL],
+        "light": [f2.F2_Light, fl.FL_Light],
+        # "total": [f2.F2_Total, fl.FL_Total],
     },
 }
 
@@ -42,8 +43,14 @@ class Runner:
         cfg = configs.load()
         cfg = configs.defaults(cfg)
         dest_path = cfg["paths"]["results"]
-        obs_obj = io.load_operator_parameters(cfg, o_card)
-        th_obj = io.load_theory_parameters(cfg, t_card)
+        if isinstance(o_card, io.OperatorParameters):
+            obs_obj = o_card
+        else:
+            obs_obj = io.OperatorParameters.load_card(cfg, o_card)
+        if isinstance(t_card, io.TheoryParameters):
+            th_obj = t_card
+        else:
+            th_obj = io.TheoryParameters.load_card(cfg, t_card)
         self.runparameters = io.RunParameters(th_obj, obs_obj, dest_path)
         self.o_par = self.runparameters.operator_parameters()
         self.t_par = self.runparameters.theory_parameters()
@@ -69,8 +76,6 @@ class Runner:
         return float(self.partial_sf(x=x, Q=q))
 
     def compute(self, n_cores):
-        order = maporders[self.t_par.order]
-
         # TODO: switch the order of these loops
         # 1) loop in kinematics
         # 2) Initialize that patch
@@ -91,12 +96,12 @@ class Runner:
             for func in func_to_call:
                 self.partial_sf = functools.partial(
                     func,
-                    order=order,
+                    order=self.t_par.order,
                     meth=self.t_par.fns,
                     pdf=ob.pdf,
                     h_id=self.t_par.hid,
                 )
-                print(f"Start computation of {func.__name__} ...")
+                print(f"Start computation of {func.__name__} @ order: {self.t_par.order} ...")
                 args = (self.compute_sf, zip(ob.x_grid, ob.q_grid))
                 if n_cores == 1:
                     sf_map = map(*args)

@@ -529,37 +529,34 @@ def F2_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
         return F2_ZM(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
 
 
-# def F2_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
-#     """
-#     Compute the total contribution for the structure function F2.
+def F2_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
+    """
+    Compute the total structure function F2.
 
-#     Parameters:
-#         order : int
-#             requested perturbative order (0 == LO, 1 == NLO,...)
-#         meth : str
-#             method to be used (our, fonll)
-#         pdf : str or list(str)
-#             pdf(s) to be used
-#         x : float
-#             x-value
-#         Q : float
-#             Q-value
-#         h_id : int
-#             heavy quark id
-#         muR_ratio : float
-#             ratio to Q of the renormalization scale
-#     Returns:
-#         : float
-#             result
-#     """
-#     # TODO: here we need to add the flavor consistently
-#     if h_id == 4:
-#         return F2_Light(order, pdf, x, Q, h_id, muR_ratio) + F2_M(
-#             order, meth, pdf, x, Q, h_id, muR_ratio=muR_ratio
-#         )
-#     elif h_id == 5:
-#         return (
-#             F2_Light(order, pdf, x, Q, 3, muR_ratio)
-#             + F2_M(order, meth, pdf, x, Q, 4, muR_ratio=muR_ratio)
-#             + F2_M(order, meth, pdf, x, Q, h_id, muR_ratio=muR_ratio)
-#         )
+    Parameters:
+        order : int
+            requested perturbative order (0 == LO, 1 == NLO,...)
+        meth : str
+            method to be used (our, fonll)
+        pdf : str or list(str)
+            pdf(s) to be used
+        x : float
+            x-value
+        Q : float
+            Q-value
+        h_id : int
+            heavy quark id
+        muR_ratio : float
+            ratio to Q of the renormalization scale
+    Returns:
+        : float
+            result
+    """
+    # TODO: here we need to have all grids initialized
+    # TODO: need to add the missing diagrams
+    return (
+        F2_Light(order, pdf, x, Q, 3, muR_ratio)
+        + F2_FONLL(order, meth, pdf, x, Q, 4, muR_ratio=muR_ratio)
+        + F2_FONLL(order, meth, pdf, x, Q, 5, muR_ratio=muR_ratio)
+        # + F2_FONLL(order, meth, pdf, x, Q, 6, muR_ratio=muR_ratio)
+    )

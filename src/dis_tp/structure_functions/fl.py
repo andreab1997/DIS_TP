@@ -386,11 +386,7 @@ def FL_ZM(order, pdf, x, Q, h_id, meth=None, muR_ratio=1):
             + PDFConvolute(MasslessCoeffFunc.CLg_3_reg, Mypdf, x, Q, p, nl, g_id)
             + PDFConvolute(MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl, h_id)
         )
-        loc = (
-            MasslessCoeffFunc.CLb_3_loc(x, Q, p, nl) * pdfxfx
-            + MasslessCoeffFunc.CLg_3_loc(x, Q, p, nl) * Mypdf.xfxQ2(g_id, x, Q**2)
-            + MasslessCoeffFunc.CLq_3_loc(x, Q, p, nl) * pdfxfx
-        )
+        loc = MasslessCoeffFunc.CLb_3_loc(x, Q, p, nl) * pdfxfx
         res += alphas**3 * (reg + loc)
     return res
 

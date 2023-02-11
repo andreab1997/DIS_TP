@@ -1,92 +1,18 @@
-"""Script to produce the Yadism benchmark."""
+"""Script to produce the k-factors."""
 
+from datetime import date
 import lhapdf
-import numpy as np
 import pandas as pd
 import yadism
 import yaml
-from datetime import date
 
+from . import configs
+from .io import OperatorParameters, TheoryParameters
 from .runner import Runner
-from . import configs, parameters
-
-
-# TODO: build a proper Loader, NNPDF and DISTP compatible
-class TheoryCard:
-    def __init__(self, configs, name):
-        if isinstance(name, str):
-            with open(
-                configs["paths"]["theory_cards"] / (name + ".yaml"), encoding="utf-8"
-            ) as file:
-                th = yaml.safe_load(file)
-        else:
-            th = name
-
-        if th["TMC"] == 1:
-            print("Warning, disable Target Mass Corrections, TMC=0")
-            th["TMC"] = 0
-        if th["IC"] == 1:
-            print("Warning, disable Intrinsic Charm, IC=0")
-            th["IC"] = 0
-        self.t_card = th
-
-    def yadism_like(self):
-        return self.t_card
-
-    def dis_tp_like(self, hid):
-        new_t_card = {}
-        new_t_card["grids"] = True
-        new_t_card["hid"] = hid
-        new_t_card["mass"] = parameters.default_masses(hid)
-        new_t_card["fns"] = "fonll"
-        new_t_card["order"] = "N" * self.t_card["PTO"] + "LO"
-        if self.t_card["PTO"] == 3:
-            new_t_card["order"] = "N3LO"
-        return new_t_card
-
-
-class Observable_card:
-    def __init__(self, configs, name):
-        if isinstance(name, str):
-            with open(
-                configs["paths"]["operator_cards"] / (name + ".yaml"), encoding="utf-8"
-            ) as f:
-                obs = yaml.safe_load(f)
-        else:
-            obs = name
-
-        if obs["prDIS"] != "EM":
-            print("Warning, setting prDIS = EM")
-        if obs["ProjectileDIS"] != "electron":
-            print("Warning, setting ProjectileDIS = electron")
-        if obs["TargetDIS"] != "proton":
-            print("Warning, setting TargetDIS = proton")
-        obs["TargetDIS"] = "proton"
-        self.o_card = obs
-        self.dataset_name = name
-
-    def yadism_like(self):
-        return self.o_card
-
-    def dis_tp_like(self, pdf_name, restype):
-        new_o_card = {}
-        new_o_card["obs"] = {}
-        for fx, kins in self.o_card["observables"].items():
-            new_kins = [
-                {"x": point["x"], "q": np.sqrt(point["Q2"]), "y": point["y"]}
-                for point in kins
-            ]
-            new_o_card["obs"][fx.split("_")[0]] = {
-                "PDF": pdf_name,
-                "restype": restype,
-                "scalevar": False,
-                "kinematics": new_kins,
-            }
-        return new_o_card
 
 
 class KfactorRunner:
-    def __init__(self, t_card_name, dataset_name, pdf_name, use_yadism):
+    def __init__(self, t_card_name, dataset_name, pdf_name, h_id, use_yadism):
         cfg = configs.load()
         cfg = configs.defaults(cfg)
 
@@ -96,11 +22,11 @@ class KfactorRunner:
         ) as f:
             ymldb = yaml.safe_load(f)
 
-        self.theory = TheoryCard(cfg, t_card_name)
+        self.theory = TheoryParameters.load_card(cfg, t_card_name, h_id)
 
         # TODO: do we need to support operations between FKtables?
         o_card_name = ymldb["operands"][0][0]
-        self.observables = Observable_card(cfg, o_card_name)
+        self.observables = OperatorParameters.load_card(cfg, o_card_name, pdf_name)
 
         self.pdf_name = pdf_name
         self.use_yadism = use_yadism
@@ -115,24 +41,23 @@ class KfactorRunner:
         yad_pred = output.apply_pdf(lhapdf.mkPDF(self.pdf_name))
         return yad_pred
 
-    def run_dis_tp(self, hid, n_cores):
+    def run_dis_tp(self, n_cores):
         # TODO: how do we treat bottom mass effects in this code?
-        restype = "FONLL"
         runner = Runner(
-            self.observables.dis_tp_like(self.pdf_name, restype),
-            self.theory.dis_tp_like(hid),
+            self.observables,
+            self.theory,
         )
         runner.compute(n_cores)
         return runner.results
 
-    def compute(self, hid, n_cores):
+    def compute(self, n_cores):
         # TODO: cache results somewhere
-        mumerator_log = self.run_dis_tp(hid, n_cores)
+        mumerator_log = self.run_dis_tp(n_cores)
         if self.use_yadism:
             denominator_log = self.run_yadism()
         else:
-            self.theory.t_card["PTO"] -= 1
-            denominator_log = self.run_dis_tp(hid, n_cores)
+            self.theory.order -= 1
+            denominator_log = self.run_dis_tp(n_cores)
         self._results = self._log(mumerator_log, denominator_log, self.use_yadism)
         print(self._results)
 

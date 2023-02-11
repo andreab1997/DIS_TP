@@ -76,7 +76,7 @@ def add_obs_opcard(
 
     cfg = configs.load()
     cfg = configs.defaults(cfg)
-    th_obj = io.load_theory_parameters(cfg, t_card)
+    th_obj = io.TheoryParameters.load_card(cfg, t_card)
     ocard_path = cfg["paths"]["operator_cards"] / (o_card + ".yaml")
     old_ocard = {}
     if ocard_path.is_file():
@@ -160,6 +160,6 @@ def generate_matching_grids(
     USAGE: dis_tp k-factors HERACOMB_SIGMARED_C 400 NNPDF40_nnlo_pch_as_01180 4 "Your Name" [-n 4 -yad -th "Theory Input"]
     """
 
-    obj = k_factors.KfactorRunner(t_card, o_card, pdf, use_yadism)
-    obj.compute(int(h_id), n_cores)
+    obj = k_factors.KfactorRunner(t_card, o_card, pdf, int(h_id), use_yadism)
+    obj.compute(n_cores)
     obj.save_results(author, th_input=th_description)
