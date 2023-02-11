@@ -12,8 +12,7 @@ class TheoryParameters:
         self.order = order
         self.hid = hid
         self.fns = fns
-        # TODO: fix masses
-        self.mass = masses[hid - 4]
+        self.masses = masses
         self.grids = grids
         self._t_card = full_card
 

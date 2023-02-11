@@ -66,7 +66,7 @@ def generate_matching_grids(
             func = mcf.Mbg_3_reg_inv
     path = dest_path / f"M{flavor_entry}_{pto}/M{flavor_entry}{pto}_nf{h_id}.txt"
     Initialize.Initialize_all(h_id)
-    parameters.initialize_theory(use_grids=True, h_id=h_id)
+    parameters.initialize_theory(use_grids=True)
     obj = ReadTxt.Construct_Grid(
         func, h_id=h_id, path=path, grid_type="matching", n_pools=n_cores
     )
@@ -106,7 +106,7 @@ def generate_matching_grids(
 
     path = dest_path / f"C{flavor}_{pto}_til/C{flavor}{pto}til_nf{h_id}.txt"
     Initialize.Initialize_all(h_id)
-    parameters.initialize_theory(use_grids=True, h_id=h_id)
+    parameters.initialize_theory(use_grids=True)
     obj = ReadTxt.Construct_Grid(
         func, h_id=h_id, path=path, grid_type="tilde", n_pools=n_cores
     )

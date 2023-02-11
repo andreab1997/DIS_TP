@@ -111,7 +111,7 @@ class Plot:
         return ordered_result_M
 
     def plot_single_obs(self, obs, order, h_id):
-        parameters.initialize_theory(True, int(h_id), None)
+        parameters.initialize_theory(True)
         mass = parameters.masses(int(h_id))
         ordered_result_FO, x_grid, _q_grid = self.get_FO_result(obs, order, h_id)
         ordered_result_M = self.get_M_results(obs, order, h_id)

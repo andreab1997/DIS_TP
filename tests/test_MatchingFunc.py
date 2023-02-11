@@ -12,7 +12,7 @@ from dis_tp.parameters import charges, default_masses, initialize_theory
 
 h_id = 5
 mhq = default_masses(h_id)
-initialize_theory(use_grids=True, h_id=h_id, mass=mhq)
+initialize_theory(use_grids=True)
 e_h = charges(h_id)
 p = np.array([mhq, e_h])
 Initialize_all(h_id)

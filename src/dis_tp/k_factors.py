@@ -5,6 +5,7 @@ import lhapdf
 import pandas as pd
 import yadism
 import yaml
+import copy
 
 from . import configs
 from .io import OperatorParameters, TheoryParameters
@@ -48,7 +49,7 @@ class KfactorRunner:
             self.theory,
         )
         runner.compute(n_cores)
-        return runner.results
+        return copy.deepcopy(runner.results)
 
     def compute(self, n_cores):
         # TODO: cache results somewhere

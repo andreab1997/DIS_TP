@@ -517,10 +517,8 @@ def F2_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
             result
     """
     mh = masses(h_id)
-    # TODO: here you really need to use 2 different masses
-    # introduce a proper theory card !!!
     # TODO: add a DUMPING option ??
-    mhp1 = default_masses(h_id + 1)
+    mhp1 = masses(h_id + 1)
     if Q < mh:
         return F2_FO(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
     elif Q < mhp1:
