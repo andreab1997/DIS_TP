@@ -117,8 +117,7 @@ class KfactorRunner:
 
     def run_dis_tp(self, hid, n_cores):
         # TODO: how do we treat bottom mass effects in this code?
-        # TODO: here we need to run FO and M type
-        restype = "M"
+        restype = "FONLL"
         runner = Runner(
             self.observables.dis_tp_like(self.pdf_name, restype),
             self.theory.dis_tp_like(hid),

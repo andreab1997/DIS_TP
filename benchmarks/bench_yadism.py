@@ -146,7 +146,7 @@ def benchmarkF_M_bottom(pto, pdf_name):
 
 def benchmarkFO_bottom(pto, pdf_name):
     obs_names = [f"F2_bottom", f"FL_bottom"]  # , f"XSHERANCAVG_{flavor}"]
-    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=4.5, restype="FO")
+    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=6, q_fixed=4.5, restype="FO")
     th_obj = TheoryCard(pto, hid=5)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
@@ -160,23 +160,34 @@ def benchmarkF_M_charm(pto, pdf_name):
 
 
 def benchmarkFO_charm(pto, pdf_name):
-    obs_names = ["XSHERANCAVG_charm"] # [f"F2_charm", f"FL_charm"]
+    obs_names = [f"F2_charm", f"FL_charm"] # ["XSHERANCAVG_charm"]
     obs_obj = Observable_card(
-        obs_names, q_min=1.2, q_max=1.5, q_fixed=1.4, restype="FO"
+        obs_names, q_min=1, q_max=1.6, q_fixed=1.4, restype="FO"
     )
     th_obj = TheoryCard(pto, hid=4)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
-def benchmarkF_light(pto, pdf_name):
-    obs_names = ["F2_light", "FL_light"]
+
+def benchmarkFONLL(pto, pdf_name, heavyness):
+    obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"]
+    hid = 4 if heavyness=="charm" else 5
+    q_fixed= 10 if heavyness=="charm" else 30
     obs_obj = Observable_card(
-        obs_names, q_min=1.5, q_max=5, q_fixed=3, restype="light"
+        obs_names, q_min=1, q_max=100, q_fixed=q_fixed, restype="FONLL"
+    )
+    th_obj = TheoryCard(pto, hid=hid)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
+
+def benchmarkF(pto, pdf_name, heavyness):
+    obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"]
+    obs_obj = Observable_card(
+        obs_names, q_min=1.5, q_max=100, q_fixed=10, restype=heavyness
     )
     th_obj = TheoryCard(pto, hid=4)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
-
 
 if __name__ == "__main__":
 
@@ -184,6 +195,6 @@ if __name__ == "__main__":
     # obj = benchmarkF_M_bottom(pto=2, pdf_name=pdf_name)
     # obj = benchmarkFO_bottom(pto=1, pdf_name=pdf_name)
 
-    # obj = benchmarkF_M_charm(pto=2, pdf_name=pdf_name)
-    # obj = benchmarkFO_charm(pto=2, pdf_name=pdf_name)
-    benchmarkF_light(pto=3, pdf_name=pdf_name)
+    # obj = benchmarkF_M_charm(pto=1, pdf_name=pdf_name)
+    # obj = benchmarkFO_charm(pto=1, pdf_name=pdf_name)
+    benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="bottom")

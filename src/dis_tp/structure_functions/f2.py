@@ -3,16 +3,21 @@ import lhapdf
 import numpy as np
 
 from .. import MassiveCoeffFunc, MasslessCoeffFunc, TildeCoeffFunc
-from ..parameters import (charges, masses, number_active_flavors,
-                          number_light_flavors, pids)
+from ..parameters import (
+    charges,
+    masses,
+    number_active_flavors,
+    number_light_flavors,
+    pids,
+    default_masses,
+)
 from ..tools import PDFConvolute, PDFConvolute_plus
-from .tools import (PDFConvolute_light, PDFConvolute_light_plus, mkPDF,
-                    non_singlet_pdf)
+from .tools import PDFConvolute_light, PDFConvolute_light_plus, mkPDF, non_singlet_pdf
 
 g_id = pids["g"]
 
 
-def F2_FO(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
+def F2_FO(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
     """
     Compute the FO result for the structure function F2
 
@@ -60,7 +65,7 @@ def F2_FO(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
     return res
 
 
-def F2_R(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
+def F2_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
     """
     Compute the R result for the structure function F2
 
@@ -166,7 +171,7 @@ def F2_R(order, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
     return res
 
 
-def F2_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
+def F2_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
     """
     Compute the M result for the structure function F2
 
@@ -361,7 +366,7 @@ def F2_M(order, meth, pdf, x, Q, h_id, muF_ratio=1, muR_ratio=1):
     return res
 
 
-def F2_Light(order, pdf, x, Q, h_id, muR_ratio=1):
+def F2_Light(order, pdf, x, Q, h_id, meth=None, muR_ratio=1):
     """
     Compute the light contribution for the structure function F2
 
@@ -382,10 +387,7 @@ def F2_Light(order, pdf, x, Q, h_id, muR_ratio=1):
             : float
             result
     """
-    if isinstance(pdf, list):
-        Mypdf = lhapdf.mkPDF(pdf[order - 1], 0)
-    elif isinstance(pdf, str):
-        Mypdf = lhapdf.mkPDF(pdf, 0)
+    Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
     # TODO: here we fake charge of 1 and add it later...
     # the proper fix would be to remove it from the cf definition
@@ -430,3 +432,134 @@ def F2_Light(order, pdf, x, Q, h_id, muR_ratio=1):
         sing = PDFConvolute_light_plus(MasslessCoeffFunc.Cb_3_sing, Mypdf, x, Q, p, nl)
         res += alphas**3 * (reg + loc + sing)
     return res
+
+
+def F2_ZM(order, pdf, x, Q, h_id, meth=None, muR_ratio=1):
+    """
+    Compute the ZM heavy contribution to structure function F2
+
+    Parameters:
+        order : int
+            requested perturbative order (0 == LO, 1 == NLO,...)
+        pdf : str or list(str)
+            pdf(s) to be used
+        x : float
+            x-value
+        Q : float
+            Q-value
+        h_id : int
+            heavy quark id
+        muR_ratio : float
+            ratio to Q of the renormalization scale
+    Returns:
+            : float
+            result
+    """
+    Mypdf = mkPDF(pdf, order)
+    muR = muR_ratio * Q
+    nl = 1
+    p = [masses(h_id), Q, charges(h_id)]
+    alphas = 1 / (4 * np.pi) * Mypdf.alphasQ(muR)
+    pdfxfx = Mypdf.xfxQ2(h_id, x, Q**2) + Mypdf.xfxQ2(-h_id, x, Q**2)
+    if order >= 0:
+        res = MasslessCoeffFunc.Cb_0_loc(x, Q, p, nl) * pdfxfx
+    if order >= 1:
+        reg = PDFConvolute(
+            MasslessCoeffFunc.Cb_1_reg, Mypdf, x, Q, p, nl, h_id
+        ) + PDFConvolute(MasslessCoeffFunc.Cg_1_reg, Mypdf, x, Q, p, nl, g_id)
+        loc = MasslessCoeffFunc.Cb_1_loc(x, Q, p, nl) * pdfxfx
+        sing = PDFConvolute_plus(MasslessCoeffFunc.Cb_1_sing, Mypdf, x, Q, p, nl, h_id)
+        res += alphas * (reg + loc + sing)
+    if order >= 2:
+        reg = (
+            PDFConvolute(MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nl, h_id)
+            + PDFConvolute(MasslessCoeffFunc.Cg_2_reg, Mypdf, x, Q, p, nl, g_id)
+            + PDFConvolute(MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nl, h_id)
+        )
+        loc = MasslessCoeffFunc.Cb_2_loc(x, Q, p, nl) * pdfxfx
+        sing = PDFConvolute_plus(MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nl, h_id)
+        res += alphas**2 * (reg + loc + sing)
+    if order >= 3:
+        reg = (
+            PDFConvolute(MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, p, nl, h_id)
+            + PDFConvolute(MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, p, nl, g_id)
+            + PDFConvolute(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl, h_id)
+        )
+        loc = (
+            MasslessCoeffFunc.Cb_3_loc(x, Q, p, nl) * pdfxfx
+            + MasslessCoeffFunc.Cg_3_loc(x, Q, p, nl) * Mypdf.xfxQ2(g_id, x, Q**2)
+            + MasslessCoeffFunc.Cq_3_loc(x, Q, p, nl) * pdfxfx
+        )
+        sing = PDFConvolute_plus(MasslessCoeffFunc.Cb_3_sing, Mypdf, x, Q, p, nl, h_id)
+        res += alphas**3 * (reg + loc + sing)
+    return res
+
+
+def F2_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
+    """
+    Compute the Yadism like FONLL structure function F2
+
+    Parameters:
+        order : int
+            requested perturbative order (0 == LO, 1 == NLO,...)
+        pdf : str or list(str)
+            pdf(s) to be used
+        x : float
+            x-value
+        Q : float
+            Q-value
+        h_id : int
+            heavy quark id
+        muR_ratio : float
+            ratio to Q of the renormalization scale
+    Returns:
+            : float
+            result
+    """
+    mh = masses(h_id)
+    # TODO: here you really need to use 2 different masses
+    # introduce a proper theory card !!!
+    # TODO: add a DUMPING option ??
+    mhp1 = default_masses(h_id + 1)
+    if Q < mh:
+        return F2_FO(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
+    elif Q < mhp1:
+        return F2_M(order, pdf, x, Q, h_id, meth, muR_ratio=muR_ratio)
+    elif Q >= mhp1:
+        return F2_ZM(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
+
+
+# def F2_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
+#     """
+#     Compute the total contribution for the structure function F2.
+
+#     Parameters:
+#         order : int
+#             requested perturbative order (0 == LO, 1 == NLO,...)
+#         meth : str
+#             method to be used (our, fonll)
+#         pdf : str or list(str)
+#             pdf(s) to be used
+#         x : float
+#             x-value
+#         Q : float
+#             Q-value
+#         h_id : int
+#             heavy quark id
+#         muR_ratio : float
+#             ratio to Q of the renormalization scale
+#     Returns:
+#         : float
+#             result
+#     """
+#     # TODO: here we need to add the flavor consistently
+#     if h_id == 4:
+#         return F2_Light(order, pdf, x, Q, h_id, muR_ratio) + F2_M(
+#             order, meth, pdf, x, Q, h_id, muR_ratio=muR_ratio
+#         )
+#     elif h_id == 5:
+#         return (
+#             F2_Light(order, pdf, x, Q, 3, muR_ratio)
+#             + F2_M(order, meth, pdf, x, Q, 4, muR_ratio=muR_ratio)
+#             + F2_M(order, meth, pdf, x, Q, h_id, muR_ratio=muR_ratio)
+#         )

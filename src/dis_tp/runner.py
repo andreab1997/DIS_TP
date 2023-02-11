@@ -9,10 +9,25 @@ from .structure_functions import f2, fl
 from . import configs, io
 from .parameters import initialize_theory, number_active_flavors
 
+# TODO: drop this mass ordering mapping which is useless
 maporders = {"LO": 0, "NLO": 1, "NNLO": 2, "N3LO": 3}
 mapfunc = {
-    "F2": {"R": [f2.F2_R], "M": [f2.F2_M], "FO": [f2.F2_FO], "light": [f2.F2_Light]},
-    "FL": {"R": [fl.FL_R], "M": [fl.FL_M], "FO": [fl.FL_FO], "light": [fl.FL_Light]},
+    "F2": {
+        "R": [f2.F2_R],
+        "M": [f2.F2_M],
+        "FO": [f2.F2_FO],
+        "light": [f2.F2_Light],
+        "total": [f2.F2_Total],
+        "FONLL": [f2.F2_FONLL],
+    },
+    "FL": {
+        "R": [fl.FL_R],
+        "M": [fl.FL_M],
+        "FO": [fl.FL_FO],
+        "light": [fl.FL_Light],
+        "total": [fl.FL_Total],
+        "FONLL": [fl.FL_FONLL],
+    },
     "XSHERANCAVG": {
         "R": [f2.F2_R, fl.FL_R],
         "M": [f2.F2_M, fl.FL_M],
@@ -55,6 +70,18 @@ class Runner:
 
     def compute(self, n_cores):
         order = maporders[self.t_par.order]
+
+        # TODO: switch the order of these loops
+        # 1) loop in kinematics
+        # 2) Initialize that patch
+        # 3) loop on observables
+
+        # or:
+        # 1) loop on observable
+        # 2) split the kinnematics in pathces
+        # 3) initialize
+        # 4) loop on kinematics
+
         # loop on observables
         for ob in self.o_par.obs:
             func_to_call = mapfunc[ob.name][ob.restype]
@@ -62,22 +89,13 @@ class Runner:
 
             # loop on SF
             for func in func_to_call:
-                # TODO: eliminate this if
-                if func in [f2.F2_M, fl.FL_M]:
-                    self.partial_sf = functools.partial(
-                        func,
-                        order=order,
-                        meth=self.t_par.fns,
-                        pdf=ob.pdf,
-                        h_id=self.t_par.hid,
-                    )
-                else:
-                    self.partial_sf = functools.partial(
-                        func,
-                        order=maporders[self.t_par.order],
-                        pdf=ob.pdf,
-                        h_id=self.t_par.hid,
-                    )
+                self.partial_sf = functools.partial(
+                    func,
+                    order=order,
+                    meth=self.t_par.fns,
+                    pdf=ob.pdf,
+                    h_id=self.t_par.hid,
+                )
                 print(f"Start computation of {func.__name__} ...")
                 args = (self.compute_sf, zip(ob.x_grid, ob.q_grid))
                 if n_cores == 1:
