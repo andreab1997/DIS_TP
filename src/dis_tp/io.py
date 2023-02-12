@@ -8,9 +8,9 @@ from . import parameters
 class TheoryParameters:
     """Class containing all the theory parameters."""
 
-    def __init__(self, order, hid, fns, masses, grids, full_card=None):
+    def __init__(self, order, NfFF, fns, masses, grids, full_card=None):
         self.order = order
-        self.hid = hid
+        self.NfFF = NfFF
         self.fns = fns
         self.masses = masses
         self.grids = grids
@@ -20,7 +20,7 @@ class TheoryParameters:
         return self._t_card
 
     @classmethod
-    def load_card(cls, configs, name, hid):
+    def load_card(cls, configs, name):
         """Return a TheoryParameters object."""
         if isinstance(name, str):
             with open(
@@ -39,13 +39,14 @@ class TheoryParameters:
             th["IC"] = 0
 
         # compatibility layer
+        # PTO
         if "order" in th:
             order = th["order"]
         else:
             order = th["PTO"]
 
-        if "hid" in th:
-            hid = th["hid"]
+        # number of light flavor + 1 for F_light only
+        NfFF = th["NfFF"]
 
         fns = th.get("fns", "fonll")
         grids = th.get("grids", True)
@@ -56,17 +57,18 @@ class TheoryParameters:
         # TODO: add here also some settings for alpha_s
 
         return cls(
-            order=order, hid=hid, fns=fns, grids=grids, masses=masses, full_card=th
+            order=order, NfFF=NfFF, fns=fns, grids=grids, masses=masses, full_card=th
         )
 
 
 class Observable:
     """Class describing observable settings"""
 
-    def __init__(self, name, pdf, restype, kinematics):
+    def __init__(self, name, heaviness, pdf, restype, kinematics):
         self.name = name
         self.pdf = pdf
         self.restype = restype
+        self.heaviness = heaviness
         self.kinematics = pd.DataFrame(kinematics)
 
     @property
@@ -139,7 +141,8 @@ class OperatorParameters:
             for ob in obs["obs"]:
                 observables.append(
                     Observable(
-                        name=ob,
+                        name=ob.split("_")[0],
+                        heaviness=ob.split("_")[1],
                         pdf=obs["obs"][ob]["PDF"],
                         restype=obs["obs"][ob]["restype"],
                         kinematics=obs["obs"][ob]["kinematics"],
@@ -152,14 +155,12 @@ class OperatorParameters:
                     {"x": point["x"], "q": np.sqrt(point["Q2"]), "y": point["y"]}
                     for point in kins
                 ]
-                # TODO: here you are introducing an inconsistency.
-                # Heaviness and fns should not coincide ...
-                restype = fx.split("_")[1]
-                if restype in ["charm", "bottom"]:
-                    restype = "FONLL"
+                # TODO: alllow other restype??
+                restype = "FONLL"
                 observables.append(
                     Observable(
                         name=fx.split("_")[0],
+                        heaviness=fx.split("_")[1],
                         pdf=pdf_name,
                         restype=restype,
                         kinematics=new_kins,
@@ -197,8 +198,6 @@ class RunParameters:
             + ob.restype
             + "_"
             + str(self.theory_parameters().order)
-            + "_"
-            + str(self.theory_parameters().hid)
             + "_"
             + str(ob.pdf)
         )

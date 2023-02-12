@@ -9,8 +9,9 @@ from .base import command
 from .grids import n_cores
 
 
-def provide_default_kinematics(h_id):
+def provide_default_kinematics(obs):
     """Provide default kinematics for an observable."""
+    h_id = 4 if "charm" in obs else 5
     mass = parameters.masses(h_id)
     Qlogmin = np.log10(1.0)
     Qlogmax = np.log10(150.0)
@@ -84,7 +85,7 @@ def add_obs_opcard(
             cfg["paths"]["operator_cards"] / (o_card + ".yaml"), encoding="utf-8"
         ) as f:
             old_ocard = yaml.safe_load(f)
-    kinematics = provide_default_kinematics(th_obj.hid)
+    kinematics = provide_default_kinematics(obs)
     to_update = {
         "obs": {
             obs: dict(
@@ -122,7 +123,6 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str):
 @o_card
 @t_card
 @pdf
-@h_id
 @n_cores
 @click.argument(
     "author",
@@ -149,7 +149,6 @@ def generate_matching_grids(
     o_card: str,
     t_card: str,
     pdf: str,
-    h_id: int,
     author: str,
     n_cores: int,
     use_yadism: bool,
@@ -157,9 +156,9 @@ def generate_matching_grids(
 ):
     """Generate k-factors.
 
-    USAGE: dis_tp k-factors HERACOMB_SIGMARED_C 400 NNPDF40_nnlo_pch_as_01180 4 "Your Name" [-n 4 -yad -th "Theory Input"]
+    USAGE: dis_tp k-factors HERACOMB_SIGMARED_C 400 NNPDF40_nnlo_pch_as_01180 "Your Name" [-n 4 -yad -th "Theory Input"]
     """
 
-    obj = k_factors.KfactorRunner(t_card, o_card, pdf, int(h_id), use_yadism)
+    obj = k_factors.KfactorRunner(t_card, o_card, pdf, use_yadism)
     obj.compute(n_cores)
     obj.save_results(author, th_input=th_description)

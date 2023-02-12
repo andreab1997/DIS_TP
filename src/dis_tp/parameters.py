@@ -9,8 +9,8 @@ def number_active_flavors(h_id):
     return np.abs(h_id)
 
 
-def number_light_flavors(h_id):
-    return np.abs(h_id) - 1
+def number_light_flavors(NfFF):
+    return np.abs(NfFF) - 1
 
 
 def charges(h_id):

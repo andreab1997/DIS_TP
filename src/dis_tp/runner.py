@@ -36,6 +36,18 @@ mapfunc = {
     },
 }
 
+def heaviness_to_nf(heaviness, NfFF=None):
+    if heaviness == "light" and NfFF is None:
+        raise ValueError(f"Number of fixed flavor (NfFF = nl + 1) must be specified in runcard.")
+    map_heaviness = {
+        "charm": 4,
+        "bottom": 5,
+        "light": NfFF,
+        "total": None
+    }
+    return map_heaviness[heaviness]
+
+
 # TODO: rename External to be grids
 class Runner:
     def __init__(self, o_card, t_card) -> None:
@@ -55,11 +67,7 @@ class Runner:
         self.o_par = self.runparameters.operator_parameters()
         self.t_par = self.runparameters.theory_parameters()
 
-        # Initializing
-        hid = self.t_par.hid
-        nf = number_active_flavors(hid)
         initialize_theory(th_obj.grids, th_obj.masses)
-        Ini.Initialize_all(nf)
         self.partial_sf = None
 
     @staticmethod
@@ -76,19 +84,15 @@ class Runner:
         return float(self.partial_sf(x=x, Q=q))
 
     def compute(self, n_cores):
-        # TODO: switch the order of these loops
-        # 1) loop in kinematics
-        # 2) Initialize that patch
-        # 3) loop on observables
-
-        # or:
-        # 1) loop on observable
-        # 2) split the kinnematics in pathces
-        # 3) initialize
-        # 4) loop on kinematics
 
         # loop on observables
         for ob in self.o_par.obs:
+
+            hid = heaviness_to_nf(ob.heaviness, self.t_par.NfFF)
+            nf = number_active_flavors(hid)
+            Ini.Initialize_all(nf)
+
+
             func_to_call = mapfunc[ob.name][ob.restype]
             thisob_res = []
 
@@ -99,7 +103,7 @@ class Runner:
                     order=self.t_par.order,
                     meth=self.t_par.fns,
                     pdf=ob.pdf,
-                    h_id=self.t_par.hid,
+                    h_id=nf,
                 )
                 print(f"Start computation of {func.__name__} @ order: {self.t_par.order} ...")
                 args = (self.compute_sf, zip(ob.x_grid, ob.q_grid))

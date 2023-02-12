@@ -13,7 +13,7 @@ from .runner import Runner
 
 
 class KfactorRunner:
-    def __init__(self, t_card_name, dataset_name, pdf_name, h_id, use_yadism):
+    def __init__(self, t_card_name, dataset_name, pdf_name, use_yadism):
         cfg = configs.load()
         cfg = configs.defaults(cfg)
 
@@ -23,7 +23,7 @@ class KfactorRunner:
         ) as f:
             ymldb = yaml.safe_load(f)
 
-        self.theory = TheoryParameters.load_card(cfg, t_card_name, h_id)
+        self.theory = TheoryParameters.load_card(cfg, t_card_name)
 
         # TODO: do we need to support operations between FKtables?
         o_card_name = ymldb["operands"][0][0]
