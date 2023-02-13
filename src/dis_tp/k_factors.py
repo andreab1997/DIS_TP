@@ -98,33 +98,44 @@ class KfactorRunner:
 
         self.theory = TheoryCard(cfg, t_card_name)
 
-        # TODO: do we need to support operations between FKtables?
-        o_card_name = ymldb["operands"][0][0]
-        self.observables = Observable_card(cfg, o_card_name)
+        o_card_names = ymldb["operands"]
+        self.observables = []
+        for ocard_list in o_card_names:
+            for o_card_name in ocard_list:
+                self.observables.append(Observable_card(cfg, o_card_name))
 
         self.pdf_name = pdf_name
         self.use_yadism = use_yadism
         self.result_path = cfg["paths"]["results"]
         self.dataset_name = ymldb["target_dataset"]
+        self.operation = ymldb["operation"]
+        # self.conversion_factor = ymldb["conversion_factor"]
         self._results = None
 
     def run_yadism(self):
-        output = yadism.run_yadism(
-            self.theory.yadism_like(), self.observables.yadism_like()
-        )
-        yad_pred = output.apply_pdf(lhapdf.mkPDF(self.pdf_name))
+        yad_pred = {}
+        for observable in self.observables:
+            output = yadism.run_yadism(
+                self.theory.yadism_like(), observable.yadism_like()
+            )
+            yad_pred[observable.dataset_name] = output.apply_pdf(
+                lhapdf.mkPDF(self.pdf_name)
+            )
         return yad_pred
 
     def run_dis_tp(self, hid, n_cores):
         # TODO: how do we treat bottom mass effects in this code?
         # TODO: here we need to run FO and M type
         restype = "M"
-        runner = Runner(
-            self.observables.dis_tp_like(self.pdf_name, restype),
-            self.theory.dis_tp_like(hid),
-        )
-        runner.compute(n_cores)
-        return runner.results
+        distp_pred = {}
+        for observable in self.observables:
+            runner = Runner(
+                observable.dis_tp_like(self.pdf_name, restype),
+                self.theory.dis_tp_like(hid),
+            )
+            runner.compute(n_cores)
+            distp_pred[observable.dataset_name] = runner.results
+        return distp_pred
 
     def compute(self, hid, n_cores):
         # TODO: cache results somewhere
@@ -134,35 +145,71 @@ class KfactorRunner:
         else:
             self.theory.t_card["PTO"] -= 1
             denominator_log = self.run_dis_tp(hid, n_cores)
-        self._results = self._log(mumerator_log, denominator_log, self.use_yadism)
+
+        logs_df = self._log(mumerator_log, denominator_log, self.use_yadism)
+        self._results = self.build_kfactor(logs_df)
         print(self._results)
 
     @staticmethod
     def _log(mumerator_log, denominator_log, use_yadism):
-        for obs in denominator_log:
-            my_obs = obs.split("_")[0]
-            if use_yadism:
-                den_df = pd.DataFrame(denominator_log[obs]).rename(
-                    columns={"result": "yadism"}
+        logs_df = {}
+        # loop on operands
+        for (num_name, num), (den_name, den) in zip(
+            mumerator_log.items(), denominator_log.items()
+        ):
+
+            if num_name != den_name:
+                raise ValueError(
+                    "Numerator dataset name do not coincide with denominator."
                 )
-                num_df = mumerator_log[my_obs].rename(columns={"result": "dis_tp"})
-            else:
-                den_df = denominator_log[my_obs].rename(columns={"result": "NNLO"})
-                num_df = mumerator_log[my_obs].rename(columns={"result": "N3LO"})
-            log_df = pd.concat([den_df, num_df], axis=1).T.drop_duplicates().T
 
-            # construct some nice log table
-            log_df.drop("y", axis=1, inplace=True)
-            if use_yadism:
-                log_df.drop("q", axis=1, inplace=True)
-                log_df.drop("error", axis=1, inplace=True)
-                log_df["k-factor"] = log_df.dis_tp / log_df.yadism
-            else:
-                log_df["Q2"] = log_df.q**2
-                log_df.drop("q", axis=1, inplace=True)
-                log_df["k-factor"] = log_df.N3LO / log_df.NNLO
+            # loop on SF
+            for obs in den:
+                my_obs = obs.split("_")[0]
+                if use_yadism:
+                    den_df = pd.DataFrame(den[obs]).rename(columns={"result": "yadism"})
+                    num_df = num[my_obs].rename(columns={"result": "dis_tp"})
+                else:
+                    den_df = den[my_obs].rename(columns={"result": "NNLO"})
+                    num_df = num[my_obs].rename(columns={"result": "N3LO"})
+                log_df = pd.concat([den_df, num_df], axis=1).T.drop_duplicates().T
 
-        return log_df
+                # construct some nice log table
+                log_df.drop("y", axis=1, inplace=True)
+                if use_yadism:
+                    log_df.drop("q", axis=1, inplace=True)
+                    log_df.drop("error", axis=1, inplace=True)
+                    # log_df["k-factor"] = log_df.dis_tp / log_df.yadism
+                else:
+                    log_df["Q2"] = log_df.q**2
+                    log_df.drop("q", axis=1, inplace=True)
+                    # log_df["k-factor"] = log_df.N3LO / log_df.NNLO
+            logs_df[num_name] = logs_df
+
+        return logs_df
+
+    def build_kfactor(self, logs_df):
+
+        if self.operation is None:
+            for log_df in logs_df.values():
+                if self.use_yadism:
+                    log_df["k-factor"] = log_df.dis_tp / log_df.yadism
+                else:
+                    log_df["k-factor"] = log_df.N3LO / log_df.NNLO
+
+        elif self.operation == "RATIO":
+            data1, data2 = (*logs_df,)
+            if self.use_yadism:
+                log_df["k-factor"] = (logs_df[data1].dis_tp / logs_df[data2].dis_tp) / (
+                    logs_df[data1].yadism / logs_df[data2].yadism
+                )
+            else:
+                log_df["k-factor"] = (logs_df[data1].N3LO / logs_df[data2].N3LO) / (
+                    logs_df[data1].NNLO / logs_df[data2].NNLO
+                )
+        else:
+            raise ValueError(f"Operation {self.operation} no implemented")
+        return logs_df
 
     def save_results(self, author, th_input):
 
