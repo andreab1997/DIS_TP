@@ -94,7 +94,9 @@ class Runner:
 
             hid = heaviness_to_nf(ob.heaviness)
             nf = number_active_flavors(hid)
-            Ini.Initialize_all(nf)
+
+            if ob.heaviness != "light":
+                Ini.Initialize_all(nf)
 
             func_to_call = mapfunc[ob.name][ob.restype]
             thisob_res = []

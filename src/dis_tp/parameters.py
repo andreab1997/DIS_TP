@@ -12,11 +12,10 @@ def number_active_flavors(h_id):
 
 
 def number_light_flavors(Q):
-    """This should match the FONLL procedure."""
-    # TODO: light seems to be a bit mismatched above mb...
+    """This should match the FONLL prescription."""
     nf = 3
     if Q > _masses[1]:
-        nf += 2
+        nf += 1
     if Q > _masses[2]:
         nf += 1
     return nf

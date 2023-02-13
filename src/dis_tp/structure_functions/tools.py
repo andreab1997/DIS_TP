@@ -18,9 +18,9 @@ def mkPDF(pdf_name, order):
 def non_singlet_pdf(pdf, x, Q, nf):
     """Return the `NonSinglet` flavor combination"""
     light_f = [1, 2, 3]
-    if nf > 4:
+    if nf >= 4:
         light_f.append(4)
-    if nf > 5:
+    if nf >= 5:
         light_f.append(5)
     return np.sum(
         [

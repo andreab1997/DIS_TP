@@ -329,7 +329,8 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
             MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nl
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.Cg_2_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute(MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nl)
+            # NOTE: there is a different convention of light in PDFConvolute
+            + PDFConvolute(MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nl+1)
         )
         loc = MasslessCoeffFunc.Cb_2_loc(x, Q, p, nl) * non_singlet_pdf(Mypdf, x, Q, nl)
         sing = PDFConvolute_light_plus(MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nl)
@@ -339,7 +340,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
             MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, p, nl
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl)
+            + PDFConvolute(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl+1)
         )
         loc = MasslessCoeffFunc.Cb_3_loc(x, Q, p, nl) * non_singlet_pdf(
             Mypdf, x, Q, nl
@@ -435,7 +436,7 @@ def F2_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
             result
     """
     mh = masses(h_id)
-    # TODO: add a DUMPING option ??
+    # TODO: add a dumping option ??
     mhp1 = masses(h_id + 1)
     if Q < mh:
         return F2_FO(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
