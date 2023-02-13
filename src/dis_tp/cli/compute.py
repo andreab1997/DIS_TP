@@ -145,7 +145,7 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str):
     required=False,
     help="TheoryInput to be stored in the CF file",
 )
-def generate_matching_grids(
+def generate_kfactors(
     o_card: str,
     t_card: str,
     pdf: str,
