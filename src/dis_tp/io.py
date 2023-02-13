@@ -38,6 +38,12 @@ class TheoryParameters:
         if "IC" in th and th["IC"] == 1:
             print("Warning, disable Intrinsic Charm, IC=0")
             th["IC"] = 0
+        if "FactScaleVar" in th and th["FactScaleVar"]:
+            print("Warning, disable Factorization Scale Variation, FactScaleVar=0")
+            th["FactScaleVar"] = False
+        if "RenScaleVar" in th and th["RenScaleVar"]:
+            print("Warning, disable Renormalization Scale Variation, RenScaleVar=0")
+            th["RenScaleVar"] = False
 
         # compatibility layer
         # PTO
@@ -59,7 +65,7 @@ class TheoryParameters:
             couplings_ref=np.array(
                 [th.get("alpahs", 0.118), th.get("alphaqed", 0.007496252)]
             ),
-            scale_ref=th.get("Qref", 91.2**2),
+            scale_ref=th.get("Qref", 91.2) ** 2,
             masses=np.array(masses) ** 2,
             thresholds_ratios=[1, 1, 1],
             order=(order + 1, 0),
@@ -76,11 +82,11 @@ class TheoryParameters:
 class Observable:
     """Class describing observable settings"""
 
-    def __init__(self, name, heaviness, pdf, restype, kinematics):
+    def __init__(self, name, heavyness, pdf, restype, kinematics):
         self.name = name
         self.pdf = pdf
         self.restype = restype
-        self.heaviness = heaviness
+        self.heavyness = heavyness
         self.kinematics = pd.DataFrame(kinematics)
 
     @property
@@ -107,22 +113,6 @@ class OperatorParameters:
     def yadism_like(self):
         return self._o_card
 
-    # def dis_tp_like(self, pdf_name, restype):
-    #     new_o_card = {}
-    #     new_o_card["obs"] = {}
-    #     for fx, kins in self.o_card["observables"].items():
-    #         new_kins = [
-    #             {"x": point["x"], "q": np.sqrt(point["Q2"]), "y": point["y"]}
-    #             for point in kins
-    #         ]
-    #         new_o_card["obs"][fx.split("_")[0]] = {
-    #             "PDF": pdf_name,
-    #             "restype": restype,
-    #             "scalevar": False,
-    #             "kinematics": new_kins,
-    #         }
-    #     return new_o_card
-
     @classmethod
     def load_card(cls, configs, name, pdf_name=None):
         """Return a OperatorParameters object."""
@@ -137,13 +127,12 @@ class OperatorParameters:
         # Disables some NNPDF settings
         if "prDIS" in obs and obs["prDIS"] != "EM":
             print("Warning, setting prDIS = EM")
+            obs["prDIS"] = "EM"
         if "ProjectileDIS" in obs and obs["ProjectileDIS"] not in [
             "electron",
             "positron",
         ]:
             print("Warning, setting ProjectileDIS = electron")
-        if "TargetDIS" in obs and obs["TargetDIS"] != "proton":
-            print("Warning, setting TargetDIS = proton")
             obs["TargetDIS"] = "proton"
 
         # DIS_TP runcards
@@ -154,15 +143,15 @@ class OperatorParameters:
 
                 # TODO: light and total are always in FONLL mode
                 # here heavyness and resytpe are not yet disentangled
-                heaviness = ob.split("_")[1]
+                heavyness = ob.split("_")[1]
                 restype = obs["obs"][ob]["restype"]
-                if heaviness in ["light", "total"]:
-                    restype = heaviness
+                if heavyness in ["light", "total"]:
+                    restype = heavyness
 
                 observables.append(
                     Observable(
                         name=ob.split("_")[0],
-                        heaviness=heaviness,
+                        heavyness=heavyness,
                         pdf=obs["obs"][ob]["PDF"],
                         restype=restype,
                         kinematics=obs["obs"][ob]["kinematics"],
@@ -178,14 +167,14 @@ class OperatorParameters:
 
                 # whenever you are running a Kfact only FONLL is allowed
                 restype = "FONLL"
-                heaviness = ob.split("_")[1]
-                if heaviness in ["light", "total"]:
-                    restype = heaviness
+                heavyness = fx.split("_")[1]
+                if heavyness in ["light", "total"]:
+                    restype = heavyness
 
                 observables.append(
                     Observable(
                         name=fx.split("_")[0],
-                        heaviness=fx.split("_")[1],
+                        heavyness=fx.split("_")[1],
                         pdf=pdf_name,
                         restype=restype,
                         kinematics=new_kins,

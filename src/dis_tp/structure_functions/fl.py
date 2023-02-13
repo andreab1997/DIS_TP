@@ -11,7 +11,12 @@ from ..parameters import (
     alpha_s,
 )
 from ..tools import PDFConvolute
-from .tools import PDFConvolute_light, PDFConvolute_light_singlet, mkPDF, non_singlet_pdf
+from .tools import (
+    PDFConvolute_light,
+    PDFConvolute_light_singlet,
+    mkPDF,
+    non_singlet_pdf,
+)
 
 g_id = pids["g"]
 
@@ -262,7 +267,9 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
             MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nl
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.CLg_2_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute_light_singlet(MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl)
+            + PDFConvolute_light_singlet(
+                MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl
+            )
         )
         loc = MasslessCoeffFunc.CLb_2_loc(x, Q, p, nl) * non_singlet_pdf(
             Mypdf, x, Q, nl
@@ -273,7 +280,9 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
             MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, p, nl
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.CLg_3_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute_light_singlet(MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl)
+            + PDFConvolute_light_singlet(
+                MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl
+            )
         )
         loc = MasslessCoeffFunc.CLb_3_loc(x, Q, p, nl) * non_singlet_pdf(
             Mypdf, x, Q, nl

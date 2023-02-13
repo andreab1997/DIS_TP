@@ -11,7 +11,13 @@ from ..parameters import (
     alpha_s,
 )
 from ..tools import PDFConvolute, PDFConvolute_plus
-from .tools import PDFConvolute_light, PDFConvolute_light_plus, mkPDF, PDFConvolute_light_singlet, non_singlet_pdf
+from .tools import (
+    PDFConvolute_light,
+    PDFConvolute_light_plus,
+    mkPDF,
+    PDFConvolute_light_singlet,
+    non_singlet_pdf,
+)
 
 g_id = pids["g"]
 

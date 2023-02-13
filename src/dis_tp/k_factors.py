@@ -6,10 +6,14 @@ import pandas as pd
 import yadism
 import yaml
 import copy
+from rich.console import Console
 
 from . import configs
 from .io import OperatorParameters, TheoryParameters
 from .runner import Runner
+from .logging import df_to_table
+
+console = Console()
 
 
 class KfactorRunner:
@@ -57,7 +61,7 @@ class KfactorRunner:
         distp_pred = {}
         for observable in self.observables:
             runner = Runner(
-                self.observables,
+                observable,
                 self.theory,
             )
             runner.compute(n_cores)
@@ -74,7 +78,7 @@ class KfactorRunner:
             denominator_log = self.run_dis_tp(n_cores)
         logs_df = self._log(mumerator_log, denominator_log, self.use_yadism)
         self._results = self.build_kfactor(logs_df)
-        print(self._results)
+        console.log(df_to_table(self._results, self.dataset_name))
 
     @staticmethod
     def _log(mumerator_log, denominator_log, use_yadism):
@@ -105,11 +109,9 @@ class KfactorRunner:
                 if use_yadism:
                     log_df.drop("q", axis=1, inplace=True)
                     log_df.drop("error", axis=1, inplace=True)
-                    # log_df["k-factor"] = log_df.dis_tp / log_df.yadism
                 else:
                     log_df["Q2"] = log_df.q**2
                     log_df.drop("q", axis=1, inplace=True)
-                    # log_df["k-factor"] = log_df.N3LO / log_df.NNLO
             logs_df[num_name] = log_df
 
         return logs_df

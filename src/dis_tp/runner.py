@@ -47,9 +47,9 @@ mapfunc = {
 }
 
 
-def heaviness_to_nf(heaviness):
-    map_heaviness = {"charm": 4, "bottom": 5, "light": None, "total": None}
-    return map_heaviness[heaviness]
+def heavyness_to_nf(heavyness):
+    map_heavyness = {"charm": 4, "bottom": 5, "light": None, "total": None}
+    return map_heavyness[heavyness]
 
 
 # TODO: rename External to be grids
@@ -92,10 +92,10 @@ class Runner:
         # loop on observables
         for ob in self.o_par.obs:
 
-            hid = heaviness_to_nf(ob.heaviness)
+            hid = heavyness_to_nf(ob.heavyness)
             nf = number_active_flavors(hid)
 
-            if ob.heaviness != "light":
+            if ob.heavyness != "light":
                 Ini.Initialize_all(nf)
 
             func_to_call = mapfunc[ob.name][ob.restype]
