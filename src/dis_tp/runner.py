@@ -17,6 +17,13 @@ mapfunc = {
         "M": [Int.F2_M, Int.FL_M],
         "FO": [Int.F2_FO, Int.FL_FO],
     },
+    # NOTE: for the moment this coincide with the averaged xs
+    # since here we don't provide F3
+    "XSHERANC": {
+        "R": [Int.F2_R, Int.FL_R],
+        "M": [Int.F2_M, Int.FL_M],
+        "FO": [Int.F2_FO, Int.FL_FO],
+    },
 }
 
 # TODO: rename External to be grids
@@ -88,7 +95,7 @@ class Runner:
 
                 thisob_res.append(sf_res)
             thisob_res = np.array(thisob_res)
-            if "XSHERANCAVG" in ob.name:
+            if ob.name in ["XSHERANC", "XSHERANCAVG"]:
                 thisob_res = self.compute_xs(ob, thisob_res)
             self.runparameters.results[ob] = thisob_res
 
