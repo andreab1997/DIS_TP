@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import yadism
 import yaml
-from df_to_table import df_to_table
+from dis_tp.logging import df_to_table
 from eko.interpolation import make_grid
 from rich.console import Console
 from yadmark.data import observables
@@ -168,7 +168,7 @@ def benchmarkFO_charm(pto, pdf_name):
 
 
 def benchmarkFONLL(pto, pdf_name, heavyness):
-    obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"]
+    obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"] # [f"XSHERANCAVG_{heavyness}"]
     q_fixed= 10 if heavyness=="charm" else 30
     obs_obj = Observable_card(
         obs_names, q_min=1, q_max=100, q_fixed=q_fixed, restype="FONLL"
@@ -186,4 +186,5 @@ if __name__ == "__main__":
     # obj = benchmarkF_M_charm(pto=1, pdf_name=pdf_name)
     # obj = benchmarkFO_charm(pto=1, pdf_name=pdf_name)
     benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="charm")
-    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="light")
+    # benchmarkFONLL(pto=3, pdf_name=pdf_name, heavyness="light")
+    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="total")
