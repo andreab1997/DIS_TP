@@ -184,32 +184,36 @@ class KfactorRunner:
                     log_df["Q2"] = log_df.q**2
                     log_df.drop("q", axis=1, inplace=True)
                     # log_df["k-factor"] = log_df.N3LO / log_df.NNLO
-            logs_df[num_name] = logs_df
+            logs_df[num_name] = log_df
 
         return logs_df
 
     def build_kfactor(self, logs_df):
-
-        if self.operation is None:
+        
+        if self.operation == "null":
             for log_df in logs_df.values():
                 if self.use_yadism:
                     log_df["k-factor"] = log_df.dis_tp / log_df.yadism
                 else:
                     log_df["k-factor"] = log_df.N3LO / log_df.NNLO
+            return log_df
 
         elif self.operation == "RATIO":
             data1, data2 = (*logs_df,)
+            k_fact_log = logs_df[data1]
             if self.use_yadism:
-                log_df["k-factor"] = (logs_df[data1].dis_tp / logs_df[data2].dis_tp) / (
-                    logs_df[data1].yadism / logs_df[data2].yadism
-                )
+                k_fact_log["dis_tp"] = logs_df[data1].dis_tp / logs_df[data2].dis_tp
+                k_fact_log["yadism"] = logs_df[data1].yadism / logs_df[data2].yadism
+                k_fact_log["k-factor"] = k_fact_log.dis_tp / k_fact_log.yadism
             else:
-                log_df["k-factor"] = (logs_df[data1].N3LO / logs_df[data2].N3LO) / (
-                    logs_df[data1].NNLO / logs_df[data2].NNLO
-                )
+                k_fact_log["N3LO"] = logs_df[data1].N3LO / logs_df[data2].N3LO
+                k_fact_log["NNLO"] = logs_df[data1].NNLO / logs_df[data2].NNLO
+                k_fact_log["k-factor"] = k_fact_log.N3LO / k_fact_log.NNLO
+            return k_fact_log
+
         else:
             raise ValueError(f"Operation {self.operation} no implemented")
-        return logs_df
+        
 
     def save_results(self, author, th_input):
 
