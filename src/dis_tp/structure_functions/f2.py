@@ -296,7 +296,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
         Q : float
             Q-value
         h_id : int
-            heavy quark id
+            heavy quark id or None
         muR_ratio : float
             ratio to Q of the renormalization scale
     Returns:
@@ -308,6 +308,8 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
     # TODO: here we fake charge of 1 and add it later...
     # the proper fix would be to remove it from the cf definition
     p = [0, Q, 1]
+    if h_id is None:
+        nl = h_id
     nl = number_light_flavors(Q)
     a_s = alpha_s(muR**2, Q**2)
     meansq_e = np.mean([charges(nl) ** 2 for nl in range(1, nl + 1)])
@@ -425,7 +427,7 @@ def F2_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
         Q : float
             Q-value
         h_id : int
-            heavy quark id
+            heavy quark id or None
         muR_ratio : float
             ratio to Q of the renormalization scale
     Returns:
@@ -458,8 +460,6 @@ def F2_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
             x-value
         Q : float
             Q-value
-        h_id : int
-            heavy quark id
         muR_ratio : float
             ratio to Q of the renormalization scale
     Returns:
@@ -467,9 +467,14 @@ def F2_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
             result
     """
     # TODO: need to add the missing diagrams
-    return (
-        F2_Light(order, pdf, x, Q, 3, muR_ratio)
-        + F2_FONLL(order, meth, pdf, x, Q, 4, muR_ratio=muR_ratio)
-        + F2_FONLL(order, meth, pdf, x, Q, 5, muR_ratio=muR_ratio)
-        # + F2_FONLL(order, meth, pdf, x, Q, 6, muR_ratio=muR_ratio)
-    )
+    if Q < masses(5):
+        res = (
+            F2_Light(order, pdf, x, Q, 3, muR_ratio)
+            + F2_FONLL(order, pdf, x, Q, 4, meth, muR_ratio=muR_ratio)
+        )
+    if Q >= masses(5):
+        res = (
+            F2_Light(order, pdf, x, Q, 4, muR_ratio)
+             + F2_FONLL(order, pdf, x, Q, 5, meth, muR_ratio=muR_ratio)
+        )
+    return res

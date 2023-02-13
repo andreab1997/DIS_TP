@@ -364,3 +364,36 @@ def FL_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
         return FL_M(order, pdf, x, Q, h_id, meth, muR_ratio=muR_ratio)
     elif Q >= mhp1:
         return FL_ZM(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
+
+def FL_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
+    """
+    Compute the total structure function FL.
+
+    Parameters:
+        order : int
+            requested perturbative order (0 == LO, 1 == NLO,...)
+        meth : str
+            method to be used (our, fonll)
+        pdf : str or list(str)
+            pdf(s) to be used
+        x : float
+            x-value
+        Q : float
+            Q-value
+        muR_ratio : float
+            ratio to Q of the renormalization scale
+    Returns:
+        : float
+            result
+    """
+    if Q < masses(5):
+        res = (
+            FL_Light(order, pdf, x, Q, 3, muR_ratio)
+            + FL_FONLL(order, pdf, x, Q, 4, meth, muR_ratio=muR_ratio)
+        )
+    if Q >= masses(5):
+        res = (
+            FL_Light(order, pdf, x, Q, 4, muR_ratio)
+             + FL_FONLL(order, pdf, x, Q, 5, meth, muR_ratio=muR_ratio)
+        )
+    return res

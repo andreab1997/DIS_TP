@@ -23,7 +23,7 @@ mapfunc = {
         "M": [fl.FL_M],
         "FO": [fl.FL_FO],
         "light": [fl.FL_Light],
-        # "total": [fl.FL_Total],
+        "total": [fl.FL_Total],
         "FONLL": [fl.FL_FONLL],
     },
     "XSHERANCAVG": {
@@ -32,7 +32,7 @@ mapfunc = {
         "FO": [f2.F2_FO, fl.FL_FO],
         "FONLL": [f2.F2_FONLL, fl.FL_FONLL],
         "light": [f2.F2_Light, fl.FL_Light],
-        # "total": [f2.F2_Total, fl.FL_Total],
+        "total": [f2.F2_Total, fl.FL_Total],
     },
     # NOTE: for the moment this coincide with the averaged xs
     # since here we don't provide F3
@@ -42,7 +42,7 @@ mapfunc = {
         "FO": [f2.F2_FO, fl.FL_FO],
         "FONLL": [f2.F2_FONLL, fl.FL_FONLL],
         "light": [f2.F2_Light, fl.FL_Light],
-        # "total": [f2.F2_Total, fl.FL_Total],
+        "total": [f2.F2_Total, fl.FL_Total],
     },
 }
 

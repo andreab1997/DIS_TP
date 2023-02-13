@@ -175,10 +175,13 @@ class OperatorParameters:
                     {"x": point["x"], "q": np.sqrt(point["Q2"]), "y": point["y"]}
                     for point in kins
                 ]
-                # TODO: alllow other restype??
-                # whenever you are running a Kfact only FONLL
-                # is allowed
+
+                # whenever you are running a Kfact only FONLL is allowed
                 restype = "FONLL"
+                heaviness = ob.split("_")[1]
+                if heaviness in ["light", "total"]:
+                    restype = heaviness
+
                 observables.append(
                     Observable(
                         name=fx.split("_")[0],

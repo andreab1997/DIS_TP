@@ -54,7 +54,6 @@ class KfactorRunner:
         return yad_pred
 
     def run_dis_tp(self, n_cores):
-        # TODO: how do we treat bottom mass effects in this code?
         distp_pred = {}
         for observable in self.observables:
             runner = Runner(

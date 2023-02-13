@@ -223,6 +223,7 @@ def Initialize_all(nf):
     """Initialize all the needed global lists."""
     # TODO: allow also for Ftop
     nf_list = [4, 5] if nf is None else [nf]
+    print("Loading precomputed grids ...")
     InitializeQX()
     InitializeMbg2(nf_list)
     InitializeMbq2(nf_list)
