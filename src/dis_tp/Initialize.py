@@ -269,7 +269,7 @@ def InitializeCq3_m(nf):
     Initialize the Cq2 at N3LO massive function from the file in External
     """
     global Cq3m
-    Cq3m_array = np.array(
+    Cq3m_array = (4 * np.pi) ** 3 * np.array(
         readt.readND_test(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
     )
     Cq3m = interp2d(ZList[:-1], QList, Cq3m_array[:, :-1], kind="quintic")
@@ -291,7 +291,7 @@ def InitializeCLq3_m(nf):
     Initialize the CqL at N3LO massive function from the file in External
     """
     global CLq3m
-    CLq3m_array = np.array(
+    CLq3m_array = (4 * np.pi) ** 3 * np.array(
         readt.readND_test(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
     )
     CLq3m = interp2d(ZList, QList, CLq3m_array, kind="quintic")
@@ -313,7 +313,7 @@ def InitializeCg3_m(nf):
     Initialize the Cg2 at N3LO massive function from the file in External
     """
     global Cg3m
-    Cg3m_array = np.array(
+    Cg3m_array = (4 * np.pi) ** 3 * np.array(
         readt.readND_test(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
     )
     Cg3m = interp2d(ZList[:-1], QList, Cg3m_array[:, :-1], kind="quintic")
@@ -324,7 +324,7 @@ def InitializeCLg3_m(nf):
     Initialize the CgL at N3LO massive function from the file in External
     """
     global CLg3m
-    CLg3m_array = np.array(
+    CLg3m_array = (4 * np.pi) ** 3 * np.array(
         readt.readND_test(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
     )
     CLg3m = interp2d(ZList, QList, CLg3m_array, kind="quintic")
