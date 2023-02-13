@@ -550,7 +550,6 @@ def F2_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
         : float
             result
     """
-    # TODO: here we need to have all grids initialized
     # TODO: need to add the missing diagrams
     return (
         F2_Light(order, pdf, x, Q, 3, muR_ratio)

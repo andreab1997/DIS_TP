@@ -29,7 +29,9 @@ class KfactorRunner:
         self.observables = []
         for ocard_list in o_card_names:
             for o_card_name in ocard_list:
-                self.observables.append(OperatorParameters.load_card(cfg, o_card_name, pdf_name))
+                self.observables.append(
+                    OperatorParameters.load_card(cfg, o_card_name, pdf_name)
+                )
 
         self.pdf_name = pdf_name
         self.use_yadism = use_yadism
@@ -114,7 +116,7 @@ class KfactorRunner:
         return logs_df
 
     def build_kfactor(self, logs_df):
-        
+
         if self.operation == "null":
             for log_df in logs_df.values():
                 if self.use_yadism:
@@ -138,7 +140,6 @@ class KfactorRunner:
 
         else:
             raise ValueError(f"Operation {self.operation} no implemented")
-        
 
     def save_results(self, author, th_input):
 

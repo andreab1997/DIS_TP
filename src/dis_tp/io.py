@@ -95,21 +95,21 @@ class OperatorParameters:
     def yadism_like(self):
         return self._o_card
 
-    def dis_tp_like(self, pdf_name, restype):
-        new_o_card = {}
-        new_o_card["obs"] = {}
-        for fx, kins in self.o_card["observables"].items():
-            new_kins = [
-                {"x": point["x"], "q": np.sqrt(point["Q2"]), "y": point["y"]}
-                for point in kins
-            ]
-            new_o_card["obs"][fx.split("_")[0]] = {
-                "PDF": pdf_name,
-                "restype": restype,
-                "scalevar": False,
-                "kinematics": new_kins,
-            }
-        return new_o_card
+    # def dis_tp_like(self, pdf_name, restype):
+    #     new_o_card = {}
+    #     new_o_card["obs"] = {}
+    #     for fx, kins in self.o_card["observables"].items():
+    #         new_kins = [
+    #             {"x": point["x"], "q": np.sqrt(point["Q2"]), "y": point["y"]}
+    #             for point in kins
+    #         ]
+    #         new_o_card["obs"][fx.split("_")[0]] = {
+    #             "PDF": pdf_name,
+    #             "restype": restype,
+    #             "scalevar": False,
+    #             "kinematics": new_kins,
+    #         }
+    #     return new_o_card
 
     @classmethod
     def load_card(cls, configs, name, pdf_name=None):
@@ -156,6 +156,8 @@ class OperatorParameters:
                     for point in kins
                 ]
                 # TODO: alllow other restype??
+                # whenever you are running a Kfact only FONLL
+                # is allowed
                 restype = "FONLL"
                 observables.append(
                     Observable(

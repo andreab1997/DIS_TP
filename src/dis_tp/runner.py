@@ -46,15 +46,13 @@ mapfunc = {
     },
 }
 
+
 def heaviness_to_nf(heaviness, NfFF=None):
     if heaviness == "light" and NfFF is None:
-        raise ValueError(f"Number of fixed flavor (NfFF = nl + 1) must be specified in runcard.")
-    map_heaviness = {
-        "charm": 4,
-        "bottom": 5,
-        "light": NfFF,
-        "total": None
-    }
+        raise ValueError(
+            f"Number of fixed flavor (NfFF = nl + 1) must be specified in runcard."
+        )
+    map_heaviness = {"charm": 4, "bottom": 5, "light": NfFF, "total": None}
     return map_heaviness[heaviness]
 
 
@@ -102,7 +100,6 @@ class Runner:
             nf = number_active_flavors(hid)
             Ini.Initialize_all(nf)
 
-
             func_to_call = mapfunc[ob.name][ob.restype]
             thisob_res = []
 
@@ -115,7 +112,9 @@ class Runner:
                     pdf=ob.pdf,
                     h_id=nf,
                 )
-                print(f"Start computation of {func.__name__} @ order: {self.t_par.order} ...")
+                print(
+                    f"Start computation of {func.__name__} @ order: {self.t_par.order} ..."
+                )
                 args = (self.compute_sf, zip(ob.x_grid, ob.q_grid))
                 if n_cores == 1:
                     sf_map = map(*args)

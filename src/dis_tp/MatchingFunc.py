@@ -17,14 +17,14 @@ def Mbg_1(z, p, nf):
 #  matching conditions A_Hq and A_hg wrt EKO
 def Mbg_2(z, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbg2(z, p[1])[0]
+        return Ini.Mbg2[nf - 4](z, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return 0.5 * inverse_mellin(as2.A_hg, z, nf, r, s, path, L)
 
 
 def Mbg_3_reg(z, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbg3(z, p[1])[0]
+        return Ini.Mbg3[nf - 4](z, p[1])[0]
     return Mbg_3_reg_inv(z, p, nf, use_analytic=use_analytic)
 
 
@@ -100,14 +100,14 @@ def Mgg_2_sing(z, p, nf):
 
 def Mbq_2(z, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbq2(z, p[1])[0]
+        return Ini.Mbq2[nf - 4](z, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return 0.5 * inverse_mellin(as2.A_hq_ps, z, nf, r, s, path, L)
 
 
 def Mbq_3_reg(z, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbq3(z, p[1])[0]
+        return Ini.Mbq3[nf - 4](z, p[1])[0]
     return Mbq_3_reg_inv(z, p, nf, use_analytic=use_analytic)
 
 
@@ -136,14 +136,14 @@ def Mgq_2_reg(z, p, nf):
 
 def Mbg_3_reg_inv(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbg3(x, p[1])[0]
+        return Ini.Mbg3[nf - 4](x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return 0.5 * inverse_mellin(as3.A_Hg, x, nf, r, s, path, L)
 
 
 def Mbq_3_reg_inv(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbq3(x, p[1])[0]
+        return Ini.Mbq3[nf - 4](x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return 0.5 * inverse_mellin(as3.A_Hq, x, nf, r, s, path, L)
 
