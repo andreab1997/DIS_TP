@@ -4,7 +4,7 @@ from multiprocess import Pool
 
 from . import Initialize as Ini
 from .parameters import charges, default_masses, number_active_flavors
-
+from .logging import console
 
 def read1D(path_to_file):
     """
@@ -119,7 +119,7 @@ class Construct_Grid:
         z_func_values = []
         p = []
         i = self.xgrid.index(z)
-        print(f"Computing x = {z},  {i}/{len(self.xgrid)}")
+        console.log(f"[green]Computing x = {z},  {i}/{len(self.xgrid)}")
         for q in self.qgrid:
             p = [self.mass, q, self.e_h]
             if self.grid_type == "matching":
@@ -137,6 +137,6 @@ class Construct_Grid:
         func_values = []
         for res in result:
             func_values.append(res)
-        print(f"Computation finished, saving to {self.path}")
+        console.log(f"Computation finished, saving to {self.path}")
         np.savetxt(self.path, func_values)
         return func_values

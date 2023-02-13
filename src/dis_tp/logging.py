@@ -1,7 +1,9 @@
 from typing import Optional
 import pandas as pd
 from rich.table import Table
+from rich.console import Console
 
+console = Console()
 
 def df_to_table(
     pandas_dataframe: pd.DataFrame,

@@ -8,6 +8,7 @@ from .structure_functions import f2, fl
 
 from . import configs, io
 from .parameters import initialize_theory, number_active_flavors
+from .logging import console
 
 mapfunc = {
     "F2": {
@@ -84,7 +85,7 @@ class Runner:
 
     def compute_sf(self, kins):
         x, q = kins
-        # print(f"x={x}, Q={q}")
+        # console.log(f"x={x}, Q={q}")
         return float(self.partial_sf(x=x, Q=q))
 
     def compute(self, n_cores):
@@ -110,8 +111,8 @@ class Runner:
                     pdf=ob.pdf,
                     h_id=nf,
                 )
-                print(
-                    f"Start computation of {func.__name__} @ order: {self.t_par.order} ..."
+                console.log(
+                    f"[green]Computing {func.__name__} @ order: {self.t_par.order} ..."
                 )
                 args = (self.compute_sf, zip(ob.x_grid, ob.q_grid))
                 if n_cores == 1:

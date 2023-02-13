@@ -5,6 +5,7 @@ import numpy as np
 from scipy.interpolate import interp1d, interp2d
 
 from . import ReadTxt as readt
+from .logging import console
 
 PATH_TO_GLOBAL = str(pathlib.Path(__file__).parent.parent.parent)
 
@@ -223,7 +224,7 @@ def Initialize_all(nf):
     """Initialize all the needed global lists."""
     # TODO: allow also for Ftop
     nf_list = [4, 5] if nf is None else [nf]
-    print("Loading precomputed grids ...")
+    console.log("[green]Loading precomputed grids ...")
     InitializeQX()
     InitializeMbg2(nf_list)
     InitializeMbq2(nf_list)

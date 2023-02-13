@@ -6,14 +6,12 @@ import pandas as pd
 import yadism
 import yaml
 import copy
-from rich.console import Console
 
 from . import configs
 from .io import OperatorParameters, TheoryParameters
 from .runner import Runner
-from .logging import df_to_table
+from .logging import df_to_table, console
 
-console = Console()
 
 
 class KfactorRunner:
@@ -160,7 +158,7 @@ class KfactorRunner:
             "********************************************************************************\n",
         ]
         res_path = self.result_path / f"CF_QCD_{self.dataset_name}.dat"
-        print(f"Saving the k-factors in: {res_path}")
+        console.log(f"[green]Saving the k-factors in: {res_path}")
         with open(res_path, "w", encoding="utf-8") as f:
             f.writelines(intro)
             f.writelines([f"{k:4f}   0.0000\n" for k in self._results["k-factor"]])

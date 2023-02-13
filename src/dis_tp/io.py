@@ -4,7 +4,7 @@ import yaml
 
 from eko.couplings import Couplings
 from . import parameters
-
+from .logging import console
 
 class TheoryParameters:
     """Class containing all the theory parameters."""
@@ -33,16 +33,16 @@ class TheoryParameters:
 
         # Disable some NNPDF features not included here
         if "TMC" in th and th["TMC"] == 1:
-            print("Warning, disable Target Mass Corrections, TMC=0")
+            console.log("[red underline]Warning, disable Target Mass Corrections: ", "TMC=0")
             th["TMC"] = 0
         if "IC" in th and th["IC"] == 1:
-            print("Warning, disable Intrinsic Charm, IC=0")
+            console.log("[red underline]Warning, disable Intrinsic Charm: ", "IC=0")
             th["IC"] = 0
         if "FactScaleVar" in th and th["FactScaleVar"]:
-            print("Warning, disable Factorization Scale Variation, FactScaleVar=0")
+            console.log("[red underline]Warning, disable Factorization Scale Variation:", "FactScaleVar=0")
             th["FactScaleVar"] = False
         if "RenScaleVar" in th and th["RenScaleVar"]:
-            print("Warning, disable Renormalization Scale Variation, RenScaleVar=0")
+            console.log("[red underline]Warning, disable Renormalization Scale Variation:", "RenScaleVar=0")
             th["RenScaleVar"] = False
 
         # compatibility layer
@@ -126,13 +126,13 @@ class OperatorParameters:
 
         # Disables some NNPDF settings
         if "prDIS" in obs and obs["prDIS"] != "EM":
-            print("Warning, setting prDIS = EM")
+            console.log("[red underline]Warning, setting:", "prDIS = EM")
             obs["prDIS"] = "EM"
         if "ProjectileDIS" in obs and obs["ProjectileDIS"] not in [
             "electron",
             "positron",
         ]:
-            print("Warning, setting ProjectileDIS = electron")
+            console.log("Warning, setting ProjectileDIS = electron")
             obs["TargetDIS"] = "proton"
 
         # DIS_TP runcards
@@ -222,6 +222,6 @@ class RunParameters:
             q_grid=ob.q_grid.tolist(),
             obs=ob_result.tolist(),
         )
-        print(f"Saving results for {ob.name} in {obs_path}")
+        console.log(f"[green]Saving results for {ob.name} in {obs_path}")
         with open(obs_path, "w", encoding="UTF-8") as f:
             yaml.safe_dump(to_dump, f)
