@@ -9,7 +9,6 @@ from ..parameters import (
     number_active_flavors,
     number_light_flavors,
     pids,
-    default_masses,
 )
 from ..tools import PDFConvolute, PDFConvolute_plus
 from .tools import PDFConvolute_light, PDFConvolute_light_plus, mkPDF, non_singlet_pdf
@@ -366,7 +365,7 @@ def F2_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
     return res
 
 
-def F2_Light(order, pdf, x, Q, h_id, meth=None, muR_ratio=1):
+def F2_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
     """
     Compute the light contribution for the structure function F2
 
@@ -392,7 +391,7 @@ def F2_Light(order, pdf, x, Q, h_id, meth=None, muR_ratio=1):
     # TODO: here we fake charge of 1 and add it later...
     # the proper fix would be to remove it from the cf definition
     p = [0, Q, 1]
-    nl = number_light_flavors(h_id)
+    nl = number_light_flavors(Q)
     alphas = 1 / (4 * np.pi) * Mypdf.alphasQ(muR)
     meansq_e = np.mean([charges(nl) ** 2 for nl in range(1, nl + 1)])
     if order >= 0:

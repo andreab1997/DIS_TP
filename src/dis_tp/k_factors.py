@@ -38,7 +38,7 @@ class KfactorRunner:
         self.result_path = cfg["paths"]["results"]
         self.dataset_name = ymldb["target_dataset"]
         self.operation = ymldb["operation"]
-        # TODO: check that conversion factor are not nneded
+        # This is not needed for the time being
         # self.conversion_factor = ymldb["conversion_factor"]
         self._results = None
 

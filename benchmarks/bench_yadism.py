@@ -37,7 +37,7 @@ class TheoryCard:
     def dis_tp_like(self):
         new_t_card = {}
         new_t_card["grids"] = True
-        new_t_card["NfFF"] = self.t_card["NfFF"]
+        # new_t_card["NfFF"] = self.t_card["NfFF"]
         new_t_card["masses"] = [default_masses(4), default_masses(5), default_masses(6)]
         new_t_card["fns"] = "fonll"
         new_t_card["order"] = self.t_card["PTO"]
@@ -175,15 +175,6 @@ def benchmarkFONLL(pto, pdf_name, heavyness):
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
-def benchmarkF(pto, pdf_name, heavyness):
-    obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"]
-    obs_obj = Observable_card(
-        obs_names, q_min=1.5, q_max=100, q_fixed=10, restype=heavyness
-    )
-    th_obj = TheoryCard(pto)
-    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
-    obj.run()
-
 if __name__ == "__main__":
 
     pdf_name = "NNPDF40_nnlo_pch_as_01180"
@@ -192,4 +183,5 @@ if __name__ == "__main__":
 
     # obj = benchmarkF_M_charm(pto=1, pdf_name=pdf_name)
     # obj = benchmarkFO_charm(pto=1, pdf_name=pdf_name)
-    benchmarkFONLL(pto=1, pdf_name=pdf_name, heavyness="charm")
+    # benchmarkFONLL(pto=1, pdf_name=pdf_name, heavyness="charm")
+    benchmarkFONLL(pto=1, pdf_name=pdf_name, heavyness="light")

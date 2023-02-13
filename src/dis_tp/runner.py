@@ -47,12 +47,8 @@ mapfunc = {
 }
 
 
-def heaviness_to_nf(heaviness, NfFF=None):
-    if heaviness == "light" and NfFF is None:
-        raise ValueError(
-            f"Number of fixed flavor (NfFF = nl + 1) must be specified in runcard."
-        )
-    map_heaviness = {"charm": 4, "bottom": 5, "light": NfFF, "total": None}
+def heaviness_to_nf(heaviness):
+    map_heaviness = {"charm": 4, "bottom": 5, "light": None, "total": None}
     return map_heaviness[heaviness]
 
 
@@ -96,7 +92,7 @@ class Runner:
         # loop on observables
         for ob in self.o_par.obs:
 
-            hid = heaviness_to_nf(ob.heaviness, self.t_par.NfFF)
+            hid = heaviness_to_nf(ob.heaviness)
             nf = number_active_flavors(hid)
             Ini.Initialize_all(nf)
 

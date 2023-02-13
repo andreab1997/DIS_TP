@@ -8,9 +8,8 @@ from . import parameters
 class TheoryParameters:
     """Class containing all the theory parameters."""
 
-    def __init__(self, order, NfFF, fns, masses, grids, full_card=None):
+    def __init__(self, order, fns, masses, grids, full_card=None):
         self.order = order
-        self.NfFF = NfFF
         self.fns = fns
         self.masses = masses
         self.grids = grids
@@ -45,9 +44,6 @@ class TheoryParameters:
         else:
             order = th["PTO"]
 
-        # number of light flavor + 1 for F_light only
-        NfFF = th["NfFF"]
-
         fns = th.get("fns", "fonll")
         grids = th.get("grids", True)
         mc = th.get("mc", parameters.default_masses(4))
@@ -57,7 +53,7 @@ class TheoryParameters:
         # TODO: add here also some settings for alpha_s
 
         return cls(
-            order=order, NfFF=NfFF, fns=fns, grids=grids, masses=masses, full_card=th
+            order=order, fns=fns, grids=grids, masses=masses, full_card=th
         )
 
 
@@ -139,12 +135,20 @@ class OperatorParameters:
         if "obs" in obs:
             observables = []
             for ob in obs["obs"]:
+
+                # TODO: light and total are always in FONLL mode
+                # here heavyness and resytpe are not yet disentangled
+                heaviness = ob.split("_")[1]
+                restype = obs["obs"][ob]["restype"]
+                if heaviness in ["light", "total"]:
+                    restype = heaviness
+
                 observables.append(
                     Observable(
                         name=ob.split("_")[0],
-                        heaviness=ob.split("_")[1],
+                        heaviness=heaviness,
                         pdf=obs["obs"][ob]["PDF"],
-                        restype=obs["obs"][ob]["restype"],
+                        restype=restype,
                         kinematics=obs["obs"][ob]["kinematics"],
                     )
                 )
