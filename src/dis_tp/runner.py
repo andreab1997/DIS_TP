@@ -34,6 +34,16 @@ mapfunc = {
         "light": [f2.F2_Light, fl.FL_Light],
         # "total": [f2.F2_Total, fl.FL_Total],
     },
+    # NOTE: for the moment this coincide with the averaged xs
+    # since here we don't provide F3
+    "XSHERANC": {
+        "R": [f2.F2_R, fl.FL_R],
+        "M": [f2.F2_M, fl.FL_M],
+        "FO": [f2.F2_FO, fl.FL_FO],
+        "FONLL": [f2.F2_FONLL, fl.FL_FONLL],
+        "light": [f2.F2_Light, fl.FL_Light],
+        # "total": [f2.F2_Total, fl.FL_Total],
+    },
 }
 
 def heaviness_to_nf(heaviness, NfFF=None):
@@ -116,7 +126,7 @@ class Runner:
 
                 thisob_res.append(sf_res)
             thisob_res = np.array(thisob_res)
-            if "XSHERANCAVG" in ob.name:
+            if ob.name in ["XSHERANC", "XSHERANCAVG"]:
                 thisob_res = self.compute_xs(ob, thisob_res)
             self.runparameters.results[ob] = thisob_res
 
