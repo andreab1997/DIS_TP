@@ -11,7 +11,7 @@ from ..parameters import (
     alpha_s,
 )
 from ..tools import PDFConvolute
-from .tools import PDFConvolute_light, mkPDF, non_singlet_pdf
+from .tools import PDFConvolute_light, PDFConvolute_light_singlet, mkPDF, non_singlet_pdf
 
 g_id = pids["g"]
 
@@ -262,7 +262,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
             MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nl
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.CLg_2_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute(MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl+1)
+            + PDFConvolute_light_singlet(MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl)
         )
         loc = MasslessCoeffFunc.CLb_2_loc(x, Q, p, nl) * non_singlet_pdf(
             Mypdf, x, Q, nl
@@ -273,7 +273,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
             MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, p, nl
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.CLg_3_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute(MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl+1)
+            + PDFConvolute_light_singlet(MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl)
         )
         loc = MasslessCoeffFunc.CLb_3_loc(x, Q, p, nl) * non_singlet_pdf(
             Mypdf, x, Q, nl
@@ -365,6 +365,7 @@ def FL_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
     elif Q >= mhp1:
         return FL_ZM(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
 
+
 def FL_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
     """
     Compute the total structure function FL.
@@ -387,13 +388,11 @@ def FL_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
             result
     """
     if Q < masses(5):
-        res = (
-            FL_Light(order, pdf, x, Q, 3, muR_ratio)
-            + FL_FONLL(order, pdf, x, Q, 4, meth, muR_ratio=muR_ratio)
+        res = FL_Light(order, pdf, x, Q, 3, muR_ratio) + FL_FONLL(
+            order, pdf, x, Q, 4, meth, muR_ratio=muR_ratio
         )
     if Q >= masses(5):
-        res = (
-            FL_Light(order, pdf, x, Q, 4, muR_ratio)
-             + FL_FONLL(order, pdf, x, Q, 5, meth, muR_ratio=muR_ratio)
+        res = FL_Light(order, pdf, x, Q, 4, muR_ratio) + FL_FONLL(
+            order, pdf, x, Q, 5, meth, muR_ratio=muR_ratio
         )
     return res

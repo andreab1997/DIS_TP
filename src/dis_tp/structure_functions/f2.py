@@ -11,7 +11,7 @@ from ..parameters import (
     alpha_s,
 )
 from ..tools import PDFConvolute, PDFConvolute_plus
-from .tools import PDFConvolute_light, PDFConvolute_light_plus, mkPDF, non_singlet_pdf
+from .tools import PDFConvolute_light, PDFConvolute_light_plus, mkPDF, PDFConvolute_light_singlet, non_singlet_pdf
 
 g_id = pids["g"]
 
@@ -329,8 +329,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
             MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nl
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.Cg_2_reg, Mypdf, x, Q, p, nl, g_id)
-            # NOTE: there is a different convention of light in PDFConvolute
-            + PDFConvolute(MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nl+1)
+            + PDFConvolute_light_singlet(MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nl)
         )
         loc = MasslessCoeffFunc.Cb_2_loc(x, Q, p, nl) * non_singlet_pdf(Mypdf, x, Q, nl)
         sing = PDFConvolute_light_plus(MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nl)
@@ -340,7 +339,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
             MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, p, nl
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl+1)
+            + PDFConvolute_light_singlet(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl)
         )
         loc = MasslessCoeffFunc.Cb_3_loc(x, Q, p, nl) * non_singlet_pdf(
             Mypdf, x, Q, nl
@@ -469,13 +468,11 @@ def F2_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
     """
     # TODO: need to add the missing diagrams
     if Q < masses(5):
-        res = (
-            F2_Light(order, pdf, x, Q, 3, muR_ratio)
-            + F2_FONLL(order, pdf, x, Q, 4, meth, muR_ratio=muR_ratio)
+        res = F2_Light(order, pdf, x, Q, 3, muR_ratio) + F2_FONLL(
+            order, pdf, x, Q, 4, meth, muR_ratio=muR_ratio
         )
     if Q >= masses(5):
-        res = (
-            F2_Light(order, pdf, x, Q, 4, muR_ratio)
-             + F2_FONLL(order, pdf, x, Q, 5, meth, muR_ratio=muR_ratio)
+        res = F2_Light(order, pdf, x, Q, 4, muR_ratio) + F2_FONLL(
+            order, pdf, x, Q, 5, meth, muR_ratio=muR_ratio
         )
     return res
