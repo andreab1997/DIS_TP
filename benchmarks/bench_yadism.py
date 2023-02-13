@@ -28,6 +28,8 @@ class TheoryCard:
 
         th["TMC"] = 0
         th["IC"] = 0
+        th["FactScaleVar"] = False
+        th["RenScaleVar"] = False
         th["PTO"] = pto
         self.t_card = th
 
@@ -183,5 +185,5 @@ if __name__ == "__main__":
 
     # obj = benchmarkF_M_charm(pto=1, pdf_name=pdf_name)
     # obj = benchmarkFO_charm(pto=1, pdf_name=pdf_name)
-    # benchmarkFONLL(pto=1, pdf_name=pdf_name, heavyness="charm")
-    benchmarkFONLL(pto=1, pdf_name=pdf_name, heavyness="light")
+    benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="charm")
+    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="light")

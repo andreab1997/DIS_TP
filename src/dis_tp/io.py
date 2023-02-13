@@ -2,18 +2,20 @@ import numpy as np
 import pandas as pd
 import yaml
 
+from eko.couplings import Couplings
 from . import parameters
 
 
 class TheoryParameters:
     """Class containing all the theory parameters."""
 
-    def __init__(self, order, fns, masses, grids, full_card=None):
+    def __init__(self, order, fns, masses, sc, grids, full_card=None):
         self.order = order
         self.fns = fns
         self.masses = masses
         self.grids = grids
         self._t_card = full_card
+        self.strong_coupling = sc
 
     def yadism_like(self):
         return self._t_card
@@ -50,10 +52,24 @@ class TheoryParameters:
         mb = th.get("mb", parameters.default_masses(5))
         mt = th.get("mt", parameters.default_masses(6))
         masses = [mc, mb, mt]
-        # TODO: add here also some settings for alpha_s
-
+        method = "expanded"
+        if "ModEv" in th and th["ModEv"] == "EXA":
+            method = "exact"
+        sc = Couplings(
+            couplings_ref=np.array(
+                [th.get("alpahs", 0.118), th.get("alphaqed", 0.007496252)]
+            ),
+            scale_ref=th.get("Qref", 91.2**2),
+            masses=np.array(masses) ** 2,
+            thresholds_ratios=[1, 1, 1],
+            order=(order + 1, 0),
+            nf_ref=th.get("nfref", 5),
+            method=method,
+            max_nf=th.get("MaxNfAs", 5),
+            hqm_scheme=th.get("HQ", "POLE"),
+        )
         return cls(
-            order=order, fns=fns, grids=grids, masses=masses, full_card=th
+            order=order, fns=fns, grids=grids, masses=masses, sc=sc, full_card=th
         )
 
 

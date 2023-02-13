@@ -21,6 +21,7 @@ def number_light_flavors(Q):
         nf += 1
     return nf
 
+
 def charges(h_id):
     ch = {
         1: -1.0 / 3.0,
@@ -38,7 +39,7 @@ def default_masses(h_id):
     return m[h_id]
 
 
-def initialize_theory(use_grids, masses=None):
+def initialize_theory(use_grids, masses=None, strong_coupling=None):
     if not use_grids and masses is None:
         raise ValueError(
             f"Need to specify heavy particle masses when grids are not used."
@@ -57,7 +58,15 @@ def initialize_theory(use_grids, masses=None):
     else:
         _masses = masses
 
+    if strong_coupling is not None:
+        global _alpha_s
+        _alpha_s = strong_coupling.a_s
+
 
 def masses(h_id):
 
     return _masses[h_id - 4]
+
+
+def alpha_s(mur2, q2):
+    return _alpha_s(mur2, q2)

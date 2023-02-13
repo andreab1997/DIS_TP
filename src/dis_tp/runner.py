@@ -71,7 +71,7 @@ class Runner:
         self.o_par = self.runparameters.operator_parameters()
         self.t_par = self.runparameters.theory_parameters()
 
-        initialize_theory(th_obj.grids, th_obj.masses)
+        initialize_theory(th_obj.grids, th_obj.masses, th_obj.strong_coupling)
         self.partial_sf = None
 
     @staticmethod
