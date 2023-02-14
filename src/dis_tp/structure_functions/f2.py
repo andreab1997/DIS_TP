@@ -10,19 +10,22 @@ from ..parameters import (
     pids,
     alpha_s,
 )
-from ..tools import PDFConvolute, PDFConvolute_plus
-from .tools import (
+from .heavy_tools import PDFConvolute, PDFConvolute_plus
+from .light_tools import (
     PDFConvolute_light,
     PDFConvolute_light_plus,
     mkPDF,
     PDFConvolute_light_singlet,
     non_singlet_pdf,
+    apply_isospin_roation,
 )
 
 g_id = pids["g"]
 
 
-def F2_FO(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
+def F2_FO(
+    order, pdf, x, Q, h_id, meth=None, target_dict=None, muF_ratio=1, muR_ratio=1
+):
     """
     Compute the FO result for the structure function F2
 
@@ -57,17 +60,17 @@ def F2_FO(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
     if order >= 2:
         res += a_s**2 * (
             PDFConvolute(MassiveCoeffFunc.Cg_2_m_reg, Mypdf, x, Q, p, nf, g_id)
-            + PDFConvolute(MassiveCoeffFunc.Cq_2_m_reg, Mypdf, x, Q, p, nf)
+            + PDFConvolute(MassiveCoeffFunc.Cq_2_m_reg, Mypdf, x, Q, p, nf, target_dict=target_dict)
         )
     if order >= 3:
         res += a_s**3 * (
             PDFConvolute(MassiveCoeffFunc.Cg_3_m_reg, Mypdf, x, Q, p, nf, g_id)
-            + PDFConvolute(MassiveCoeffFunc.Cq_3_m_reg, Mypdf, x, Q, p, nf)
+            + PDFConvolute(MassiveCoeffFunc.Cq_3_m_reg, Mypdf, x, Q, p, nf, target_dict=target_dict)
         )
     return res
 
 
-def F2_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
+def F2_R(order, pdf, x, Q, h_id, meth=None, target_dict=None, muF_ratio=1, muR_ratio=1):
     """
     Compute the R result for the structure function F2
 
@@ -110,7 +113,9 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
             a_s
             * (
                 PDFConvolute(MasslessCoeffFunc.Cg_2_reg, Mypdf, x, Q, p, nf, g_id)
-                + PDFConvolute(MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nf)
+                + PDFConvolute(
+                    MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                )
             )
             + PDFConvolute(MasslessCoeffFunc.Cb_1_reg, Mypdf, x, Q, p, nf, h_id)
         )
@@ -128,27 +133,22 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
             a_s
             * (
                 PDFConvolute(MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, p, nf, g_id)
-                + PDFConvolute(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nf)
+                + PDFConvolute(
+                    MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                )
             )
             + PDFConvolute(MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nf, h_id)
         )
+        light_f = [i for i in range(1, nf + 1)]
+        light_pdfs = apply_isospin_roation(Mypdf, x, Q, light_f, target_dict)
+
         n3ll_local = (a_s**2) * (
             MasslessCoeffFunc.Cb_2_loc(x, Q, p, nf)
             * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
             + a_s
             * (
                 MasslessCoeffFunc.Cg_3_loc(x, Q, p, nf) * Mypdf.xfxQ2(h_id, x, Q * Q)
-                + MasslessCoeffFunc.Cq_3_loc(x, Q, p, nf)
-                * (
-                    Mypdf.xfxQ2(1, x, Q * Q)
-                    + Mypdf.xfxQ2(-1, x, Q * Q)
-                    + Mypdf.xfxQ2(2, x, Q * Q)
-                    + Mypdf.xfxQ2(-2, x, Q * Q)
-                    + Mypdf.xfxQ2(3, x, Q * Q)
-                    + Mypdf.xfxQ2(-3, x, Q * Q)
-                    + Mypdf.xfxQ2(4, x, Q * Q)
-                    + Mypdf.xfxQ2(-4, x, Q * Q)
-                )
+                + MasslessCoeffFunc.Cq_3_loc(x, Q, p, nf) * np.sum(light_pdfs)
             )
         )
         n3ll_sing = a_s**2 * PDFConvolute_plus(
@@ -158,7 +158,7 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
     return res
 
 
-def F2_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
+def F2_M(order, pdf, x, Q, h_id, meth, target_dict=None, muF_ratio=1, muR_ratio=1):
     """
     Compute the M result for the structure function F2
 
@@ -204,7 +204,9 @@ def F2_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
                 a_s
                 * (
                     PDFConvolute(TildeCoeffFunc.Cg_2_til_reg, Mypdf, x, Q, p, nf, g_id)
-                    + PDFConvolute(TildeCoeffFunc.Cq_2_til_reg, Mypdf, x, Q, p, nf)
+                    + PDFConvolute(
+                        TildeCoeffFunc.Cq_2_til_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                    )
                 )
                 + PDFConvolute(MasslessCoeffFunc.Cb_1_reg, Mypdf, x, Q, p, nf, h_id)
             )
@@ -222,7 +224,9 @@ def F2_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
                 a_s
                 * (
                     PDFConvolute(TildeCoeffFunc.Cg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
-                    + PDFConvolute(TildeCoeffFunc.Cq_3_til_reg, Mypdf, x, Q, p, nf)
+                    + PDFConvolute(
+                        TildeCoeffFunc.Cq_3_til_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                    )
                 )
                 + PDFConvolute(MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nf, h_id)
             )
@@ -258,7 +262,9 @@ def F2_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
 
             nnlo_nnll_reg = a_s**2 * (
                 PDFConvolute(TildeCoeffFunc.Cg_2_til_reg, Mypdf, x, Q, p, nf, g_id)
-                + PDFConvolute(TildeCoeffFunc.Cq_2_til_reg, Mypdf, x, Q, p, nf)
+                + PDFConvolute(
+                    TildeCoeffFunc.Cq_2_til_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                )
                 + PDFConvolute(MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nf, h_id)
             )
             nnlo_nnll_local = (
@@ -273,7 +279,9 @@ def F2_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
         if order >= 3:
             n3lo_n3ll_reg = a_s**3 * (
                 PDFConvolute(TildeCoeffFunc.Cg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
-                + PDFConvolute(TildeCoeffFunc.Cq_3_til_reg, Mypdf, x, Q, p, nf)
+                + PDFConvolute(
+                    TildeCoeffFunc.Cq_3_til_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                )
                 + PDFConvolute(MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, p, nf, h_id)
             )
             n3lo_n3ll_local = (
@@ -288,7 +296,7 @@ def F2_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
     return res
 
 
-def F2_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
+def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio=1):
     """
     Compute the light contribution for the structure function F2
 
@@ -320,45 +328,45 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
     a_s = alpha_s(muR**2, Q**2)
     meansq_e = np.mean([charges(nl) ** 2 for nl in range(1, nl + 1)])
     if order >= 0:
-        res = MasslessCoeffFunc.Cb_0_loc(x, Q, p, nl) * non_singlet_pdf(Mypdf, x, Q, nl)
+        res = MasslessCoeffFunc.Cb_0_loc(x, Q, p, nl) * non_singlet_pdf(Mypdf, x, Q, nl, target_dict)
     if order >= 1:
         reg = PDFConvolute_light(
-            MasslessCoeffFunc.Cb_1_reg, Mypdf, x, Q, p, nl
+            MasslessCoeffFunc.Cb_1_reg, Mypdf, x, Q, p, nl, target_dict
         ) + nl * meansq_e * PDFConvolute(
             MasslessCoeffFunc.Cg_1_reg, Mypdf, x, Q, p, nl, g_id
         )
-        loc = MasslessCoeffFunc.Cb_1_loc(x, Q, p, nl) * non_singlet_pdf(Mypdf, x, Q, nl)
-        sing = PDFConvolute_light_plus(MasslessCoeffFunc.Cb_1_sing, Mypdf, x, Q, p, nl)
+        loc = MasslessCoeffFunc.Cb_1_loc(x, Q, p, nl) * non_singlet_pdf(Mypdf, x, Q, nl, target_dict)
+        sing = PDFConvolute_light_plus(MasslessCoeffFunc.Cb_1_sing, Mypdf, x, Q, p, nl, target_dict)
         res += a_s * (reg + loc + sing)
     if order >= 2:
         reg = PDFConvolute_light(
-            MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nl
+            MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nl, target_dict
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.Cg_2_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute_light_singlet(MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nl)
+            + PDFConvolute_light_singlet(MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nl, target_dict)
         )
-        loc = MasslessCoeffFunc.Cb_2_loc(x, Q, p, nl) * non_singlet_pdf(Mypdf, x, Q, nl)
-        sing = PDFConvolute_light_plus(MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nl)
+        loc = MasslessCoeffFunc.Cb_2_loc(x, Q, p, nl) * non_singlet_pdf(Mypdf, x, Q, nl, target_dict)
+        sing = PDFConvolute_light_plus(MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nl, target_dict)
         res += a_s**2 * (reg + loc + sing)
     if order >= 3:
         reg = PDFConvolute_light(
-            MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, p, nl
+            MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, p, nl, target_dict
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute_light_singlet(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl)
+            + PDFConvolute_light_singlet(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl, target_dict)
         )
         loc = MasslessCoeffFunc.Cb_3_loc(x, Q, p, nl) * non_singlet_pdf(
-            Mypdf, x, Q, nl
+            Mypdf, x, Q, nl, target_dict
         ) + nl * meansq_e * (
             MasslessCoeffFunc.Cg_3_loc(x, Q, p, nl) * Mypdf.xfxQ2(g_id, x, Q**2)
-            + MasslessCoeffFunc.Cq_3_loc(x, Q, p, nl) * non_singlet_pdf(Mypdf, x, Q, nl)
+            + MasslessCoeffFunc.Cq_3_loc(x, Q, p, nl) * non_singlet_pdf(Mypdf, x, Q, nl, target_dict)
         )
-        sing = PDFConvolute_light_plus(MasslessCoeffFunc.Cb_3_sing, Mypdf, x, Q, p, nl)
+        sing = PDFConvolute_light_plus(MasslessCoeffFunc.Cb_3_sing, Mypdf, x, Q, p, nl, target_dict)
         res += a_s**3 * (reg + loc + sing)
     return res
 
 
-def F2_ZM(order, pdf, x, Q, h_id, meth=None, muR_ratio=1):
+def F2_ZM(order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1):
     """
     Compute the ZM heavy contribution to structure function F2
 
@@ -419,7 +427,7 @@ def F2_ZM(order, pdf, x, Q, h_id, meth=None, muR_ratio=1):
     return res
 
 
-def F2_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
+def F2_FONLL(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
     """
     Compute the Yadism like FONLL structure function F2
 
@@ -444,14 +452,20 @@ def F2_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
     # TODO: add a dumping option ??
     mhp1 = masses(h_id + 1)
     if Q < mh:
-        return F2_FO(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
+        return F2_FO(
+            order, pdf, x, Q, h_id, target_dict=target_dict, muR_ratio=muR_ratio
+        )
     elif Q < mhp1:
-        return F2_M(order, pdf, x, Q, h_id, meth, muR_ratio=muR_ratio)
+        return F2_M(
+            order, pdf, x, Q, h_id, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        )
     elif Q >= mhp1:
-        return F2_ZM(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
+        return F2_ZM(
+            order, pdf, x, Q, h_id, target_dict=target_dict, muR_ratio=muR_ratio
+        )
 
 
-def F2_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
+def F2_Total(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
     """
     Compute the total structure function F2.
 
@@ -474,11 +488,15 @@ def F2_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
     """
     # TODO: need to add the missing diagrams
     if Q < masses(5):
-        res = F2_Light(order, pdf, x, Q, 3, muR_ratio) + F2_FONLL(
-            order, pdf, x, Q, 4, meth, muR_ratio=muR_ratio
+        res = F2_Light(
+            order, pdf, x, Q, 3, target_dict=target_dict, muR_ratio=muR_ratio
+        ) + F2_FONLL(
+            order, pdf, x, Q, 4, meth, target_dict=target_dict, muR_ratio=muR_ratio
         )
     if Q >= masses(5):
-        res = F2_Light(order, pdf, x, Q, 4, muR_ratio) + F2_FONLL(
-            order, pdf, x, Q, 5, meth, muR_ratio=muR_ratio
+        res = F2_Light(
+            order, pdf, x, Q, 4, target_dict=target_dict, muR_ratio=muR_ratio
+        ) + F2_FONLL(
+            order, pdf, x, Q, 5, meth, target_dict=target_dict, muR_ratio=muR_ratio
         )
     return res

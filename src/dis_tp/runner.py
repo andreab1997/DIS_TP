@@ -110,6 +110,7 @@ class Runner:
                     meth=self.t_par.fns,
                     pdf=ob.pdf,
                     h_id=nf,
+                    target_dict=self.o_par.target_dict
                 )
                 console.log(
                     f"[green]Computing {func.__name__} @ order: {self.t_par.order} ..."

@@ -76,6 +76,7 @@ class Observable_card:
     def dis_tp_like(self, pdf_name):
         new_o_card = {}
         new_o_card["obs"] = {}
+        new_o_card["TargetDIS"] = self.o_card["TargetDIS"]
         for fx, kins in self.o_card["observables"].items():
             new_kins = [
                 {"x": point["x"], "q": np.sqrt(point["Q2"]), "y": point["y"]}
@@ -185,6 +186,6 @@ if __name__ == "__main__":
 
     # obj = benchmarkF_M_charm(pto=1, pdf_name=pdf_name)
     # obj = benchmarkFO_charm(pto=1, pdf_name=pdf_name)
-    benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="charm")
+    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="charm")
     # benchmarkFONLL(pto=3, pdf_name=pdf_name, heavyness="light")
-    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="total")
+    benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="total")

@@ -6,6 +6,7 @@ from eko.couplings import Couplings
 from . import parameters
 from .logging import console
 
+
 class TheoryParameters:
     """Class containing all the theory parameters."""
 
@@ -33,16 +34,24 @@ class TheoryParameters:
 
         # Disable some NNPDF features not included here
         if "TMC" in th and th["TMC"] == 1:
-            console.log("[red underline]Warning, disable Target Mass Corrections: ", "TMC=0")
+            console.log(
+                "[red underline]Warning, disable Target Mass Corrections: ", "TMC=0"
+            )
             th["TMC"] = 0
         if "IC" in th and th["IC"] == 1:
             console.log("[red underline]Warning, disable Intrinsic Charm: ", "IC=0")
             th["IC"] = 0
         if "FactScaleVar" in th and th["FactScaleVar"]:
-            console.log("[red underline]Warning, disable Factorization Scale Variation:", "FactScaleVar=0")
+            console.log(
+                "[red underline]Warning, disable Factorization Scale Variation:",
+                "FactScaleVar=0",
+            )
             th["FactScaleVar"] = False
         if "RenScaleVar" in th and th["RenScaleVar"]:
-            console.log("[red underline]Warning, disable Renormalization Scale Variation:", "RenScaleVar=0")
+            console.log(
+                "[red underline]Warning, disable Renormalization Scale Variation:",
+                "RenScaleVar=0",
+            )
             th["RenScaleVar"] = False
 
         # compatibility layer
@@ -105,10 +114,11 @@ class Observable:
 class OperatorParameters:
     """Class containing all the operator parameters."""
 
-    def __init__(self, obs, name, full_card=None):
+    def __init__(self, obs, name, target_dict, full_card=None):
         self.obs = obs
         self._o_card = full_card
         self.dataset_name = name
+        self.target_dict = target_dict
 
     def yadism_like(self):
         return self._o_card
@@ -132,8 +142,15 @@ class OperatorParameters:
             "electron",
             "positron",
         ]:
-            console.log("Warning, setting ProjectileDIS = electron")
-            obs["TargetDIS"] = "proton"
+            console.log("[red underline]Warning, setting ProjectileDIS = electron")
+            obs["ProjectileDIS"] = "electron"
+
+        target_dict = {"A": 1, "Z": 1}
+        if "TargetDIS" in obs:
+            if obs["TargetDIS"] not in ["proton", "isoscalar"]:
+                raise NotImplementedError(f"{obs['TargetDIS']} is not available")
+            if obs["TargetDIS"] == "isoscalar":
+                target_dict = {"A": 2, "Z": 1}
 
         # DIS_TP runcards
         observables = []
@@ -180,7 +197,7 @@ class OperatorParameters:
                         kinematics=new_kins,
                     )
                 )
-        return cls(observables, name, obs)
+        return cls(observables, name, target_dict, full_card=obs)
 
 
 class RunParameters:

@@ -3,9 +3,10 @@
 
 import numpy as np
 import scipy.integrate as integrate
+from .light_tools import apply_isospin_roation
 
 
-def PDFConvolute(func1, pdf, x, Q, p1, nf, pid=None):
+def PDFConvolute(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None):
     lower = x
     upper = 1.0
     if pid == 21:
@@ -35,12 +36,13 @@ def PDFConvolute(func1, pdf, x, Q, p1, nf, pid=None):
     else:
 
         def light_pdfs(z):
-            light_f = [-1, -2, -3, 1, 2, 3]
+            light_f = [1, 2, 3]
             if nf > 4:
-                light_f.extend([-4, 4])
+                light_f.extend([4])
             if nf > 5:
-                light_f.extend([-5, 5])
-            return np.sum([pdf.xfxQ2(nl, x / z, Q * Q) for nl in light_f])
+                light_f.extend([5])
+            light_pdfs = apply_isospin_roation(pdf, x / z, Q, light_f, target_dict)
+            return np.sum(light_pdfs)
 
         result, error = integrate.quad(
             lambda z: func1(z, Q, p1, nf) * light_pdfs(z),
@@ -85,7 +87,7 @@ def Convolute_matching(matching1, matching2, x, Q, p1, nf):
     return result
 
 
-def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None):
+def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None):
     if pid == 21:
         plus1, error1 = integrate.quad(
             lambda z: func1(z, Q, p1, nf)
@@ -116,17 +118,14 @@ def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None):
     else:
 
         def light_pdfs(z):
-            light_f = [-1, -2, -3, 1, 2, 3]
+            light_f = [1, 2, 3]
             if nf > 4:
-                light_f.extend([-4, 4])
+                light_f.extend([4])
             if nf > 5:
-                light_f.extend([-5, 5])
-            return np.sum(
-                [
-                    pdf.xfxQ2(nl, x / z, Q * Q) - pdf.xfxQ2(nl, x, Q * Q)
-                    for nl in light_f
-                ]
-            )
+                light_f.extend([5])
+            light_pdfs = apply_isospin_roation(pdf, x / z, Q, light_f, target_dict)
+            light_pdfs_x = apply_isospin_roation(pdf, x, Q, light_f, target_dict)
+            return np.sum(light_pdfs - light_pdfs_x)
 
         plus1, error1 = integrate.quad(
             lambda z: func1(z, Q, p1, nf) * light_pdfs(z),

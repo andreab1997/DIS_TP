@@ -10,8 +10,8 @@ from ..parameters import (
     pids,
     alpha_s,
 )
-from ..tools import PDFConvolute
-from .tools import (
+from .heavy_tools import PDFConvolute
+from .light_tools import (
     PDFConvolute_light,
     PDFConvolute_light_singlet,
     mkPDF,
@@ -21,7 +21,9 @@ from .tools import (
 g_id = pids["g"]
 
 
-def FL_FO(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
+def FL_FO(
+    order, pdf, x, Q, h_id, meth=None, muF_ratio=1, target_dict=None, muR_ratio=1
+):
     """
     Compute the FO results for the structure function FL
 
@@ -58,17 +60,21 @@ def FL_FO(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
     if order >= 2:
         res += a_s**2 * (
             PDFConvolute(MassiveCoeffFunc.CLg_2_m_reg, Mypdf, x, Q, p, nf, g_id)
-            + PDFConvolute(MassiveCoeffFunc.CLq_2_m_reg, Mypdf, x, Q, p, nf)
+            + PDFConvolute(
+                MassiveCoeffFunc.CLq_2_m_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+            )
         )
     if order >= 3:
         res += a_s**3 * (
             PDFConvolute(MassiveCoeffFunc.CLg_3_m_reg, Mypdf, x, Q, p, nf, g_id)
-            + PDFConvolute(MassiveCoeffFunc.CLq_3_m_reg, Mypdf, x, Q, p, nf)
+            + PDFConvolute(
+                MassiveCoeffFunc.CLq_3_m_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+            )
         )
     return res
 
 
-def FL_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
+def FL_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, target_dict=None, muR_ratio=1):
     """
     Compute the R result for the structure function FL
 
@@ -106,7 +112,9 @@ def FL_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
             a_s
             * (
                 PDFConvolute(MasslessCoeffFunc.CLg_2_reg, Mypdf, x, Q, p, nf, g_id)
-                + PDFConvolute(MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nf)
+                + PDFConvolute(
+                    MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                )
             )
             + PDFConvolute(MasslessCoeffFunc.CLb_1_reg, Mypdf, x, Q, p, nf, h_id)
         )
@@ -116,7 +124,9 @@ def FL_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
             a_s
             * (
                 PDFConvolute(MasslessCoeffFunc.CLg_3_reg, Mypdf, x, Q, p, nf, g_id)
-                + PDFConvolute(MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nf)
+                + PDFConvolute(
+                    MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                )
             )
             + PDFConvolute(MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nf, h_id)
         )
@@ -128,7 +138,7 @@ def FL_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, muR_ratio=1):
     return res
 
 
-def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
+def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=1):
     """
     Compute the M result for the structure function FL
 
@@ -170,7 +180,9 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
                 a_s
                 * (
                     PDFConvolute(TildeCoeffFunc.CLg_2_til_reg, Mypdf, x, Q, p, nf, g_id)
-                    + PDFConvolute(TildeCoeffFunc.CLq_2_til_reg, Mypdf, x, Q, p, nf)
+                    + PDFConvolute(
+                        TildeCoeffFunc.CLq_2_til_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                    )
                 )
                 + PDFConvolute(MasslessCoeffFunc.CLb_1_reg, Mypdf, x, Q, p, nf, h_id)
             )
@@ -180,7 +192,9 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
                 a_s
                 * (
                     PDFConvolute(TildeCoeffFunc.CLg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
-                    + PDFConvolute(TildeCoeffFunc.CLq_3_til_reg, Mypdf, x, Q, p, nf)
+                    + PDFConvolute(
+                        TildeCoeffFunc.CLq_3_til_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                    )
                 )
                 + PDFConvolute(MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nf, h_id)
             )
@@ -202,7 +216,9 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
         if order >= 2:
             nnlo_nnll_reg = a_s**2 * (
                 PDFConvolute(TildeCoeffFunc.CLg_2_til_reg, Mypdf, x, Q, p, nf, g_id)
-                + PDFConvolute(TildeCoeffFunc.CLq_2_til_reg, Mypdf, x, Q, p, nf)
+                + PDFConvolute(
+                    TildeCoeffFunc.CLq_2_til_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                )
                 + PDFConvolute(MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nf, h_id)
             )
             nnlo_nnll_loc = (
@@ -214,7 +230,9 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
         if order >= 3:
             n3lo_n3ll_reg = a_s**3 * (
                 PDFConvolute(TildeCoeffFunc.CLg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
-                + PDFConvolute(TildeCoeffFunc.CLq_3_til_reg, Mypdf, x, Q, p, nf)
+                + PDFConvolute(
+                    TildeCoeffFunc.CLq_3_til_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
+                )
                 + PDFConvolute(MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, p, nf, h_id)
             )
             n3lo_n3ll_loc = (
@@ -226,7 +244,7 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, muR_ratio=1):
     return res
 
 
-def FL_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
+def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio=1):
     """
     Compute the light contribution for the structure function FL
 
@@ -240,7 +258,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
         Q : float
             Q-value
         h_id : int
-            heavy quark id
+            heavy quark id, None
         muR_ratio : float
             ratio to Q of the renormalization scale
     Returns:
@@ -250,6 +268,8 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
     Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
     p = [0, Q, 1]
+    if h_id is None:
+        nl = h_id
     nl = number_light_flavors(Q)
     a_s = alpha_s(muR**2, Q**2)
     meansq_e = np.mean([charges(nl) ** 2 for nl in range(1, nl + 1)])
@@ -257,41 +277,41 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, muR_ratio=1):
         res = 0.0
     if order >= 1:
         reg = PDFConvolute_light(
-            MasslessCoeffFunc.CLb_1_reg, Mypdf, x, Q, p, nl
+            MasslessCoeffFunc.CLb_1_reg, Mypdf, x, Q, p, nl, target_dict
         ) + nl * meansq_e * PDFConvolute(
             MasslessCoeffFunc.CLg_1_reg, Mypdf, x, Q, p, nl, g_id
         )
         res += a_s * reg
     if order >= 2:
         reg = PDFConvolute_light(
-            MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nl
+            MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nl, target_dict
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.CLg_2_reg, Mypdf, x, Q, p, nl, g_id)
             + PDFConvolute_light_singlet(
-                MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl
+                MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl, target_dict
             )
         )
         loc = MasslessCoeffFunc.CLb_2_loc(x, Q, p, nl) * non_singlet_pdf(
-            Mypdf, x, Q, nl
+            Mypdf, x, Q, nl, target_dict
         )
         res += a_s**2 * (reg + loc)
     if order >= 3:
         reg = PDFConvolute_light(
-            MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, p, nl
+            MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, p, nl, target_dict
         ) + nl * meansq_e * (
             PDFConvolute(MasslessCoeffFunc.CLg_3_reg, Mypdf, x, Q, p, nl, g_id)
             + PDFConvolute_light_singlet(
-                MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl
+                MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl, target_dict
             )
         )
         loc = MasslessCoeffFunc.CLb_3_loc(x, Q, p, nl) * non_singlet_pdf(
-            Mypdf, x, Q, nl
+            Mypdf, x, Q, nl, target_dict
         )
         res += a_s**3 * (reg + loc)
     return res
 
 
-def FL_ZM(order, pdf, x, Q, h_id, meth=None, muR_ratio=1):
+def FL_ZM(order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1):
     """
     Compute the ZM heavy contribution to structure function FL
 
@@ -344,7 +364,7 @@ def FL_ZM(order, pdf, x, Q, h_id, meth=None, muR_ratio=1):
     return res
 
 
-def FL_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
+def FL_FONLL(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
     """
     Compute the Yadism like FONLL structure function FL
 
@@ -368,14 +388,20 @@ def FL_FONLL(order, pdf, x, Q, h_id, meth, muR_ratio=1):
     mh = masses(h_id)
     mhp1 = masses(h_id + 1)
     if Q < mh:
-        return FL_FO(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
+        return FL_FO(
+            order, pdf, x, Q, h_id, target_dict=target_dict, muR_ratio=muR_ratio
+        )
     elif Q < mhp1:
-        return FL_M(order, pdf, x, Q, h_id, meth, muR_ratio=muR_ratio)
+        return FL_M(
+            order, pdf, x, Q, h_id, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        )
     elif Q >= mhp1:
-        return FL_ZM(order, pdf, x, Q, h_id, muR_ratio=muR_ratio)
+        return FL_ZM(
+            order, pdf, x, Q, h_id, target_dict=target_dict, muR_ratio=muR_ratio
+        )
 
 
-def FL_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
+def FL_Total(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
     """
     Compute the total structure function FL.
 
@@ -397,11 +423,15 @@ def FL_Total(order, pdf, x, Q, h_id, meth, muR_ratio=1):
             result
     """
     if Q < masses(5):
-        res = FL_Light(order, pdf, x, Q, 3, muR_ratio) + FL_FONLL(
-            order, pdf, x, Q, 4, meth, muR_ratio=muR_ratio
+        res = FL_Light(
+            order, pdf, x, Q, 3, target_dict=target_dict, muR_ratio=muR_ratio
+        ) + FL_FONLL(
+            order, pdf, x, Q, 4, meth, target_dict=target_dict, muR_ratio=muR_ratio
         )
     if Q >= masses(5):
-        res = FL_Light(order, pdf, x, Q, 4, muR_ratio) + FL_FONLL(
-            order, pdf, x, Q, 5, meth, muR_ratio=muR_ratio
+        res = FL_Light(
+            order, pdf, x, Q, 4, target_dict=target_dict, muR_ratio=muR_ratio
+        ) + FL_FONLL(
+            order, pdf, x, Q, 5, meth, target_dict=target_dict, muR_ratio=muR_ratio
         )
     return res
