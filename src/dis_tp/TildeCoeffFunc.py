@@ -44,7 +44,7 @@ from .MatchingFunc import (
     Mgg_2_sing,
     Mgq_2_reg,
 )
-from .tools import (
+from .structure_functions.heavy_tools import (
     Convolute,
     Convolute_matching,
     Convolute_plus_coeff,
@@ -103,7 +103,7 @@ def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.Cg3_til[nf - 4](z, Q)[0]
     return (
-        Cg_3_m_reg(z, Q, p, nf - 1)
+        Cg_3_m_reg(z, Q, p, nf)
         + Cg_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
         + P2(p) * Cg_1_m_reg(z, Q, p, nf - 1)
         - (
@@ -150,7 +150,7 @@ def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.Cq3_til[nf - 4](z, Q)[0]
     return (
-        Cq_3_m_reg(z, Q, p, nf - 1)
+        Cq_3_m_reg(z, Q, p, nf)
         + 2 * Cq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
         - Convolute(Cg_1_m_reg, Mgq_2_reg, z, Q, p, nf, nf - 1)
         - 2
@@ -180,7 +180,7 @@ def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.CLg3_til[nf - 4](z, Q)[0]
     return (
-        CLg_3_m_reg(z, Q, p, nf - 1)
+        CLg_3_m_reg(z, Q, p, nf)
         + CLg_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
         + P2(p) * CLg_1_m_reg(z, Q, p, nf - 1)
         - (
@@ -211,7 +211,7 @@ def CLq_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.CLq3_til[nf - 4](z, Q)[0]
     return (
-        CLq_3_m_reg(z, Q, p, nf - 1)
+        CLq_3_m_reg(z, Q, p, nf)
         + 2 * CLq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
         - Convolute(CLg_1_m_reg, Mgq_2_reg, z, Q, p, nf, nf - 1)
         - 2 * Convolute(CLb_1_reg, Mbq_2, z, Q, p, nf)
