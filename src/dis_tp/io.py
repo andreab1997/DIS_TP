@@ -33,13 +33,11 @@ class TheoryParameters:
             th = name
 
         # Disable some NNPDF features not included here
-        if "TMC" in th and th["TMC"] == 1:
-            console.log(
-                "[red underline]Warning, disable Target Mass Corrections: ", "TMC=0"
-            )
+        if "TMC" in th and th["TMC"] != 0:
+            console.log("[red underline]Warning, disable Target Mass Corrections:", "TMC=0")
             th["TMC"] = 0
         if "IC" in th and th["IC"] == 1:
-            console.log("[red underline]Warning, disable Intrinsic Charm: ", "IC=0")
+            console.log("[red underline]Warning, disable Intrinsic Charm:", "IC=0")
             th["IC"] = 0
         if "FactScaleVar" in th and th["FactScaleVar"]:
             console.log(
@@ -135,6 +133,7 @@ class OperatorParameters:
             obs = name
 
         # Disables some NNPDF settings
+        # TODO: implement NC and F3
         if "prDIS" in obs and obs["prDIS"] != "EM":
             console.log("[red underline]Warning, setting:", "prDIS = EM")
             obs["prDIS"] = "EM"
