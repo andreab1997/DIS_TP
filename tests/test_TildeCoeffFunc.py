@@ -6,7 +6,7 @@ from dis_tp import MatchingFunc as mf
 from dis_tp import MasslessCoeffFunc as cf
 from dis_tp import MassiveCoeffFunc as mcf
 
-from dis_tp import tools
+from dis_tp.structure_functions import heavy_tools as tools
 
 from dis_tp.Initialize import Initialize_all
 from dis_tp.parameters import charges, default_masses, initialize_theory

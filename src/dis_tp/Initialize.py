@@ -130,8 +130,8 @@ def InitializeCq3_m(nf_list):
     Cq3m = []
     append_empty(Cq3m, nf_list)
     for nf in nf_list:
-        Cq3m_array = (4 * np.pi) ** 3 * np.array(
-            readt.readND_test(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
+        Cq3m_array = np.array(
+            readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
         )
         Cq3m.append(interp2d(ZList[:-1], QList, Cq3m_array[:, :-1], kind="quintic"))
 
@@ -154,8 +154,8 @@ def InitializeCLq3_m(nf_list):
     CLq3m = []
     append_empty(CLq3m, nf_list)
     for nf in nf_list:
-        CLq3m_array = (4 * np.pi) ** 3 * np.array(
-            readt.readND_test(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
+        CLq3m_array = np.array(
+            readt.readND(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
         )
         CLq3m.append(interp2d(ZList, QList, CLq3m_array, kind="quintic"))
 
@@ -178,8 +178,8 @@ def InitializeCg3_m(nf_list):
     Cg3m = []
     append_empty(Cg3m, nf_list)
     for nf in nf_list:
-        Cg3m_array = (4 * np.pi) ** 3 * np.array(
-            readt.readND_test(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
+        Cg3m_array = np.array(
+            readt.readND(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
         )
         Cg3m.append(interp2d(ZList[:-1], QList, Cg3m_array[:, :-1], kind="quintic"))
 
@@ -190,8 +190,8 @@ def InitializeCLg3_m(nf_list):
     CLg3m = []
     append_empty(CLg3m, nf_list)
     for nf in nf_list:
-        CLg3m_array = (4 * np.pi) ** 3 * np.array(
-            readt.readND_test(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
+        CLg3m_array = np.array(
+            readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
         )
         CLg3m.append(interp2d(ZList, QList, CLg3m_array, kind="quintic"))
 

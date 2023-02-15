@@ -51,6 +51,8 @@ def F2_FO(
     Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
     p = [masses(h_id), Q, charges(h_id)]
+    # TODO: this is not really consistent for pto >= NNLO and Q < mc
+    # sice charm should be removed from active flavors ...
     nf = number_active_flavors(h_id)
     a_s = alpha_s(muR**2, Q**2)
     if order >= 0:
