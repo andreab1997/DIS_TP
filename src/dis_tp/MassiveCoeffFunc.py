@@ -56,13 +56,14 @@ def Cg_2_m_reg(z, Q, p, nf):
 
 
 def Cg_3_m_reg(z, Q, p, nf):
+    e_h = p[-1]
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return Initialize.Cg3m[nf - 4](z, Q)[0]
+    return e_h ** 2 * Initialize.Cg3m[nf - 4](z, Q)[0]
 
 
 def Cq_2_m_reg(z, Q, p, nf):
@@ -88,13 +89,14 @@ def Cq_2_m_reg(z, Q, p, nf):
 
 
 def Cq_3_m_reg(z, Q, p, nf):
+    e_h = p[-1]
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return Initialize.Cq3m[nf - 4](z, Q)[0]
+    return e_h ** 2 * Initialize.Cq3m[nf - 4](z, Q)[0]
 
 
 # FL
@@ -143,13 +145,14 @@ def CLg_2_m_reg(z, Q, p, nf):
 
 
 def CLg_3_m_reg(z, Q, p, nf):
+    e_h = p[-1]
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0
-    return Initialize.CLg3m[nf - 4](z, Q)[0]
+    return e_h ** 2 * Initialize.CLg3m[nf - 4](z, Q)[0]
 
 
 def CLq_2_m_reg(z, Q, p, nf):
@@ -175,10 +178,11 @@ def CLq_2_m_reg(z, Q, p, nf):
 
 
 def CLq_3_m_reg(z, Q, p, nf):
+    e_h = p[-1]
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return Initialize.CLq3m[nf - 4](z, Q)[0]
+    return  e_h ** 2 * Initialize.CLq3m[nf - 4](z, Q)[0]
