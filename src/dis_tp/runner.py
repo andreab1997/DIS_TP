@@ -96,7 +96,7 @@ class Runner:
             hid = heavyness_to_nf(ob.heavyness)
             nf = number_active_flavors(hid)
 
-            if ob.heavyness != "light":
+            if ob.heavyness != "light" and self.t_par.grids:
                 Ini.Initialize_all(nf)
 
             func_to_call = mapfunc[ob.name][ob.restype]

@@ -20,6 +20,7 @@ class KfactorRunner:
         cfg = configs.defaults(cfg)
 
         # Load the ymldb file
+        console.log(f"Computing dataset: {dataset_name}")
         with open(
             cfg["paths"]["ymldb"] / f"{dataset_name}.yaml", encoding="utf-8"
         ) as f:
@@ -116,7 +117,7 @@ class KfactorRunner:
 
     def build_kfactor(self, logs_df):
 
-        if self.operation == "null":
+        if self.operation == "null" or self.operation is None:
             for log_df in logs_df.values():
                 if self.use_yadism:
                     log_df["k-factor"] = log_df.dis_tp / log_df.yadism
@@ -149,7 +150,7 @@ class KfactorRunner:
         intro = [
             "********************************************************************************\n",
             f"SetName: {self.dataset_name}\n",
-            f"Author: {author}\n",
+            f'Author: {author.replace("_", " ")}\n',
             f"Date: {date.today()}\n",
             "CodesUsed: https://github.com/andreab1997/DIS_TP\n",
             f"TheoryInput: {th_input}\n",
