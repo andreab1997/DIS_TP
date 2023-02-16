@@ -2,7 +2,7 @@
 # notation: p[1] is Q while p[0] is m_b
 import numpy as np
 from eko.constants import CA, CF, TR
-from eko.matching_conditions import as2, as3
+from ekore.operator_matrix_elements.unpolarized.space_like import as2, as3
 
 from . import Initialize as Ini
 from . import parameters

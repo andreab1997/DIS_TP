@@ -1,7 +1,7 @@
 import numpy as np
 from eko.constants import CA, TR
-from eko.harmonics import S1, compute_cache
-from eko.matching_conditions import as1, as2, as3
+from ekore.harmonics import S1, compute_cache
+from ekore.operator_matrix_elements.unpolarized.space_like import as1, as2, as3
 from eko.mellin import Path
 from numpy.testing import assert_allclose
 from scipy import integrate

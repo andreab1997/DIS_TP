@@ -7,12 +7,10 @@ import pandas as pd
 import yadism
 import yaml
 from dis_tp.logging import df_to_table
+from dis_tp.runner import Runner
 from eko.interpolation import make_grid
 from rich.console import Console
 from yadmark.data import observables
-
-from dis_tp.parameters import default_masses
-from dis_tp.runner import Runner
 
 console = Console()
 
@@ -37,12 +35,9 @@ class TheoryCard:
         return self.t_card
 
     def dis_tp_like(self):
-        new_t_card = {}
+        new_t_card = self.t_card
         new_t_card["grids"] = True
-        # new_t_card["NfFF"] = self.t_card["NfFF"]
-        new_t_card["masses"] = [default_masses(4), default_masses(5), default_masses(6)]
         new_t_card["fns"] = "fonll"
-        new_t_card["order"] = self.t_card["PTO"]
         return new_t_card
 
 
@@ -60,6 +55,7 @@ class Observable_card:
         obs["TargetDIS"] = "proton"
         obs["observables"] = {}
         kinematics = [
+            # {"x": float(x_fixed), "Q2": float(q2), "y": 0.0018429} for q2 in q2_grid
             {"x": float(x_fixed), "Q2": float(q2), "y": 0.5} for q2 in q2_grid
         ]
         kinematics.extend(
@@ -171,8 +167,9 @@ def benchmarkFO_charm(pto, pdf_name):
 def benchmarkFONLL(pto, pdf_name, heavyness):
     obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"] # [f"XSHERANCAVG_{heavyness}"]
     q_fixed= 10 if heavyness=="charm" else 30
+    x_fixed= 0.01 if heavyness=="charm" else 0.0001
     obs_obj = Observable_card(
-        obs_names, q_min=1, q_max=100, q_fixed=q_fixed, restype="FONLL"
+        obs_names, q_min=1, q_max=100, q_fixed=q_fixed, x_fixed=x_fixed, restype="FONLL"
     )
     th_obj = TheoryCard(pto)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
@@ -186,6 +183,6 @@ if __name__ == "__main__":
 
     # obj = benchmarkF_M_charm(pto=1, pdf_name=pdf_name)
     # obj = benchmarkFO_charm(pto=1, pdf_name=pdf_name)
-    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="charm")
-    # benchmarkFONLL(pto=3, pdf_name=pdf_name, heavyness="light")
-    benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="total")
+    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="bottom")
+    benchmarkFONLL(pto=3, pdf_name=pdf_name, heavyness="light")
+    # benchmarkFONLL(pto=3, pdf_name=pdf_name, heavyness="total")

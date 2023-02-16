@@ -3,6 +3,7 @@ import pandas as pd
 import yaml
 
 from eko.couplings import Couplings
+from eko.io import types
 from . import parameters
 from .logging import console
 
@@ -17,6 +18,9 @@ class TheoryParameters:
         self.grids = grids
         self._t_card = full_card
         self.strong_coupling = sc
+
+        if not self.grids:
+            console.log("[yellow underline]Warning, grids are not enabled, this might take a while ...")
 
     def yadism_like(self):
         return self._t_card
@@ -65,21 +69,23 @@ class TheoryParameters:
         mb = th.get("mb", parameters.default_masses(5))
         mt = th.get("mt", parameters.default_masses(6))
         masses = [mc, mb, mt]
-        method = "expanded"
+        method = types.CouplingEvolutionMethod.EXPANDED
         if "ModEv" in th and th["ModEv"] == "EXA":
-            method = "exact"
+            method = types.CouplingEvolutionMethod.EXACT
+
+        ref = types.CouplingsRef(
+            alphas=types.FloatRef(value=th.get("alpahs", 0.118), scale=th.get("Qref", 91.2)),
+            alphaem=types.FloatRef(value=th.get("alphaqed", 0.007496252), scale=np.nan),
+            max_num_flavs=th.get("MaxNfAs", 5),
+            num_flavs_ref=th.get("nfref", 5),
+        )
         sc = Couplings(
-            couplings_ref=np.array(
-                [th.get("alpahs", 0.118), th.get("alphaqed", 0.007496252)]
-            ),
-            scale_ref=th.get("Qref", 91.2) ** 2,
-            masses=np.array(masses) ** 2,
-            thresholds_ratios=[1, 1, 1],
+            couplings=ref,
             order=(order + 1, 0),
-            nf_ref=th.get("nfref", 5),
             method=method,
-            max_nf=th.get("MaxNfAs", 5),
-            hqm_scheme=th.get("HQ", "POLE"),
+            masses=np.array(masses) ** 2,
+            hqm_scheme=types.QuarkMassSchemes.POLE,
+            thresholds_ratios=[1.0, 1.0, 1.0],
         )
         return cls(
             order=order, fns=fns, grids=grids, masses=masses, sc=sc, full_card=th
@@ -183,14 +189,17 @@ class OperatorParameters:
 
                 # whenever you are running a Kfact only FONLL is allowed
                 restype = "FONLL"
-                heavyness = fx.split("_")[1]
+                try:
+                    heavyness = fx.split("_")[1]
+                except IndexError:
+                    heavyness = "total"
                 if heavyness in ["light", "total"]:
                     restype = heavyness
 
                 observables.append(
                     Observable(
                         name=fx.split("_")[0],
-                        heavyness=fx.split("_")[1],
+                        heavyness=heavyness,
                         pdf=pdf_name,
                         restype=restype,
                         kinematics=new_kins,

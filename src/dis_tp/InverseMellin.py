@@ -2,7 +2,7 @@ import numpy as np
 from scipy import integrate
 
 from eko.mellin import Path
-from eko.harmonics import compute_cache
+from ekore.harmonics import compute_cache
 
 
 def check_path(r, s):
