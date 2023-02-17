@@ -55,9 +55,9 @@ def heavyness_to_nf(heavyness):
 
 # TODO: rename External to be grids
 class Runner:
-    def __init__(self, o_card, t_card) -> None:
+    def __init__(self, o_card, t_card, config_path=None) -> None:
 
-        cfg = configs.load()
+        cfg = configs.load(config_path)
         cfg = configs.defaults(cfg)
         dest_path = cfg["paths"]["results"]
         if isinstance(o_card, io.OperatorParameters):
@@ -96,7 +96,7 @@ class Runner:
             hid = heavyness_to_nf(ob.heavyness)
             nf = number_active_flavors(hid)
 
-            if ob.heavyness != "light" and self.t_par.grids:
+            if ob.heavyness != "light" and (self.t_par.grids or self.t_par.order == 3):
                 Ini.Initialize_all(nf)
 
             func_to_call = mapfunc[ob.name][ob.restype]
