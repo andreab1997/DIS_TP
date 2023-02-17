@@ -56,15 +56,17 @@ def heavyness_to_nf(heavyness):
 # TODO: rename External to be grids
 class Runner:
     def __init__(self, o_card, t_card, config_path=None) -> None:
-
-        obs_obj = o_card
-        th_obj = t_card
+    
         cfg = configs.load(config_path)
         cfg = configs.defaults(cfg)
         dest_path = cfg["paths"]["results"]
-        if isinstance(th_obj, str):
+        if isinstance(t_card, io.TheoryParameters):
+            th_obj = t_card
+        else:
             th_obj = io.TheoryParameters.load_card(cfg, t_card)
-        if isinstance(obs_obj, str):
+        if isinstance(o_card, io.OperatorParameters):
+            obs_obj = o_card
+        else:
             obs_obj = io.OperatorParameters.load_card(cfg, o_card)
 
         self.runparameters = io.RunParameters(th_obj, obs_obj, dest_path)

@@ -238,10 +238,10 @@ def Initialize_all(nf):
     InitializeCLq3_m(nf_list)
     InitializeCg3_m(nf_list)
     InitializeCLg3_m(nf_list)
-    # InitializeCLq3_til(nf_list)
-    # InitializeCLg3_til(nf_list)
-    # InitializeCq3_til(nf_list)
-    # InitializeCg3_til(nf_list)
+    InitializeCLq3_til(nf_list)
+    InitializeCLg3_til(nf_list)
+    InitializeCq3_til(nf_list)
+    InitializeCg3_til(nf_list)
 
 
 def InitializeHPL():

@@ -4,7 +4,6 @@ from numpy.testing import assert_allclose
 from dis_tp import TildeCoeffFunc as tf
 from dis_tp import MatchingFunc as mf
 from dis_tp import MasslessCoeffFunc as cf
-from dis_tp import MassiveCoeffFunc as mcf
 
 from dis_tp.structure_functions import heavy_tools as tools
 
