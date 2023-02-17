@@ -46,7 +46,7 @@ def enhance_paths(configs_):
         configuration
     """
     # required keys without default
-    for key in ["theory_cards", "operator_cards", "results", "ymldb"]:
+    for key in ["theory_cards", "operator_cards", "results"]:
         if key not in configs_["paths"]:
             raise ValueError(f"Configuration is missing a 'paths.{key}' key")
         if pathlib.Path(configs_["paths"][key]).anchor == "":
