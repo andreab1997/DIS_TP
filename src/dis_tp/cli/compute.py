@@ -163,11 +163,11 @@ def generate_kfactors(
     n_cores: int,
     use_yadism: bool,
     th_description: str,
-    cfg: pathlib.Path
+    cfg: pathlib.Path,
 ):
     """Generate k-factors.
 
-    USAGE: dis_tp k-factors HERACOMB_SIGMARED_C 400 NNPDF40_nnlo_pch_as_01180 "Your Name" [-n 4 -yad -th "Theory Input"]
+    USAGE: dis_tp k-factors HERA_NC_318GEV_EAVG_SIGMARED_CHARM 400 NNPDF40_nnlo_pch_as_01180 "Your Name" [-n 4 -yad -th "Theory Input"]
     """
 
     obj = k_factors.KfactorRunner(t_card, o_card, pdf, use_yadism, cfg)
