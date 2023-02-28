@@ -124,14 +124,42 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str):
 @pdf
 @h_id
 @n_cores
+@click.argument(
+    "author",
+    type=str,
+)
+@click.option(
+    "-yad",
+    "--use_yadism",
+    is_flag=True,
+    type=bool,
+    default=False,
+    required=False,
+    help="If True compute the k-factor w.r.t. Yadism",
+)
+@click.option(
+    "-th",
+    "--th_description",
+    type=str,
+    default="NNPDF4.0 pch with alphas(MZ)=0.118",
+    required=False,
+    help="TheoryInput to be stored in the CF file",
+)
 def generate_matching_grids(
-    o_card: str, t_card: str, pdf: str, h_id: int, n_cores: int
+    o_card: str,
+    t_card: str,
+    pdf: str,
+    h_id: int,
+    author: str,
+    n_cores: int,
+    use_yadism: bool,
+    th_description: str,
 ):
     """Generate k-factors.
-    
-    USAGE: dis_tp k-factors HERA_NC_318GEV_EAVG_SIGMARED_CHARM 400 NNPDF40_nnlo_as_01180 4 -n 4
+
+    USAGE: dis_tp k-factors HERACOMB_SIGMARED_C 400 NNPDF40_nnlo_pch_as_01180 4 "Your Name" [-n 4 -yad -th "Theory Input"]
     """
 
-    obj = k_factors.KfactorRunner(t_card, o_card, pdf)
+    obj = k_factors.KfactorRunner(t_card, o_card, pdf, use_yadism)
     obj.compute(int(h_id), n_cores)
-    obj.save_results()
+    obj.save_results(author, th_input=th_description)
