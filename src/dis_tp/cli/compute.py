@@ -4,7 +4,7 @@ import click
 import numpy as np
 import yaml
 
-from .. import configs, io, parameters, plot, runner, k_factors
+from .. import configs, io, k_factors, parameters, plot, runner
 from .base import command
 from .grids import n_cores
 

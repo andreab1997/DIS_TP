@@ -1,8 +1,7 @@
 import numpy as np
-from scipy import integrate
-
 from eko.mellin import Path
 from ekore.harmonics import compute_cache
+from scipy import integrate
 
 
 def check_path(r, s):

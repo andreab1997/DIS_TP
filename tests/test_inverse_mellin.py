@@ -8,7 +8,7 @@ from dis_tp.parameters import initialize_theory
 Q = 10.0
 nf = 4
 masses = [1.51, 4.92, 172.5]
-mass = masses[nf-4]
+mass = masses[nf - 4]
 initialize_theory(use_grids=False, masses=masses)
 
 

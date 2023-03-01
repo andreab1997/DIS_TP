@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 import yaml
-
 from eko.couplings import Couplings
 from eko.io import types
+
 from . import parameters
 from .logging import console
 
@@ -20,7 +20,9 @@ class TheoryParameters:
         self.strong_coupling = sc
 
         if not self.grids:
-            console.log("[yellow underline]Warning, grids are not enabled, this might take a while ...")
+            console.log(
+                "[yellow underline]Warning, grids are not enabled, this might take a while ..."
+            )
 
     def yadism_like(self):
         return self._t_card
@@ -38,7 +40,9 @@ class TheoryParameters:
 
         # Disable some NNPDF features not included here
         if "TMC" in th and th["TMC"] != 0:
-            console.log("[red underline]Warning, disable Target Mass Corrections:", "TMC=0")
+            console.log(
+                "[red underline]Warning, disable Target Mass Corrections:", "TMC=0"
+            )
             th["TMC"] = 0
         if "IC" in th and th["IC"] == 1:
             console.log("[red underline]Warning, disable Intrinsic Charm:", "IC=0")
@@ -74,7 +78,9 @@ class TheoryParameters:
             method = types.CouplingEvolutionMethod.EXACT
 
         ref = types.CouplingsRef(
-            alphas=types.FloatRef(value=th.get("alpahs", 0.118), scale=th.get("Qref", 91.2)),
+            alphas=types.FloatRef(
+                value=th.get("alpahs", 0.118), scale=th.get("Qref", 91.2)
+            ),
             alphaem=types.FloatRef(value=th.get("alphaqed", 0.007496252), scale=np.nan),
             max_num_flavs=th.get("MaxNfAs", 5),
             num_flavs_ref=th.get("nfref", 5),
@@ -162,7 +168,6 @@ class OperatorParameters:
         if "obs" in obs:
             observables = []
             for ob in obs["obs"]:
-
                 # TODO: light and total are always in FONLL mode
                 # here heavyness and resytpe are not yet disentangled:
                 # restype sholud come from the theory runcard

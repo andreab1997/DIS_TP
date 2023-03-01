@@ -161,7 +161,7 @@ def P2(p):
 def Mqq_2_reg(z, p, _nf):
     z2 = z * z
     lnz = np.log(z)
-    lnz2 = lnz ** 2
+    lnz2 = lnz**2
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     ANS2qqH_R = (
         (1.0 + z2) * (2.0 * lnz2 / 3.0 + 20.0 * lnz / 9.0) / (1.0 - z)
@@ -172,7 +172,7 @@ def Mqq_2_reg(z, p, _nf):
     omeL1 = -(8.0 * (1.0 + z2) * lnz / 3.0 / (1.0 - z) + 8.0 / 9.0 - 88.0 * z / 9.0)
     omeL2 = -4.0 / 3.0 - 4.0 * z / 3.0
     return CF * TR * (ANS2qqH_R + omeL1 * L + omeL2 * L**2)
-   
+
 
 def Mqq_2_sing(z, p, _nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))

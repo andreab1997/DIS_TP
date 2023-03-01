@@ -63,7 +63,6 @@ def initialize_theory(use_grids, masses=None, strong_coupling=None):
 
 
 def masses(h_id):
-
     return _masses[h_id - 4]
 
 

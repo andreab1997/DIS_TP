@@ -1,9 +1,9 @@
 # This contains my implementation in python of the harmonic polylogs. Some of them are written in terms of polylogs, others are taken from mathematica grids.
 import numpy as np
+from eko.harmonics.constants import zeta3, zeta5
 from mpmath import *
 
 from . import Initialize as Ini
-from eko.harmonics.constants import zeta3, zeta5
 
 mp.dps = 15
 mp.pretty = True

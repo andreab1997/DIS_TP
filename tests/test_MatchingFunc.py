@@ -1,8 +1,8 @@
 import numpy as np
 from eko.constants import CA, TR
+from eko.mellin import Path
 from ekore.harmonics import S1, compute_cache
 from ekore.operator_matrix_elements.unpolarized.space_like import as1, as2, as3
-from eko.mellin import Path
 from numpy.testing import assert_allclose
 from scipy import integrate
 
@@ -251,6 +251,7 @@ class Test_Matching_gg:
                 eko.append(as2.A_gg(n, sx, L))
         assert_allclose(my, eko)
 
+
 class Test_Matching_qq:
     xs = np.geomspace(1e-4, 1, 10, endpoint=False)
     Ns = [2, 3, 4, 5, 6, 7]
@@ -285,6 +286,7 @@ class Test_Matching_qq:
                 sx = [np.array(s) for s in sx]
                 eko.append(as2.A_qq_ns(n, sx, L))
         assert_allclose(my, eko)
+
 
 class Test_Matching_gq:
     xs = np.geomspace(1e-4, 1, 10, endpoint=False)

@@ -4,11 +4,11 @@ import numpy as np
 from multiprocess import Pool
 
 from dis_tp import Initialize as Ini
-from .structure_functions import f2, fl
 
 from . import configs, io
-from .parameters import initialize_theory, number_active_flavors
 from .logging import console
+from .parameters import initialize_theory, number_active_flavors
+from .structure_functions import f2, fl
 
 mapfunc = {
     "F2": {
@@ -56,7 +56,6 @@ def heavyness_to_nf(heavyness):
 # TODO: rename External to be grids
 class Runner:
     def __init__(self, o_card, t_card, config_path=None) -> None:
-    
         cfg = configs.load(config_path)
         cfg = configs.defaults(cfg)
         dest_path = cfg["paths"]["results"]
@@ -90,10 +89,8 @@ class Runner:
         return float(self.partial_sf(x=x, Q=q))
 
     def compute(self, n_cores):
-
         # loop on observables
         for ob in self.o_par.obs:
-
             hid = heavyness_to_nf(ob.heavyness)
             nf = number_active_flavors(hid)
 
@@ -111,7 +108,7 @@ class Runner:
                     meth=self.t_par.fns,
                     pdf=ob.pdf,
                     h_id=nf,
-                    target_dict=self.o_par.target_dict
+                    target_dict=self.o_par.target_dict,
                 )
                 console.log(
                     f"[green]Computing {func.__name__} @ order: {self.t_par.order} ..."

@@ -1,16 +1,16 @@
-import numpy as np
 import pathlib
+
+import numpy as np
 from numpy.testing import assert_allclose
+from scipy.interpolate import interp2d
 from test_MasslessCoeffFunc import MockESF
 from yadism.coefficient_functions.heavy import f2_nc, fl_nc
 
+from dis_tp import Initialize as Ini
 from dis_tp import MassiveCoeffFunc as cf
 from dis_tp.Initialize import Initialize_all
 from dis_tp.parameters import charges, default_masses, initialize_theory
 from dis_tp.ReadTxt import readND
-
-from scipy.interpolate import interp2d
-from dis_tp import Initialize as Ini
 
 h_id = 5
 mhq = default_masses(h_id)
@@ -20,6 +20,7 @@ p = np.array([mhq, e_h])
 Initialize_all(h_id)
 
 here = pathlib.Path(__file__).parent
+
 
 class Test_F2:
     xs = [0.0001, 0.001, 0.01, 0.1, 0.2, 0.456, 0.7]
@@ -48,7 +49,7 @@ class Test_F2:
             yad = f2_s.reg(x, f2_s.args["reg"])
             my = cf.Cq_2_m_reg(x, self.Q, p, h_id) / e_h**2
             assert_allclose(my, yad)
-            
+
             f2_ns = f2_nc.NonSinglet(esf, h_id, m2hq=mhq**2).NNLO()
             # non singlet reg
             yad = f2_ns.reg(x, f2_ns.args["reg"])
@@ -58,6 +59,7 @@ class Test_F2:
             yad = f2_ns.loc(x, f2_ns.args["loc"])
             my = cf.Cb_2_m_loc(x, self.Q, p, h_id) / e_h**2
             assert_allclose(my, yad)
+
 
 class Test_FL:
     xs = [0.0001, 0.0123, 0.456]
@@ -96,23 +98,16 @@ class Test_FL:
 
 class TestNic:
     """Here we test that Niccolo' code follow the same normalization."""
+
     # NOTE: the accuracy is bad but these grids are not used...
     # TODO: how can we trust Niccolo' grids?
     xs = [0.0001, 0.0123, 0.456]
     Q = 10
     nf = 5
-    c2g = np.array(
-        readND(here / f"grids/C2g.dat")
-    )
-    c2q = np.array(
-        readND(here / f"grids/C2q.dat")
-    )
-    cLg = np.array(
-        readND(here / f"grids/CLg.dat")
-    )
-    cLq = np.array(
-        readND(here / f"grids/CLq.dat")
-    )
+    c2g = np.array(readND(here / f"grids/C2g.dat"))
+    c2q = np.array(readND(here / f"grids/C2q.dat"))
+    cLg = np.array(readND(here / f"grids/CLg.dat"))
+    cLq = np.array(readND(here / f"grids/CLq.dat"))
     c2g = interp2d(Ini.ZList, Ini.QList, c2g, kind="quintic")
     c2q = interp2d(Ini.ZList, Ini.QList, c2q, kind="quintic")
     cLg = interp2d(Ini.ZList, Ini.QList, cLg, kind="quintic")
@@ -133,7 +128,7 @@ class TestNic:
             dis_tp.append(cf.CLq_2_m_reg(x, self.Q, p, h_id) / e_h**2)
             my.append(self.cLq(x, self.Q)[0])
         assert_allclose(my, dis_tp, rtol=1e-1)
-    
+
     def test_2g(self):
         dis_tp = []
         my = []

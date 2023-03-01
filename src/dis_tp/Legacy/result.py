@@ -8,8 +8,8 @@ import numpy as np
 from progress.bar import Bar
 from simple_term_menu import TerminalMenu
 
-from dis_tp.structure_functions import f2, fl
 from dis_tp.Initialize import PATH_TO_GLOBAL, Initialize_all
+from dis_tp.structure_functions import f2, fl
 
 
 def main():

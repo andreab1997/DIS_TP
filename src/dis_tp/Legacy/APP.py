@@ -8,6 +8,7 @@ from progress.bar import Bar
 
 from dis_tp import Initialize as Ini
 from dis_tp.structure_functions import f2, fl
+
 from .Initialize import PATH_TO_GLOBAL
 
 # Constructing the possibilities

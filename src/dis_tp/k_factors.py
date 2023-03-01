@@ -1,16 +1,17 @@
 """Script to produce the k-factors."""
 
+import copy
 from datetime import date
+
 import lhapdf
 import pandas as pd
 import yadism
 import yaml
-import copy
 
 from . import configs
 from .io import OperatorParameters, TheoryParameters
+from .logging import console, df_to_table
 from .runner import Runner
-from .logging import df_to_table, console
 
 
 class KfactorRunner:
@@ -83,7 +84,6 @@ class KfactorRunner:
         return log_df
 
     def save_results(self, author, th_input):
-
         if self.use_yadism:
             k_fatctor_type = "N3LO FONLL DIS_TP / N3LO ZM-VFNS Yadism"
         else:

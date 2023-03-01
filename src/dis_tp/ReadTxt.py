@@ -3,8 +3,9 @@ import numpy as np
 from multiprocess import Pool
 
 from . import Initialize as Ini
-from .parameters import charges, default_masses, number_active_flavors
 from .logging import console
+from .parameters import charges, default_masses, number_active_flavors
+
 
 def read1D(path_to_file):
     """
@@ -95,7 +96,6 @@ class Construct_Grid:
         return z_func_values
 
     def run(self):
-
         args = (self.construct_single_x, self.xgrid)
         with Pool(self.n_pools) as pool:
             result = pool.map(*args)

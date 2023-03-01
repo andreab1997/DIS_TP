@@ -108,8 +108,8 @@ class BenchmarkRunner:
         return runner.results
 
     def run(self):
-        yad_log = self.run_yadism()
         dis_tp_log = self.run_dis_tp()
+        yad_log = self.run_yadism()
         self.log(dis_tp_log, yad_log)
 
     @staticmethod
@@ -167,7 +167,7 @@ def benchmarkFO_charm(pto, pdf_name):
 def benchmarkFONLL(pto, pdf_name, heavyness):
     obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"] # [f"XSHERANCAVG_{heavyness}"]
     q_fixed= 10 if heavyness=="charm" else 30
-    x_fixed= 0.01 if heavyness=="charm" else 0.0001
+    x_fixed= 0.01 if heavyness=="charm" else 0.001
     obs_obj = Observable_card(
         obs_names, q_min=1, q_max=100, q_fixed=q_fixed, x_fixed=x_fixed, restype="FONLL"
     )
@@ -183,6 +183,6 @@ if __name__ == "__main__":
 
     # obj = benchmarkF_M_charm(pto=1, pdf_name=pdf_name)
     # obj = benchmarkFO_charm(pto=1, pdf_name=pdf_name)
-    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="bottom")
-    benchmarkFONLL(pto=3, pdf_name=pdf_name, heavyness="light")
-    # benchmarkFONLL(pto=3, pdf_name=pdf_name, heavyness="total")
+    benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="bottom")
+    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="light")
+    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="total")

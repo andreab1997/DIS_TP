@@ -3,10 +3,10 @@
 import LeProHQ
 import numpy as np
 from eko.constants import TR
+from scipy.integrate import quad
 
 from . import Initialize
 
-from scipy.integrate import quad
 
 # F2
 def Cb_2_m_reg(z, Q, p, _nf):
@@ -26,8 +26,8 @@ def Cb_2_m_reg(z, Q, p, _nf):
 
 def Cb_2_m_loc(_z, Q, p, _nf):
     l = quad(
-        lambda x: Cb_2_m_reg(x, Q, p, _nf), 
-        0.0, 
+        lambda x: Cb_2_m_reg(x, Q, p, _nf),
+        0.0,
         1.0,
         points=(0.0, 1.0),
     )
@@ -138,7 +138,8 @@ def CLb_2_m_reg(z, Q, p, _nf):
     eta = xi / 4.0 * (1.0 / z - 1.0) - 1.0
     FHprefactor = Q2 / (np.pi * m_b**2) * e_h**2
     return FHprefactor / z * (4.0 * np.pi) ** 2 * LeProHQ.dq1("FL", "VV", xi, eta)
-    
+
+
 def CLg_1_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]

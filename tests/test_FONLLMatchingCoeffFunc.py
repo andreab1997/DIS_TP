@@ -1,20 +1,18 @@
-import numpy as np
 import pathlib
+
+import numpy as np
 from numpy.testing import assert_allclose
+from scipy.integrate import quad
+from test_MasslessCoeffFunc import MockESF
 from yadism.coefficient_functions.fonll.partonic_channel import (
-    PdfMatchingNNLLNonSinglet,
-    PdfMatchingNLLNonSinglet,
     PdfMatchingLLNonSinglet,
+    PdfMatchingNLLNonSinglet,
+    PdfMatchingNNLLNonSinglet,
 )
 
 from dis_tp import MatchingFunc as mf
 from dis_tp.Initialize import Initialize_all
 from dis_tp.parameters import charges, default_masses, initialize_theory
-
-from test_MasslessCoeffFunc import MockESF
-from dis_tp import MatchingFunc as mf
-
-from scipy.integrate import quad
 
 nf = 4
 mhq = default_masses(nf)
