@@ -2,7 +2,8 @@
 # notation: p[1] is Q while p[0] is m_b
 import numpy as np
 from eko.constants import CA, CF, TR
-from eko.matching_conditions import as2, as3
+from ekore.harmonics.constants import zeta2, zeta3
+from ekore.operator_matrix_elements.unpolarized.space_like import as2, as3
 
 from . import Initialize as Ini
 from . import parameters
@@ -17,14 +18,14 @@ def Mbg_1(z, p, nf):
 #  matching conditions A_Hq and A_hg wrt EKO
 def Mbg_2(z, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbg2(z, p[1])[0]
+        return Ini.Mbg2[nf - 4](z, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return 0.5 * inverse_mellin(as2.A_hg, z, nf, r, s, path, L)
 
 
 def Mbg_3_reg(z, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbg3(z, p[1])[0]
+        return Ini.Mbg3[nf - 4](z, p[1])[0]
     return Mbg_3_reg_inv(z, p, nf, use_analytic=use_analytic)
 
 
@@ -100,14 +101,14 @@ def Mgg_2_sing(z, p, nf):
 
 def Mbq_2(z, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbq2(z, p[1])[0]
+        return Ini.Mbq2[nf - 4](z, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return 0.5 * inverse_mellin(as2.A_hq_ps, z, nf, r, s, path, L)
 
 
 def Mbq_3_reg(z, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbq3(z, p[1])[0]
+        return Ini.Mbq3[nf - 4](z, p[1])[0]
     return Mbq_3_reg_inv(z, p, nf, use_analytic=use_analytic)
 
 
@@ -136,14 +137,14 @@ def Mgq_2_reg(z, p, nf):
 
 def Mbg_3_reg_inv(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbg3(x, p[1])[0]
+        return Ini.Mbg3[nf - 4](x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return 0.5 * inverse_mellin(as3.A_Hg, x, nf, r, s, path, L)
 
 
 def Mbq_3_reg_inv(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbq3(x, p[1])[0]
+        return Ini.Mbq3[nf - 4](x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return 0.5 * inverse_mellin(as3.A_Hq, x, nf, r, s, path, L)
 
@@ -155,3 +156,36 @@ def P1(p, nf):
 def P2(p):
     fact = np.log((p[1] ** 2) / (p[0] ** 2))
     return (2.0 / 9.0) * (2 * (fact**2) + 19 * 3 * fact + 7 * 3)  # Thanks EKO
+
+
+def Mqq_2_reg(z, p, _nf):
+    z2 = z * z
+    lnz = np.log(z)
+    lnz2 = lnz**2
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    ANS2qqH_R = (
+        (1.0 + z2) * (2.0 * lnz2 / 3.0 + 20.0 * lnz / 9.0) / (1.0 - z)
+        + 8.0 * (1.0 - z) * lnz / 3.0
+        + 44.0 / 27.0
+        - 268.0 * z / 27.0
+    )
+    omeL1 = -(8.0 * (1.0 + z2) * lnz / 3.0 / (1.0 - z) + 8.0 / 9.0 - 88.0 * z / 9.0)
+    omeL2 = -4.0 / 3.0 - 4.0 * z / 3.0
+    return CF * TR * (ANS2qqH_R + omeL1 * L + omeL2 * L**2)
+
+
+def Mqq_2_sing(z, p, _nf):
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    ANS2qqH_S = 224.0 / 27.0 / (1.0 - z)
+    omeL1 = -80.0 / 9.0 / (1.0 - z)
+    omeL2 = 8.0 / 3.0 / (1.0 - z)
+    return CF * TR * (ANS2qqH_S + omeL1 * L + omeL2 * L**2)
+
+
+def Mqq_2_loc(z, p, _nf):
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    ln1mz = np.log(1.0 - z)
+    ANS2qqH_L = -8.0 * zeta3 / 3.0 + 40.0 * zeta2 / 9.0 + 73.0 / 18.0 + 224 * ln1mz / 27
+    omeL1 = -(80.0 * ln1mz / 9.0 + 16.0 * zeta2 / 3.0 + 2.0 / 3.0)
+    omeL2 = 8.0 * ln1mz / 3.0 + 2.0
+    return CF * TR * (ANS2qqH_L + omeL1 * L + omeL2 * L**2)

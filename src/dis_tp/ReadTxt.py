@@ -3,6 +3,7 @@ import numpy as np
 from multiprocess import Pool
 
 from . import Initialize as Ini
+from .logging import console
 from .parameters import charges, default_masses, number_active_flavors
 
 
@@ -67,40 +68,6 @@ def readND(path_to_file):
     return list
 
 
-def readND_test(path_to_file):
-    """
-    Read a space-separated txt file and return a N-Dimensional list of the values
-
-    Input:
-        path_to_file : str
-            file to open
-    Returns:
-            : list
-        list of values
-    """
-    mylist = []
-    for line in open(path_to_file):
-        listWord = line.split(" ")
-        mylist.append(listWord)
-    templist = []
-    reslist = []
-    for counter, num in zip(range(len(mylist[0])), mylist[0]):
-        templist.append(num)
-        if (counter + 1) % len(Ini.ZList) == 0:
-            reslist.append(templist)
-            templist = []
-    list = [
-        [
-            float(item)
-            if item != "-nan" and item != "nan"
-            else float(reslist[a][reslist[a].index(item) - 1])
-            for item in reslist[a]
-        ]
-        for a in range(len(reslist))
-    ]
-    return list
-
-
 class Construct_Grid:
     def __init__(self, func, h_id, path, grid_type, n_pools=8):
         self.func = func
@@ -119,7 +86,7 @@ class Construct_Grid:
         z_func_values = []
         p = []
         i = self.xgrid.index(z)
-        print(f"Computing x = {z},  {i}/{len(self.xgrid)}")
+        console.log(f"[green]Computing x = {z},  {i}/{len(self.xgrid)}")
         for q in self.qgrid:
             p = [self.mass, q, self.e_h]
             if self.grid_type == "matching":
@@ -129,7 +96,6 @@ class Construct_Grid:
         return z_func_values
 
     def run(self):
-
         args = (self.construct_single_x, self.xgrid)
         with Pool(self.n_pools) as pool:
             result = pool.map(*args)
@@ -137,6 +103,6 @@ class Construct_Grid:
         func_values = []
         for res in result:
             func_values.append(res)
-        print(f"Computation finished, saving to {self.path}")
+        console.log(f"Computation finished, saving to {self.path}")
         np.savetxt(self.path, func_values)
         return func_values

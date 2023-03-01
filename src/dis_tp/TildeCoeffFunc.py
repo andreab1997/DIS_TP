@@ -6,51 +6,18 @@ from eko.constants import CF, TR
 
 from . import Initialize as Ini
 from . import parameters
-from .MassiveCoeffFunc import (
-    Cg_1_m_reg,
-    Cg_2_m_reg,
-    Cg_3_m_reg,
-    CLg_1_m_reg,
-    CLg_2_m_reg,
-    CLg_3_m_reg,
-    CLq_2_m_reg,
-    CLq_3_m_reg,
-    Cq_2_m_reg,
-    Cq_3_m_reg,
-)
-from .MasslessCoeffFunc import (
-    Cb_0_loc,
-    Cb_1_loc,
-    Cb_1_reg,
-    Cb_1_sing,
-    Cb_2_loc,
-    Cb_2_reg,
-    Cb_2_sing,
-    CLb_1_reg,
-    CLb_2_loc,
-    CLb_2_reg,
-)
-from .MatchingFunc import (
-    P1,
-    P2,
-    Mbg_1,
-    Mbg_2,
-    Mbg_3_reg,
-    Mbq_2,
-    Mbq_3_reg,
-    Mgg_1_loc,
-    Mgg_2_loc,
-    Mgg_2_reg,
-    Mgg_2_sing,
-    Mgq_2_reg,
-)
-from .tools import (
-    Convolute,
-    Convolute_matching,
-    Convolute_plus_coeff,
-    Convolute_plus_matching,
-    Convolute_plus_matching_per_matching,
-)
+from .MassiveCoeffFunc import (Cg_1_m_reg, Cg_2_m_reg, Cg_3_m_reg, CLg_1_m_reg,
+                               CLg_2_m_reg, CLg_3_m_reg, CLq_2_m_reg,
+                               CLq_3_m_reg, Cq_2_m_reg, Cq_3_m_reg)
+from .MasslessCoeffFunc import (Cb_0_loc, Cb_1_loc, Cb_1_reg, Cb_1_sing,
+                                Cb_2_loc, Cb_2_reg, Cb_2_sing, CLb_1_reg,
+                                CLb_2_loc, CLb_2_reg)
+from .MatchingFunc import (P1, P2, Mbg_1, Mbg_2, Mbg_3_reg, Mbq_2, Mbq_3_reg,
+                           Mgg_1_loc, Mgg_2_loc, Mgg_2_reg, Mgg_2_sing,
+                           Mgq_2_reg)
+from .structure_functions.heavy_tools import (
+    Convolute, Convolute_matching, Convolute_plus_coeff,
+    Convolute_plus_matching, Convolute_plus_matching_per_matching)
 
 
 def Cb1_Mbg1(z, p, nf):
@@ -89,7 +56,7 @@ def Cg_1_til_reg(z, Q, p, nf):
 
 def Cg_2_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Cg2_til(z, Q)[0]
+        return Ini.Cg2_til[nf - 4](z, Q)[0]
     return (
         Cg_2_m_reg(z, Q, p, nf - 1)
         - 2
@@ -101,9 +68,9 @@ def Cg_2_til_reg(z, Q, p, nf, use_analytic=False):
 
 def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Cg3_til(z, Q)[0]
+        return Ini.Cg3_til[nf - 4](z, Q)[0]
     return (
-        Cg_3_m_reg(z, Q, p, nf - 1)
+        Cg_3_m_reg(z, Q, p, nf)
         + Cg_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
         + P2(p) * Cg_1_m_reg(z, Q, p, nf - 1)
         - (
@@ -141,16 +108,16 @@ def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
 
 def Cq_2_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Cq2_til(z, Q)[0]
+        return Ini.Cq2_til[nf - 4](z, Q)[0]
     return Cq_2_m_reg(z, Q, p, nf - 1) - 2 * Cb_0_loc(z, Q, p, nf) * Mbq_2(z, p, nf)
 
 
 def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
     q = [p[0], Q]
     if parameters.grids and not use_analytic:
-        return Ini.Cq3_til(z, Q)[0]
+        return Ini.Cq3_til[nf - 4](z, Q)[0]
     return (
-        Cq_3_m_reg(z, Q, p, nf - 1)
+        Cq_3_m_reg(z, Q, p, nf)
         + 2 * Cq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
         - Convolute(Cg_1_m_reg, Mgq_2_reg, z, Q, p, nf, nf - 1)
         - 2
@@ -170,7 +137,7 @@ def CLg_1_til_reg(z, Q, p, nf):
 
 def CLg_2_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.CLg2_til(z, Q)[0]
+        return Ini.CLg2_til[nf - 4](z, Q)[0]
     return CLg_2_m_reg(z, Q, p, nf - 1) - 2 * np.log(
         (Q**2) / (p[0] ** 2)
     ) * CLb1_Mbg1(z, p, nf)
@@ -178,9 +145,9 @@ def CLg_2_til_reg(z, Q, p, nf, use_analytic=False):
 
 def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.CLg3_til(z, Q)[0]
+        return Ini.CLg3_til[nf - 4](z, Q)[0]
     return (
-        CLg_3_m_reg(z, Q, p, nf - 1)
+        CLg_3_m_reg(z, Q, p, nf)
         + CLg_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
         + P2(p) * CLg_1_m_reg(z, Q, p, nf - 1)
         - (
@@ -203,15 +170,15 @@ def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
 
 def CLq_2_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.CLq2_til(z, Q)[0]
+        return Ini.CLq2_til[nf - 4](z, Q)[0]
     return CLq_2_m_reg(z, Q, p, nf - 1)
 
 
 def CLq_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.CLq3_til(z, Q)[0]
+        return Ini.CLq3_til[nf - 4](z, Q)[0]
     return (
-        CLq_3_m_reg(z, Q, p, nf - 1)
+        CLq_3_m_reg(z, Q, p, nf)
         + 2 * CLq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
         - Convolute(CLg_1_m_reg, Mgq_2_reg, z, Q, p, nf, nf - 1)
         - 2 * Convolute(CLb_1_reg, Mbq_2, z, Q, p, nf)

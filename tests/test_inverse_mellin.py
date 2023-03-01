@@ -7,8 +7,9 @@ from dis_tp.parameters import initialize_theory
 
 Q = 10.0
 nf = 4
-mass = 1.51
-initialize_theory(use_grids=False, h_id=nf, mass=mass)
+masses = [1.51, 4.92, 172.5]
+mass = masses[nf - 4]
+initialize_theory(use_grids=False, masses=masses)
 
 
 def test_Talbot_parameters():

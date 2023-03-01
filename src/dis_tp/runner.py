@@ -3,47 +3,76 @@ import functools
 import numpy as np
 from multiprocess import Pool
 
-from dis_tp import Integration as Int
+from dis_tp import Initialize as Ini
 
 from . import configs, io
+from .logging import console
 from .parameters import initialize_theory, number_active_flavors
+from .structure_functions import f2, fl
 
-maporders = {"LO": 0, "NLO": 1, "NNLO": 2, "N3LO": 3}
 mapfunc = {
-    "F2": {"R": [Int.F2_R], "M": [Int.F2_M], "FO": [Int.F2_FO]},
-    "FL": {"R": [Int.FL_R], "M": [Int.FL_M], "FO": [Int.FL_FO]},
+    "F2": {
+        "R": [f2.F2_R],
+        "M": [f2.F2_M],
+        "FO": [f2.F2_FO],
+        "light": [f2.F2_Light],
+        "total": [f2.F2_Total],
+        "FONLL": [f2.F2_FONLL],
+    },
+    "FL": {
+        "R": [fl.FL_R],
+        "M": [fl.FL_M],
+        "FO": [fl.FL_FO],
+        "light": [fl.FL_Light],
+        "total": [fl.FL_Total],
+        "FONLL": [fl.FL_FONLL],
+    },
     "XSHERANCAVG": {
-        "R": [Int.F2_R, Int.FL_R],
-        "M": [Int.F2_M, Int.FL_M],
-        "FO": [Int.F2_FO, Int.FL_FO],
+        "R": [f2.F2_R, fl.FL_R],
+        "M": [f2.F2_M, fl.FL_M],
+        "FO": [f2.F2_FO, fl.FL_FO],
+        "FONLL": [f2.F2_FONLL, fl.FL_FONLL],
+        "light": [f2.F2_Light, fl.FL_Light],
+        "total": [f2.F2_Total, fl.FL_Total],
     },
     # NOTE: for the moment this coincide with the averaged xs
     # since here we don't provide F3
     "XSHERANC": {
-        "R": [Int.F2_R, Int.FL_R],
-        "M": [Int.F2_M, Int.FL_M],
-        "FO": [Int.F2_FO, Int.FL_FO],
+        "R": [f2.F2_R, fl.FL_R],
+        "M": [f2.F2_M, fl.FL_M],
+        "FO": [f2.F2_FO, fl.FL_FO],
+        "FONLL": [f2.F2_FONLL, fl.FL_FONLL],
+        "light": [f2.F2_Light, fl.FL_Light],
+        "total": [f2.F2_Total, fl.FL_Total],
     },
 }
 
+
+def heavyness_to_nf(heavyness):
+    map_heavyness = {"charm": 4, "bottom": 5, "light": None, "total": None}
+    return map_heavyness[heavyness]
+
+
 # TODO: rename External to be grids
 class Runner:
-    def __init__(self, o_card, t_card) -> None:
-
-        cfg = configs.load()
+    def __init__(self, o_card, t_card, config_path=None) -> None:
+        cfg = configs.load(config_path)
         cfg = configs.defaults(cfg)
         dest_path = cfg["paths"]["results"]
-        obs_obj = io.load_operator_parameters(cfg, o_card)
-        th_obj = io.load_theory_parameters(cfg, t_card)
+        if isinstance(t_card, io.TheoryParameters):
+            th_obj = t_card
+        else:
+            th_obj = io.TheoryParameters.load_card(cfg, t_card)
+        if isinstance(o_card, io.OperatorParameters):
+            obs_obj = o_card
+        else:
+            obs_obj = io.OperatorParameters.load_card(cfg, o_card)
+
         self.runparameters = io.RunParameters(th_obj, obs_obj, dest_path)
         self.o_par = self.runparameters.operator_parameters()
         self.t_par = self.runparameters.theory_parameters()
 
-        # Initializing
-        hid = self.t_par.hid
-        nf = number_active_flavors(hid)
-        initialize_theory(th_obj.grids, hid, th_obj.mass)
-        Int.Initialize_all(nf)
+        initialize_theory(th_obj.grids, th_obj.masses, th_obj.strong_coupling)
         self.partial_sf = None
 
     @staticmethod
@@ -56,35 +85,34 @@ class Runner:
 
     def compute_sf(self, kins):
         x, q = kins
-        # print(f"x={x}, Q={q}")
+        # console.log(f"x={x}, Q={q}")
         return float(self.partial_sf(x=x, Q=q))
 
     def compute(self, n_cores):
-        order = maporders[self.t_par.order]
         # loop on observables
         for ob in self.o_par.obs:
+            hid = heavyness_to_nf(ob.heavyness)
+            nf = number_active_flavors(hid)
+
+            if ob.heavyness != "light" and (self.t_par.grids or self.t_par.order == 3):
+                Ini.Initialize_all(nf)
+
             func_to_call = mapfunc[ob.name][ob.restype]
             thisob_res = []
 
             # loop on SF
             for func in func_to_call:
-                # TODO: eliminate this if
-                if func in [Int.F2_M, Int.FL_M]:
-                    self.partial_sf = functools.partial(
-                        func,
-                        order=order,
-                        meth=self.t_par.fns,
-                        pdf=ob.pdf,
-                        h_id=self.t_par.hid,
-                    )
-                else:
-                    self.partial_sf = functools.partial(
-                        func,
-                        order=maporders[self.t_par.order],
-                        pdf=ob.pdf,
-                        h_id=self.t_par.hid,
-                    )
-                print(f"Start computation of {func.__name__} ...")
+                self.partial_sf = functools.partial(
+                    func,
+                    order=self.t_par.order,
+                    meth=self.t_par.fns,
+                    pdf=ob.pdf,
+                    h_id=nf,
+                    target_dict=self.o_par.target_dict,
+                )
+                console.log(
+                    f"[green]Computing {func.__name__} @ order: {self.t_par.order} ..."
+                )
                 args = (self.compute_sf, zip(ob.x_grid, ob.q_grid))
                 if n_cores == 1:
                     sf_map = map(*args)

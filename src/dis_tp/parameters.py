@@ -6,15 +6,26 @@ pids = {"g": 21, "c": 4, "b": 5, "t": 6}
 
 
 def number_active_flavors(h_id):
+    if h_id is None:
+        return None
     return np.abs(h_id)
 
 
-def number_light_flavors(h_id):
-    return np.abs(h_id) - 1
+def number_light_flavors(Q):
+    """This should match the FONLL prescription."""
+    nf = 3
+    if Q > _masses[1]:
+        nf += 1
+    if Q > _masses[2]:
+        nf += 1
+    return nf
 
 
 def charges(h_id):
     ch = {
+        1: -1.0 / 3.0,
+        2: 2.0 / 3.0,
+        3: -1.0 / 3.0,
         4: 2.0 / 3.0,
         5: -1.0 / 3.0,
         6: 2.0 / 3.0,
@@ -27,26 +38,33 @@ def default_masses(h_id):
     return m[h_id]
 
 
-def initialize_theory(use_grids, h_id=None, mass=None):
-    if not use_grids and mass is None:
+def initialize_theory(use_grids, masses=None, strong_coupling=None):
+    if not use_grids and masses is None:
         raise ValueError(
-            f"Need to specify heavy particle mass when grids are not used."
+            f"Need to specify heavy particle masses when grids are not used."
         )
-    if use_grids and h_id is None:
-        raise ValueError(f"Need to specify heavy particle id in order to use grids.")
-    if use_grids and mass is not None:
-        if not np.isclose(mass, default_masses(h_id)):
-            raise ValueError(
-                f"Grids are only available for the default mass {default_masses(h_id)}."
-            )
+    if use_grids and masses is not None:
+        for i, mass in enumerate(masses):
+            if not np.isclose(mass, default_masses(i + 4)):
+                raise ValueError(
+                    f"Grids are only available for the default mass {default_masses(i+4)}."
+                )
     global grids
-    global _mass
+    global _masses
     grids = use_grids
-    if mass is None:
-        _mass = default_masses(h_id)
+    if masses is None:
+        _masses = [default_masses(4), default_masses(5), default_masses(6)]
     else:
-        _mass = mass
+        _masses = masses
+
+    if strong_coupling is not None:
+        global _alpha_s
+        _alpha_s = strong_coupling.a_s
 
 
 def masses(h_id):
-    return _mass
+    return _masses[h_id - 4]
+
+
+def alpha_s(mur2, q2):
+    return _alpha_s(mur2, q2)

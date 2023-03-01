@@ -1,2 +1,2 @@
-from . import grids, compute
+from . import compute, grids
 from .base import command

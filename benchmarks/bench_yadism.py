@@ -6,13 +6,11 @@ import numpy as np
 import pandas as pd
 import yadism
 import yaml
-from df_to_table import df_to_table
+from dis_tp.logging import df_to_table
+from dis_tp.runner import Runner
 from eko.interpolation import make_grid
 from rich.console import Console
 from yadmark.data import observables
-
-from dis_tp import parameters
-from dis_tp.runner import Runner
 
 console = Console()
 
@@ -20,7 +18,7 @@ here = pathlib.Path(__file__).absolute().parent
 
 
 class TheoryCard:
-    def __init__(self, pto, hid):
+    def __init__(self, pto):
         with open(
             here / "../project/theory_cards/400.yaml",
         ) as file:
@@ -28,21 +26,18 @@ class TheoryCard:
 
         th["TMC"] = 0
         th["IC"] = 0
+        th["FactScaleVar"] = False
+        th["RenScaleVar"] = False
         th["PTO"] = pto
-
-        th["NfFF"] = hid
         self.t_card = th
 
     def yadism_like(self):
         return self.t_card
 
     def dis_tp_like(self):
-        new_t_card = {}
-        new_t_card["grids"] = False
-        new_t_card["hid"] = self.t_card["NfFF"]
-        new_t_card["mass"] = parameters.default_masses(new_t_card["hid"])
+        new_t_card = self.t_card
+        new_t_card["grids"] = True
         new_t_card["fns"] = "fonll"
-        new_t_card["order"] = "N" * self.t_card["PTO"] + "LO"
         return new_t_card
 
 
@@ -60,6 +55,7 @@ class Observable_card:
         obs["TargetDIS"] = "proton"
         obs["observables"] = {}
         kinematics = [
+            # {"x": float(x_fixed), "Q2": float(q2), "y": 0.0018429} for q2 in q2_grid
             {"x": float(x_fixed), "Q2": float(q2), "y": 0.5} for q2 in q2_grid
         ]
         kinematics.extend(
@@ -76,12 +72,13 @@ class Observable_card:
     def dis_tp_like(self, pdf_name):
         new_o_card = {}
         new_o_card["obs"] = {}
+        new_o_card["TargetDIS"] = self.o_card["TargetDIS"]
         for fx, kins in self.o_card["observables"].items():
             new_kins = [
                 {"x": point["x"], "q": np.sqrt(point["Q2"]), "y": point["y"]}
                 for point in kins
             ]
-            new_o_card["obs"][fx.split("_")[0]] = {
+            new_o_card["obs"][fx] = {
                 "PDF": pdf_name,
                 "restype": self.restype,
                 "scalevar": False,
@@ -111,8 +108,8 @@ class BenchmarkRunner:
         return runner.results
 
     def run(self):
-        yad_log = self.run_yadism()
         dis_tp_log = self.run_dis_tp()
+        yad_log = self.run_yadism()
         self.log(dis_tp_log, yad_log)
 
     @staticmethod
@@ -137,35 +134,46 @@ class BenchmarkRunner:
 def benchmarkF_M_bottom(pto, pdf_name):
     obs_names = [f"F2_bottom", f"FL_bottom"]  # , f"XSHERANCAVG_{flavor}"]
     obs_obj = Observable_card(obs_names, q_min=5, q_max=100, restype="M")
-    th_obj = TheoryCard(pto, hid=5)
+    th_obj = TheoryCard(pto)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
 
 def benchmarkFO_bottom(pto, pdf_name):
     obs_names = [f"F2_bottom", f"FL_bottom"]  # , f"XSHERANCAVG_{flavor}"]
-    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=4.5, restype="FO")
-    th_obj = TheoryCard(pto, hid=5)
+    obs_obj = Observable_card(obs_names, q_min=1.5, q_max=6, q_fixed=4.5, restype="FO")
+    th_obj = TheoryCard(pto)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
 def benchmarkF_M_charm(pto, pdf_name):
     obs_names = ["XSHERANCAVG_charm"] #[f"F2_charm", f"FL_charm"]
     obs_obj = Observable_card(obs_names, q_min=1.5, q_max=5, q_fixed=3, restype="M")
-    th_obj = TheoryCard(pto, hid=4)
+    th_obj = TheoryCard(pto)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
 
 def benchmarkFO_charm(pto, pdf_name):
-    obs_names = ["XSHERANCAVG_charm"] # [f"F2_charm", f"FL_charm"]
+    obs_names = [f"F2_charm", f"FL_charm"] # ["XSHERANCAVG_charm"]
     obs_obj = Observable_card(
-        obs_names, q_min=1.2, q_max=1.5, q_fixed=1.4, restype="FO"
+        obs_names, q_min=1, q_max=1.6, q_fixed=1.4, restype="FO"
     )
-    th_obj = TheoryCard(pto, hid=4)
+    th_obj = TheoryCard(pto)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
+
+def benchmarkFONLL(pto, pdf_name, heavyness):
+    obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"] # [f"XSHERANCAVG_{heavyness}"]
+    q_fixed= 10 if heavyness=="charm" else 30
+    x_fixed= 0.01 if heavyness=="charm" else 0.001
+    obs_obj = Observable_card(
+        obs_names, q_min=1, q_max=100, q_fixed=q_fixed, x_fixed=x_fixed, restype="FONLL"
+    )
+    th_obj = TheoryCard(pto)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
 
 if __name__ == "__main__":
 
@@ -173,5 +181,8 @@ if __name__ == "__main__":
     # obj = benchmarkF_M_bottom(pto=2, pdf_name=pdf_name)
     # obj = benchmarkFO_bottom(pto=1, pdf_name=pdf_name)
 
-    obj = benchmarkF_M_charm(pto=2, pdf_name=pdf_name)
-    obj = benchmarkFO_charm(pto=2, pdf_name=pdf_name)
+    # obj = benchmarkF_M_charm(pto=1, pdf_name=pdf_name)
+    # obj = benchmarkFO_charm(pto=1, pdf_name=pdf_name)
+    benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="bottom")
+    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="light")
+    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="total")

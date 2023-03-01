@@ -8,8 +8,8 @@ import numpy as np
 from progress.bar import Bar
 from simple_term_menu import TerminalMenu
 
-from dis_tp import Integration as Int
-from dis_tp.Initialize import PATH_TO_GLOBAL
+from dis_tp.Initialize import PATH_TO_GLOBAL, Initialize_all
+from dis_tp.structure_functions import f2, fl
 
 
 def main():
@@ -209,7 +209,7 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
         print("\nInitialization in progress...")
         # Initializing global data
         nf = 5
-        Int.Initialize_all(nf)
+        Initialize_all(nf)
         bar.next()
         print("\nComputation of Structure Functions is starting...")
         for Sf in Stru_func:
@@ -218,7 +218,7 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                     res = np.array(
                         [
                             [
-                                Int.F2_FO(
+                                f2.F2_FO(
                                     intorders.index(ord) + 1,
                                     "NNPDF40_" + map_PDFsorder[ord] + "_as_01180_nf_4",
                                     x,
@@ -235,7 +235,7 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                     res = np.array(
                         [
                             [
-                                Int.FL_FO(
+                                fl.FL_FO(
                                     intorders.index(ord) + 1,
                                     "NNPDF40_" + map_PDFsorder[ord] + "_as_01180_nf_4",
                                     x,
@@ -260,15 +260,15 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                                 [
                                     [
                                         (
-                                            lambda q: Int.F2_M(
+                                            lambda q: f2.F2_M(
                                                 intorders.index(ord) + 1,
-                                                met,
                                                 "NNPDF40_"
                                                 + map_PDFsorder[ord]
                                                 + "_as_01180",
                                                 x,
                                                 q,
                                                 nf,
+                                                met,
                                             )
                                             if q > thre[list(ratios).index(ratio)]
                                             else FO[Sf][ord][X.index(x)][
@@ -288,7 +288,7 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                                     [
                                         [
                                             (
-                                                lambda q: Int.F2_R(
+                                                lambda q: f2.F2_R(
                                                     intorders.index(ord) + 1,
                                                     "NNPDF40_"
                                                     + map_PDFsorder[ord]
@@ -317,15 +317,15 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                                 [
                                     [
                                         (
-                                            lambda q: Int.FL_M(
+                                            lambda q: fl.FL_M(
                                                 intorders.index(ord) + 1,
-                                                met,
                                                 "NNPDF40_"
                                                 + map_PDFsorder[ord]
                                                 + "_as_01180",
                                                 x,
                                                 q,
                                                 nf,
+                                                met,
                                             )
                                             if q > thre[list(ratios).index(ratio)]
                                             else FO[Sf][ord][X.index(x)][
@@ -345,7 +345,7 @@ def do_the_calculation(Stru_func, Methods, map_PDFsorder, scalevar):
                                     [
                                         [
                                             (
-                                                lambda q: Int.FL_R(
+                                                lambda q: fl.FL_R(
                                                     intorders.index(ord) + 1,
                                                     "NNPDF40_"
                                                     + map_PDFsorder[ord]
