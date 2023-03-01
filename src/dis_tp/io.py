@@ -11,13 +11,15 @@ from .logging import console
 class TheoryParameters:
     """Class containing all the theory parameters."""
 
-    def __init__(self, order, fns, masses, sc, grids, full_card=None):
+    def __init__(self, order, fns, masses, sc, grids, tmc, target_mass, full_card=None):
         self.order = order
         self.fns = fns
         self.masses = masses
         self.grids = grids
         self._t_card = full_card
         self.strong_coupling = sc
+        self.tmc = tmc
+        self.target_mass = target_mass
 
         if not self.grids:
             console.log(
@@ -39,11 +41,6 @@ class TheoryParameters:
             th = name
 
         # Disable some NNPDF features not included here
-        if "TMC" in th and th["TMC"] != 0:
-            console.log(
-                "[red underline]Warning, disable Target Mass Corrections:", "TMC=0"
-            )
-            th["TMC"] = 0
         if "IC" in th and th["IC"] == 1:
             console.log("[red underline]Warning, disable Intrinsic Charm:", "IC=0")
             th["IC"] = 0
@@ -59,6 +56,14 @@ class TheoryParameters:
                 "RenScaleVar=0",
             )
             th["RenScaleVar"] = False
+
+        tmc = th.get("TMC", 0)
+        if tmc in [1,3]:
+            tmc = 2
+            console.log(
+                f"[blue underline]Warning, TMC = 2 (approx) is the only one implemented."
+            )
+        target_mass = th.get("MP", 0.938)
 
         # compatibility layer
         # PTO
@@ -94,7 +99,14 @@ class TheoryParameters:
             thresholds_ratios=[1.0, 1.0, 1.0],
         )
         return cls(
-            order=order, fns=fns, grids=grids, masses=masses, sc=sc, full_card=th
+            order=order,
+            fns=fns,
+            grids=grids,
+            masses=masses,
+            sc=sc,
+            tmc=tmc,
+            target_mass=target_mass,
+            full_card=th,
         )
 
 

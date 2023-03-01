@@ -7,6 +7,7 @@ from dis_tp import Initialize as Ini
 
 from . import configs, io
 from .logging import console
+from .tmc import TMC_StructureFunction
 from .parameters import initialize_theory, number_active_flavors
 from .structure_functions import f2, fl
 
@@ -88,6 +89,34 @@ class Runner:
         # console.log(f"x={x}, Q={q}")
         return float(self.partial_sf(x=x, Q=q))
 
+    def setup_tmc(self, func, nf, ob):
+        if "FL" in func.__name__:
+            partial_fl = functools.partial(
+                func,
+                order=self.t_par.order,
+                meth=self.t_par.fns,
+                pdf=ob.pdf,
+                h_id=nf,
+                target_dict=self.o_par.target_dict,
+            )
+            f2 = mapfunc["F2"][ob.restype][0]
+        else:
+            f2 = func
+            partial_fl = None
+        partial_f2 = functools.partial(
+            f2,
+            order=self.t_par.order,
+            meth=self.t_par.fns,
+            pdf=ob.pdf,
+            h_id=nf,
+            target_dict=self.o_par.target_dict,
+        )
+        return TMC_StructureFunction(
+            f2=partial_f2,
+            target_mass=self.t_par.target_mass,
+            fl=partial_fl,
+        )
+
     def compute(self, n_cores):
         # loop on observables
         for ob in self.o_par.obs:
@@ -102,14 +131,19 @@ class Runner:
 
             # loop on SF
             for func in func_to_call:
-                self.partial_sf = functools.partial(
-                    func,
-                    order=self.t_par.order,
-                    meth=self.t_par.fns,
-                    pdf=ob.pdf,
-                    h_id=nf,
-                    target_dict=self.o_par.target_dict,
-                )
+            
+                if self.t_par.tmc == 2:
+                    self.partial_sf = self.setup_tmc(func, nf, ob)
+                else:
+                    self.partial_sf = functools.partial(
+                        func,
+                        order=self.t_par.order,
+                        meth=self.t_par.fns,
+                        pdf=ob.pdf,
+                        h_id=nf,
+                        target_dict=self.o_par.target_dict,
+                    )
+
                 console.log(
                     f"[green]Computing {func.__name__} @ order: {self.t_par.order} ..."
                 )

@@ -24,7 +24,6 @@ class TheoryCard:
         ) as file:
             th = yaml.safe_load(file)
 
-        th["TMC"] = 0
         th["IC"] = 0
         th["FactScaleVar"] = False
         th["RenScaleVar"] = False
@@ -37,6 +36,8 @@ class TheoryCard:
     def dis_tp_like(self):
         new_t_card = self.t_card
         new_t_card["grids"] = True
+        new_t_card["TMC"] = self.t_card["TMC"]
+        # new_t_card["NfFF"] = self.t_card["NfFF"]
         new_t_card["fns"] = "fonll"
         return new_t_card
 
