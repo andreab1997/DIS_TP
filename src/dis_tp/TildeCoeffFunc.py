@@ -6,51 +6,18 @@ from eko.constants import CF, TR
 
 from . import Initialize as Ini
 from . import parameters
-from .MassiveCoeffFunc import (
-    Cg_1_m_reg,
-    Cg_2_m_reg,
-    Cg_3_m_reg,
-    CLg_1_m_reg,
-    CLg_2_m_reg,
-    CLg_3_m_reg,
-    CLq_2_m_reg,
-    CLq_3_m_reg,
-    Cq_2_m_reg,
-    Cq_3_m_reg,
-)
-from .MasslessCoeffFunc import (
-    Cb_0_loc,
-    Cb_1_loc,
-    Cb_1_reg,
-    Cb_1_sing,
-    Cb_2_loc,
-    Cb_2_reg,
-    Cb_2_sing,
-    CLb_1_reg,
-    CLb_2_loc,
-    CLb_2_reg,
-)
-from .MatchingFunc import (
-    P1,
-    P2,
-    Mbg_1,
-    Mbg_2,
-    Mbg_3_reg,
-    Mbq_2,
-    Mbq_3_reg,
-    Mgg_1_loc,
-    Mgg_2_loc,
-    Mgg_2_reg,
-    Mgg_2_sing,
-    Mgq_2_reg,
-)
+from .MassiveCoeffFunc import (Cg_1_m_reg, Cg_2_m_reg, Cg_3_m_reg, CLg_1_m_reg,
+                               CLg_2_m_reg, CLg_3_m_reg, CLq_2_m_reg,
+                               CLq_3_m_reg, Cq_2_m_reg, Cq_3_m_reg)
+from .MasslessCoeffFunc import (Cb_0_loc, Cb_1_loc, Cb_1_reg, Cb_1_sing,
+                                Cb_2_loc, Cb_2_reg, Cb_2_sing, CLb_1_reg,
+                                CLb_2_loc, CLb_2_reg)
+from .MatchingFunc import (P1, P2, Mbg_1, Mbg_2, Mbg_3_reg, Mbq_2, Mbq_3_reg,
+                           Mgg_1_loc, Mgg_2_loc, Mgg_2_reg, Mgg_2_sing,
+                           Mgq_2_reg)
 from .structure_functions.heavy_tools import (
-    Convolute,
-    Convolute_matching,
-    Convolute_plus_coeff,
-    Convolute_plus_matching,
-    Convolute_plus_matching_per_matching,
-)
+    Convolute, Convolute_matching, Convolute_plus_coeff,
+    Convolute_plus_matching, Convolute_plus_matching_per_matching)
 
 
 def Cb1_Mbg1(z, p, nf):

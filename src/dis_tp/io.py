@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 import yaml
-
 from eko.couplings import Couplings
+from eko.io import types
+
 from . import parameters
 from .logging import console
 
@@ -20,6 +21,11 @@ class TheoryParameters:
         self.tmc = tmc
         self.target_mass = target_mass
 
+        if not self.grids:
+            console.log(
+                "[yellow underline]Warning, grids are not enabled, this might take a while ..."
+            )
+
     def yadism_like(self):
         return self._t_card
 
@@ -36,7 +42,7 @@ class TheoryParameters:
 
         # Disable some NNPDF features not included here
         if "IC" in th and th["IC"] == 1:
-            console.log("[red underline]Warning, disable Intrinsic Charm: ", "IC=0")
+            console.log("[red underline]Warning, disable Intrinsic Charm:", "IC=0")
             th["IC"] = 0
         if "FactScaleVar" in th and th["FactScaleVar"]:
             console.log(
@@ -72,21 +78,25 @@ class TheoryParameters:
         mb = th.get("mb", parameters.default_masses(5))
         mt = th.get("mt", parameters.default_masses(6))
         masses = [mc, mb, mt]
-        method = "expanded"
+        method = types.CouplingEvolutionMethod.EXPANDED
         if "ModEv" in th and th["ModEv"] == "EXA":
-            method = "exact"
-        sc = Couplings(
-            couplings_ref=np.array(
-                [th.get("alpahs", 0.118), th.get("alphaqed", 0.007496252)]
+            method = types.CouplingEvolutionMethod.EXACT
+
+        ref = types.CouplingsRef(
+            alphas=types.FloatRef(
+                value=th.get("alpahs", 0.118), scale=th.get("Qref", 91.2)
             ),
-            scale_ref=th.get("Qref", 91.2) ** 2,
-            masses=np.array(masses) ** 2,
-            thresholds_ratios=[1, 1, 1],
+            alphaem=types.FloatRef(value=th.get("alphaqed", 0.007496252), scale=np.nan),
+            max_num_flavs=th.get("MaxNfAs", 5),
+            num_flavs_ref=th.get("nfref", 5),
+        )
+        sc = Couplings(
+            couplings=ref,
             order=(order + 1, 0),
-            nf_ref=th.get("nfref", 5),
             method=method,
-            max_nf=th.get("MaxNfAs", 5),
-            hqm_scheme=th.get("HQ", "POLE"),
+            masses=np.array(masses) ** 2,
+            hqm_scheme=types.QuarkMassSchemes.POLE,
+            thresholds_ratios=[1.0, 1.0, 1.0],
         )
         return cls(
             order=order,
@@ -147,6 +157,7 @@ class OperatorParameters:
             obs = name
 
         # Disables some NNPDF settings
+        # TODO: implement NC and F3
         if "prDIS" in obs and obs["prDIS"] != "EM":
             console.log("[red underline]Warning, setting:", "prDIS = EM")
             obs["prDIS"] = "EM"
@@ -169,9 +180,9 @@ class OperatorParameters:
         if "obs" in obs:
             observables = []
             for ob in obs["obs"]:
-
                 # TODO: light and total are always in FONLL mode
-                # here heavyness and resytpe are not yet disentangled
+                # here heavyness and resytpe are not yet disentangled:
+                # restype sholud come from the theory runcard
                 heavyness = ob.split("_")[1]
                 restype = obs["obs"][ob]["restype"]
                 if heavyness in ["light", "total"]:
@@ -196,14 +207,17 @@ class OperatorParameters:
 
                 # whenever you are running a Kfact only FONLL is allowed
                 restype = "FONLL"
-                heavyness = fx.split("_")[1]
+                try:
+                    heavyness = fx.split("_")[1]
+                except IndexError:
+                    heavyness = "total"
                 if heavyness in ["light", "total"]:
                     restype = heavyness
 
                 observables.append(
                     Observable(
                         name=fx.split("_")[0],
-                        heavyness=fx.split("_")[1],
+                        heavyness=heavyness,
                         pdf=pdf_name,
                         restype=restype,
                         kinematics=new_kins,

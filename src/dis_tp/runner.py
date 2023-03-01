@@ -4,12 +4,12 @@ import numpy as np
 from multiprocess import Pool
 
 from dis_tp import Initialize as Ini
-from .structure_functions import f2, fl
 
 from . import configs, io
-from .parameters import initialize_theory, number_active_flavors
 from .logging import console
 from .tmc import TMC_StructureFunction
+from .parameters import initialize_theory, number_active_flavors
+from .structure_functions import f2, fl
 
 mapfunc = {
     "F2": {
@@ -56,19 +56,19 @@ def heavyness_to_nf(heavyness):
 
 # TODO: rename External to be grids
 class Runner:
-    def __init__(self, o_card, t_card) -> None:
-
-        cfg = configs.load()
+    def __init__(self, o_card, t_card, config_path=None) -> None:
+        cfg = configs.load(config_path)
         cfg = configs.defaults(cfg)
         dest_path = cfg["paths"]["results"]
-        if isinstance(o_card, io.OperatorParameters):
-            obs_obj = o_card
-        else:
-            obs_obj = io.OperatorParameters.load_card(cfg, o_card)
         if isinstance(t_card, io.TheoryParameters):
             th_obj = t_card
         else:
             th_obj = io.TheoryParameters.load_card(cfg, t_card)
+        if isinstance(o_card, io.OperatorParameters):
+            obs_obj = o_card
+        else:
+            obs_obj = io.OperatorParameters.load_card(cfg, o_card)
+
         self.runparameters = io.RunParameters(th_obj, obs_obj, dest_path)
         self.o_par = self.runparameters.operator_parameters()
         self.t_par = self.runparameters.theory_parameters()
@@ -118,14 +118,12 @@ class Runner:
         )
 
     def compute(self, n_cores):
-
         # loop on observables
         for ob in self.o_par.obs:
-
             hid = heavyness_to_nf(ob.heavyness)
             nf = number_active_flavors(hid)
 
-            if ob.heavyness != "light":
+            if ob.heavyness != "light" and (self.t_par.grids or self.t_par.order == 3):
                 Ini.Initialize_all(nf)
 
             func_to_call = mapfunc[ob.name][ob.restype]
@@ -145,6 +143,7 @@ class Runner:
                         h_id=nf,
                         target_dict=self.o_par.target_dict,
                     )
+
                 console.log(
                     f"[green]Computing {func.__name__} @ order: {self.t_par.order} ..."
                 )

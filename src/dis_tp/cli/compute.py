@@ -4,7 +4,7 @@ import click
 import numpy as np
 import yaml
 
-from .. import configs, io, parameters, plot, runner, k_factors
+from .. import configs, io, k_factors, parameters, plot, runner
 from .base import command
 from .grids import n_cores
 
@@ -41,33 +41,42 @@ scalevar = click.argument("scalevar", type=bool)
 plot_dir = click.argument("plot_dir", type=str)
 order = click.argument("order", type=str)
 h_id = click.argument("h_id", type=str)
+cfg = click.option(
+    "-c",
+    "--configs",
+    "cfg",
+    default=None,
+    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    help="Explicitly specify config file (it has to be a valid TOML file).",
+)
 
 
 @command.command("compute")
 @o_card
 @t_card
 @n_cores
-def generate_matching_grids(o_card: str, t_card: str, n_cores: int):
+@cfg
+def generate_matching_grids(o_card: str, t_card: str, n_cores: int, cfg: pathlib.Path):
     """
     Run a computation.
 
     USAGE dis_tp compute <o_card> <t_card>
     """
 
-    obj = runner.Runner(o_card, t_card)
+    obj = runner.Runner(o_card, t_card, cfg)
     obj.compute(n_cores)
     obj.save_results()
 
 
 @command.command("add_observable")
 @o_card
-@t_card
 @obs
 @restype
 @pdf
 @scalevar
+@cfg
 def add_obs_opcard(
-    o_card: str, t_card: str, obs: str, restype: str, pdf: str, scalevar: bool
+    o_card: str, obs: str, restype: str, pdf: str, scalevar: bool, cfg: pathlib.Path
 ):
     """
     Add an observable to the operator card with default kinematics.
@@ -75,9 +84,8 @@ def add_obs_opcard(
     USAGE dis_tp add_observable <o_card> <obs> <restype> <pdf> <scalevar>
     """
 
-    cfg = configs.load()
+    cfg = configs.load(cfg)
     cfg = configs.defaults(cfg)
-    th_obj = io.TheoryParameters.load_card(cfg, t_card)
     ocard_path = cfg["paths"]["operator_cards"] / (o_card + ".yaml")
     old_ocard = {}
     if ocard_path.is_file():
@@ -105,14 +113,15 @@ def add_obs_opcard(
 @obs
 @order
 @h_id
-def plot_observable(plot_dir: str, obs: str, order: str, h_id: str):
+@cfg
+def plot_observable(plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib.Path):
     """
     Plot (and save the results in plot_dir) an observable with all the method overimposed for a certain order
     and heavy quark id.
 
     USAGE dis_tp plot_observable <plot_dir> <obs> <order> <h_id>
     """
-    cfg = configs.load()
+    cfg = configs.load(cfg)
     cfg = configs.defaults(cfg)
     plot_dir_path = cfg["paths"]["root"] / plot_dir
     plotclass = plot.Plot(cfg, plot_dir_path)
@@ -145,6 +154,7 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str):
     required=False,
     help="TheoryInput to be stored in the CF file",
 )
+@cfg
 def generate_kfactors(
     o_card: str,
     t_card: str,
@@ -153,12 +163,13 @@ def generate_kfactors(
     n_cores: int,
     use_yadism: bool,
     th_description: str,
+    cfg: pathlib.Path,
 ):
     """Generate k-factors.
 
-    USAGE: dis_tp k-factors HERACOMB_SIGMARED_C 400 NNPDF40_nnlo_pch_as_01180 "Your Name" [-n 4 -yad -th "Theory Input"]
+    USAGE: dis_tp k-factors HERA_NC_318GEV_EAVG_SIGMARED_CHARM 400 NNPDF40_nnlo_pch_as_01180 "Your Name" [-n 4 -yad -th "Theory Input"]
     """
 
-    obj = k_factors.KfactorRunner(t_card, o_card, pdf, use_yadism)
+    obj = k_factors.KfactorRunner(t_card, o_card, pdf, use_yadism, cfg)
     obj.compute(n_cores)
     obj.save_results(author, th_input=th_description)

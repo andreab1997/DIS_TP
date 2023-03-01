@@ -1,8 +1,8 @@
 import numpy as np
 from eko.constants import CA, TR
-from eko.harmonics import S1, compute_cache
-from eko.matching_conditions import as1, as2, as3
 from eko.mellin import Path
+from ekore.harmonics import S1, compute_cache
+from ekore.operator_matrix_elements.unpolarized.space_like import as1, as2, as3
 from numpy.testing import assert_allclose
 from scipy import integrate
 
@@ -249,6 +249,42 @@ class Test_Matching_gg:
                 sx = compute_cache(n, 3, self.is_singlet)
                 sx = [np.array(s) for s in sx]
                 eko.append(as2.A_gg(n, sx, L))
+        assert_allclose(my, eko)
+
+
+class Test_Matching_qq:
+    xs = np.geomspace(1e-4, 1, 10, endpoint=False)
+    Ns = [2, 3, 4, 5, 6, 7]
+    Qs = [5, 10, 20]
+    is_singlet = True
+
+    def test_nnlo(self):
+        my = []
+        eko = []
+        for q in self.Qs:
+            p = [mhq, q]
+            L = np.log(p[1] ** 2 / p[0] ** 2)
+            for n in self.Ns:
+
+                def mellin_integrate(n):
+                    return (
+                        integrate.quad(
+                            lambda x: mf.Mqq_2_reg(x, p, h_id) * x ** (n - 1),
+                            0,
+                            1,
+                            epsabs=1e-12,
+                            epsrel=1e-6,
+                            limit=200,
+                            full_output=1,
+                        )[0]
+                        - mf.Mqq_2_sing(0, p, h_id) * S1(n - 1)
+                        + mf.Mqq_2_loc(0, p, h_id)
+                    )
+
+                my.append(mellin_integrate(n))
+                sx = compute_cache(n, 3, self.is_singlet)
+                sx = [np.array(s) for s in sx]
+                eko.append(as2.A_qq_ns(n, sx, L))
         assert_allclose(my, eko)
 
 

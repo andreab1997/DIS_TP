@@ -1,4 +1,5 @@
 import pathlib
+
 import click
 
 root_path = pathlib.Path.cwd().absolute()
