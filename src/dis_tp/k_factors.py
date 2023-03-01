@@ -42,7 +42,6 @@ class KfactorRunner:
         return copy.deepcopy(runner.results)
 
     def compute(self, n_cores):
-        # TODO: cache results somewhere
         mumerator_log = self.run_dis_tp(n_cores)
         if self.use_yadism:
             denominator_log = self.run_yadism()

@@ -528,7 +528,6 @@ def F2_FONLL(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
             result
     """
     mh = masses(h_id)
-    # TODO: add a dumping option ??
     mhp1 = masses(h_id + 1)
     if Q < mh:
         return F2_FO(
