@@ -1,5 +1,4 @@
-order: "N3LO"
-hid: 5
+order: 3
 fns: "our"
 grids: True
 mass: 4.92

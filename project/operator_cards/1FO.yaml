@@ -1,5 +1,5 @@
 obs:
-  F2_charm:
+  F2_bottom:
     PDF: NNPDF40_nlo_as_01180_nf_4
     kinematics:
     - q: 1.0
@@ -1723,7 +1723,7 @@ obs:
     - q: 150.00000000000003
       x: 0.0001
     restype: FO
-  FL_charm:
+  FL_bottom:
     PDF: NNPDF40_nlo_as_01180_nf_4
     kinematics:
     - q: 1.0
