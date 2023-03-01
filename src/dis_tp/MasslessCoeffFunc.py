@@ -10,7 +10,7 @@ def Cb_0_loc(z, Q, p, nf):
     return e_h * e_h
 
 
-def Cb_1_reg(z, Q, p, nf):
+def Cb_1_reg(z, Q, p, _nf):
     e_h = p[-1]
     return (
         e_h
@@ -21,7 +21,7 @@ def Cb_1_reg(z, Q, p, nf):
     )
 
 
-def Cb_1_loc(z, Q, p, nf):
+def Cb_1_loc(z, Q, p, _nf):
     e_h = p[-1]
     return (
         e_h

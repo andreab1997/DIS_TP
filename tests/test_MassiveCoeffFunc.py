@@ -48,7 +48,16 @@ class Test_F2:
             yad = f2_s.reg(x, f2_s.args["reg"])
             my = cf.Cq_2_m_reg(x, self.Q, p, h_id) / e_h**2
             assert_allclose(my, yad)
-
+            
+            f2_ns = f2_nc.NonSinglet(esf, h_id, m2hq=mhq**2).NNLO()
+            # non singlet reg
+            yad = f2_ns.reg(x, f2_ns.args["reg"])
+            my = cf.Cb_2_m_reg(x, self.Q, p, h_id) / e_h**2
+            assert_allclose(my, yad)
+            # non singlet loc
+            yad = f2_ns.loc(x, f2_ns.args["loc"])
+            my = cf.Cb_2_m_loc(x, self.Q, p, h_id) / e_h**2
+            assert_allclose(my, yad)
 
 class Test_FL:
     xs = [0.0001, 0.0123, 0.456]
@@ -78,6 +87,11 @@ class Test_FL:
             my = cf.CLq_2_m_reg(x, self.Q, p, h_id) / e_h**2
             assert_allclose(my, yad)
 
+            fl_ns = fl_nc.NonSinglet(esf, h_id, m2hq=mhq**2).NNLO()
+            # non singlet reg
+            yad = fl_ns.reg(x, fl_ns.args["reg"])
+            my = cf.CLb_2_m_reg(x, self.Q, p, h_id) / e_h**2
+            assert_allclose(my, yad)
 
 
 class TestNic:

@@ -83,7 +83,10 @@ def PDFConvolute_light_singlet(func1, pdf, x, Q, p1, nf, target_dict):
 def PDFConvolute_light_plus(func1, pdf, x, Q, p1, nf, target_dict):
     result, _ = integrate.quad(
         lambda z: func1(z, Q, p1, nf)
-        * (non_singlet_pdf(pdf, x / z, Q, nf, target_dict) - non_singlet_pdf(pdf, x, Q, nf, target_dict)),
+        * (
+            non_singlet_pdf(pdf, x / z, Q, nf, target_dict)
+            - non_singlet_pdf(pdf, x, Q, nf, target_dict)
+        ),
         x,
         1.0,
         epsabs=1e-12,

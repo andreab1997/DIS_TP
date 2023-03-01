@@ -164,7 +164,8 @@ class OperatorParameters:
             for ob in obs["obs"]:
 
                 # TODO: light and total are always in FONLL mode
-                # here heavyness and resytpe are not yet disentangled
+                # here heavyness and resytpe are not yet disentangled:
+                # restype sholud come from the theory runcard
                 heavyness = ob.split("_")[1]
                 restype = obs["obs"][ob]["restype"]
                 if heavyness in ["light", "total"]:

@@ -2,6 +2,7 @@
 # notation: p[1] is Q while p[0] is m_b
 import numpy as np
 from eko.constants import CA, CF, TR
+from ekore.harmonics.constants import zeta2, zeta3
 from ekore.operator_matrix_elements.unpolarized.space_like import as2, as3
 
 from . import Initialize as Ini
@@ -155,3 +156,36 @@ def P1(p, nf):
 def P2(p):
     fact = np.log((p[1] ** 2) / (p[0] ** 2))
     return (2.0 / 9.0) * (2 * (fact**2) + 19 * 3 * fact + 7 * 3)  # Thanks EKO
+
+
+def Mqq_2_reg(z, p, _nf):
+    z2 = z * z
+    lnz = np.log(z)
+    lnz2 = lnz ** 2
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    ANS2qqH_R = (
+        (1.0 + z2) * (2.0 * lnz2 / 3.0 + 20.0 * lnz / 9.0) / (1.0 - z)
+        + 8.0 * (1.0 - z) * lnz / 3.0
+        + 44.0 / 27.0
+        - 268.0 * z / 27.0
+    )
+    omeL1 = -(8.0 * (1.0 + z2) * lnz / 3.0 / (1.0 - z) + 8.0 / 9.0 - 88.0 * z / 9.0)
+    omeL2 = -4.0 / 3.0 - 4.0 * z / 3.0
+    return CF * TR * (ANS2qqH_R + omeL1 * L + omeL2 * L**2)
+   
+
+def Mqq_2_sing(z, p, _nf):
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    ANS2qqH_S = 224.0 / 27.0 / (1.0 - z)
+    omeL1 = -80.0 / 9.0 / (1.0 - z)
+    omeL2 = 8.0 / 3.0 / (1.0 - z)
+    return CF * TR * (ANS2qqH_S + omeL1 * L + omeL2 * L**2)
+
+
+def Mqq_2_loc(z, p, _nf):
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    ln1mz = np.log(1.0 - z)
+    ANS2qqH_L = -8.0 * zeta3 / 3.0 + 40.0 * zeta2 / 9.0 + 73.0 / 18.0 + 224 * ln1mz / 27
+    omeL1 = -(80.0 * ln1mz / 9.0 + 16.0 * zeta2 / 3.0 + 2.0 / 3.0)
+    omeL2 = 8.0 * ln1mz / 3.0 + 2.0
+    return CF * TR * (ANS2qqH_L + omeL1 * L + omeL2 * L**2)

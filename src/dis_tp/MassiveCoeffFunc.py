@@ -6,8 +6,34 @@ from eko.constants import TR
 
 from . import Initialize
 
+from scipy.integrate import quad
 
 # F2
+def Cb_2_m_reg(z, Q, p, _nf):
+    Q2 = Q * Q
+    m_b = p[0]
+    eps = m_b * m_b / Q2
+    thre = 4.0 * eps * z / (1 - z)
+    if thre > 1.0:
+        return 0
+    e_h = p[-1]
+    xi = 1 / eps
+    eta = xi / 4.0 * (1.0 / z - 1.0) - 1.0
+    eta = min(eta, 1e5)
+    FHprefactor = Q2 / (np.pi * m_b**2) * e_h**2
+    return FHprefactor / z * (4.0 * np.pi) ** 2 * LeProHQ.dq1("F2", "VV", xi, eta)
+
+
+def Cb_2_m_loc(_z, Q, p, _nf):
+    l = quad(
+        lambda x: Cb_2_m_reg(x, Q, p, _nf), 
+        0.0, 
+        1.0,
+        points=(0.0, 1.0),
+    )
+    return -l[0]
+
+
 def Cg_1_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
@@ -63,7 +89,7 @@ def Cg_3_m_reg(z, Q, p, nf):
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return e_h ** 2 * Initialize.Cg3m[nf - 4](z, Q)[0]
+    return e_h**2 * Initialize.Cg3m[nf - 4](z, Q)[0]
 
 
 def Cq_2_m_reg(z, Q, p, nf):
@@ -96,10 +122,23 @@ def Cq_3_m_reg(z, Q, p, nf):
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return e_h ** 2 * Initialize.Cq3m[nf - 4](z, Q)[0]
+    return e_h**2 * Initialize.Cq3m[nf - 4](z, Q)[0]
 
 
 # FL
+def CLb_2_m_reg(z, Q, p, _nf):
+    Q2 = Q * Q
+    m_b = p[0]
+    eps = m_b * m_b / Q2
+    thre = 4.0 * eps * z / (1 - z)
+    if thre > 1.0:
+        return 0
+    e_h = p[-1]
+    xi = 1 / eps
+    eta = xi / 4.0 * (1.0 / z - 1.0) - 1.0
+    FHprefactor = Q2 / (np.pi * m_b**2) * e_h**2
+    return FHprefactor / z * (4.0 * np.pi) ** 2 * LeProHQ.dq1("FL", "VV", xi, eta)
+    
 def CLg_1_m_reg(z, Q, p, nf):
     Q2 = Q * Q
     m_b = p[0]
@@ -152,7 +191,7 @@ def CLg_3_m_reg(z, Q, p, nf):
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0
-    return e_h ** 2 * Initialize.CLg3m[nf - 4](z, Q)[0]
+    return e_h**2 * Initialize.CLg3m[nf - 4](z, Q)[0]
 
 
 def CLq_2_m_reg(z, Q, p, nf):
@@ -185,4 +224,4 @@ def CLq_3_m_reg(z, Q, p, nf):
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return  e_h ** 2 * Initialize.CLq3m[nf - 4](z, Q)[0]
+    return e_h**2 * Initialize.CLq3m[nf - 4](z, Q)[0]
