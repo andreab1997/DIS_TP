@@ -2,24 +2,56 @@
 
 import numpy as np
 import scipy.special as special
-from eko.constants import CF, TR
+from eko.constants import CF, TR, CA
 
 from . import Initialize as Ini
 from . import parameters
-from .MassiveCoeffFunc import (Cg_1_m_reg, Cg_2_m_reg, Cg_3_m_reg, CLg_1_m_reg,
-                               CLg_2_m_reg, CLg_3_m_reg, CLq_2_m_reg,
-                               CLq_3_m_reg, Cq_2_m_reg, Cq_3_m_reg)
-from .MasslessCoeffFunc import (Cb_0_loc, Cb_1_loc, Cb_1_reg, Cb_1_sing,
-                                Cb_2_loc, Cb_2_reg, Cb_2_sing, CLb_1_reg,
-                                CLb_2_loc, CLb_2_reg)
-from .MatchingFunc import (P1, P2, Mbg_1, Mbg_2, Mbg_3_reg, Mbq_2, Mbq_3_reg,
-                           Mgg_1_loc, Mgg_2_loc, Mgg_2_reg, Mgg_2_sing,
-                           Mgq_2_reg)
+from .MassiveCoeffFunc import (
+    Cg_1_m_reg,
+    Cg_2_m_reg,
+    Cg_3_m_reg,
+    CLg_1_m_reg,
+    CLg_2_m_reg,
+    CLg_3_m_reg,
+    CLq_2_m_reg,
+    CLq_3_m_reg,
+    Cq_2_m_reg,
+    Cq_3_m_reg,
+)
+from .MasslessCoeffFunc import (
+    Cb_0_loc,
+    Cb_1_loc,
+    Cb_1_reg,
+    Cb_1_sing,
+    Cb_2_loc,
+    Cb_2_reg,
+    Cb_2_sing,
+    CLb_1_reg,
+    CLb_2_loc,
+    CLb_2_reg,
+)
+from .MatchingFunc import (
+    P2,
+    Mbg_1,
+    Mbg_2,
+    Mbg_3_reg,
+    Mbq_2,
+    Mbq_3_reg,
+    Mgg_1_loc,
+    Mgg_2_loc,
+    Mgg_2_reg,
+    Mgg_2_sing,
+    Mgq_2_reg,
+)
 from .structure_functions.heavy_tools import (
-    Convolute, Convolute_matching, Convolute_plus_coeff,
-    Convolute_plus_matching, Convolute_plus_matching_per_matching)
+    Convolute,
+    Convolute_matching,
+    Convolute_plus_coeff,
+    Convolute_plus_matching,
+)
 
 
+# convolutions
 def Cb1_Mbg1(z, p, _nf):
     e_h = p[-1]
     res = (
@@ -47,6 +79,19 @@ def Cb1_Mbg1(z, p, _nf):
 def CLb1_Mbg1(z, p, _nf):
     e_h = p[-1]
     return 8 * CF * TR * pow(e_h, 2) * (1 + z - 2 * pow(z, 2) + 2 * z * np.log(z))
+
+
+def Mbg1_Mgg2_sing(x, p, _nf):
+    L = np.log((p[1] ** 2) / (p[0] ** 2))
+    return (
+        16
+        / 27
+        * CA
+        * L
+        * (28 - 30 * L + 9 * L**2)
+        * TR**2
+        * (-1 + (4 - 3 * x) * x + (-1 - 2 * (-1 + x) * x) * np.log(x))
+    )
 
 
 # F2
@@ -85,7 +130,7 @@ def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
             - (
                 Mbg_1(z, p, nf) * Mgg_2_loc(z, p, nf)
                 + Convolute_matching(Mbg_1, Mgg_2_reg, z, Q, p, nf)
-                + Convolute_plus_matching_per_matching(Mgg_2_sing, Mbg_1, z, Q, p, nf)
+                + Mbg1_Mgg2_sing(z, p, nf)
             )
         )
         - 2
