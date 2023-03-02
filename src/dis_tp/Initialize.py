@@ -30,75 +30,6 @@ def append_empty(grid_list, nf_list):
     return grid_list
 
 
-# NNLO grids
-def InitializeCg2_til(nf_list):
-    """Initialize the Cg at NNLO tilde function from the file in External."""
-    global Cg2_til
-    Cg2_til = []
-    append_empty(Cg2_til, nf_list)
-    for nf in nf_list:
-        Cg2_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/Cg_2_til/Cg2til_nf{nf}.txt")
-        )
-        Cg2_til.append(interp2d(ZList[:-1], QList, Cg2_til_array.T, kind="quintic"))
-
-
-def InitializeCq2_til(nf_list):
-    """Initialize the Cg at NNLO tilde function from the file in External."""
-    global Cq2_til
-    Cq2_til = []
-    append_empty(Cq2_til, nf_list)
-    for nf in nf_list:
-        Cq2_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/Cq_2_til/Cq2til_nf{nf}.txt")
-        )
-        Cq2_til.append(interp2d(ZList[:-1], QList, Cq2_til_array.T, kind="quintic"))
-
-
-def InitializeCLg2_til(nf_list):
-    """Initialize the Cg at NNLO tilde function from the file in External."""
-    global CLg2_til
-    CLg2_til = []
-    append_empty(CLg2_til, nf_list)
-    for nf in nf_list:
-        CLg2_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/CLg_2_til/CLg2til_nf{nf}.txt")
-        )
-        CLg2_til.append(interp2d(ZList[:-1], QList, CLg2_til_array.T, kind="quintic"))
-
-
-def InitializeCLq2_til(nf_list):
-    """Initialize the Cq at NNLO tilde function from the file in External."""
-    global CLq2_til
-    CLq2_til = []
-    append_empty(CLq2_til, nf_list)
-    for nf in nf_list:
-        CLq2_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/CLq_2_til/CLq2til_nf{nf}.txt")
-        )
-        CLq2_til.append(interp2d(ZList[:-1], QList, CLq2_til_array.T, kind="quintic"))
-
-
-def InitializeMbg2(nf_list):
-    """Initialize the Mbg at NNLO matching function from the file in External."""
-    global Mbg2
-    Mbg2 = []
-    append_empty(Mbg2, nf_list)
-    for nf in nf_list:
-        Mbg2_array = readt.readND(PATH_TO_GLOBAL + f"/External/Mbg_2/Mbg2_nf{nf}.txt")
-        Mbg2.append(interp2d(ZList, QList, np.array(Mbg2_array).T, kind="quintic"))
-
-
-def InitializeMbq2(nf_list):
-    """Initialize the Mbg at NNLO matching function from the file in External."""
-    global Mbq2
-    Mbq2 = []
-    append_empty(Mbq2, nf_list)
-    for nf in nf_list:
-        Mbq2_array = readt.readND(PATH_TO_GLOBAL + f"/External/Mbq_2/Mbq2_nf{nf}.txt")
-        Mbq2.append(interp2d(ZList, QList, np.array(Mbq2_array).T, kind="quintic"))
-
-
 # N3LO grids
 def InitializeMbg_3(nf_list):
     """Initialize the Mbg at N3LO matching condition from the file in External."""
@@ -226,14 +157,8 @@ def Initialize_all(nf):
     nf_list = [4, 5] if nf is None else [nf]
     console.log("[green]Loading precomputed grids ...")
     InitializeQX()
-    InitializeMbg2(nf_list)
-    InitializeMbq2(nf_list)
     InitializeMbg_3(nf_list)
     InitializeMbq_3(nf_list)
-    InitializeCg2_til(nf_list)
-    InitializeCq2_til(nf_list)
-    InitializeCLg2_til(nf_list)
-    InitializeCLq2_til(nf_list)
     InitializeCq3_m(nf_list)
     InitializeCLq3_m(nf_list)
     InitializeCg3_m(nf_list)

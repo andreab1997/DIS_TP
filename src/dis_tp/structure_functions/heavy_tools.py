@@ -167,17 +167,3 @@ def Convolute_plus_matching(func1, matching, x, Q, p1, nf, nl=None):
         points=(x, 1.0),
     )
     return plus1
-
-
-def Convolute_plus_matching_per_matching(matchingplus, matching2, x, Q, p1, nf):
-    plus1, error1 = integrate.quad(
-        lambda z: matchingplus(z, p1, nf)
-        * ((1.0 / z) * matching2(x * (1.0 / z), p1, nf) - matching2(x, p1, nf)),
-        x,
-        1.0,
-        epsabs=1e-12,
-        epsrel=1e-6,
-        limit=200,
-        points=(x, 1.0),
-    )
-    return plus1

@@ -54,16 +54,11 @@ def generate_matching_grids(
 ):
     """Construct matching grids."""
 
-    if pto == 2:
+    if pto == 3:
         if flavor_entry == "bq":
-            func = mcf.Mbq_2
+            func = mcf.Mbq_3_reg
         elif flavor_entry == "bg":
-            func = mcf.Mbg_2
-    elif pto == 3:
-        if flavor_entry == "bq":
-            func = mcf.Mbq_3_reg_inv
-        elif flavor_entry == "bg":
-            func = mcf.Mbg_3_reg_inv
+            func = mcf.Mbg_3_reg
     path = dest_path / f"M{flavor_entry}_{pto}/M{flavor_entry}{pto}_nf{h_id}.txt"
     Initialize.Initialize_all(h_id)
     parameters.initialize_theory(use_grids=True)
@@ -85,15 +80,6 @@ def generate_matching_grids(
     """Construct tilde grids."""
     flavor = flavor_entry[-1] if "2" in flavor_entry else flavor_entry
 
-    if pto == 2:
-        if flavor_entry == "2q":
-            func = tcf.Cq_2_til_reg
-        elif flavor_entry == "2g":
-            func = tcf.Cg_2_til_reg
-        elif flavor_entry == "Lq":
-            func = tcf.CLq_2_til_reg
-        elif flavor_entry == "Lg":
-            func = tcf.CLg_2_til_reg
     if pto == 3:
         if flavor_entry == "2q":
             func = tcf.Cq_3_til_reg

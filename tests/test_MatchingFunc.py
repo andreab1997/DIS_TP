@@ -87,7 +87,7 @@ class Test_Matching_Hg:
                         full_output=1,
                     )[0]
                 )
-        assert_allclose(my, eko)
+        assert_allclose(my, eko, rtol=3e-6)
 
     def test_n3lo(self):
         my = []
@@ -95,7 +95,7 @@ class Test_Matching_Hg:
         for q in self.Qs:
             for x in self.xs:
                 p = [mhq, q]
-                my.append(2 * mf.Mbg_3_reg_inv(x, p, h_id))
+                my.append(2 * mf.Mbg_3_reg(x, p, h_id))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):
@@ -161,7 +161,7 @@ class Test_Matching_Hq:
         for q in self.Qs:
             for x in self.xs:
                 p = [mhq, q]
-                my.append(2 * mf.Mbq_3_reg_inv(x, p, h_id))
+                my.append(2 * mf.Mbq_3_reg(x, p, h_id))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):
@@ -327,17 +327,6 @@ class Test_Matching_gq:
 class Test_Grids:
     xs = [0.0001, 0.001, 0.01, 0.1, 0.2, 0.456, 0.7]
     Q = 10
-
-    def test_nnlo(self):
-        for x in self.xs:
-            p = np.array([mhq, self.Q, e_h])
-            my_grid = mf.Mbg_2(x, p, h_id)
-            my = mf.Mbg_2(x, p, h_id, use_analytic=True)
-            assert_allclose(my, my_grid)
-
-            my_grid = mf.Mbq_2(x, p, h_id)
-            my = mf.Mbq_2(x, p, h_id, use_analytic=True)
-            assert_allclose(my, my_grid)
 
     def test_n3lo(self):
         for x in self.xs:

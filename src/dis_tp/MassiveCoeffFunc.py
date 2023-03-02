@@ -146,10 +146,10 @@ def CLg_1_m_reg(z, Q, p, _nf):
     eps = m_b * m_b / Q2
     z2 = z * z
     thre = 4.0 * eps * z / (1 - z)
-    v = np.sqrt(1 - thre)
     e_h = p[-1]
     if thre > 1.0:
         return 0
+    v = np.sqrt(1 - thre)
     return (
         4
         * TR

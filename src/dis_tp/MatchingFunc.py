@@ -18,11 +18,6 @@ def Mbg_1(z, p, _nf):
     return 2 * TR * np.log((p[1] ** 2) / (p[0] ** 2)) * (z * z + (1 - z) * (1 - z))
 
 
-def Mbg_3_reg(z, p, nf, use_analytic=False):
-    if parameters.grids and not use_analytic:
-        return Ini.Mbg3[nf - 4](z, p[1])[0]
-    return Mbg_3_reg_inv(z, p, nf, use_analytic=use_analytic)
-
 
 def Mgg_1_loc(z, p, _nf):
     return -(4.0 / 3.0) * TR * np.log((p[1] ** 2) / (p[0] ** 2))
@@ -132,12 +127,6 @@ def Mbq_2(z, p, _nf):
     return 1 / 2 * (APS2Hq + APS2Hq_mass)
 
 
-def Mbq_3_reg(z, p, nf, use_analytic=False):
-    if parameters.grids and not use_analytic:
-        return Ini.Mbq3[nf - 4](z, p[1])[0]
-    return Mbq_3_reg_inv(z, p, nf, use_analytic=use_analytic)
-
-
 def Mgq_2_reg(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
@@ -161,14 +150,14 @@ def Mgq_2_reg(z, p, nf):
     )
 
 
-def Mbg_3_reg_inv(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
+def Mbg_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.Mbg3[nf - 4](x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return 0.5 * inverse_mellin(as3.A_Hg, x, nf, r, s, path, L)
 
 
-def Mbq_3_reg_inv(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
+def Mbq_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.Mbq3[nf - 4](x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
