@@ -34,7 +34,7 @@ def Cb_2_m_loc(_z, Q, p, _nf):
     return -l[0]
 
 
-def Cg_1_m_reg(z, Q, p, nf):
+def Cg_1_m_reg(z, Q, p, _nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -56,7 +56,7 @@ def Cg_1_m_reg(z, Q, p, nf):
     )
 
 
-def Cg_2_m_reg(z, Q, p, nf):
+def Cg_2_m_reg(z, Q, p, _nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b**2 / Q2
@@ -92,7 +92,7 @@ def Cg_3_m_reg(z, Q, p, nf):
     return e_h**2 * Initialize.Cg3m[nf - 4](z, Q)[0]
 
 
-def Cq_2_m_reg(z, Q, p, nf):
+def Cq_2_m_reg(z, Q, p, _nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -140,7 +140,7 @@ def CLb_2_m_reg(z, Q, p, _nf):
     return FHprefactor / z * (4.0 * np.pi) ** 2 * LeProHQ.dq1("FL", "VV", xi, eta)
 
 
-def CLg_1_m_reg(z, Q, p, nf):
+def CLg_1_m_reg(z, Q, p, _nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -159,7 +159,7 @@ def CLg_1_m_reg(z, Q, p, nf):
     )
 
 
-def CLg_2_m_reg(z, Q, p, nf):
+def CLg_2_m_reg(z, Q, p, _nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2
@@ -195,7 +195,7 @@ def CLg_3_m_reg(z, Q, p, nf):
     return e_h**2 * Initialize.CLg3m[nf - 4](z, Q)[0]
 
 
-def CLq_2_m_reg(z, Q, p, nf):
+def CLq_2_m_reg(z, Q, p, _nf):
     Q2 = Q * Q
     m_b = p[0]
     eps = m_b * m_b / Q2

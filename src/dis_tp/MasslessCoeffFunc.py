@@ -7,7 +7,7 @@ from yadism.coefficient_functions.light.n3lo import (xc2ns3p, xc2sg3p, xclns3p,
 
 
 # F2
-def Cb_0_loc(z, Q, p, nf):
+def Cb_0_loc(z, Q, p, _nf):
     e_h = p[-1]
     return e_h * e_h
 
@@ -33,7 +33,7 @@ def Cb_1_loc(z, Q, p, _nf):
     )
 
 
-def Cb_1_sing(z, Q, p, nf):
+def Cb_1_sing(z, Q, p, _nf):
     e_h = p[-1]
     return e_h * e_h * 2 * CF * (2 * np.log(1 - z) - 3.0 / 2.0) / (1 - z)
 
@@ -117,7 +117,7 @@ def Cb_2_sing(z, Q, p, nf):
     )
 
 
-def Cg_1_reg(z, Q, p, nf):
+def Cg_1_reg(z, Q, p, _nf):
     e_h = p[-1]
     return (
         4
@@ -128,7 +128,7 @@ def Cg_1_reg(z, Q, p, nf):
     )
 
 
-def Cg_2_reg(z, Q, p, nf):
+def Cg_2_reg(z, Q, p, _nf):
     e_h = p[-1]
     dl = np.log(z)
     dl1 = np.log(1.0 - z)
@@ -159,7 +159,7 @@ def Cg_3_loc(z, Q, p, nf):
     return e_h**2 * xc2sg3p.c2g3c(z, args=args) / nf
 
 
-def Cq_2_reg(z, Q, p, nf):
+def Cq_2_reg(z, Q, p, _nf):
     e_h = p[-1]
     dl = np.log(z)
     dl1 = np.log(1.0 - z)
@@ -206,12 +206,12 @@ def Cb_3_sing(z, Q, p, nf):
 
 
 # FL
-def CLg_1_reg(z, Q, p, nf):
+def CLg_1_reg(z, Q, p, _nf):
     e_h = p[-1]
     return 16 * TR * e_h * e_h * z * (1.0 - z)
 
 
-def CLg_2_reg(z, Q, p, nf):
+def CLg_2_reg(z, Q, p, _nf):
     e_h = p[-1]
     omx = 1.0 - z
     dl = np.log(z)
@@ -238,7 +238,7 @@ def CLg_3_reg(z, Q, p, nf):
     return e_h**2 * xclsg3p.clg3a(z, args=args) / nf
 
 
-def CLb_1_reg(z, Q, p, nf):
+def CLb_1_reg(z, Q, p, _nf):
     e_h = p[-1]
     return e_h * e_h * 4 * CF * z
 
@@ -266,12 +266,12 @@ def CLb_2_reg(z, Q, p, nf):
     )
 
 
-def CLb_2_loc(z, Q, p, nf):
+def CLb_2_loc(z, Q, p, _nf):
     e_h = p[-1]
     return e_h * e_h * (-0.164)
 
 
-def CLq_2_reg(z, Q, p, nf):
+def CLq_2_reg(z, Q, p, _nf):
     e_h = p[-1]
     omz = 1.0 - z
     dl = np.log(z)
