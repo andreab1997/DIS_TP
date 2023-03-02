@@ -1,5 +1,5 @@
 obs:
-  F2:
+  F2_bottom:
     PDF: NNPDF_5F_nlo
     kinematics:
     - q: 1.0
@@ -1723,7 +1723,7 @@ obs:
     - q: 150.00000000000003
       x: 0.0001
     restype: M
-  FL:
+  FL_bottom:
     PDF: NNPDF_5F_nlo
     kinematics:
     - q: 1.0
