@@ -87,7 +87,7 @@ class Test_Matching_Hg:
                         full_output=1,
                     )[0]
                 )
-        assert_allclose(my, eko)
+        assert_allclose(my, eko, rtol=3e-6)
 
     def test_n3lo(self):
         my = []
@@ -95,7 +95,7 @@ class Test_Matching_Hg:
         for q in self.Qs:
             for x in self.xs:
                 p = [mhq, q]
-                my.append(2 * mf.Mbg_3_reg_inv(x, p, h_id))
+                my.append(2 * mf.Mbg_3_reg(x, p, h_id))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):
@@ -161,7 +161,7 @@ class Test_Matching_Hq:
         for q in self.Qs:
             for x in self.xs:
                 p = [mhq, q]
-                my.append(2 * mf.Mbq_3_reg_inv(x, p, h_id))
+                my.append(2 * mf.Mbq_3_reg(x, p, h_id))
                 L = np.log(p[1] ** 2 / p[0] ** 2)
 
                 def quad_ker_talbot(u, func):

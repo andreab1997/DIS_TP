@@ -56,9 +56,9 @@ def generate_matching_grids(
 
     if pto == 3:
         if flavor_entry == "bq":
-            func = mcf.Mbq_3_reg_inv
+            func = mcf.Mbq_3_reg
         elif flavor_entry == "bg":
-            func = mcf.Mbg_3_reg_inv
+            func = mcf.Mbg_3_reg
     path = dest_path / f"M{flavor_entry}_{pto}/M{flavor_entry}{pto}_nf{h_id}.txt"
     Initialize.Initialize_all(h_id)
     parameters.initialize_theory(use_grids=True)
