@@ -139,8 +139,8 @@ class Plot:
             for sv in ordered_result_M:
                 res_plot_tmp = [res for res in ordered_result_M[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] > shifts[sv] * mass else np.nan
-                    for res in res_plot_tmp
+                    res["res"] if res["q"] > shifts[sv] * mass else res_FO
+                    for res, res_FO in zip(res_plot_tmp, res_plot_FO)
                 ]
                 res_plot_M[sv] = res_plot
             plt.xscale("log")
