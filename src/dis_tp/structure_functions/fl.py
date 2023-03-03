@@ -372,21 +372,25 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
 
     if order >= 3:
 
-        if meth == "fonll":
-            pass
-        else:
-            reg = PDFConvolute_light(
-                MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, p, nl, target_dict
-            ) + nl * meansq_e * (
-                PDFConvolute(MasslessCoeffFunc.CLg_3_reg, Mypdf, x, Q, p, nl, g_id)
-                + PDFConvolute_light_singlet(
-                    MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl, target_dict
-                )
+        reg = PDFConvolute_light(
+            MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, p, nl, target_dict
+        ) + nl * meansq_e * (
+            PDFConvolute(MasslessCoeffFunc.CLg_3_reg, Mypdf, x, Q, p, nl, g_id)
+            + PDFConvolute_light_singlet(
+                MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl, target_dict
             )
-            loc = MasslessCoeffFunc.CLb_3_loc(x, Q, p, nl) * non_singlet_pdf(
-                Mypdf, x, Q, nl, target_dict
+        )
+        loc = MasslessCoeffFunc.CLb_3_loc(x, Q, p, nl) * non_singlet_pdf(
+            Mypdf, x, Q, nl, target_dict
+        )
+        res += a_s**3 * (reg + loc)
+
+        # here we can only add the Singlet contribution from heavy quark
+        if meth == "fonll" and Q > masses(4):
+            singlet_h = + nl * meansq_e * (
+                PDFConvolute(MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, p, nl, nl+1)
             )
-            res += a_s**3 * (reg + loc)
+            res += a_s**3 * singlet_h
     return res
 
 

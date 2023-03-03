@@ -39,8 +39,6 @@ from yadism.coefficient_functions.fonll import raw_nc
 
 ############ NNLO Massive Non Singlet Asymptotics ########
 
-# TODO: At N3LO these functions are not available yet
-
 # F2
 def Cb_2_asy_reg(z, Q, p, _nf):
     e_q_light = p[-1] ** 2
@@ -82,6 +80,8 @@ def CLb_2_asy_reg(z, Q, p, _nf):
 # NOTE: at LO, NLO all these functions 
 # should trivially reduce to the massless ones.
 
+# TODO: construct N3LO tilde once massive 
+#  coefficient functions to light will be available
 
 # F2
 def Cb_2_til_reg(z, Q, p, nl):
