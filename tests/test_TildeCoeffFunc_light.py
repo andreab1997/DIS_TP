@@ -13,6 +13,8 @@ from yadism.coefficient_functions.fonll.partonic_channel import (
 from dis_tp import MatchingFunc as mf
 from dis_tp.Initialize import Initialize_all
 from dis_tp.parameters import charges, default_masses, initialize_theory
+from dis_tp import MasslessCoeffFunc as mlf
+from dis_tp import TildeCoeffFunc_light as tf
 
 nf = 4
 mhq = default_masses(nf)
@@ -81,3 +83,17 @@ class Test_Kqq:
             my.append(my_convolute(x))
             yad.append(yad_convolute(x, self.Q))
         assert_allclose(my, yad)
+
+
+
+def test_CLb_2_reg():
+    xs = [0.0001, 0.001, 0.01, 0.1, 0.2, 0.456, 0.7]
+    Q = 100
+    my = []
+    ref = []
+    nf = 3
+    p = [mhq, Q, 1]
+    for x in xs:
+        my.append( mlf.CLb_2_reg(x, Q, p, nf) - mf.P1(p, nf) * mlf.CLb_1_reg(x,Q,p,nf))
+        ref.append(tf.CLb_2_til_reg(x,Q,p,nf))
+    assert_allclose(my, ref)
