@@ -320,7 +320,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
         )
         res += a_s * reg
     if order >= 2:
-        if meth == "fonll":
+        if meth == "fonll" and Q > masses(4):
             p = [masses(nl + 1), Q, 1]
             reg = PDFConvolute_light(
                 TildeCoeffFunc_light.CLb_2_til_reg, Mypdf, x, Q, p, nl, target_dict
@@ -336,12 +336,25 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
             res += a_s**2 * (reg + loc)
 
             # Add heavy quark contribution pure singlet contribution
-            if Q > masses(4):
-                singlet_h = + nl * meansq_e * (
-                    + PDFConvolute(MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl, nl+1)
+            singlet_h = + nl * meansq_e * (
+                + PDFConvolute(MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl, nl+1)
+            )
+            res += a_s**2 * singlet_h
+        else:
+            reg = PDFConvolute_light(
+                MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nl, target_dict
+            ) + nl * meansq_e * (
+                PDFConvolute(MasslessCoeffFunc.CLg_2_reg, Mypdf, x, Q, p, nl, g_id)
+                + PDFConvolute_light_singlet(
+                    MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl, target_dict
                 )
-                res += a_s**2 * singlet_h
-
+            )
+            loc = MasslessCoeffFunc.CLb_2_loc(x, Q, p, nl) * non_singlet_pdf(
+                Mypdf, x, Q, nl, target_dict
+            )
+            res += a_s**2 * (reg + loc)
+            
+        if meth == "fonll":
             # add the missing terms for heavy quarks
             for ihq in range(nl + 1, 6):
                 pihq = [masses(ihq), Q, 1]
@@ -356,19 +369,6 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
                         TildeCoeffFunc_light.CLb_2_asy_reg, Mypdf, x, Q, pihq, nl, target_dict
                     )
                     res -= a_s**2 * reg_asy
-        else:
-            reg = PDFConvolute_light(
-                MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nl, target_dict
-            ) + nl * meansq_e * (
-                PDFConvolute(MasslessCoeffFunc.CLg_2_reg, Mypdf, x, Q, p, nl, g_id)
-                + PDFConvolute_light_singlet(
-                    MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl, target_dict
-                )
-            )
-            loc = MasslessCoeffFunc.CLb_2_loc(x, Q, p, nl) * non_singlet_pdf(
-                Mypdf, x, Q, nl, target_dict
-            )
-            res += a_s**2 * (reg + loc)
 
     if order >= 3:
 
