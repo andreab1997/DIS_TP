@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import yaml
 from eko.couplings import Couplings
+from eko.thresholds import ThresholdsAtlas
 from eko.io import types
 
 from . import parameters
@@ -11,13 +12,14 @@ from .logging import console
 class TheoryParameters:
     """Class containing all the theory parameters."""
 
-    def __init__(self, order, fns, masses, sc, grids, full_card=None):
+    def __init__(self, order, fns, masses, sc, thr_atlas, grids, full_card=None):
         self.order = order
         self.fns = fns
         self.masses = masses
         self.grids = grids
         self._t_card = full_card
         self.strong_coupling = sc
+        self.thr_atlas = thr_atlas
 
         if not self.grids:
             console.log(
@@ -72,7 +74,11 @@ class TheoryParameters:
         mc = th.get("mc", parameters.default_masses(4))
         mb = th.get("mb", parameters.default_masses(5))
         mt = th.get("mt", parameters.default_masses(6))
-        masses = [mc, mb, mt]
+        masses = np.array([mc, mb, mt])
+        kmc = th.get("kcThr", parameters.default_masses(4))
+        kmb = th.get("kbThr", parameters.default_masses(5))
+        kmt = th.get("ktThr", parameters.default_masses(6))
+        thresholds_ratios = np.array([kmc, kmb, kmt]) ** 2
         method = types.CouplingEvolutionMethod.EXPANDED
         if "ModEv" in th and th["ModEv"] == "EXA":
             method = types.CouplingEvolutionMethod.EXACT
@@ -89,12 +95,16 @@ class TheoryParameters:
             couplings=ref,
             order=(order + 1, 0),
             method=method,
-            masses=np.array(masses) ** 2,
+            masses=masses ** 2,
             hqm_scheme=types.QuarkMassSchemes.POLE,
-            thresholds_ratios=[1.0, 1.0, 1.0],
+            thresholds_ratios=thresholds_ratios,
+        )
+        thr_atlas = ThresholdsAtlas(
+            masses=masses ** 2,
+            thresholds_ratios=thresholds_ratios
         )
         return cls(
-            order=order, fns=fns, grids=grids, masses=masses, sc=sc, full_card=th
+            order=order, fns=fns, grids=grids, masses=masses, sc=sc, thr_atlas=thr_atlas, full_card=th
         )
 
 
