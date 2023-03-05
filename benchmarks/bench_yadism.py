@@ -18,7 +18,7 @@ here = pathlib.Path(__file__).absolute().parent
 
 
 class TheoryCard:
-    def __init__(self, pto):
+    def __init__(self, pto, kcthr=1.0, kbthr=1.0):
         with open(
             here / "../project/theory_cards/400.yaml",
         ) as file:
@@ -29,6 +29,8 @@ class TheoryCard:
         th["FactScaleVar"] = False
         th["RenScaleVar"] = False
         th["PTO"] = pto
+        th["kcThr"] = kcthr
+        th["kbThr"] = kbthr
         self.t_card = th
 
     def yadism_like(self):
@@ -165,13 +167,33 @@ def benchmarkFO_charm(pto, pdf_name):
 
 
 def benchmarkFONLL(pto, pdf_name, heavyness):
-    obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"] # [f"XSHERANCAVG_{heavyness}"]
+    obs_names = [f"FL_{heavyness}", f"FL_{heavyness}"] # [f"XSHERANCAVG_{heavyness}"]
     q_fixed= 10 if heavyness=="charm" else 30
     x_fixed= 0.01 if heavyness=="charm" else 0.001
     obs_obj = Observable_card(
         obs_names, q_min=1, q_max=100, q_fixed=q_fixed, x_fixed=x_fixed, restype="FONLL"
     )
     th_obj = TheoryCard(pto)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
+
+def benchmarkFONLL_kth(pto, pdf_name, heavyness):
+    obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"]
+    if heavyness == "charm":
+        x_fixed= 0.01
+        q_fixed= 10
+        kcThr = 2.0
+        kbThr = 1.0 
+    else:
+        q_fixed= 30
+        x_fixed= 0.001
+        kbThr = 2.0
+    if heavyness in ["light", "total"]:    
+        kcThr = 2.0 
+    obs_obj = Observable_card(
+        obs_names, q_min=1, q_max=100, q_fixed=q_fixed, x_fixed=x_fixed, restype="FONLL"
+    )
+    th_obj = TheoryCard(pto,kcThr,kbThr)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
@@ -183,6 +205,13 @@ if __name__ == "__main__":
 
     # obj = benchmarkF_M_charm(pto=1, pdf_name=pdf_name)
     # obj = benchmarkFO_charm(pto=1, pdf_name=pdf_name)
-    benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="bottom")
+
+    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="charm")
+    # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="bottom")
     # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="light")
     # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="total")
+
+    benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="charm")
+    benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="bottom")
+    benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="light")
+    benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="total")
