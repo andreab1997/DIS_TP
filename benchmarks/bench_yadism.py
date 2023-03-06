@@ -188,6 +188,7 @@ def benchmarkFONLL_kth(pto, pdf_name, heavyness):
         q_fixed= 30
         x_fixed= 0.001
         kbThr = 2.0
+        kcThr = 1.0
     if heavyness in ["light", "total"]:    
         kcThr = 2.0 
     obs_obj = Observable_card(
