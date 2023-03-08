@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import yaml
 from eko.couplings import Couplings
-from eko.thresholds import ThresholdsAtlas
 from eko.io import types
+from eko.thresholds import ThresholdsAtlas
 
 from . import parameters
 from .logging import console
@@ -75,9 +75,9 @@ class TheoryParameters:
         mb = th.get("mb", parameters.default_masses(5))
         mt = th.get("mt", parameters.default_masses(6))
         masses = np.array([mc, mb, mt])
-        kmc = th.get("kcThr", parameters.default_masses(4))
-        kmb = th.get("kbThr", parameters.default_masses(5))
-        kmt = th.get("ktThr", parameters.default_masses(6))
+        kmc = th.get("kcThr", 1.0)
+        kmb = th.get("kbThr", 1.0)
+        kmt = th.get("ktThr", 1.0)
         thresholds_ratios = np.array([kmc, kmb, kmt]) ** 2
         method = types.CouplingEvolutionMethod.EXPANDED
         if "ModEv" in th and th["ModEv"] == "EXA":
@@ -95,16 +95,21 @@ class TheoryParameters:
             couplings=ref,
             order=(order + 1, 0),
             method=method,
-            masses=masses ** 2,
+            masses=masses**2,
             hqm_scheme=types.QuarkMassSchemes.POLE,
             thresholds_ratios=thresholds_ratios,
         )
         thr_atlas = ThresholdsAtlas(
-            masses=masses ** 2,
-            thresholds_ratios=thresholds_ratios
+            masses=masses**2, thresholds_ratios=thresholds_ratios
         )
         return cls(
-            order=order, fns=fns, grids=grids, masses=masses, sc=sc, thr_atlas=thr_atlas, full_card=th
+            order=order,
+            fns=fns,
+            grids=grids,
+            masses=masses,
+            sc=sc,
+            thr_atlas=thr_atlas,
+            full_card=th,
         )
 
 
@@ -247,12 +252,24 @@ class RunParameters:
             self.dump_result(ob, res)
 
     def dump_result(self, ob, ob_result):
+        heavyness_dict = {"charm": ["4", 0], "bottom": ["5", 1]}
+        thr_ratio = np.sqrt(
+            self.theoryparam.thr_atlas.thresholds_ratios[
+                heavyness_dict[ob.heavyness][1]
+            ]
+        )
         file_name = (
             ob.name
             + "_"
             + ob.restype
             + "_"
             + str(self.theory_parameters().order)
+            + "_"
+            + heavyness_dict[ob.heavyness][0]
+            + "_"
+            + ob.heavyness
+            + "_thr="
+            + str(thr_ratio)
             + "_"
             + str(ob.pdf)
         )

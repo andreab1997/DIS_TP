@@ -10,6 +10,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 from . import io, parameters
 
 orderstrings = {"1": "nlo", "2": "nnlo", "3": "nnlo"}
+heavy_dict = {"4": "charm", "5": "bottom"}
 
 
 class Plot:
@@ -62,7 +63,9 @@ class Plot:
             + "_"
             + h_id
             + "_"
-            + io.threshold_dict[thr]
+            + heavy_dict[h_id]
+            + "_thr="
+            + thr
             + "_"
             + self.get_restypes(order, h_id, "FO")["pdf"]
             for thr in mu_list
@@ -92,7 +95,9 @@ class Plot:
             + "_"
             + h_id
             + "_"
-            + io.threshold_dict[mu]
+            + heavy_dict[h_id]
+            + "_thr="
+            + mu
             + "_"
             + pdf
             for pdf, mu in zip(self.get_restypes(order, h_id, "R")["pdf"], mu_list)
@@ -122,7 +127,9 @@ class Plot:
             + "_"
             + h_id
             + "_"
-            + io.threshold_dict[mu]
+            + heavy_dict[h_id]
+            + "_thr="
+            + mu
             + "_"
             + pdf
             for pdf, mu in zip(self.get_restypes(order, h_id, "M")["pdf"], mu_list)
@@ -172,17 +179,22 @@ class Plot:
                 "": 1.0,
                 "_mub=2mb": 2.0,
             }
+            shifts_moving = {"_mub=05mb": 0.02, "": 0.0, "_mub=2mb": 0.35}
             for sv in ordered_result_R:
                 res_plot_tmp = [res for res in ordered_result_R[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] > shifts[sv] * mass else np.nan
+                    res["res"]
+                    if res["q"] > (shifts[sv] * mass) + shifts_moving[sv]
+                    else np.nan
                     for res in res_plot_tmp
                 ]
                 res_plot_R[sv] = res_plot
             for sv, fo_sv in zip(ordered_result_M, sv_FO_coll):
                 res_plot_tmp = [res for res in ordered_result_M[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] > shifts[sv] * mass else res_FO
+                    res["res"]
+                    if res["q"] > (shifts[sv] * mass) + shifts_moving[sv]
+                    else res_FO
                     for res, res_FO in zip(res_plot_tmp, fo_sv)
                 ]
                 res_plot_M[sv] = res_plot
