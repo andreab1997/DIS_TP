@@ -4,7 +4,6 @@ import yaml
 from eko.couplings import Couplings
 from eko.thresholds import ThresholdsAtlas
 from eko.io import types
-from eko.thresholds import ThresholdsAtlas
 
 from . import parameters
 from .logging import console
