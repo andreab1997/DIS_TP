@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import yaml
 from eko.couplings import Couplings
+from eko.thresholds import ThresholdsAtlas
 from eko.io import types
 from eko.thresholds import ThresholdsAtlas
 
@@ -95,7 +96,7 @@ class TheoryParameters:
             couplings=ref,
             order=(order + 1, 0),
             method=method,
-            masses=masses**2,
+            masses=masses ** 2,
             hqm_scheme=types.QuarkMassSchemes.POLE,
             thresholds_ratios=thresholds_ratios,
         )
