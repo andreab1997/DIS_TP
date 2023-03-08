@@ -62,7 +62,7 @@ def initialize_theory(use_grids, masses=None, strong_coupling=None, thr_atlas=No
     # enforce some defaults
     if thr_atlas is None:
         _thr_atlas = ThresholdsAtlas(
-            masses=masses ** 2,
+            masses=np.array(_masses) ** 2,
             thresholds_ratios=[1,1,1]
         )
     else:

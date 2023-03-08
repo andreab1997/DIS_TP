@@ -144,3 +144,25 @@ class TestNic:
             dis_tp.append(cf.Cq_2_m_reg(x, self.Q, p, h_id) / e_h**2)
             my.append(self.c2q(x, self.Q)[0])
         assert_allclose(my, dis_tp, rtol=3e-1)
+
+    def test_n3lo_f2(self):
+        for x in self.xs:
+            p = np.array([mhq, self.Q, e_h])
+            my_grid = cf.Cg_3_m_reg(x, self.Q, p, h_id)
+            my = cf.Cg_3_m_reg(x, self.Q, p, h_id)
+            assert_allclose(my, my_grid)
+
+            my_grid = cf.Cq_3_m_reg(x, self.Q, p, h_id)
+            my = cf.Cq_3_m_reg(x, self.Q, p, h_id)
+            assert_allclose(my, my_grid)
+
+    def test_n3lo_fl(self):
+        for x in self.xs:
+            p = np.array([mhq, self.Q, e_h])
+            my_grid = cf.CLg_3_m_reg(x, self.Q, p, h_id)
+            my = cf.CLg_3_m_reg(x, self.Q, p, h_id)
+            assert_allclose(my, my_grid)
+
+            my_grid = cf.CLq_3_m_reg(x, self.Q, p, h_id)
+            my = cf.CLq_3_m_reg(x, self.Q, p, h_id)
+            assert_allclose(my, my_grid) 
