@@ -1,10 +1,7 @@
 """Tilde coefficents functions for the matched scheme for the light components and asymptotics."""
 import numpy as np
 
-from .TildeCoeffFunc import Mbg1_Mgg2_sing, CLb1_Mbg1
-
 from .MasslessCoeffFunc import (
-    Cb_0_loc,
     Cb_1_loc,
     Cb_1_reg,
     Cb_1_sing,
@@ -27,12 +24,7 @@ from .MatchingFunc import (
     Mqq_2_loc,
     Mqq_2_sing,
 )
-from .structure_functions.heavy_tools import (
-    Convolute,
-    Convolute_matching,
-    Convolute_plus_coeff,
-    Convolute_plus_matching,
-)
+
 
 from yadism.coefficient_functions.fonll import raw_nc
 
