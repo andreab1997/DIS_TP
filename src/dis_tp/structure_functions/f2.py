@@ -42,6 +42,9 @@ def F2_FO(
     muR = muR_ratio * Q
     p = [masses(h_id), Q, charges(h_id)]
     nf = number_active_flavors(Q)
+    conv_func = PDFConvolute
+    if nf != h_id:
+        conv_func = PDFConvolute_light_singlet
     a_s = alpha_s(muR**2, Q**2)
     if order >= 0:
         res = 0.0
@@ -50,14 +53,14 @@ def F2_FO(
     if order >= 2:
         res += a_s**2 * (
             PDFConvolute(MassiveCoeffFunc.Cg_2_m_reg, Mypdf, x, Q, p, nf, g_id)
-            + PDFConvolute(
+            + conv_func(
                 MassiveCoeffFunc.Cq_2_m_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
             )
         )
     if order >= 3:
         res += a_s**3 * (
             PDFConvolute(MassiveCoeffFunc.Cg_3_m_reg, Mypdf, x, Q, p, nf, g_id)
-            + PDFConvolute(
+            + conv_func(
                 MassiveCoeffFunc.Cq_3_m_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
             )
         )
@@ -191,6 +194,8 @@ def F2_M(order, pdf, x, Q, h_id, meth, target_dict=None, muF_ratio=1, muR_ratio=
     Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
     nf = number_active_flavors(Q)
+    # NOTE: here we don't adjust PDFConvolute as in FO
+    # because we always assume Intrisic contributions to be zero.
     p = [masses(h_id), Q, charges(h_id)]
     a_s = alpha_s(muR**2, Q**2)
     if meth == "our":

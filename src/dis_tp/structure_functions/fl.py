@@ -41,6 +41,9 @@ def FL_FO(
     muR = muR_ratio * Q
     p = [masses(h_id), Q, charges(h_id)]
     nf = number_active_flavors(Q)
+    conv_func = PDFConvolute
+    if nf != h_id:
+        conv_func = PDFConvolute_light_singlet
     a_s = alpha_s(muR**2, Q**2)
     if order >= 0:
         res = 0.0
@@ -51,7 +54,7 @@ def FL_FO(
     if order >= 2:
         res += a_s**2 * (
             PDFConvolute(MassiveCoeffFunc.CLg_2_m_reg, Mypdf, x, Q, p, nf, g_id)
-            + PDFConvolute(
+            + conv_func(
                 MassiveCoeffFunc.CLq_2_m_reg,
                 Mypdf,
                 x,
@@ -64,7 +67,7 @@ def FL_FO(
     if order >= 3:
         res += a_s**3 * (
             PDFConvolute(MassiveCoeffFunc.CLg_3_m_reg, Mypdf, x, Q, p, nf, g_id)
-            + PDFConvolute(
+            + conv_func(
                 MassiveCoeffFunc.CLq_3_m_reg,
                 Mypdf,
                 x,
