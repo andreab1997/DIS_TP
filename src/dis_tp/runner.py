@@ -69,7 +69,9 @@ class Runner:
         self.o_par = self.runparameters.operator_parameters()
         self.t_par = self.runparameters.theory_parameters()
 
-        initialize_theory(th_obj.grids, th_obj.masses, th_obj.strong_coupling, th_obj.thr_atlas)
+        initialize_theory(
+            th_obj.grids, th_obj.masses, th_obj.strong_coupling, th_obj.thr_atlas
+        )
         self.partial_sf = None
 
     @staticmethod
@@ -95,7 +97,6 @@ class Runner:
 
             func_to_call = mapfunc[ob.name][ob.restype]
             thisob_res = []
-
             # loop on SF
             for func in func_to_call:
                 self.partial_sf = functools.partial(

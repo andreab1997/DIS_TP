@@ -7,9 +7,10 @@ import yaml
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
-from . import parameters
+from . import io, parameters
 
-orderstrings = {"NLO": "nlo", "NNLO": "nnlo", "N3LO": "nnlo"}
+orderstrings = {"1": "nlo", "2": "nnlo", "3": "nnlo"}
+heavy_dict = {"4": "charm", "5": "bottom"}
 
 
 class Plot:
@@ -52,7 +53,8 @@ class Plot:
         return (x_grid, q_grid)
 
     def get_FO_result(self, obs, order, h_id):
-        filename_FO = (
+        mu_list = ["0.5", "1.0", "2.0"]
+        filenames_FO = [
             obs
             + "_"
             + "FO"
@@ -61,21 +63,44 @@ class Plot:
             + "_"
             + h_id
             + "_"
+            + heavy_dict[h_id]
+            + "_thr="
+            + thr
+            + "_"
             + self.get_restypes(order, h_id, "FO")["pdf"]
-        )
-        with open(self.result_path / (filename_FO + ".yaml"), encoding="utf-8") as f:
-            result_FO = yaml.safe_load(f)
-        x_grid = result_FO["x_grid"]
-        q_grid = result_FO["q_grid"]
-        ordered_result_FO = []
-        for x, q, res in zip(x_grid, q_grid, result_FO["obs"][0]):
-            ordered_result_FO.append(dict(x=x, q=q, res=res))
-        return (ordered_result_FO, x_grid, q_grid)
+            for thr in mu_list
+        ]
+        results_FO = {}
+        for filepath, mu in zip(filenames_FO, mu_list):
+            with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
+                results_FO[mu] = yaml.safe_load(f)
+        x_grid = results_FO[mu_list[1]]["x_grid"]
+        q_grid = results_FO[mu_list[1]]["q_grid"]
+        ordered_results_FO = {}
+        for mu in mu_list:
+            tmp_list = []
+            for x, q, res in zip(x_grid, q_grid, results_FO[mu]["obs"][0]):
+                tmp_list.append(dict(x=x, q=q, res=res))
+            ordered_results_FO[mu] = tmp_list
+        return (ordered_results_FO, x_grid, q_grid)
 
     def get_R_results(self, obs, order, h_id):
+        mu_list = ["0.5", "1.0", "2.0"]
         filenames_R = [
-            obs + "_" + "R" + "_" + order + "_" + h_id + "_" + pdf
-            for pdf in self.get_restypes(order, h_id, "R")["pdf"]
+            obs
+            + "_"
+            + "R"
+            + "_"
+            + order
+            + "_"
+            + h_id
+            + "_"
+            + heavy_dict[h_id]
+            + "_thr="
+            + mu
+            + "_"
+            + pdf
+            for pdf, mu in zip(self.get_restypes(order, h_id, "R")["pdf"], mu_list)
         ]
         results_R = {}
         for filepath in filenames_R:
@@ -92,9 +117,22 @@ class Plot:
         return ordered_result_R
 
     def get_M_results(self, obs, order, h_id):
+        mu_list = ["0.5", "1.0", "2.0"]
         filenames_M = [
-            obs + "_" + "M" + "_" + order + "_" + h_id + "_" + pdf
-            for pdf in self.get_restypes(order, h_id, "M")["pdf"]
+            obs
+            + "_"
+            + "M"
+            + "_"
+            + order
+            + "_"
+            + h_id
+            + "_"
+            + heavy_dict[h_id]
+            + "_thr="
+            + mu
+            + "_"
+            + pdf
+            for pdf, mu in zip(self.get_restypes(order, h_id, "M")["pdf"], mu_list)
         ]
         results_M = {}
         for filepath in filenames_M:
@@ -111,17 +149,29 @@ class Plot:
         return ordered_result_M
 
     def plot_single_obs(self, obs, order, h_id):
+        mu_list = ["0.5", "1.0", "2.0"]
         parameters.initialize_theory(True)
         mass = parameters.masses(int(h_id))
-        ordered_result_FO, x_grid, _q_grid = self.get_FO_result(obs, order, h_id)
+        ordered_results_FO, x_grid, _q_grid = self.get_FO_result(obs, order, h_id)
         ordered_result_M = self.get_M_results(obs, order, h_id)
         ordered_result_R = self.get_R_results(obs, order, h_id)
         diff_x_points = list(set(x_grid))
         for x in diff_x_points:
             plot_name = obs + "_" + order + "_" + h_id
             plot_path = self.plot_dir / (plot_name + "_" + str(x) + ".pdf")
-            q_plot = [res["q"] for res in ordered_result_FO if res["x"] == x]
-            res_plot_FO = [res["res"] for res in ordered_result_FO if res["x"] == x]
+            q_plot = [
+                res["q"] for res in ordered_results_FO[mu_list[1]] if res["x"] == x
+            ]
+            res_plot_FO = [
+                res["res"] for res in ordered_results_FO[mu_list[1]] if res["x"] == x
+            ]
+            res_plot_FO_2mu = [
+                res["res"] for res in ordered_results_FO[mu_list[2]] if res["x"] == x
+            ]
+            res_plot_FO_05mu = [
+                res["res"] for res in ordered_results_FO[mu_list[0]] if res["x"] == x
+            ]
+            sv_FO_coll = [res_plot_FO_05mu, res_plot_FO, res_plot_FO_2mu]
             res_plot_R = {}
             res_plot_M = {}
             shifts = {
@@ -129,18 +179,23 @@ class Plot:
                 "": 1.0,
                 "_mub=2mb": 2.0,
             }
+            shifts_moving = {"_mub=05mb": 0.02, "": 0.0, "_mub=2mb": 0.35}
             for sv in ordered_result_R:
                 res_plot_tmp = [res for res in ordered_result_R[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] > shifts[sv] * mass else np.nan
+                    res["res"]
+                    if res["q"] > (shifts[sv] * mass) + shifts_moving[sv]
+                    else np.nan
                     for res in res_plot_tmp
                 ]
                 res_plot_R[sv] = res_plot
-            for sv in ordered_result_M:
+            for sv, fo_sv in zip(ordered_result_M, sv_FO_coll):
                 res_plot_tmp = [res for res in ordered_result_M[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] > shifts[sv] * mass else np.nan
-                    for res in res_plot_tmp
+                    res["res"]
+                    if res["q"] > (shifts[sv] * mass) + shifts_moving[sv]
+                    else res_FO
+                    for res, res_FO in zip(res_plot_tmp, fo_sv)
                 ]
                 res_plot_M[sv] = res_plot
             plt.xscale("log")
