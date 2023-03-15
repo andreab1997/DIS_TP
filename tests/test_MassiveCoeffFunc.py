@@ -17,7 +17,7 @@ mhq = default_masses(h_id)
 initialize_theory(use_grids=True)
 e_h = charges(h_id)
 p = np.array([mhq, e_h])
-Initialize_all(h_id)
+Initialize_all()
 
 here = pathlib.Path(__file__).parent
 

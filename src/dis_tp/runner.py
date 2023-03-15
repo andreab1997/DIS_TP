@@ -93,7 +93,7 @@ class Runner:
 
             hid = map_heavyness[ob.heavyness]
             if ob.heavyness != "light" and self.t_par.order == 3 and self.t_par.grids:
-                Ini.Initialize_all(hid)
+                Ini.Initialize_all()
 
             func_to_call = mapfunc[ob.name][ob.restype]
             thisob_res = []

@@ -151,10 +151,10 @@ def InitializeCLg3_til(nf_list):
         CLg3_til.append(interp2d(ZList[:-1], QList, CLg3_til_array.T, kind="quintic"))
 
 
-def Initialize_all(nf):
+def Initialize_all(nf=None):
     """Initialize all the needed global lists."""
     # TODO: allow also for Ftop
-    nf_list = [4, 5] if nf is None else [nf]
+    nf_list = [nf] if nf is not None else [4,5]
     console.log("[green]Loading precomputed grids ...")
     InitializeQX()
     InitializeMbg_3(nf_list)
