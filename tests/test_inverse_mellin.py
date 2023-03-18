@@ -54,5 +54,5 @@ def test_linear_parameters():
 def test_error():
     with pytest.raises(NotImplementedError):
         Mbg_3_reg(
-            0.1, [Q, mass], nf, path="qesti_nso_du_dorsali_so_du_ali_de_pipistrello"
+            0.1, [Q, mass], nf, path="qesti_nso_du_dorsali_so_du_ali_de_pipistrello", use_analytic=True
         )
