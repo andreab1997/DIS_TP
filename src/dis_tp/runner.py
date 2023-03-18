@@ -18,6 +18,8 @@ mapfunc = {
         "light": [f2.F2_Light],
         "total": [f2.F2_Total],
         "FONLL": [f2.F2_FONLL],
+        "FONLL_incomplete": [f2.F2_FONLL_incomplete],
+        "total_incomplete": [f2.F2_Total_incomplete],
     },
     "FL": {
         "R": [fl.FL_R],
@@ -26,6 +28,8 @@ mapfunc = {
         "light": [fl.FL_Light],
         "total": [fl.FL_Total],
         "FONLL": [fl.FL_FONLL],
+        "FONLL_incomplete": [fl.FL_FONLL_incomplete],
+        "total_incomplete": [fl.FL_Total_incomplete],
     },
     "XSHERANCAVG": {
         "R": [f2.F2_R, fl.FL_R],
@@ -34,6 +38,8 @@ mapfunc = {
         "FONLL": [f2.F2_FONLL, fl.FL_FONLL],
         "light": [f2.F2_Light, fl.FL_Light],
         "total": [f2.F2_Total, fl.FL_Total],
+        "FONLL_incomplete": [f2.F2_FONLL_incomplete, fl.FL_FONLL_incomplete],
+        "total_incomplete": [f2.F2_Total_incomplete, fl.FL_Total_incomplete],
     },
     # NOTE: for the moment this coincide with the averaged xs
     # since here we don't provide F3
@@ -44,6 +50,8 @@ mapfunc = {
         "FONLL": [f2.F2_FONLL, fl.FL_FONLL],
         "light": [f2.F2_Light, fl.FL_Light],
         "total": [f2.F2_Total, fl.FL_Total],
+        "FONLL_incomplete": [f2.F2_FONLL_incomplete, fl.FL_FONLL_incomplete],
+        "total_incomplete": [f2.F2_Total_incomplete, fl.FL_Total_incomplete],
     },
 }
 

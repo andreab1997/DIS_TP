@@ -95,8 +95,8 @@ def Mbg1_Mgg2_sing(x, p, _nf):
 
 
 # F2
-def Cg_1_til_reg(z, Q, p, nf):
-    return Cg_1_m_reg(z, Q, p, nf - 1) - 2 * Cb_0_loc(z, Q, p, nf) * Mbg_1(z, p, nf)
+def Cg_1_til_reg(z, Q, p, _nf):
+    return Cg_1_m_reg(z, Q, p, _nf - 1) - 2 * Cb_0_loc(z, Q, p, _nf) * Mbg_1(z, p, _nf)
 
 
 def Cg_2_til_reg(z, Q, p, _nf):
@@ -206,8 +206,8 @@ def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
     )
 
 
-def CLq_2_til_reg(z, Q, p, nf):
-    return CLq_2_m_reg(z, Q, p, nf - 1)
+def CLq_2_til_reg(z, Q, p, _nf):
+    return CLq_2_m_reg(z, Q, p, _nf - 1)
 
 
 def CLq_3_til_reg(z, Q, p, nf, use_analytic=False):

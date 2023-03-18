@@ -57,6 +57,14 @@ def F2_FO(
                 MassiveCoeffFunc.Cq_2_m_reg, Mypdf, x, Q, p, nf, target_dict=target_dict
             )
         )
+
+        # add missing diagrams with hq+1 effects
+        for ihq in range(h_id + 1, 6):
+            pihq = [masses(ihq), Q, charges(h_id)]
+            reg_miss = PDFConvolute(MassiveCoeffFunc.Cb_2_m_reg, Mypdf, x, Q, pihq, nf, h_id)
+            loc_miss = MassiveCoeffFunc.Cb_2_m_loc(x, Q, pihq, nf) * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
+            res += a_s**2 * (reg_miss + loc_miss)
+
     if order >= 3:
         res += a_s**3 * (
             PDFConvolute(MassiveCoeffFunc.Cg_3_m_reg, Mypdf, x, Q, p, nf, g_id)
@@ -303,6 +311,16 @@ def F2_M(order, pdf, x, Q, h_id, meth, target_dict=None, muF_ratio=1, muR_ratio=
                 MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nf, h_id
             )
             res += nnlo_nnll_reg + nnlo_nnll_local + nnlo_nnll_sing
+
+            # add missing diagrams with hq+1 effects
+            for ihq in range(h_id + 1, 6):
+                pihq = [masses(ihq), Q, charges(h_id)]
+                reg_miss = PDFConvolute(MassiveCoeffFunc.Cb_2_m_reg, Mypdf, x, Q, pihq, nf, h_id)
+                loc_miss = MassiveCoeffFunc.Cb_2_m_loc(
+                    x, Q, pihq, nf
+                ) * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
+                res += a_s**2 * (reg_miss + loc_miss)
+
         if order >= 3:
             n3lo_n3ll_reg = a_s**3 * (
                 PDFConvolute(TildeCoeffFunc.Cg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
@@ -396,8 +414,10 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
             res += a_s**2 * (reg + loc + sing)
 
             # Add heavy quark contribution pure singlet contribution
+            # note the CF has to be evalueted with nl+1 here, only the 
+            # heavy quark coupling is set to 0
             singlet_h = + nl * meansq_e * (
-                + PDFConvolute(MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nl, nl+1)
+                + PDFConvolute(MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nl+1, nl+1)
             )
             res += a_s**2 * singlet_h
 
@@ -470,7 +490,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
         # here we can only add the Singlet contribution from heavy quark
         if meth == "fonll" and nl != number_active_flavors(Q):
             singlet_h = + nl * meansq_e * (
-                + PDFConvolute(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl, nl+1)
+                + PDFConvolute(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl+1, nl+1)
                 + MasslessCoeffFunc.Cq_3_loc(x, Q, p, nl+1) *(
                      Mypdf.xfxQ2(nl+1, x, Q**2) +  Mypdf.xfxQ2(-nl-1, x, Q**2)
                 )
@@ -480,7 +500,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
     return res
 
 
-def F2_ZM(order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1):
+def F2_ZM(order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1, min_order=0):
     """
     Compute the ZM heavy contribution to structure function F2
 
@@ -504,34 +524,40 @@ def F2_ZM(order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1):
     Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
     nl = number_active_flavors(Q)
+    # TODO: is this a bug or a feature ??
+    conv_func = PDFConvolute
+    if nl != h_id:
+        conv_func = PDFConvolute_light_singlet
+
     p = [0, Q, charges(h_id)]
     a_s = alpha_s(muR**2, Q**2)
     pdfxfx = Mypdf.xfxQ2(h_id, x, Q**2) + Mypdf.xfxQ2(-h_id, x, Q**2)
-    if order >= 0:
+    res = 0
+    if order >= 0 and min_order <= 0:
         res = MasslessCoeffFunc.Cb_0_loc(x, Q, p, nl) * pdfxfx
-    if order >= 1:
+    if order >= 1 and min_order <= 1:
         reg = PDFConvolute(
             MasslessCoeffFunc.Cb_1_reg, Mypdf, x, Q, p, nl, h_id
         ) + PDFConvolute(MasslessCoeffFunc.Cg_1_reg, Mypdf, x, Q, p, nl, g_id)
         loc = MasslessCoeffFunc.Cb_1_loc(x, Q, p, nl) * pdfxfx
         sing = PDFConvolute_plus(MasslessCoeffFunc.Cb_1_sing, Mypdf, x, Q, p, nl, h_id)
         res += a_s * (reg + loc + sing)
-    if order >= 2:
+    if order >= 2 and min_order <= 2:
         reg = (
             PDFConvolute(MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nl, h_id)
             + PDFConvolute(MasslessCoeffFunc.Cg_2_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute_light_singlet(
+            + conv_func(
                 MasslessCoeffFunc.Cq_2_reg, Mypdf, x, Q, p, nl, target_dict=target_dict
             )
         )
         loc = MasslessCoeffFunc.Cb_2_loc(x, Q, p, nl) * pdfxfx
         sing = PDFConvolute_plus(MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nl, h_id)
         res += a_s**2 * (reg + loc + sing)
-    if order >= 3:
+    if order >= 3 and min_order <= 3:
         reg = (
             PDFConvolute(MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, p, nl, h_id)
             + PDFConvolute(MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute_light_singlet(
+            + conv_func(
                 MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl, target_dict=target_dict
             )
         )
@@ -616,6 +642,85 @@ def F2_Total(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
         res = F2_Light(
             order, pdf, x, Q, 4, meth, target_dict=target_dict, muR_ratio=muR_ratio
         ) + F2_FONLL(
+            order, pdf, x, Q, 5, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        )
+    else:
+        res = F2_Light(
+            order, pdf, x, Q, 5, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        )
+    return res
+
+def F2_FONLL_incomplete(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
+    """
+    Compute the incomplete FONLL = \sum_{i=0}^{order-1} FONLL_{i} + ZM_{order} 
+
+    Parameters:
+        order : int
+            requested perturbative order (0 == LO, 1 == NLO,...)
+        pdf : str or list(str)
+            pdf(s) to be used
+        x : float
+            x-value
+        Q : float
+            Q-value
+        h_id : int
+            heavy quark id
+        muR_ratio : float
+            ratio to Q of the renormalization scale
+    Returns:
+            : float
+            result
+    """
+    nf = number_active_flavors(Q)
+    if nf <= h_id - 1:
+        return F2_FO(
+            order-1, pdf, x, Q, h_id, target_dict=target_dict, muR_ratio=muR_ratio
+        )
+    if h_id == nf:
+        return F2_M(
+            order-1, pdf, x, Q, h_id, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        ) + F2_ZM(
+            order, pdf, x, Q, h_id, target_dict=target_dict, muR_ratio=muR_ratio, min_order=order
+        )
+    elif nf >= h_id + 1:
+        return F2_ZM(
+            order, pdf, x, Q, h_id, target_dict=target_dict, muR_ratio=muR_ratio
+        )
+
+def F2_Total_incomplete(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
+    """
+    Compute the total structure function F2.
+
+    Parameters:
+        order : int
+            requested perturbative order (0 == LO, 1 == NLO,...)
+        meth : str
+            method to be used (our, fonll)
+        pdf : str or list(str)
+            pdf(s) to be used
+        x : float
+            x-value
+        Q : float
+            Q-value
+        muR_ratio : float
+            ratio to Q of the renormalization scale
+    Returns:
+        : float
+            result
+    """
+    nf = number_active_flavors(Q)
+    if nf <= 4:
+        res = F2_Light(
+            order, pdf, x, Q, 3, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        ) + F2_FONLL_incomplete(
+            order, pdf, x, Q, 4, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        ) + F2_FO(
+            order-1, pdf, x, Q, 5, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        )
+    elif nf == 5:
+        res = F2_Light(
+            order, pdf, x, Q, 4, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        ) + F2_FONLL_incomplete(
             order, pdf, x, Q, 5, meth, target_dict=target_dict, muR_ratio=muR_ratio
         )
     else:
