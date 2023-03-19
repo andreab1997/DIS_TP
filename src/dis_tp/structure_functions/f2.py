@@ -376,6 +376,13 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
     nl = number_light_flavors(Q)
     a_s = alpha_s(muR**2, Q**2)
     meansq_e = np.mean([charges(nl) ** 2 for nl in range(1, nl + 1)])
+
+    # NOTE: up to NNLO there is not a nf explicit depndence in the CF 
+    # and missing diagrams are vanishing so everthing rediuce to 
+    # evelauate the massless contribution at nf=nl+1, provided that 
+    # the last quark is never coupling to the photon (by definition of Flight).
+    # Moreover there is no distinction of below and above charm thr since
+    # singlet contibutions are not present. 
     if order >= 0:
         res = MasslessCoeffFunc.Cb_0_loc(x, Q, p, nl) * non_singlet_pdf(
             Mypdf, x, Q, nl, target_dict
@@ -395,7 +402,9 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
         res += a_s * (reg + loc + sing)
     if order >= 2:
 
-        if meth == "fonll" and nl != number_active_flavors(Q):
+        # here for the first time we need to make some disctinction
+        # of above and below charm thr.
+        if nl != number_active_flavors(Q):
             p = [masses(nl + 1), Q, 1]
             reg = PDFConvolute_light(
                 TildeCoeffFunc_light.Cb_2_til_reg, Mypdf, x, Q, p, nl, target_dict
@@ -422,7 +431,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
             res += a_s**2 * singlet_h
 
         else:
-            # Pure massless
+            # Pure massless in 3 flavor
             reg = PDFConvolute_light(
                 MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nl, target_dict
             ) + nl * meansq_e * (
@@ -440,62 +449,94 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
             )
             res += a_s**2 * (reg + loc + sing)
 
-        if meth == "fonll":
-            # add the missing terms for heavy quarks
-            # TODO: here we always neglect top effects...
-            for ihq in range(nl + 1, 6):
-                pihq = [masses(ihq), Q, 1]
+        # add the missing terms for heavy quarks
+        # TODO: here we always neglect top effects...
+        for ihq in range(nl + 1, 6):
+            pihq = [masses(ihq), Q, 1]
+            nf = number_active_flavors(Q)
+
+            # for the thr quark we subtract the asymptotic
+            if ihq == nl + 1 and nl != nf:
                 reg_miss = PDFConvolute_light(
-                    MassiveCoeffFunc.Cb_2_m_reg, Mypdf, x, Q, pihq, ihq - 1, target_dict
+                    MassiveCoeffFunc.Cb_2_m_reg, Mypdf, x, Q, pihq, nl, target_dict
                 )
                 loc_miss = MassiveCoeffFunc.Cb_2_m_loc(
-                    x, Q, pihq, ihq - 1
-                ) * non_singlet_pdf(Mypdf, x, Q, ihq - 1, target_dict)
+                    x, Q, pihq, nl
+                ) * non_singlet_pdf(Mypdf, x, Q, nl, target_dict)
+                res += a_s**2 * (reg_miss + loc_miss)
+                reg_asy = PDFConvolute_light(
+                    TildeCoeffFunc_light.Cb_2_asy_reg, Mypdf, x, Q, pihq, nl, target_dict
+                )
+                loc_asy = TildeCoeffFunc_light.Cb_2_asy_loc(
+                    x, Q, pihq, nl
+                ) * non_singlet_pdf(Mypdf, x, Q, nl, target_dict)
+                sing_asy = PDFConvolute_light_plus(
+                    TildeCoeffFunc_light.Cb_2_asy_sing, Mypdf, x, Q, pihq, nl, target_dict
+                )
+                res -= a_s**2 * (reg_asy + loc_asy + sing_asy)
+                
+            else: 
+                reg_miss = PDFConvolute_light(
+                    MassiveCoeffFunc.Cb_2_m_reg, Mypdf, x, Q, pihq, nf, target_dict
+                )
+                loc_miss = MassiveCoeffFunc.Cb_2_m_loc(
+                    x, Q, pihq, nf
+                ) * non_singlet_pdf(Mypdf, x, Q, nf, target_dict)
                 res += a_s**2 * (reg_miss + loc_miss)
 
-                # for the thr quark we subtract the asymptotic
-                if ihq == nl + 1 and nl != number_active_flavors(Q):
-                    reg_asy = PDFConvolute_light(
-                        TildeCoeffFunc_light.Cb_2_asy_reg, Mypdf, x, Q, pihq, nl, target_dict
-                    )
-                    loc_asy = TildeCoeffFunc_light.Cb_2_asy_loc(
-                        x, Q, pihq, nl
-                    ) * non_singlet_pdf(Mypdf, x, Q, nl, target_dict)
-                    sing_asy = PDFConvolute_light_plus(
-                        TildeCoeffFunc_light.Cb_2_asy_sing, Mypdf, x, Q, pihq, nl, target_dict
-                    )
-                    res -= a_s**2 * (reg_asy + loc_asy + sing_asy)
     if order >= 3:
         
-        reg = PDFConvolute_light(
-            MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, p, nl, target_dict
-        ) + nl * meansq_e * (
-            PDFConvolute(MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, p, nl, g_id)
-            + PDFConvolute_light_singlet(
-                MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl, target_dict
+        if nl != number_active_flavors(Q):
+            # NOTE: here the NS has to be evaluated at nl+1 but convluted with nl
+            reg = PDFConvolute_light(
+                TildeCoeffFunc_light.Cb_3_til_reg, Mypdf, x, Q, p, nl, target_dict
+            ) + nl * meansq_e * (
+                PDFConvolute(TildeCoeffFunc_light.Cg_3_til_reg, Mypdf, x, Q, p, nl, g_id)
+                + PDFConvolute_light_singlet(
+                    TildeCoeffFunc_light.Cq_3_til_reg, Mypdf, x, Q, p, nl, target_dict
+                )
             )
-        )
-        loc = MasslessCoeffFunc.Cb_3_loc(x, Q, p, nl) * non_singlet_pdf(
-            Mypdf, x, Q, nl, target_dict
-        ) + nl * meansq_e * (
-            MasslessCoeffFunc.Cg_3_loc(x, Q, p, nl) * Mypdf.xfxQ2(g_id, x, Q**2)
-            + MasslessCoeffFunc.Cq_3_loc(x, Q, p, nl)
-            * singlet_pdf(Mypdf, x, Q, nl, target_dict)
-        )
-        sing = PDFConvolute_light_plus(
-            MasslessCoeffFunc.Cb_3_sing, Mypdf, x, Q, p, nl, target_dict
-        )
-        res += a_s**3 * (reg + loc + sing)
+            loc = TildeCoeffFunc_light.Cb_3_til_loc(x, Q, p, nl) * non_singlet_pdf(
+                Mypdf, x, Q, nl, target_dict
+            ) + nl * meansq_e * (
+                TildeCoeffFunc_light.Cg_3_til_loc(x, Q, p, nl) * Mypdf.xfxQ2(g_id, x, Q**2)
+                + TildeCoeffFunc_light.Cq_3_til_loc(x, Q, p, nl)
+                * singlet_pdf(Mypdf, x, Q, nl, target_dict)
+            )
+            sing = PDFConvolute_light_plus(
+                TildeCoeffFunc_light.Cb_3_til_sing, Mypdf, x, Q, p, nl, target_dict
+            )
+            res += a_s**3 * (reg + loc + sing)
 
-        # here we can only add the Singlet contribution from heavy quark
-        if meth == "fonll" and nl != number_active_flavors(Q):
+            # here we can only add the Singlet contribution from heavy quark
             singlet_h = + nl * meansq_e * (
                 + PDFConvolute(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl+1, nl+1)
                 + MasslessCoeffFunc.Cq_3_loc(x, Q, p, nl+1) *(
-                     Mypdf.xfxQ2(nl+1, x, Q**2) +  Mypdf.xfxQ2(-nl-1, x, Q**2)
+                    Mypdf.xfxQ2(nl+1, x, Q**2) +  Mypdf.xfxQ2(-nl-1, x, Q**2)
                 )
             )
             res += a_s**3 * singlet_h
+        
+        else:
+            reg = PDFConvolute_light(
+                MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, p, nl, target_dict
+            ) + nl * meansq_e * (
+                PDFConvolute(MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, p, nl, g_id)
+                + PDFConvolute_light_singlet(
+                    MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, p, nl, target_dict
+                )
+            )
+            loc = MasslessCoeffFunc.Cb_3_loc(x, Q, p, nl) * non_singlet_pdf(
+                Mypdf, x, Q, nl, target_dict
+            ) + nl * meansq_e * (
+                MasslessCoeffFunc.Cg_3_loc(x, Q, p, nl) * Mypdf.xfxQ2(g_id, x, Q**2)
+                + MasslessCoeffFunc.Cq_3_loc(x, Q, p, nl)
+                * singlet_pdf(Mypdf, x, Q, nl, target_dict)
+            )
+            sing = PDFConvolute_light_plus(
+                MasslessCoeffFunc.Cb_3_sing, Mypdf, x, Q, p, nl, target_dict
+            )
+            res += a_s**3 * (reg + loc + sing)
 
     return res
 
