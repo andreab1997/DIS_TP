@@ -142,8 +142,8 @@ def FL_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, target_dict=None, muR_r
         res += nnll_reg
     if order >= 3:
         pg = ps = [masses(h_id), Q, 0, charges(h_id)]
-        ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", h_id, False)
-        pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", h_id, False)
+        ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", nf, False)
+        pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", nf, False)
         n3ll_reg = a_s**2 * (
             a_s
             * (
@@ -286,7 +286,7 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
 
         if order >= 3:
             pns = [masses(h_id), Q, 0, charges(h_id)]
-            pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", h_id, False)
+            pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", nf, False)
             n3lo_n3ll_reg = a_s**3 * (
                 PDFConvolute(TildeCoeffFunc.CLg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
                 + PDFConvolute(
@@ -405,12 +405,12 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
                 res += a_s**2 * reg_miss
 
     if order >= 3:
-        pg = ps = pns = [0, Q, 0, charges(h_id)]
+        pg = ps = pns = [0, Q, 0, 1]
         if nl != number_active_flavors(Q):
             # NOTE: here the NS has to be evaluated at nl+1 but convluted with nl
-            pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", h_id, True)
-            ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", h_id, True)
-            pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", h_id, True)
+            pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", nl+1, True)
+            ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", nl+1, True)
+            pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", nl+1, True)
             reg = PDFConvolute_light(
                 TildeCoeffFunc_light.CLb_3_til_reg, Mypdf, x, Q, pns, nl, target_dict
             ) + nl * meansq_e * (
@@ -425,16 +425,16 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
             res += a_s**3 * (reg + loc)
 
             # here we can only add the Singlet contribution from heavy quark
-            ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", h_id, False)
+            ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", nl+1, False)
             singlet_h = + nl * meansq_e * (
                 PDFConvolute(MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, ps, nl+1, nl+1)
             )
             res += a_s**3 * singlet_h
 
         else:
-            pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", h_id, False)
-            ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", h_id, False)
-            pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", h_id, False)
+            pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", nl, False)
+            ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", nl, False)
+            pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", nl, False)
             reg = PDFConvolute_light(
                 MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, pns, nl, target_dict
             ) + nl * meansq_e * (
@@ -499,9 +499,9 @@ def FL_ZM(order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1, min_
         res += a_s**2 * (reg + loc)
     if order >= 3 and min_order <= 3:
         pg = ps = pns = [0, Q, 0, charges(h_id)]
-        pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", h_id, False)
-        ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", h_id, False)
-        pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", h_id, False)
+        pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", nl, False)
+        ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", nl, False)
+        pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", nl, False)
         reg = (
             PDFConvolute(MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, pns, nl, h_id)
             + PDFConvolute(MasslessCoeffFunc.CLg_3_reg, Mypdf, x, Q, pg, nl, g_id)
