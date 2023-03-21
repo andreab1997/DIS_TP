@@ -490,7 +490,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
                 res += a_s**2 * (reg_miss + loc_miss)
 
     if order >= 3:
-        pg = ps = pns = [masses(h_id), Q, 0, charges(h_id)]
+        pg = ps = pns = [0, Q, 0, charges(h_id)]
         if nl != number_active_flavors(Q):
             # NOTE: here the NS has to be evaluated at nl+1 but convluted with nl
             pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", h_id, True)
@@ -607,7 +607,7 @@ def F2_ZM(order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1, min_
         sing = PDFConvolute_plus(MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nl, h_id)
         res += a_s**2 * (reg + loc + sing)
     if order >= 3 and min_order <= 3:
-        pg = ps = pns = [masses(h_id), Q, 0, charges(h_id)]
+        pg = ps = pns = [0, Q, 0, charges(h_id)]
         pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", h_id, False)
         ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", h_id, False)
         pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", h_id, False)
