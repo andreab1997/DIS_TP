@@ -1,7 +1,8 @@
 import numpy as np
 
 from eko.thresholds import ThresholdsAtlas
-
+import yadism.coefficient_functions.coupling_constants as coupl
+from yadism.coefficient_functions.light import n3lo
 
 pids = {"g": 21, "c": 4, "b": 5, "t": 6}
 
@@ -74,3 +75,21 @@ def masses(h_id):
 
 def alpha_s(mur2, q2):
     return _alpha_s(mur2, q2)
+
+# some default values for EM (therory is ignored)
+_th_d = dict(
+        SIN2TW=0.23126,
+        MZ=91.1876,
+        CKM="0.97428 0.22530 0.003470 0.22520 0.97345 0.041000 0.00862 0.04030 0.999152",
+)
+obs_d = dict(
+        projectilePID=11,
+        PolarizationDIS=0.0,
+        prDIS="EM",
+        PropagatorCorrection=0,
+        NCPositivityCharge=None,
+)
+coupl_const = coupl.CouplingConstants.from_dict(_th_d, obs_d)
+def n3lo_color_factors(partonic_channel, nf, skip_heavylight):
+    """Compute N3LO color facotrs. nf is the number of total active flavors"""
+    return n3lo.common.nc_color_factor(coupl_const, nf, partonic_channel, skip_heavylight)

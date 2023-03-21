@@ -4,7 +4,7 @@ import numpy as np
 from .. import (TildeCoeffFunc_light, MassiveCoeffFunc, MasslessCoeffFunc,
                 TildeCoeffFunc)
 from ..parameters import (alpha_s, charges, masses, number_active_flavors,
-                          number_light_flavors, pids)
+                          number_light_flavors, pids, n3lo_color_factors)
 from .heavy_tools import PDFConvolute, PDFConvolute_plus
 from .light_tools import (PDFConvolute_light, PDFConvolute_light_plus,
                           PDFConvolute_light_singlet,
@@ -141,8 +141,8 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, target_dict=None, muF_ratio=1, muR_r
         res += nnll_reg + nnll_local + nnll_sing
     if order >= 3:
         pg = ps = [masses(h_id), Q, 0, charges(h_id)]
-        ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", nf, False)
-        pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", nf, False)
+        ps[2] = n3lo_color_factors("s", nf, False)
+        pg[2] = n3lo_color_factors("g", nf, False)
         n3ll_reg = (a_s**2) * (
             a_s
             * (
@@ -326,7 +326,7 @@ def F2_M(order, pdf, x, Q, h_id, meth, target_dict=None, muF_ratio=1, muR_ratio=
 
         if order >= 3:
             pns = [masses(h_id), Q, 0, charges(h_id)]
-            pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", nf, False)
+            pns[2] = n3lo_color_factors("ns", nf, False)
             n3lo_n3ll_reg = a_s**3 * (
                 PDFConvolute(TildeCoeffFunc.Cg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
                 + PDFConvolute(
@@ -493,9 +493,9 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
         pg = ps = pns = [0, Q, 0, 1]
         if nl != number_active_flavors(Q):
             # NOTE: here the NS has to be evaluated at nl+1 but convluted with nl
-            pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", nl+1, True)
-            ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", nl+1, True)
-            pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", nl+1, True)
+            pns[2] = n3lo_color_factors("ns", nl+1, True)
+            ps[2] = n3lo_color_factors("s", nl+1, True)
+            pg[2] = n3lo_color_factors("g", nl+1, True)
             reg = PDFConvolute_light(
                 TildeCoeffFunc_light.Cb_3_til_reg, Mypdf, x, Q, pns, nl, target_dict
             ) + nl * meansq_e * (
@@ -517,7 +517,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
             res += a_s**3 * (reg + loc + sing)
 
             # here we can only add the Singlet contribution from heavy quark
-            ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", nl+1, False)
+            ps[2] = n3lo_color_factors("s", nl+1, False)
             singlet_h = + nl * meansq_e * (
                 + PDFConvolute(MasslessCoeffFunc.Cq_3_reg, Mypdf, x, Q, ps, nl+1, nl+1)
                 + MasslessCoeffFunc.Cq_3_loc(x, Q, ps, nl+1) *(
@@ -527,9 +527,9 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
             res += a_s**3 * singlet_h
         
         else:
-            pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", nl, False)
-            ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", nl, False)
-            pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", nl, False)
+            pns[2] = n3lo_color_factors("ns", nl, False)
+            ps[2] = n3lo_color_factors("s", nl, False)
+            pg[2] = n3lo_color_factors("g", nl, False)
             reg = PDFConvolute_light(
                 MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, pns, nl, target_dict
             ) + nl * meansq_e * (
@@ -608,9 +608,9 @@ def F2_ZM(order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1, min_
         res += a_s**2 * (reg + loc + sing)
     if order >= 3 and min_order <= 3:
         pg = ps = pns = [0, Q, 0, charges(h_id)]
-        pns[2] = MasslessCoeffFunc.n3lo_color_factors("ns", nl, False)
-        ps[2] = MasslessCoeffFunc.n3lo_color_factors("s", nl, False)
-        pg[2] = MasslessCoeffFunc.n3lo_color_factors("g", nl, False)
+        pns[2] = n3lo_color_factors("ns", nl, False)
+        ps[2] = n3lo_color_factors("s", nl, False)
+        pg[2] = n3lo_color_factors("g", nl, False)
         reg = (
             PDFConvolute(MasslessCoeffFunc.Cb_3_reg, Mypdf, x, Q, pns, nl, h_id)
             + PDFConvolute(MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, pg, nl, g_id)

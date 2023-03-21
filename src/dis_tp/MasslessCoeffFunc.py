@@ -3,28 +3,7 @@ import numpy as np
 from eko.constants import CF, TR
 from ekore.harmonics.constants import zeta2
 from yadism.coefficient_functions.light.n3lo import (xc2ns3p, xc2sg3p, xclns3p,
-                                                     xclsg3p, common)
-import yadism.coefficient_functions.coupling_constants as coupl
-
-
-def n3lo_color_factors(partonic_channel, nf, skip_heavylight):
-    """Compute N3LO color facotrs. nf is the number of total active flavors"""
-
-    # some default values EM (therory is ignored)
-    th_d = dict(
-        SIN2TW=0.23126,
-        MZ=91.1876,
-        CKM="0.97428 0.22530 0.003470 0.22520 0.97345 0.041000 0.00862 0.04030 0.999152",
-    )
-    obs_d = dict(
-        projectilePID=11,
-        PolarizationDIS=0.0,
-        prDIS="EM",
-        PropagatorCorrection=0,
-        NCPositivityCharge=None,
-    )
-    coupl_const = coupl.CouplingConstants.from_dict(th_d, obs_d)
-    return common.nc_color_factor(coupl_const, nf, partonic_channel, skip_heavylight)
+                                                     xclsg3p)
 
 
 # F2

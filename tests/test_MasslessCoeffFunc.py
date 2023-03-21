@@ -1,9 +1,9 @@
 import numpy as np
 from numpy.testing import assert_allclose
-from yadism.coefficient_functions.light import f2_nc, fl_nc, n3lo
+from yadism.coefficient_functions.light import f2_nc, fl_nc
 
 from dis_tp import MasslessCoeffFunc as cf
-from dis_tp.parameters import charges
+from dis_tp.parameters import charges, n3lo_color_factors
 
 h_id = 4
 e_h = np.array([charges(h_id)])
@@ -19,9 +19,9 @@ class MockESF:
         self.x = x
         self.Q2 = q2
 
-fl11 = cf.n3lo_color_factors("ns", h_id, False)
-flps = cf.n3lo_color_factors("s", h_id, False)
-flg = cf.n3lo_color_factors("g", h_id, False)
+fl11 = n3lo_color_factors("ns", h_id, False)
+flps = n3lo_color_factors("s", h_id, False)
+flg = n3lo_color_factors("g", h_id, False)
 
 class Test_F2:
     xs = [0.0001, 0.0123, 0.456]
