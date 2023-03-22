@@ -125,7 +125,8 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib
     cfg = configs.defaults(cfg)
     plot_dir_path = cfg["paths"]["root"] / plot_dir
     plotclass = plot.Plot(cfg, plot_dir_path)
-    plotclass.plot_single_obs(obs, order, h_id)
+    # plotclass.plot_single_obs(obs, order, h_id)
+    plotclass.plot_fonll_noerr(obs, order, h_id)
 
 
 @command.command("k-factors")

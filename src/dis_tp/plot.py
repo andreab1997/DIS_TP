@@ -228,3 +228,55 @@ class Plot:
             plt.grid(alpha=0.75)
             plt.savefig(plot_path)
             plt.close()
+
+    def plot_fonll_noerr(self, obs, order, h_id):
+        parameters.initialize_theory(True)
+        mass = parameters.masses(int(h_id))
+        ordered_result_FO, x_grid, _q_grid = self.get_FO_result(obs, order, h_id)
+        ordered_result_M = self.get_M_results(obs, order, h_id)[""]
+        ordered_result_R = self.get_R_results(obs, order, h_id)[""]
+        diff_x_points = list(set(x_grid))
+        for x in diff_x_points:
+            plot_name = obs + "_" + order + "_" + h_id
+            plot_path = self.plot_dir / (plot_name + "_" + str(x) + ".pdf")
+            q_plot = [res["q"] for res in ordered_result_FO if res["x"] == x]
+            res_plot_FO = [res["res"] for res in ordered_result_FO if res["x"] == x]
+            res_plot_tmp = [res for res in ordered_result_R if res["x"] == x]
+            res_plot = [
+                res["res"] if res["q"] > mass else np.nan for res in res_plot_tmp
+            ]
+            res_plot_R = res_plot
+            res_plot_tmp = [res for res in ordered_result_M if res["x"] == x]
+            res_plot = [
+                res["res"] if res["q"] > mass else np.nan for res in res_plot_tmp
+            ]
+            res_plot_M = res_plot
+            plt.plot(
+                q_plot,
+                res_plot_FO,
+                label="FO",
+                color="violet",
+                linestyle="--",
+                linewidth=3.5,
+            )
+            plt.plot(
+                q_plot,
+                res_plot_R,
+                label="R",
+                color="green",
+                linewidth=0.8,
+            )
+            plt.plot(
+                q_plot,
+                res_plot_M,
+                label="M",
+                color="blue",
+                linewidth=2.2,
+            )
+            plt.xscale("log")
+            plt.xlabel("Q[GeV]")
+            plt.ylabel("x" + obs)
+            plt.legend()
+            plt.grid(alpha=0.75)
+            plt.savefig(plot_path)
+            plt.close()
