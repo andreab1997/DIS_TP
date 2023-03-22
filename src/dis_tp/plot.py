@@ -278,3 +278,94 @@ class Plot:
             plt.grid(alpha=0.75)
             plt.savefig(plot_path)
             plt.close()
+
+    def plot_fonll_noerr(self, obs, order, h_id):
+        parameters.initialize_theory(True)
+        mass = parameters.masses(int(h_id))
+        ordered_result_FO, x_grid, _q_grid = self.get_FO_result(obs, order, h_id)
+        ordered_result_M = self.get_M_results(obs, order, h_id)[""]
+        ordered_result_R = self.get_R_results(obs, order, h_id)[""]
+        diff_x_points = list(set(x_grid))
+        for x in diff_x_points:
+            plot_name = obs + "_" + order + "_" + h_id
+            plot_path = self.plot_dir / (plot_name + "_" + str(x) + ".pdf")
+            q_plot = [res["q"] for res in ordered_result_FO if res["x"] == x]
+            res_plot_FO = [res["res"] for res in ordered_result_FO if res["x"] == x]
+            res_plot_tmp = [res for res in ordered_result_R if res["x"] == x]
+            res_plot = [
+                res["res"] if res["q"] > mass else np.nan for res in res_plot_tmp
+            ]
+            res_plot_R = res_plot
+            res_plot_tmp = [res for res in ordered_result_M if res["x"] == x]
+            res_plot = [
+                res["res"] if res["q"] > mass else np.nan for res in res_plot_tmp
+            ]
+            res_plot_M = res_plot
+            plt.plot(
+                q_plot,
+                res_plot_FO,
+                label="Massive",
+                color="violet",
+                linestyle="--",
+                linewidth=3.5,
+            )
+            plt.plot(
+                q_plot,
+                res_plot_R,
+                label="ZM",
+                color="green",
+                linewidth=0.8,
+            )
+            plt.plot(
+                q_plot,
+                res_plot_M,
+                label="FONLL",
+                color="blue",
+                linewidth=2.2,
+            )
+            plt.xscale("log")
+            plt.xlabel("Q[GeV]")
+            plt.ylabel("x" + obs)
+            plt.legend()
+            plt.grid(alpha=0.75)
+            plt.savefig(plot_path)
+            plt.close()
+
+    def plot_fonll_order_comparison(self, obs, h_id):
+        parameters.initialize_theory(True)
+        mass = parameters.masses(int(h_id))
+        ordered_result_FO_NNLO, x_grid, _q_grid = self.get_FO_result(obs, "2", h_id)
+        ordered_result_M_NNLO = self.get_M_results(obs, "2", h_id)[""]
+        ordered_result_M_N3LO = self.get_M_results(obs, "3", h_id)[""]
+        diff_x_points = list(set(x_grid))
+        for x in diff_x_points:
+            plot_name = obs + "_comporders_" + h_id
+            plot_path = self.plot_dir / (plot_name + "_" + str(x) + ".pdf")
+            q_plot = [res["q"] for res in ordered_result_FO_NNLO if res["x"] == x]
+            res_plot_tmp = [res for res in ordered_result_M_NNLO if res["x"] == x]
+            res_plot = [res["res"] if res["q"] > mass else 0.0 for res in res_plot_tmp]
+            res_plot_M_NNLO = res_plot
+            res_plot_tmp = [res for res in ordered_result_M_N3LO if res["x"] == x]
+            res_plot = [res["res"] if res["q"] > mass else 0.0 for res in res_plot_tmp]
+            res_plot_M_N3LO = res_plot
+            plt.plot(
+                q_plot,
+                res_plot_M_NNLO,
+                label="NNLO",
+                color="violet",
+                linewidth=2.0,
+            )
+            plt.plot(
+                q_plot,
+                res_plot_M_N3LO,
+                label="N3LO",
+                color="blue",
+                linewidth=2.5,
+            )
+            plt.xscale("log")
+            plt.xlabel("Q[GeV]")
+            plt.ylabel("x" + obs)
+            plt.legend()
+            plt.grid(alpha=0.75)
+            plt.savefig(plot_path)
+            plt.close()
