@@ -119,7 +119,7 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib
     Plot (and save the results in plot_dir) an observable with all the method overimposed for a certain order
     and heavy quark id.
 
-    USAGE dis_tp plot_observable <plot_dir> <obs> <order> <h_id>
+    USAGE dis_tp plot <plot_dir> <obs> <order> <h_id>
     """
     cfg = configs.load(cfg)
     cfg = configs.defaults(cfg)
@@ -128,7 +128,7 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib
     orders = {"NLO": 1, "NNLO": 2, "N3LO": 3}
     # plotclass.plot_single_obs(obs, str(orders[order]), h_id)
     plotclass.plot_fonll_noerr(obs, str(orders[order]), h_id)
-    plotclass.plot_fonll_order_comparison(obs, h_id)
+    #plotclass.plot_fonll_order_comparison(obs, h_id)
 
 
 @command.command("k-factors")
