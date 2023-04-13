@@ -4,7 +4,7 @@ from multiprocess import Pool
 
 from . import Initialize as Ini
 from .logging import console
-from .parameters import charges, default_masses, number_active_flavors
+from .parameters import charges, default_masses
 
 
 def read1D(path_to_file):
@@ -76,7 +76,7 @@ class Construct_Grid:
         self.xgrid = Ini.ZList
         self.qgrid = Ini.QList
         self.n_pools = n_pools
-        self.nf = number_active_flavors(h_id)
+        self.nf = h_id
         self.e_h = charges(h_id)
         self.grid_type = grid_type
         if self.grid_type == "tilde":

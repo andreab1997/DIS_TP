@@ -149,13 +149,14 @@ def Cg_2_reg(z, Q, p, _nf):
 
 def Cg_3_reg(z, Q, p, nf):
     e_h = p[-1]
-    args = np.array([nf, True], dtype=float)
+    flg = p[2]
+    args = np.array([nf, flg], dtype=float)
     return e_h**2 * xc2sg3p.c2g3a(z, args=args) / nf
 
 
 def Cg_3_loc(z, Q, p, nf):
     e_h = p[-1]
-    args = np.array([nf, True], dtype=float)
+    args = np.array([nf], dtype=float)
     return e_h**2 * xc2sg3p.c2g3c(z, args=args) / nf
 
 
@@ -177,31 +178,35 @@ def Cq_2_reg(z, Q, p, _nf):
 
 def Cq_3_reg(z, Q, p, nf):
     e_h = p[-1]
-    args = np.array([nf, True], dtype=float)
+    flps = p[2]
+    args = np.array([nf, flps], dtype=float)
     return e_h**2 * xc2sg3p.c2s3a(z, args=args) / nf
 
 
 def Cq_3_loc(z, Q, p, nf):
     e_h = p[-1]
-    args = np.array([nf, True], dtype=float)
+    flps = p[2]
+    args = np.array([nf, flps], dtype=float)
     return e_h**2 * xc2sg3p.c2s3c(z, args=args) / nf
 
 
 def Cb_3_reg(z, Q, p, nf):
     e_h = p[-1]
-    args = np.array([nf, True], dtype=float)
+    fl = p[2]
+    args = np.array([nf, fl], dtype=float)
     return e_h**2 * xc2ns3p.c2np3a(z, args=args)
 
 
 def Cb_3_loc(z, Q, p, nf):
     e_h = p[-1]
-    args = np.array([nf, True], dtype=float)
+    fl = p[2]
+    args = np.array([nf, fl], dtype=float)
     return e_h**2 * xc2ns3p.c2np3c(z, args=args)
 
 
 def Cb_3_sing(z, Q, p, nf):
     e_h = p[-1]
-    args = np.array([nf, True], dtype=float)
+    args = np.array([nf], dtype=float)
     return e_h**2 * xc2ns3p.c2ns3b(z, args=args)
 
 
@@ -234,7 +239,8 @@ def CLg_2_reg(z, Q, p, _nf):
 
 def CLg_3_reg(z, Q, p, nf):
     e_h = p[-1]
-    args = np.array([nf, True], dtype=float)
+    flg = p[2]
+    args = np.array([nf, flg], dtype=float)
     return e_h**2 * xclsg3p.clg3a(z, args=args) / nf
 
 
@@ -293,13 +299,15 @@ def CLq_2_reg(z, Q, p, _nf):
 
 def CLq_3_reg(z, Q, p, nf):
     e_h = p[-1]
-    args = np.array([nf, True], dtype=float)
+    flps = p[2]
+    args = np.array([nf, flps], dtype=float)
     return e_h**2 * xclsg3p.cls3a(z, args=args) / nf
 
 
 def CLb_3_reg(z, Q, p, nf):
     e_h = p[-1]
-    args = np.array([nf, True], dtype=float)
+    fl = p[2]
+    args = np.array([nf, fl], dtype=float)
     return e_h**2 * xclns3p.clnp3a(z, args=args)
 
 

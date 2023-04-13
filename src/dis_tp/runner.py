@@ -7,7 +7,7 @@ from dis_tp import Initialize as Ini
 
 from . import configs, io
 from .logging import console
-from .parameters import initialize_theory, number_active_flavors
+from .parameters import initialize_theory
 from .structure_functions import f2, fl
 
 mapfunc = {
@@ -18,6 +18,8 @@ mapfunc = {
         "light": [f2.F2_Light],
         "total": [f2.F2_Total],
         "FONLL": [f2.F2_FONLL],
+        "FONLL_incomplete": [f2.F2_FONLL_incomplete],
+        "total_incomplete": [f2.F2_Total_incomplete],
     },
     "FL": {
         "R": [fl.FL_R],
@@ -26,6 +28,8 @@ mapfunc = {
         "light": [fl.FL_Light],
         "total": [fl.FL_Total],
         "FONLL": [fl.FL_FONLL],
+        "FONLL_incomplete": [fl.FL_FONLL_incomplete],
+        "total_incomplete": [fl.FL_Total_incomplete],
     },
     "XSHERANCAVG": {
         "R": [f2.F2_R, fl.FL_R],
@@ -34,6 +38,8 @@ mapfunc = {
         "FONLL": [f2.F2_FONLL, fl.FL_FONLL],
         "light": [f2.F2_Light, fl.FL_Light],
         "total": [f2.F2_Total, fl.FL_Total],
+        "FONLL_incomplete": [f2.F2_FONLL_incomplete, fl.FL_FONLL_incomplete],
+        "total_incomplete": [f2.F2_Total_incomplete, fl.FL_Total_incomplete],
     },
     # NOTE: for the moment this coincide with the averaged xs
     # since here we don't provide F3
@@ -44,13 +50,12 @@ mapfunc = {
         "FONLL": [f2.F2_FONLL, fl.FL_FONLL],
         "light": [f2.F2_Light, fl.FL_Light],
         "total": [f2.F2_Total, fl.FL_Total],
+        "FONLL_incomplete": [f2.F2_FONLL_incomplete, fl.FL_FONLL_incomplete],
+        "total_incomplete": [f2.F2_Total_incomplete, fl.FL_Total_incomplete],
     },
 }
 
-
-def heavyness_to_nf(heavyness):
-    map_heavyness = {"charm": 4, "bottom": 5, "light": None, "total": None}
-    return map_heavyness[heavyness]
+map_heavyness = {"charm": 4, "bottom": 5, "light": None, "total": None}
 
 
 # TODO: rename External to be grids
@@ -72,7 +77,9 @@ class Runner:
         self.o_par = self.runparameters.operator_parameters()
         self.t_par = self.runparameters.theory_parameters()
 
-        initialize_theory(th_obj.grids, th_obj.masses, th_obj.strong_coupling)
+        initialize_theory(
+            th_obj.grids, th_obj.masses, th_obj.strong_coupling, th_obj.thr_atlas
+        )
         self.partial_sf = None
 
     @staticmethod
@@ -91,15 +98,13 @@ class Runner:
     def compute(self, n_cores):
         # loop on observables
         for ob in self.o_par.obs:
-            hid = heavyness_to_nf(ob.heavyness)
-            nf = number_active_flavors(hid)
 
-            if ob.heavyness != "light" and (self.t_par.grids or self.t_par.order == 3):
-                Ini.Initialize_all(nf)
+            hid = map_heavyness[ob.heavyness]
+            if ob.heavyness != "light" and self.t_par.order == 3 and self.t_par.grids:
+                Ini.Initialize_all()
 
             func_to_call = mapfunc[ob.name][ob.restype]
             thisob_res = []
-
             # loop on SF
             for func in func_to_call:
                 self.partial_sf = functools.partial(
@@ -107,7 +112,7 @@ class Runner:
                     order=self.t_par.order,
                     meth=self.t_par.fns,
                     pdf=ob.pdf,
-                    h_id=nf,
+                    h_id=hid,
                     target_dict=self.o_par.target_dict,
                 )
                 console.log(

@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import yaml
 from eko.couplings import Couplings
+from eko.thresholds import ThresholdsAtlas
 from eko.io import types
 
 from . import parameters
@@ -11,13 +12,14 @@ from .logging import console
 class TheoryParameters:
     """Class containing all the theory parameters."""
 
-    def __init__(self, order, fns, masses, sc, grids, full_card=None):
+    def __init__(self, order, fns, masses, sc, thr_atlas, grids, full_card=None):
         self.order = order
         self.fns = fns
         self.masses = masses
         self.grids = grids
         self._t_card = full_card
         self.strong_coupling = sc
+        self.thr_atlas = thr_atlas
 
         if not self.grids:
             console.log(
@@ -72,7 +74,11 @@ class TheoryParameters:
         mc = th.get("mc", parameters.default_masses(4))
         mb = th.get("mb", parameters.default_masses(5))
         mt = th.get("mt", parameters.default_masses(6))
-        masses = [mc, mb, mt]
+        masses = np.array([mc, mb, mt])
+        kmc = th.get("kcThr", 1.0)
+        kmb = th.get("kbThr", 1.0)
+        kmt = th.get("ktThr", 1.0)
+        thresholds_ratios = np.array([kmc, kmb, kmt]) ** 2
         method = types.CouplingEvolutionMethod.EXPANDED
         if "ModEv" in th and th["ModEv"] == "EXA":
             method = types.CouplingEvolutionMethod.EXACT
@@ -89,12 +95,21 @@ class TheoryParameters:
             couplings=ref,
             order=(order + 1, 0),
             method=method,
-            masses=np.array(masses) ** 2,
+            masses=masses ** 2,
             hqm_scheme=types.QuarkMassSchemes.POLE,
-            thresholds_ratios=[1.0, 1.0, 1.0],
+            thresholds_ratios=thresholds_ratios,
+        )
+        thr_atlas = ThresholdsAtlas(
+            masses=masses**2, thresholds_ratios=thresholds_ratios
         )
         return cls(
-            order=order, fns=fns, grids=grids, masses=masses, sc=sc, full_card=th
+            order=order,
+            fns=fns,
+            grids=grids,
+            masses=masses,
+            sc=sc,
+            thr_atlas=thr_atlas,
+            full_card=th,
         )
 
 
@@ -174,7 +189,10 @@ class OperatorParameters:
                 heavyness = ob.split("_")[1]
                 restype = obs["obs"][ob]["restype"]
                 if heavyness in ["light", "total"]:
-                    restype = heavyness
+                    if "_incomplete" in restype and heavyness == "total":
+                        restype = "total_incomplete"
+                    else:
+                        restype = heavyness
 
                 observables.append(
                     Observable(
@@ -237,12 +255,24 @@ class RunParameters:
             self.dump_result(ob, res)
 
     def dump_result(self, ob, ob_result):
+        heavyness_dict = {"charm": ["4", 0], "bottom": ["5", 1]}
+        thr_ratio = np.sqrt(
+            self.theoryparam.thr_atlas.thresholds_ratios[
+                heavyness_dict[ob.heavyness][1]
+            ]
+        )
         file_name = (
             ob.name
             + "_"
             + ob.restype
             + "_"
             + str(self.theory_parameters().order)
+            + "_"
+            + heavyness_dict[ob.heavyness][0]
+            + "_"
+            + ob.heavyness
+            + "_thr="
+            + str(thr_ratio)
             + "_"
             + str(ob.pdf)
         )

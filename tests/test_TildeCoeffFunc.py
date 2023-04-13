@@ -13,7 +13,7 @@ h_id = 4
 mhq = default_masses(h_id)
 initialize_theory(use_grids=True)
 e_h = charges(h_id)
-Initialize_all(h_id)
+Initialize_all()
 
 
 def Convolute_plus_matching_per_matching(matchingplus, matching2, x, Q, p1, nf):

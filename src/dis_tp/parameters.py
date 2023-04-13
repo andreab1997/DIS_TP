@@ -1,23 +1,21 @@
 import numpy as np
 
-from . import parameters
+from eko.thresholds import ThresholdsAtlas
+import yadism.coefficient_functions.coupling_constants as coupl
+from yadism.coefficient_functions.light import n3lo
 
 pids = {"g": 21, "c": 4, "b": 5, "t": 6}
 
 
-def number_active_flavors(h_id):
-    if h_id is None:
-        return None
-    return np.abs(h_id)
+def number_active_flavors(Q):
+    return _thr_atlas.nf(Q**2)
 
 
 def number_light_flavors(Q):
     """This should match the FONLL prescription."""
-    nf = 3
-    if Q > _masses[1]:
-        nf += 1
-    if Q > _masses[2]:
-        nf += 1
+    nf = _thr_atlas.nf(Q**2)
+    if nf > 3:
+        return nf - 1
     return nf
 
 
@@ -38,7 +36,7 @@ def default_masses(h_id):
     return m[h_id]
 
 
-def initialize_theory(use_grids, masses=None, strong_coupling=None):
+def initialize_theory(use_grids, masses=None, strong_coupling=None, thr_atlas=None):
     if not use_grids and masses is None:
         raise ValueError(
             f"Need to specify heavy particle masses when grids are not used."
@@ -61,6 +59,15 @@ def initialize_theory(use_grids, masses=None, strong_coupling=None):
         global _alpha_s
         _alpha_s = strong_coupling.a_s
 
+    global _thr_atlas
+    # enforce some defaults
+    if thr_atlas is None:
+        _thr_atlas = ThresholdsAtlas(
+            masses=np.array(_masses) ** 2,
+            thresholds_ratios=[1,1,1]
+        )
+    else:
+        _thr_atlas = thr_atlas
 
 def masses(h_id):
     return _masses[h_id - 4]
@@ -68,3 +75,21 @@ def masses(h_id):
 
 def alpha_s(mur2, q2):
     return _alpha_s(mur2, q2)
+
+# some default values for EM (therory is ignored)
+_th_d = dict(
+        SIN2TW=0.23126,
+        MZ=91.1876,
+        CKM="0.97428 0.22530 0.003470 0.22520 0.97345 0.041000 0.00862 0.04030 0.999152",
+)
+obs_d = dict(
+        projectilePID=11,
+        PolarizationDIS=0.0,
+        prDIS="EM",
+        PropagatorCorrection=0,
+        NCPositivityCharge=None,
+)
+coupl_const = coupl.CouplingConstants.from_dict(_th_d, obs_d)
+def n3lo_color_factors(partonic_channel, nf, skip_heavylight):
+    """Compute N3LO color facotrs. nf is the number of total active flavors"""
+    return n3lo.common.nc_color_factor(coupl_const, nf, partonic_channel, skip_heavylight)

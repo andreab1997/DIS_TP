@@ -125,8 +125,9 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib
     cfg = configs.defaults(cfg)
     plot_dir_path = cfg["paths"]["root"] / plot_dir
     plotclass = plot.Plot(cfg, plot_dir_path)
-    # plotclass.plot_single_obs(obs, order, h_id)
-    plotclass.plot_fonll_noerr(obs, order, h_id)
+    orders = {"NLO": 1, "NNLO": 2, "N3LO": 3}
+    # plotclass.plot_single_obs(obs, str(orders[order]), h_id)
+    plotclass.plot_fonll_noerr(obs, str(orders[order]), h_id)
     plotclass.plot_fonll_order_comparison(obs, h_id)
 
 
@@ -149,6 +150,14 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib
     help="If True compute the k-factor w.r.t. Yadism",
 )
 @click.option(
+    "--fonll_incomplete",
+    type=bool,
+    default=False,
+    is_flag=True,
+    required=False,
+    help="""Use DIS TP FONLL_incomplete in the denominator.""",
+)
+@click.option(
     "-th",
     "--th_description",
     type=str,
@@ -164,14 +173,17 @@ def generate_kfactors(
     author: str,
     n_cores: int,
     use_yadism: bool,
+    fonll_incomplete: bool,
     th_description: str,
     cfg: pathlib.Path,
 ):
     """Generate k-factors.
 
-    USAGE: dis_tp k-factors HERA_NC_318GEV_EAVG_SIGMARED_CHARM 400 NNPDF40_nnlo_pch_as_01180 "Your Name" [-n 4 -yad -th "Theory Input"]
+    USAGE: dis_tp k-factors HERA_NC_318GEV_EAVG_SIGMARED_CHARM 400 NNPDF40_nnlo_pch_as_01180 "Your Name" [-fonll_incomplete -n 4 -yad -th "Theory Input"]
     """
 
-    obj = k_factors.KfactorRunner(t_card, o_card, pdf, use_yadism, cfg)
+    obj = k_factors.KfactorRunner(
+        t_card, o_card, pdf, use_yadism, fonll_incomplete, cfg
+    )
     obj.compute(n_cores)
     obj.save_results(author, th_input=th_description)
