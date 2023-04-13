@@ -104,10 +104,10 @@ class TestNic:
     xs = [0.0001, 0.0123, 0.456]
     Q = 10
     nf = 5
-    c2g = np.array(readND(here / f"grids/C2g.dat"))
-    c2q = np.array(readND(here / f"grids/C2q.dat"))
-    cLg = np.array(readND(here / f"grids/CLg.dat"))
-    cLq = np.array(readND(here / f"grids/CLq.dat"))
+    c2g = np.array(readND(here / f"grids/C2g.txt"))
+    c2q = np.array(readND(here / f"grids/C2q.txt"))
+    cLg = np.array(readND(here / f"grids/CLg.txt"))
+    cLq = np.array(readND(here / f"grids/CLq.txt"))
     c2g = interp2d(Ini.ZList, Ini.QList, c2g, kind="quintic")
     c2q = interp2d(Ini.ZList, Ini.QList, c2q, kind="quintic")
     cLg = interp2d(Ini.ZList, Ini.QList, cLg, kind="quintic")

@@ -211,7 +211,7 @@ def benchmarkFONLL_incomplete(pto, pdf_name, heavyness):
 
 if __name__ == "__main__":
 
-    pdf_name = "NNPDF40_nnlo_pch_as_01180"
+    pdf_name = "ToyLH" # "NNPDF40_nnlo_pch_as_01180"
     # obj = benchmarkF_M_bottom(pto=2, pdf_name=pdf_name)
     # obj = benchmarkFO_bottom(pto=1, pdf_name=pdf_name)
 
@@ -226,6 +226,10 @@ if __name__ == "__main__":
     # benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="charm")
     # benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="bottom")
     # benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="light")
+
+    # benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="charm")
+    # benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="bottom")
+    # benchmarkFONLL_kth(pto=3, pdf_name=pdf_name, heavyness="light")
     # benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="total")
 
     benchmarkFONLL_incomplete(pto=3, pdf_name=pdf_name, heavyness="charm")
