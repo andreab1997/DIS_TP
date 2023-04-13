@@ -24,23 +24,6 @@ def read1D(path_to_file):
     return mylist
 
 
-def read1D_Nic(path_to_file):
-    """
-    Read a space-separated txt file and return a 1-Dimensional list of the values (for triple space separated files)
-
-    Parameters:
-        path_to_file : str
-            file to open
-    Returns:
-            : list
-        list of values
-    """
-    for line in open(path_to_file):
-        listWord = line.split("   ")
-    mylist = [float(item) for item in listWord]
-    return mylist
-
-
 def readND(path_to_file):
     """
     Read a space-separated txt file and return a N-Dimensional list of the values
