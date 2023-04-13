@@ -189,7 +189,10 @@ class OperatorParameters:
                 heavyness = ob.split("_")[1]
                 restype = obs["obs"][ob]["restype"]
                 if heavyness in ["light", "total"]:
-                    restype = heavyness
+                    if "_incomplete" in restype and heavyness == "total":
+                        restype = "total_incomplete"
+                    else:
+                        restype = heavyness
 
                 observables.append(
                     Observable(

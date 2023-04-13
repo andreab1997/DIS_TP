@@ -15,7 +15,7 @@ from .runner import Runner
 
 
 class KfactorRunner:
-    def __init__(self, t_card_name, dataset_name, pdf_name, use_yadism, cfg_path):
+    def __init__(self, t_card_name, dataset_name, pdf_name, use_yadism, fonll_incomplete, cfg_path):
         cfg = configs.load(cfg_path)
         cfg = configs.defaults(cfg)
 
@@ -24,6 +24,7 @@ class KfactorRunner:
 
         self.pdf_name = pdf_name
         self.use_yadism = use_yadism
+        self.fonll_incomplete = fonll_incomplete
         self.result_path = cfg["paths"]["results"]
         self.dataset_name = dataset_name
         self._results = None
@@ -43,21 +44,34 @@ class KfactorRunner:
 
     def compute(self, n_cores):
         mumerator_log = self.run_dis_tp(n_cores)
+        # over Yadism N3LO
         if self.use_yadism:
             denominator_log = self.run_yadism()
         else:
-            self.theory.order -= 1
+            # over FONLL incomplete N3LO
+            if self.fonll_incomplete:
+                self._update_observables_to_incomplete()
+            # over NNLO
+            else:
+                self.theory.order -= 1
             denominator_log = self.run_dis_tp(n_cores)
-        logs_df = self._log(mumerator_log, denominator_log, self.use_yadism)
+        logs_df = self._log(mumerator_log, denominator_log, self.use_yadism, self.fonll_incomplete)
         self._results = self.build_kfactor(logs_df)
         console.log(df_to_table(self._results, self.dataset_name))
 
+    def _update_observables_to_incomplete(self):
+        for obs in self.observable.obs:
+            obs.restype=f"{obs.restype}_incomplete"
+
     @staticmethod
-    def _log(num, den, use_yadism):
+    def _log(num, den, use_yadism, fonll_incomplete):
         # loop on SF
         for obs in den:
             my_obs = obs.split("_")[0]
-            if use_yadism:
+            if fonll_incomplete:
+                den_df = den[my_obs].rename(columns={"result": "N3LO_incomplete"})
+                num_df = num[my_obs].rename(columns={"result": "N3LO"})
+            elif use_yadism:
                 den_df = pd.DataFrame(den[obs]).rename(columns={"result": "yadism"})
                 num_df = num[my_obs].rename(columns={"result": "dis_tp"})
             else:
@@ -76,17 +90,21 @@ class KfactorRunner:
         return log_df
 
     def build_kfactor(self, log_df):
-        if self.use_yadism:
+        if self.fonll_incomplete:
+            log_df["k-factor"] = log_df.N3LO / log_df.N3LO_incomplete
+        elif self.use_yadism:
             log_df["k-factor"] = log_df.dis_tp / log_df.yadism
         else:
             log_df["k-factor"] = log_df.N3LO / log_df.NNLO
         return log_df
 
     def save_results(self, author, th_input):
-        if self.use_yadism:
-            k_fatctor_type = "N3LO FONLL DIS_TP / N3LO ZM-VFNS Yadism"
+        if self.fonll_incomplete:
+            k_fatctor_type = "FONLL@N3LO DIS_TP / (FONLL@NNLO + ZM-VFNS@N3LO_only) DIS_TP"
+        elif self.use_yadism:
+            k_fatctor_type = "FONLL@N3LO DIS_TP / (FONLL@NNLO + ZM-VFNS@N3LO_only) Yadism"
         else:
-            k_fatctor_type = "N3LO FONLL DIS_TP / NNLO FONLL DIS_TP"
+            k_fatctor_type = "FONLL@N3LO DIS_TP / FONLL@NNLO DIS_TP"
         intro = [
             "********************************************************************************\n",
             f"SetName: {self.dataset_name}\n",

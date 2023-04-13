@@ -167,7 +167,7 @@ def benchmarkFO_charm(pto, pdf_name):
 
 
 def benchmarkFONLL(pto, pdf_name, heavyness):
-    obs_names = [f"FL_{heavyness}", f"FL_{heavyness}"] # [f"XSHERANCAVG_{heavyness}"]
+    obs_names = [f"F2_{heavyness}", f"FL_{heavyness}"] # [f"XSHERANCAVG_{heavyness}"]
     q_fixed= 10 if heavyness=="charm" else 30
     x_fixed= 0.01 if heavyness=="charm" else 0.001
     obs_obj = Observable_card(
@@ -183,7 +183,7 @@ def benchmarkFONLL_kth(pto, pdf_name, heavyness):
         x_fixed= 0.01
         q_fixed= 10
         kcThr = 2.0
-        kbThr = 1.0 
+        kbThr = 4.0 
     else:
         q_fixed= 30
         x_fixed= 0.001
@@ -195,6 +195,17 @@ def benchmarkFONLL_kth(pto, pdf_name, heavyness):
         obs_names, q_min=1, q_max=100, q_fixed=q_fixed, x_fixed=x_fixed, restype="FONLL"
     )
     th_obj = TheoryCard(pto,kcThr,kbThr)
+    obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
+    obj.run()
+
+def benchmarkFONLL_incomplete(pto, pdf_name, heavyness):
+    obs_names = [f"FL_{heavyness}", f"F2_{heavyness}"] # [f"XSHERANCAVG_{heavyness}"]
+    q_fixed= 10 if heavyness=="charm" else 30
+    x_fixed= 0.01 if heavyness=="charm" else 0.001
+    obs_obj = Observable_card(
+        obs_names, q_min=1, q_max=100, q_fixed=q_fixed, x_fixed=x_fixed, restype="FONLL_incomplete"
+    )
+    th_obj = TheoryCard(pto,kbthr=4.0)
     obj = BenchmarkRunner(th_obj, obs_obj, pdf_name)
     obj.run()
 
@@ -212,7 +223,11 @@ if __name__ == "__main__":
     # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="light")
     # benchmarkFONLL(pto=2, pdf_name=pdf_name, heavyness="total")
 
-    benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="charm")
-    benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="bottom")
-    benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="light")
-    benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="total")
+    # benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="charm")
+    # benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="bottom")
+    # benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="light")
+    # benchmarkFONLL_kth(pto=2, pdf_name=pdf_name, heavyness="total")
+
+    benchmarkFONLL_incomplete(pto=3, pdf_name=pdf_name, heavyness="charm")
+    benchmarkFONLL_incomplete(pto=3, pdf_name=pdf_name, heavyness="bottom")
+    benchmarkFONLL_incomplete(pto=3, pdf_name=pdf_name, heavyness="total")
