@@ -73,9 +73,17 @@ def generate_matching_grids(
 @flavor_entry
 @pto
 @n_cores
+@click.option(
+    "-v",
+    "--n3lo_variation",
+    type=int,
+    default=0,
+    required=False,
+    help="N3LO coeffieicnt variation",
+)
 @dest_path
 def generate_matching_grids(
-    h_id: int, flavor_entry: str, pto: int, n_cores: int, dest_path: pathlib.Path
+    h_id: int, flavor_entry: str, pto: int, n_cores: int, n3lo_variation: int, dest_path: pathlib.Path
 ):
     """Construct tilde grids."""
     flavor = flavor_entry[-1] if "2" in flavor_entry else flavor_entry
@@ -91,7 +99,7 @@ def generate_matching_grids(
             func = tcf.CLg_3_til_reg
 
     path = dest_path / f"C{flavor}_{pto}_til/C{flavor}{pto}til_nf{h_id}.txt"
-    Initialize.Initialize_all(h_id)
+    Initialize.Initialize_all(h_id, n3lo_variation)
     parameters.initialize_theory(use_grids=True)
     obj = ReadTxt.Construct_Grid(
         func, h_id=h_id, path=path, grid_type="tilde", n_pools=n_cores

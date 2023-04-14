@@ -20,6 +20,7 @@ class TheoryParameters:
         self._t_card = full_card
         self.strong_coupling = sc
         self.thr_atlas = thr_atlas
+        self.n3lo_variation = full_card.get("n3lo_cf_variation", 0),
 
         if not self.grids:
             console.log(

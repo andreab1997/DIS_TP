@@ -55,103 +55,103 @@ def InitializeMbq_3(nf_list):
         Mbq3.append(interp2d(ZList, QList, Mbq3_array.T, kind="quintic"))
 
 
-def InitializeCq3_m(nf_list):
+def InitializeCq3_m(nf_list, n3lo_variation):
     """Initialize the Cq2 at N3LO massive function from the file in External."""
     global Cq3m
     Cq3m = []
     append_empty(Cq3m, nf_list)
     for nf in nf_list:
         Cq3m_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}.txt")
+            readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}_var{n3lo_variation}.txt")
         )
         Cq3m.append(interp2d(ZList[:-1], QList, Cq3m_array[:, :-1], kind="quintic"))
 
 
-def InitializeCq3_til(nf_list):
+def InitializeCq3_til(nf_list, n3lo_variation):
     """Initialize the Cq at N3LO tilde function from the file in External."""
     global Cq3_til
     Cq3_til = []
     append_empty(Cq3_til, nf_list)
     for nf in nf_list:
         Cq3_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_til/Cq3til_nf{nf}.txt")
+            readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_til/Cq3til_nf{nf}_var{n3lo_variation}.txt")
         )
         Cq3_til.append(interp2d(ZList[:-1], QList, Cq3_til_array.T, kind="quintic"))
 
 
-def InitializeCLq3_m(nf_list):
+def InitializeCLq3_m(nf_list, n3lo_variation):
     """Initialize the CqL at N3LO massive function from the file in External."""
     global CLq3m
     CLq3m = []
     append_empty(CLq3m, nf_list)
     for nf in nf_list:
         CLq3m_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}.txt")
+            readt.readND(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}_var{n3lo_variation}.txt")
         )
         CLq3m.append(interp2d(ZList, QList, CLq3m_array, kind="quintic"))
 
 
-def InitializeCLq3_til(nf_list):
+def InitializeCLq3_til(nf_list, n3lo_variation):
     """Initialize the CLq at N3LO tilde function from the file in External."""
     global CLq3_til
     CLq3_til = []
     append_empty(CLq3_til, nf_list)
     for nf in nf_list:
         CLq3_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/CLq_3_til/CLq3til_nf{nf}.txt")
+            readt.readND(PATH_TO_GLOBAL + f"/External/CLq_3_til/CLq3til_nf{nf}_var{n3lo_variation}.txt")
         )
         CLq3_til.append(interp2d(ZList[:-1], QList, CLq3_til_array.T, kind="quintic"))
 
 
-def InitializeCg3_m(nf_list):
+def InitializeCg3_m(nf_list, n3lo_variation):
     """Initialize the Cg2 at N3LO massive function from the file in External."""
     global Cg3m
     Cg3m = []
     append_empty(Cg3m, nf_list)
     for nf in nf_list:
         Cg3m_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}.txt")
+            readt.readND(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}_var{n3lo_variation}.txt")
         )
         Cg3m.append(interp2d(ZList[:-1], QList, Cg3m_array[:, :-1], kind="quintic"))
 
 
-def InitializeCLg3_m(nf_list):
+def InitializeCLg3_m(nf_list, n3lo_variation):
     """Initialize the CgL at N3LO massive function from the file in External."""
     global CLg3m
     CLg3m = []
     append_empty(CLg3m, nf_list)
     for nf in nf_list:
         CLg3m_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}.txt")
+            readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}_var{n3lo_variation}.txt")
         )
         CLg3m.append(interp2d(ZList, QList, CLg3m_array, kind="quintic"))
 
 
-def InitializeCg3_til(nf_list):
+def InitializeCg3_til(nf_list, n3lo_variation):
     """Initialize the C2g at N3LO tilde function from the file in External."""
     global Cg3_til
     Cg3_til = []
     append_empty(Cg3_til, nf_list)
     for nf in nf_list:
         Cg3_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/Cg_3_til/Cg3til_nf{nf}.txt")
+            readt.readND(PATH_TO_GLOBAL + f"/External/Cg_3_til/Cg3til_nf{nf}_var{n3lo_variation}.txt")
         )
         Cg3_til.append(interp2d(ZList[:-1], QList, Cg3_til_array.T, kind="quintic"))
 
 
-def InitializeCLg3_til(nf_list):
+def InitializeCLg3_til(nf_list, n3lo_variation):
     """Initialize the CLg at N3LO tilde function from the file in External."""
     global CLg3_til
     CLg3_til = []
     append_empty(CLg3_til, nf_list)
     for nf in nf_list:
         CLg3_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_til/CLg3til_nf{nf}.txt")
+            readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_til/CLg3til_nf{nf}_var{n3lo_variation}.txt")
         )
         CLg3_til.append(interp2d(ZList[:-1], QList, CLg3_til_array.T, kind="quintic"))
 
 
-def Initialize_all(nf=None):
+def Initialize_all(nf=None, n3lo_variation=0):
     """Initialize all the needed global lists."""
     # TODO: allow also for Ftop
     nf_list = [nf] if nf is not None else [4,5]
@@ -159,14 +159,14 @@ def Initialize_all(nf=None):
     InitializeQX()
     InitializeMbg_3(nf_list)
     InitializeMbq_3(nf_list)
-    InitializeCq3_m(nf_list)
-    InitializeCLq3_m(nf_list)
-    InitializeCg3_m(nf_list)
-    InitializeCLg3_m(nf_list)
-    InitializeCLq3_til(nf_list)
-    InitializeCLg3_til(nf_list)
-    InitializeCq3_til(nf_list)
-    InitializeCg3_til(nf_list)
+    InitializeCq3_m(nf_list, n3lo_variation)
+    InitializeCLq3_m(nf_list, n3lo_variation)
+    InitializeCg3_m(nf_list, n3lo_variation)
+    InitializeCLg3_m(nf_list, n3lo_variation)
+    InitializeCLq3_til(nf_list, n3lo_variation)
+    InitializeCLg3_til(nf_list, n3lo_variation)
+    InitializeCq3_til(nf_list, n3lo_variation)
+    InitializeCg3_til(nf_list, n3lo_variation)
 
 
 def InitializeHPL():
