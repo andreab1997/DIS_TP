@@ -33,7 +33,7 @@ class KfactorRunner:
         self.pdf_name = pdf_name
         self.use_yadism = use_yadism
         self.fonll_incomplete = fonll_incomplete
-        self.result_path = cfg["paths"]["results"]
+        self.result_path = cfg["paths"]["results"] / t_card_name
         self.dataset_name = dataset_name
         self._results = None
         self.config_path = cfg_path
@@ -139,6 +139,7 @@ class KfactorRunner:
             f"Warnings: {k_fatctor_type}\n"
             "********************************************************************************\n",
         ]
+        self.result_path.mkdir(exist_ok=True)
         res_path = self.result_path / f"CF_QCD_{self.dataset_name}.dat"
         console.log(f"[green]Saving the k-factors in: {res_path}")
         with open(res_path, "w", encoding="utf-8") as f:

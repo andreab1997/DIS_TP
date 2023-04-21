@@ -195,6 +195,7 @@ def generate_kfactors(
         if len(t_cards) == 1:
             # No variations
             obj.save_results(author, th_input=th_description)
+            exit(0)
         else:
             # Append all the variations
             result_logs.append(obj._results)
