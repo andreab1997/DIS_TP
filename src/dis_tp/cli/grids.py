@@ -83,7 +83,12 @@ def generate_matching_grids(
 )
 @dest_path
 def generate_matching_grids(
-    h_id: int, flavor_entry: str, pto: int, n_cores: int, n3lo_variation: int, dest_path: pathlib.Path
+    h_id: int,
+    flavor_entry: str,
+    pto: int,
+    n_cores: int,
+    n3lo_variation: int,
+    dest_path: pathlib.Path,
 ):
     """Construct tilde grids."""
     flavor = flavor_entry[-1] if "2" in flavor_entry else flavor_entry
@@ -98,7 +103,10 @@ def generate_matching_grids(
         elif flavor_entry == "Lg":
             func = tcf.CLg_3_til_reg
 
-    path = dest_path / f"C{flavor}_{pto}_til/C{flavor}{pto}til_nf{h_id}.txt"
+    path = (
+        dest_path
+        / f"C{flavor}_{pto}_til/C{flavor}{pto}til_nf{h_id}_var{n3lo_variation}.txt"
+    )
     Initialize.Initialize_all(h_id, n3lo_variation)
     parameters.initialize_theory(use_grids=True)
     obj = ReadTxt.Construct_Grid(

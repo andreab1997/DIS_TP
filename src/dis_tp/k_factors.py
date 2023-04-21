@@ -4,9 +4,9 @@ import copy
 from datetime import date
 
 import lhapdf
+import numpy as np
 import pandas as pd
 import yadism
-import yaml
 
 from . import configs
 from .io import OperatorParameters, TheoryParameters
@@ -15,7 +15,15 @@ from .runner import Runner
 
 
 class KfactorRunner:
-    def __init__(self, t_card_name, dataset_name, pdf_name, use_yadism, fonll_incomplete, cfg_path):
+    def __init__(
+        self,
+        t_card_name,
+        dataset_name,
+        pdf_name,
+        use_yadism,
+        fonll_incomplete,
+        cfg_path,
+    ):
         cfg = configs.load(cfg_path)
         cfg = configs.defaults(cfg)
 
@@ -55,13 +63,15 @@ class KfactorRunner:
             else:
                 self.theory.order -= 1
             denominator_log = self.run_dis_tp(n_cores)
-        logs_df = self._log(mumerator_log, denominator_log, self.use_yadism, self.fonll_incomplete)
+        logs_df = self._log(
+            mumerator_log, denominator_log, self.use_yadism, self.fonll_incomplete
+        )
         self._results = self.build_kfactor(logs_df)
         console.log(df_to_table(self._results, self.dataset_name))
 
     def _update_observables_to_incomplete(self):
         for obs in self.observable.obs:
-            obs.restype=f"{obs.restype}_incomplete"
+            obs.restype = f"{obs.restype}_incomplete"
 
     @staticmethod
     def _log(num, den, use_yadism, fonll_incomplete):
@@ -96,13 +106,26 @@ class KfactorRunner:
             log_df["k-factor"] = log_df.dis_tp / log_df.yadism
         else:
             log_df["k-factor"] = log_df.N3LO / log_df.NNLO
+        log_df["kf_error"] = 0.0
         return log_df
+
+    @staticmethod
+    def build_kfactor_with_error(reuslts):
+        kfs = []
+        for res in reuslts:
+            kfs.append(res["k-factor"])
+        kfs = np.array(kfs)
+        return pd.DataFrame({"k-factor": kfs.mean(axis=0), "kf_error": kfs.std(axis=0)})
 
     def save_results(self, author, th_input):
         if self.fonll_incomplete:
-            k_fatctor_type = "FONLL@N3LO DIS_TP / (FONLL@NNLO + ZM-VFNS@N3LO_only) DIS_TP"
+            k_fatctor_type = (
+                "FONLL@N3LO DIS_TP / (FONLL@NNLO + ZM-VFNS@N3LO_only) DIS_TP"
+            )
         elif self.use_yadism:
-            k_fatctor_type = "FONLL@N3LO DIS_TP / (FONLL@NNLO + ZM-VFNS@N3LO_only) Yadism"
+            k_fatctor_type = (
+                "FONLL@N3LO DIS_TP / (FONLL@NNLO + ZM-VFNS@N3LO_only) Yadism"
+            )
         else:
             k_fatctor_type = "FONLL@N3LO DIS_TP / FONLL@NNLO DIS_TP"
         intro = [
@@ -120,4 +143,11 @@ class KfactorRunner:
         console.log(f"[green]Saving the k-factors in: {res_path}")
         with open(res_path, "w", encoding="utf-8") as f:
             f.writelines(intro)
-            f.writelines([f"{k:4f}   0.0000\n" for k in self._results["k-factor"]])
+            f.writelines(
+                [
+                    f"{k:4f}   {e:4f}\n"
+                    for k, e in zip(
+                        self._results["k-factor"], self._results["kf_error"]
+                    )
+                ]
+            )

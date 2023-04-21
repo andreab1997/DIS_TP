@@ -62,7 +62,9 @@ def InitializeCq3_m(nf_list, n3lo_variation):
     append_empty(Cq3m, nf_list)
     for nf in nf_list:
         Cq3m_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}_var{n3lo_variation}.txt")
+            readt.readND(
+                PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}_var{n3lo_variation}.txt"
+            )
         )
         Cq3m.append(interp2d(ZList[:-1], QList, Cq3m_array[:, :-1], kind="quintic"))
 
@@ -74,7 +76,10 @@ def InitializeCq3_til(nf_list, n3lo_variation):
     append_empty(Cq3_til, nf_list)
     for nf in nf_list:
         Cq3_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/Cq_3_til/Cq3til_nf{nf}_var{n3lo_variation}.txt")
+            readt.readND(
+                PATH_TO_GLOBAL
+                + f"/External/Cq_3_til/Cq3til_nf{nf}_var{n3lo_variation}.txt"
+            )
         )
         Cq3_til.append(interp2d(ZList[:-1], QList, Cq3_til_array.T, kind="quintic"))
 
@@ -86,7 +91,9 @@ def InitializeCLq3_m(nf_list, n3lo_variation):
     append_empty(CLq3m, nf_list)
     for nf in nf_list:
         CLq3m_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}_var{n3lo_variation}.txt")
+            readt.readND(
+                PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}_var{n3lo_variation}.txt"
+            )
         )
         CLq3m.append(interp2d(ZList, QList, CLq3m_array, kind="quintic"))
 
@@ -98,7 +105,10 @@ def InitializeCLq3_til(nf_list, n3lo_variation):
     append_empty(CLq3_til, nf_list)
     for nf in nf_list:
         CLq3_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/CLq_3_til/CLq3til_nf{nf}_var{n3lo_variation}.txt")
+            readt.readND(
+                PATH_TO_GLOBAL
+                + f"/External/CLq_3_til/CLq3til_nf{nf}_var{n3lo_variation}.txt"
+            )
         )
         CLq3_til.append(interp2d(ZList[:-1], QList, CLq3_til_array.T, kind="quintic"))
 
@@ -110,7 +120,9 @@ def InitializeCg3_m(nf_list, n3lo_variation):
     append_empty(Cg3m, nf_list)
     for nf in nf_list:
         Cg3m_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}_var{n3lo_variation}.txt")
+            readt.readND(
+                PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}_var{n3lo_variation}.txt"
+            )
         )
         Cg3m.append(interp2d(ZList[:-1], QList, Cg3m_array[:, :-1], kind="quintic"))
 
@@ -122,7 +134,9 @@ def InitializeCLg3_m(nf_list, n3lo_variation):
     append_empty(CLg3m, nf_list)
     for nf in nf_list:
         CLg3m_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}_var{n3lo_variation}.txt")
+            readt.readND(
+                PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}_var{n3lo_variation}.txt"
+            )
         )
         CLg3m.append(interp2d(ZList, QList, CLg3m_array, kind="quintic"))
 
@@ -134,7 +148,10 @@ def InitializeCg3_til(nf_list, n3lo_variation):
     append_empty(Cg3_til, nf_list)
     for nf in nf_list:
         Cg3_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/Cg_3_til/Cg3til_nf{nf}_var{n3lo_variation}.txt")
+            readt.readND(
+                PATH_TO_GLOBAL
+                + f"/External/Cg_3_til/Cg3til_nf{nf}_var{n3lo_variation}.txt"
+            )
         )
         Cg3_til.append(interp2d(ZList[:-1], QList, Cg3_til_array.T, kind="quintic"))
 
@@ -146,7 +163,10 @@ def InitializeCLg3_til(nf_list, n3lo_variation):
     append_empty(CLg3_til, nf_list)
     for nf in nf_list:
         CLg3_til_array = np.array(
-            readt.readND(PATH_TO_GLOBAL + f"/External/CLg_3_til/CLg3til_nf{nf}_var{n3lo_variation}.txt")
+            readt.readND(
+                PATH_TO_GLOBAL
+                + f"/External/CLg_3_til/CLg3til_nf{nf}_var{n3lo_variation}.txt"
+            )
         )
         CLg3_til.append(interp2d(ZList[:-1], QList, CLg3_til_array.T, kind="quintic"))
 
@@ -154,7 +174,7 @@ def InitializeCLg3_til(nf_list, n3lo_variation):
 def Initialize_all(nf=None, n3lo_variation=0):
     """Initialize all the needed global lists."""
     # TODO: allow also for Ftop
-    nf_list = [nf] if nf is not None else [4,5]
+    nf_list = [nf] if nf is not None else [4, 5]
     console.log("[green]Loading precomputed grids ...")
     InitializeQX()
     InitializeMbg_3(nf_list)
