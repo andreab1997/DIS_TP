@@ -179,17 +179,18 @@ class Plot:
                 "": 1.0,
                 "_mub=2mb": 2.0,
             }
+            corr = 1.12
             for sv in ordered_result_R:
                 res_plot_tmp = [res for res in ordered_result_R[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] >= (shifts[sv] * mass) else np.nan
+                    res["res"] if res["q"] >= (shifts[sv] * mass) * corr else np.nan
                     for res in res_plot_tmp
                 ]
                 res_plot_R[sv] = res_plot
             for sv, fo_sv in zip(ordered_result_M, sv_FO_coll):
                 res_plot_tmp = [res for res in ordered_result_M[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] >= (shifts[sv] * mass) else res_FO
+                    res["res"] if res["q"] >= (shifts[sv] * mass) * corr else res_FO
                     for res, res_FO in zip(res_plot_tmp, fo_sv)
                 ]
                 res_plot_M[sv] = res_plot
