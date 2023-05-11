@@ -133,11 +133,15 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib
 
 @command.command("k-factors")
 @o_card
-@t_card
 @pdf
 @n_cores
 @click.argument(
     "author",
+    type=str,
+)
+@click.argument(
+    "t_cards",
+    nargs=-1,
     type=str,
 )
 @click.option(
@@ -168,7 +172,7 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib
 @cfg
 def generate_kfactors(
     o_card: str,
-    t_card: str,
+    t_cards: str,
     pdf: str,
     author: str,
     n_cores: int,
@@ -179,11 +183,22 @@ def generate_kfactors(
 ):
     """Generate k-factors.
 
-    USAGE: dis_tp k-factors HERA_NC_318GEV_EAVG_SIGMARED_CHARM 400 NNPDF40_nnlo_pch_as_01180 "Your Name" [-fonll_incomplete -n 4 -yad -th "Theory Input"]
+    USAGE: dis_tp k-factors HERA_NC_318GEV_EAVG_SIGMARED_CHARM NNPDF40_nnlo_pch_as_01180 "Your Name" 439 518 [--fonll_incomplete -n 4 -yad -th "Theory Input"]
     """
 
-    obj = k_factors.KfactorRunner(
-        t_card, o_card, pdf, use_yadism, fonll_incomplete, cfg
-    )
-    obj.compute(n_cores)
+    result_logs = []
+    for t_card in t_cards:
+        obj = k_factors.KfactorRunner(
+            t_card, o_card, pdf, use_yadism, fonll_incomplete, cfg
+        )
+        obj.compute(n_cores)
+        if len(t_cards) == 1:
+            # No variations
+            obj.save_results(author, th_input=th_description)
+            exit(0)
+        else:
+            # Append all the variations
+            result_logs.append(obj._results)
+    # save the k factors
+    obj._results = obj.build_kfactor_with_error(result_logs)
     obj.save_results(author, th_input=th_description)
