@@ -1,13 +1,23 @@
 """FL structure function"""
 import numpy as np
 
-from .. import (TildeCoeffFunc_light, MassiveCoeffFunc, MasslessCoeffFunc,
-                TildeCoeffFunc)
-from ..parameters import (alpha_s, charges, masses, number_active_flavors,
-                          number_light_flavors, pids, n3lo_color_factors)
+from .. import MassiveCoeffFunc, MasslessCoeffFunc, TildeCoeffFunc, TildeCoeffFunc_light
+from ..parameters import (
+    alpha_s,
+    charges,
+    masses,
+    n3lo_color_factors,
+    number_active_flavors,
+    number_light_flavors,
+    pids,
+)
 from .heavy_tools import PDFConvolute
-from .light_tools import (PDFConvolute_light, PDFConvolute_light_singlet,
-                          mkPDF, non_singlet_pdf)
+from .light_tools import (
+    PDFConvolute_light,
+    PDFConvolute_light_singlet,
+    mkPDF,
+    non_singlet_pdf,
+)
 
 g_id = pids["g"]
 
@@ -49,18 +59,18 @@ def FL_FO(
         res = 0.0
     if order >= 1:
         res += a_s * PDFConvolute(
-            MassiveCoeffFunc.CLg_1_m_reg, Mypdf, x, Q, p, nf, g_id
+            MassiveCoeffFunc.CLg_1_m_reg, Mypdf, x, Q, p, h_id, g_id
         )
     if order >= 2:
         res += a_s**2 * (
-            PDFConvolute(MassiveCoeffFunc.CLg_2_m_reg, Mypdf, x, Q, p, nf, g_id)
+            PDFConvolute(MassiveCoeffFunc.CLg_2_m_reg, Mypdf, x, Q, p, h_id, g_id)
             + conv_func(
                 MassiveCoeffFunc.CLq_2_m_reg,
                 Mypdf,
                 x,
                 Q,
                 p,
-                nf,
+                h_id,
                 target_dict=target_dict,
             )
         )
@@ -69,20 +79,20 @@ def FL_FO(
         for ihq in range(h_id + 1, 6):
             pihq = [masses(ihq), Q, charges(h_id)]
             reg_miss = PDFConvolute(
-                MassiveCoeffFunc.CLb_2_m_reg, Mypdf, x, Q, pihq, nf, h_id
+                MassiveCoeffFunc.CLb_2_m_reg, Mypdf, x, Q, pihq, h_id, h_id
             )
             res += a_s**2 * reg_miss
 
     if order >= 3:
         res += a_s**3 * (
-            PDFConvolute(MassiveCoeffFunc.CLg_3_m_reg, Mypdf, x, Q, p, nf, g_id)
+            PDFConvolute(MassiveCoeffFunc.CLg_3_m_reg, Mypdf, x, Q, p, h_id, g_id)
             + conv_func(
                 MassiveCoeffFunc.CLq_3_m_reg,
                 Mypdf,
                 x,
                 Q,
                 p,
-                nf,
+                h_id,
                 target_dict=target_dict,
             )
         )
@@ -351,7 +361,9 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
             reg = PDFConvolute_light(
                 TildeCoeffFunc_light.CLb_2_til_reg, Mypdf, x, Q, p, nl, target_dict
             ) + nl * meansq_e * (
-                PDFConvolute(TildeCoeffFunc_light.CLg_2_til_reg, Mypdf, x, Q, p, nl, g_id)
+                PDFConvolute(
+                    TildeCoeffFunc_light.CLg_2_til_reg, Mypdf, x, Q, p, nl, g_id
+                )
                 + PDFConvolute_light_singlet(
                     TildeCoeffFunc_light.CLq_2_til_reg, Mypdf, x, Q, p, nl, target_dict
                 )
@@ -362,10 +374,16 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
             res += a_s**2 * (reg + loc)
 
             # Add heavy quark contribution pure singlet contribution,
-            # note the CF has to be evalueted with nl+1 here, only the 
+            # note the CF has to be evalueted with nl+1 here, only the
             # heavy quark coupling is set to 0
-            singlet_h = + nl * meansq_e * (
-                + PDFConvolute(MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl+1, nl+1)
+            singlet_h = (
+                +nl
+                * meansq_e
+                * (
+                    +PDFConvolute(
+                        MasslessCoeffFunc.CLq_2_reg, Mypdf, x, Q, p, nl + 1, nl + 1
+                    )
+                )
             )
             res += a_s**2 * singlet_h
         else:
@@ -381,7 +399,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
                 Mypdf, x, Q, nl, target_dict
             )
             res += a_s**2 * (reg + loc)
-            
+
         # add the missing terms for heavy quarks
         for ihq in range(nl + 1, 6):
             pihq = [masses(ihq), Q, 1]
@@ -394,11 +412,17 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
                 )
                 res += a_s**2 * reg_miss
                 reg_asy = PDFConvolute_light(
-                    TildeCoeffFunc_light.CLb_2_asy_reg, Mypdf, x, Q, pihq, nl, target_dict
+                    TildeCoeffFunc_light.CLb_2_asy_reg,
+                    Mypdf,
+                    x,
+                    Q,
+                    pihq,
+                    nl,
+                    target_dict,
                 )
                 res -= a_s**2 * reg_asy
-                
-            else: 
+
+            else:
                 reg_miss = PDFConvolute_light(
                     MassiveCoeffFunc.CLb_2_m_reg, Mypdf, x, Q, pihq, nf, target_dict
                 )
@@ -408,13 +432,15 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
         pg = ps = pns = [0, Q, 0, 1]
         if nl != number_active_flavors(Q):
             # NOTE: here the NS has to be evaluated at nl+1 but convluted with nl
-            pns[2] = n3lo_color_factors("ns", nl+1, True)
-            ps[2] = n3lo_color_factors("s", nl+1, True)
-            pg[2] = n3lo_color_factors("g", nl+1, True)
+            pns[2] = n3lo_color_factors("ns", nl + 1, True)
+            ps[2] = n3lo_color_factors("s", nl + 1, True)
+            pg[2] = n3lo_color_factors("g", nl + 1, True)
             reg = PDFConvolute_light(
                 TildeCoeffFunc_light.CLb_3_til_reg, Mypdf, x, Q, pns, nl, target_dict
             ) + nl * meansq_e * (
-                PDFConvolute(TildeCoeffFunc_light.CLg_3_til_reg, Mypdf, x, Q, pg, nl, g_id)
+                PDFConvolute(
+                    TildeCoeffFunc_light.CLg_3_til_reg, Mypdf, x, Q, pg, nl, g_id
+                )
                 + PDFConvolute_light_singlet(
                     TildeCoeffFunc_light.CLq_3_til_reg, Mypdf, x, Q, ps, nl, target_dict
                 )
@@ -425,9 +451,15 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
             res += a_s**3 * (reg + loc)
 
             # here we can only add the Singlet contribution from heavy quark
-            ps[2] = n3lo_color_factors("s", nl+1, False)
-            singlet_h = + nl * meansq_e * (
-                PDFConvolute(MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, ps, nl+1, nl+1)
+            ps[2] = n3lo_color_factors("s", nl + 1, False)
+            singlet_h = (
+                +nl
+                * meansq_e
+                * (
+                    PDFConvolute(
+                        MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, ps, nl + 1, nl + 1
+                    )
+                )
             )
             res += a_s**3 * singlet_h
 
@@ -451,7 +483,9 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
     return res
 
 
-def FL_ZM(order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1, min_order=0):
+def FL_ZM(
+    order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1, min_order=0
+):
     """
     Compute the ZM heavy contribution to structure function FL
 
@@ -506,7 +540,13 @@ def FL_ZM(order, pdf, x, Q, h_id, meth=None, target_dict=None, muR_ratio=1, min_
             PDFConvolute(MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, pns, nl, h_id)
             + PDFConvolute(MasslessCoeffFunc.CLg_3_reg, Mypdf, x, Q, pg, nl, g_id)
             + conv_func(
-                MasslessCoeffFunc.CLq_3_reg, Mypdf, x, Q, ps, nl, target_dict=target_dict
+                MasslessCoeffFunc.CLq_3_reg,
+                Mypdf,
+                x,
+                Q,
+                ps,
+                nl,
+                target_dict=target_dict,
             )
         )
         loc = MasslessCoeffFunc.CLb_3_loc(x, Q, pns, nl) * pdfxfx
@@ -573,12 +613,16 @@ def FL_Total(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
     """
     nf = number_active_flavors(Q)
     if nf <= 4:
-        res = FL_Light(
-            order, pdf, x, Q, 3, meth, target_dict=target_dict, muR_ratio=muR_ratio
-        ) + FL_FONLL(
-            order, pdf, x, Q, 4, meth, target_dict=target_dict, muR_ratio=muR_ratio
-        ) + FL_FO(
-            order, pdf, x, Q, 5, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        res = (
+            FL_Light(
+                order, pdf, x, Q, 3, meth, target_dict=target_dict, muR_ratio=muR_ratio
+            )
+            + FL_FONLL(
+                order, pdf, x, Q, 4, meth, target_dict=target_dict, muR_ratio=muR_ratio
+            )
+            + FL_FO(
+                order, pdf, x, Q, 5, meth, target_dict=target_dict, muR_ratio=muR_ratio
+            )
         )
     elif nf == 5:
         res = FL_Light(
@@ -592,9 +636,10 @@ def FL_Total(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
         )
     return res
 
+
 def FL_FONLL_incomplete(order, pdf, x, Q, h_id, meth, target_dict=None, muR_ratio=1):
-    """
-    Compute the incomplete FONLL = \sum_{i=0}^{order-1} FONLL_{i} + ZM_{order} 
+    r"""
+    Compute the incomplete FONLL = \sum_{i=0}^{order-1} FONLL_{i} + ZM_{order}
 
     Parameters:
         order : int
@@ -616,13 +661,27 @@ def FL_FONLL_incomplete(order, pdf, x, Q, h_id, meth, target_dict=None, muR_rati
     nf = number_active_flavors(Q)
     if nf <= h_id - 1:
         return FL_FO(
-            order-1, pdf, x, Q, h_id, target_dict=target_dict, muR_ratio=muR_ratio
+            order - 1, pdf, x, Q, h_id, target_dict=target_dict, muR_ratio=muR_ratio
         )
     if h_id == nf:
         return FL_M(
-            order-1, pdf, x, Q, h_id, meth, target_dict=target_dict, muR_ratio=muR_ratio
+            order - 1,
+            pdf,
+            x,
+            Q,
+            h_id,
+            meth,
+            target_dict=target_dict,
+            muR_ratio=muR_ratio,
         ) + FL_ZM(
-            order, pdf, x, Q, h_id, target_dict=target_dict, muR_ratio=muR_ratio, min_order=order
+            order,
+            pdf,
+            x,
+            Q,
+            h_id,
+            target_dict=target_dict,
+            muR_ratio=muR_ratio,
+            min_order=order,
         )
     elif nf >= h_id + 1:
         return FL_ZM(
@@ -653,12 +712,23 @@ def FL_Total_incomplete(order, pdf, x, Q, h_id, meth, target_dict=None, muR_rati
     """
     nf = number_active_flavors(Q)
     if nf <= 4:
-        res = FL_Light(
-            order, pdf, x, Q, 3, meth, target_dict=target_dict, muR_ratio=muR_ratio
-        ) + FL_FONLL_incomplete(
-            order, pdf, x, Q, 4, meth, target_dict=target_dict, muR_ratio=muR_ratio
-        ) + FL_FO(
-            order-1, pdf, x, Q, 5, meth, target_dict=target_dict, muR_ratio=muR_ratio
+        res = (
+            FL_Light(
+                order, pdf, x, Q, 3, meth, target_dict=target_dict, muR_ratio=muR_ratio
+            )
+            + FL_FONLL_incomplete(
+                order, pdf, x, Q, 4, meth, target_dict=target_dict, muR_ratio=muR_ratio
+            )
+            + FL_FO(
+                order - 1,
+                pdf,
+                x,
+                Q,
+                5,
+                meth,
+                target_dict=target_dict,
+                muR_ratio=muR_ratio,
+            )
         )
     elif nf == 5:
         res = FL_Light(

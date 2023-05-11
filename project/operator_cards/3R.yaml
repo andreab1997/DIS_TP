@@ -1,6 +1,7 @@
 obs:
   F2_bottom:
     PDF: NNPDF_5F_nnlo
+    #PDF: 230505-gm-n3lo-dis_th
     kinematics:
     - q: 1.0
       x: 0.1
@@ -1725,6 +1726,7 @@ obs:
     restype: R
   FL_bottom:
     PDF: NNPDF_5F_nnlo
+    #PDF: 230505-gm-n3lo-dis_th
     kinematics:
     - q: 1.0
       x: 0.1

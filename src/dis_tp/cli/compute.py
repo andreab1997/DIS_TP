@@ -126,8 +126,8 @@ def plot_observable(plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib
     plot_dir_path = cfg["paths"]["root"] / plot_dir
     plotclass = plot.Plot(cfg, plot_dir_path)
     orders = {"NLO": 1, "NNLO": 2, "N3LO": 3}
-    # plotclass.plot_single_obs(obs, str(orders[order]), h_id)
-    plotclass.plot_fonll_noerr(obs, str(orders[order]), h_id)
+    plotclass.plot_single_obs(obs, str(orders[order]), h_id)
+    # plotclass.plot_fonll_noerr(obs, str(orders[order]), h_id)
     # plotclass.plot_fonll_order_comparison(obs, h_id)
 
 
