@@ -6,11 +6,24 @@ orders="1
 3"
 restype="M
 R"
+n3lo_variations="-1
+0
+1"
 
 #FO results
 for ord in $orders; do
     for var in ${variations[@]}; do
-        dis_tp compute ${ord}FO ${ord}${var#"$prefix"};
+        if [ $ord -eq 3 ]; then
+            if [ $var = "t" ]; then
+                for n3lo_var in $n3lo_variations; do
+                    dis_tp compute ${ord}FO ${ord}${var#"$prefix"}_${n3lo_var};
+                done;
+            else
+                dis_tp compute ${ord}FO ${ord}${var#"$prefix"};
+            fi;
+        else
+            dis_tp compute ${ord}FO ${ord}${var#"$prefix"};
+        fi;
     done;
 done;
 
@@ -19,7 +32,21 @@ done;
 for res in $restype; do
     for ord in $orders; do
         for var in ${variations[@]}; do
-            dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
+            if [ $ord -eq 3 ]; then
+                if [ $var = "t" ]; then
+                    if [ $res = "M"]; then
+                        for n3lo_var in $n3lo_variations; do
+                            dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_${n3lo_var};
+                        done;
+                    else
+                        dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
+                    fi;
+                else
+                    dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
+                fi;
+            else
+                dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
+            fi;
         done;
     done;
 done;
