@@ -16,16 +16,14 @@ jobs:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
       - uses: actions/checkout@v3
-        with:
-          # tags needed for dynamic versioning
-          fetch-depth: 0
       - name: Set up Python 3.9.15 🐍
         id: setup-python
         uses: actions/setup-python@v4
         with:
           python-version: 3.9.15
       - name: Package the distribution
-        run:
+        run: |
+          python3 -m pip install --upgrade build
           python -m build
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
