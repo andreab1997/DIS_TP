@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import yaml
 from eko.couplings import Couplings
-from eko.thresholds import ThresholdsAtlas
 from eko.io import types
+from eko.thresholds import ThresholdsAtlas
 
 from . import parameters
 from .logging import console
@@ -20,7 +20,7 @@ class TheoryParameters:
         self._t_card = full_card
         self.strong_coupling = sc
         self.thr_atlas = thr_atlas
-        self.n3lo_variation = full_card.get("n3lo_cf_variation", 0),
+        self.n3lo_variation = full_card.get("n3lo_cf_variation", 0)
 
         if not self.grids:
             console.log(
@@ -96,7 +96,7 @@ class TheoryParameters:
             couplings=ref,
             order=(order + 1, 0),
             method=method,
-            masses=masses ** 2,
+            masses=masses**2,
             hqm_scheme=types.QuarkMassSchemes.POLE,
             thresholds_ratios=thresholds_ratios,
         )
@@ -276,6 +276,8 @@ class RunParameters:
             + str(thr_ratio)
             + "_"
             + str(ob.pdf)
+            + "_"
+            + str(self.theory_parameters().n3lo_variation)
         )
         obs_path = self.resultpath / (file_name + ".yaml")
         # construct the object to dump

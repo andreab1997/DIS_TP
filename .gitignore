@@ -11,3 +11,5 @@ data/
 #jupyter
 .ipynb_checkpoints/
 *.log
+#dist
+dist/
