@@ -1,8 +1,7 @@
 # This contains the splitting functions needed to compute some of the scale dependent term. Since at the moment
 # the code is using grids, these are not needed.
 
-from eko.constants import CA, CF
-from eko.harmonics.constants import zeta2, zeta3
+from eko.constants import CA, CF, zeta2, zeta3
 
 from . import Harmonics as harm
 

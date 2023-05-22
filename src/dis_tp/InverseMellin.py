@@ -1,6 +1,6 @@
 import numpy as np
 from eko.mellin import Path
-from ekore.harmonics import compute_cache
+from ekore.harmonics import cache as c
 from scipy import integrate
 
 
@@ -15,12 +15,11 @@ def quad_ker_talbot(u, func, x, nf, L):
     is_singlet = True
     path = Path(u, np.log(x), is_singlet)
     integrand = path.prefactor * x ** (-path.n) * path.jac
-    sx = compute_cache(path.n, 5, is_singlet=is_singlet)
-    sx = [np.array(s) for s in sx]
+    sx_cache = c.reset()
     try:
-        gamma = func(path.n, sx, nf, L)
+        gamma = func(path.n, sx_cache, nf, L)
     except TypeError:
-        gamma = func(path.n, sx, L)
+        gamma = func(path.n, sx_cache, L)
     return np.real(gamma * integrand)
 
 
@@ -48,9 +47,8 @@ def jac_linear(r):
 def quad_ker_linear(t, func, x, nf, r, s, L):
     n = path_linear(t, r, s)
     jac = jac_linear(r)
-    sx = compute_cache(n, 5, is_singlet=True)
-    sx = [np.array(s) for s in sx]
-    gamma = func(n, sx, nf, L)
+    sx_cache = c.reset()
+    gamma = func(n, sx_cache, nf, L)
     return np.imag(x ** (-n) * gamma * jac) / np.pi
 
 
