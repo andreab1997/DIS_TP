@@ -2,8 +2,7 @@
 notation: p[1] is Q while p[0] is m_b
 """
 import numpy as np
-from eko.constants import CA, CF, TR
-from ekore.harmonics.constants import zeta2, zeta3
+from eko.constants import CA, CF, TR, zeta2, zeta3
 from ekore.operator_matrix_elements.unpolarized.space_like import as3
 
 from . import Initialize as Ini
