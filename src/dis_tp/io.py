@@ -2,8 +2,10 @@ import numpy as np
 import pandas as pd
 import yaml
 from eko.couplings import Couplings
-from eko.io import types
-from eko.thresholds import ThresholdsAtlas
+from eko.quantities.couplings import CouplingEvolutionMethod, CouplingsInfo
+from eko.quantities.heavy_quarks import QuarkMassScheme
+from eko.matchings import Atlas
+from eko.quantities import heavy_quarks
 
 from . import parameters
 from .logging import console
@@ -12,7 +14,9 @@ from .logging import console
 class TheoryParameters:
     """Class containing all the theory parameters."""
 
-    def __init__(self, order, fns, masses, sc, thr_atlas, grids, full_card=None):
+    def __init__(
+        self, order, fns, masses, sc, thr_atlas, thr_atlas_as, grids, full_card=None
+    ):
         self.order = order
         self.fns = fns
         self.masses = masses
@@ -20,6 +24,7 @@ class TheoryParameters:
         self._t_card = full_card
         self.strong_coupling = sc
         self.thr_atlas = thr_atlas
+        self.thr_atlas_as = thr_atlas_as
         self.n3lo_variation = full_card.get("n3lo_cf_variation", 0)
 
         if not self.grids:
@@ -80,15 +85,14 @@ class TheoryParameters:
         kmb = th.get("kbThr", 1.0)
         kmt = th.get("ktThr", 1.0)
         thresholds_ratios = np.array([kmc, kmb, kmt]) ** 2
-        method = types.CouplingEvolutionMethod.EXPANDED
+        method = CouplingEvolutionMethod.EXPANDED
         if "ModEv" in th and th["ModEv"] == "EXA":
-            method = types.CouplingEvolutionMethod.EXACT
+            method = CouplingEvolutionMethod.EXACT
 
-        ref = types.CouplingsRef(
-            alphas=types.FloatRef(
-                value=th.get("alpahs", 0.118), scale=th.get("Qref", 91.2)
-            ),
-            alphaem=types.FloatRef(value=th.get("alphaqed", 0.007496252), scale=np.nan),
+        ref = CouplingsInfo(
+            alphas=th.get("alpahs", 0.118),
+            alphaem=th.get("alphaqed", 0.007496252),
+            scale=th.get("Qref", 91.2),
             max_num_flavs=th.get("MaxNfAs", 5),
             num_flavs_ref=th.get("nfref", 5),
         )
@@ -96,12 +100,17 @@ class TheoryParameters:
             couplings=ref,
             order=(order + 1, 0),
             method=method,
-            masses=masses**2,
-            hqm_scheme=types.QuarkMassSchemes.POLE,
-            thresholds_ratios=thresholds_ratios,
+            masses=(masses**2).tolist(),
+            hqm_scheme=QuarkMassScheme.POLE,
+            thresholds_ratios=thresholds_ratios.tolist(),
         )
-        thr_atlas = ThresholdsAtlas(
-            masses=masses**2, thresholds_ratios=thresholds_ratios
+        thr_atlas = Atlas(
+            matching_scales=heavy_quarks.MatchingScales(masses * thresholds_ratios),
+            origin=(th.get("Q0", 1.65) ** 2, th.get("nf0", 4)),
+        )
+        thr_atlas_as = Atlas(
+            matching_scales=heavy_quarks.MatchingScales(masses * thresholds_ratios),
+            origin=(th.get("Qref", 91.2) ** 2, th.get("nfref", 5)),
         )
         return cls(
             order=order,
@@ -110,6 +119,7 @@ class TheoryParameters:
             masses=masses,
             sc=sc,
             thr_atlas=thr_atlas,
+            thr_atlas_as=thr_atlas_as,
             full_card=th,
         )
 
@@ -276,8 +286,6 @@ class RunParameters:
             + str(thr_ratio)
             + "_"
             + str(ob.pdf)
-            + "_"
-            + str(self.theory_parameters().n3lo_variation)
         )
         obs_path = self.resultpath / (file_name + ".yaml")
         # construct the object to dump

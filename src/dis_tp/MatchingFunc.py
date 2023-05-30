@@ -17,7 +17,6 @@ def Mbg_1(z, p, _nf):
     return 2 * TR * np.log((p[1] ** 2) / (p[0] ** 2)) * (z * z + (1 - z) * (1 - z))
 
 
-
 def Mgg_1_loc(z, p, _nf):
     return -(4.0 / 3.0) * TR * np.log((p[1] ** 2) / (p[0] ** 2))
 

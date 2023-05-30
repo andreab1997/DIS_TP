@@ -56,7 +56,7 @@ def F2_FO(
     conv_func = PDFConvolute
     if nf != h_id:
         conv_func = PDFConvolute_light_singlet
-    a_s = alpha_s(muR**2, Q**2)
+    a_s = alpha_s(muR**2)
     if order >= 0:
         res = 0.0
     if order >= 1:
@@ -131,7 +131,7 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, target_dict=None, muF_ratio=1, muR_r
     muR = muR_ratio * Q
     nf = number_active_flavors(Q)
     p = [masses(h_id), Q, charges(h_id)]
-    a_s = alpha_s(muR**2, Q**2)
+    a_s = alpha_s(muR**2)
     if order >= 0:
         res = 0.0
     if order >= 1:
@@ -237,7 +237,7 @@ def F2_M(order, pdf, x, Q, h_id, meth, target_dict=None, muF_ratio=1, muR_ratio=
     # NOTE: here we don't adjust PDFConvolute as in FO
     # because we always assume Intrisic contributions to be zero.
     p = [masses(h_id), Q, charges(h_id)]
-    a_s = alpha_s(muR**2, Q**2)
+    a_s = alpha_s(muR**2)
     if meth == "our":
         if order >= 0:
             res = 0.0
@@ -410,7 +410,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
     # the proper fix would be to remove it from the cf definition
     p = [0, Q, 1]
     nl = number_light_flavors(Q)
-    a_s = alpha_s(muR**2, Q**2)
+    a_s = alpha_s(muR**2)
     meansq_e = np.mean([charges(nl) ** 2 for nl in range(1, nl + 1)])
 
     # NOTE: up to NNLO there is not a nf explicit depndence in the CF
@@ -437,7 +437,6 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
         )
         res += a_s * (reg + loc + sing)
     if order >= 2:
-
         # here for the first time we need to make some disctinction
         # of above and below charm thr.
         if nl != number_active_flavors(Q):
@@ -644,7 +643,7 @@ def F2_ZM(
         conv_func = PDFConvolute_light_singlet
 
     p = [0, Q, charges(h_id)]
-    a_s = alpha_s(muR**2, Q**2)
+    a_s = alpha_s(muR**2)
     pdfxfx = Mypdf.xfxQ2(h_id, x, Q**2) + Mypdf.xfxQ2(-h_id, x, Q**2)
     res = 0
     if order >= 0 and min_order <= 0:

@@ -1,8 +1,7 @@
 # This contains the massless coefficients functions.
 import numpy as np
 from eko.constants import CF, TR, zeta2
-from yadism.coefficient_functions.light.n3lo import (xc2ns3p, xc2sg3p, xclns3p,
-                                                     xclsg3p)
+from yadism.coefficient_functions.light.n3lo import xc2ns3p, xc2sg3p, xclns3p, xclsg3p
 
 
 # F2
