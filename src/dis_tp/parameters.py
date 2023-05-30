@@ -69,7 +69,7 @@ def initialize_theory(
     if thr_atlas is None:
         thresholds_ratios = np.array([1, 1, 1])
         _thr_atlas = Atlas(
-            matching_scales=heavy_quarks.MatchingScales(masses * thresholds_ratios),
+            matching_scales=heavy_quarks.MatchingScales(_masses * thresholds_ratios),
             origin=(1.65**2, 4),
         )
     else:
@@ -79,7 +79,7 @@ def initialize_theory(
     if thr_atlas_as is None:
         thresholds_ratios = np.array([1, 1, 1])
         _thr_atlas_as = Atlas(
-            matching_scales=heavy_quarks.MatchingScales(masses * thresholds_ratios),
+            matching_scales=heavy_quarks.MatchingScales(_masses * thresholds_ratios),
             origin=(91.2**2, 5),
         )
     else:
