@@ -80,7 +80,7 @@ class TheoryParameters:
         mc = th.get("mc", parameters.default_masses(4))
         mb = th.get("mb", parameters.default_masses(5))
         mt = th.get("mt", parameters.default_masses(6))
-        masses = np.array([mc, mb, mt])
+        masses = np.array([mc, mb, mt]) ** 2
         kmc = th.get("kcThr", 1.0)
         kmb = th.get("kbThr", 1.0)
         kmt = th.get("ktThr", 1.0)
@@ -100,7 +100,7 @@ class TheoryParameters:
             couplings=ref,
             order=(order + 1, 0),
             method=method,
-            masses=(masses**2).tolist(),
+            masses=(masses).tolist(),
             hqm_scheme=QuarkMassScheme.POLE,
             thresholds_ratios=thresholds_ratios.tolist(),
         )
@@ -116,7 +116,7 @@ class TheoryParameters:
             order=order,
             fns=fns,
             grids=grids,
-            masses=masses,
+            masses=np.sqrt(masses),
             sc=sc,
             thr_atlas=thr_atlas,
             thr_atlas_as=thr_atlas_as,
