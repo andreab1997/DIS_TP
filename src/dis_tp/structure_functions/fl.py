@@ -52,7 +52,7 @@ def FL_FO(
     p = [masses(h_id), Q, charges(h_id)]
     nf = number_active_flavors(Q)
     conv_func = PDFConvolute
-    if nf != h_id:
+    if nf > h_id:
         conv_func = PDFConvolute_light_singlet
     a_s = alpha_s(muR**2)
     if order >= 0:
@@ -70,7 +70,7 @@ def FL_FO(
                 x,
                 Q,
                 p,
-                h_id,
+                3 if h_id == 5 and nf == 3 else h_id,
                 target_dict=target_dict,
             )
         )
@@ -92,7 +92,7 @@ def FL_FO(
                 x,
                 Q,
                 p,
-                h_id,
+                3 if h_id == 5 and nf == 3 else h_id,
                 target_dict=target_dict,
             )
         )

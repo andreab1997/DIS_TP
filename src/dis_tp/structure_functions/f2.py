@@ -54,7 +54,7 @@ def F2_FO(
     p = [masses(h_id), Q, charges(h_id)]
     nf = number_active_flavors(Q)
     conv_func = PDFConvolute
-    if nf != h_id:
+    if nf > h_id:
         conv_func = PDFConvolute_light_singlet
     a_s = alpha_s(muR**2)
     if order >= 0:
@@ -72,7 +72,7 @@ def F2_FO(
                 x,
                 Q,
                 p,
-                h_id,
+                3 if h_id == 5 and nf == 3 else h_id,
                 target_dict=target_dict,
             )
         )
@@ -83,7 +83,7 @@ def F2_FO(
             reg_miss = PDFConvolute(
                 MassiveCoeffFunc.Cb_2_m_reg, Mypdf, x, Q, pihq, h_id, h_id
             )
-            loc_miss = MassiveCoeffFunc.Cb_2_m_loc(x, Q, pihq, nf) * (
+            loc_miss = MassiveCoeffFunc.Cb_2_m_loc(x, Q, pihq, h_id) * (
                 Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q)
             )
             res += a_s**2 * (reg_miss + loc_miss)
@@ -97,7 +97,7 @@ def F2_FO(
                 x,
                 Q,
                 p,
-                h_id,
+                3 if h_id == 5 and nf == 3 else h_id,
                 target_dict=target_dict,
             )
         )
