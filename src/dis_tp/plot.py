@@ -9,7 +9,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 from . import io, parameters
 
-orderstrings = {"1": "nlo", "2": "nnlo", "3": "nnlo"}
+orderstrings = {"1": "NLO", "2": "NNLO", "3": "N3LO"}
 heavy_dict = {"4": "charm", "5": "bottom"}
 
 
@@ -21,28 +21,31 @@ class Plot:
         self.plot_dir = plot_dir
 
     def get_restypes(self, order, h_id, restype):
+        prefix = "NNPDF40ev"
         restypes = {
             "FO": {
                 "color": "violet",
-                "pdf": "NNPDF40_"
+                "pdf": prefix
+                + "_"
                 + orderstrings[order]
-                + "_as_01180_nf_"
-                + str(int(h_id) - 1),
+                + "_"
+                + str(int(h_id) - 1)
+                + "F",
             },
             "M": {
                 "color": "blue",
                 "pdf": [
-                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=05mb",
-                    "NNPDF_" + h_id + "F_" + orderstrings[order],
-                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=2mb",
+                    prefix + "_" + orderstrings[order] + "_" + h_id + "F" + "_05kb",
+                    prefix + "_" + orderstrings[order] + "_" + h_id + "F",
+                    prefix + "_" + orderstrings[order] + "_" + h_id + "F" + "_20kb",
                 ],
             },
             "R": {
                 "color": "green",
                 "pdf": [
-                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=05mb",
-                    "NNPDF_" + h_id + "F_" + orderstrings[order],
-                    "NNPDF_" + h_id + "F_" + orderstrings[order] + "_mub=2mb",
+                    prefix + "_" + orderstrings[order] + "_" + h_id + "F" + "_05kb",
+                    prefix + "_" + orderstrings[order] + "_" + h_id + "F",
+                    prefix + "_" + orderstrings[order] + "_" + h_id + "F" + "_20kb",
                 ],
             },
         }
@@ -141,7 +144,7 @@ class Plot:
         results_R = {}
         for filepath in filenames_R:
             with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
-                string = filepath.split(orderstrings[order])[-1].split("_0")[0]
+                string = filepath.split("_5F_")[-1].split("_0")[0]
                 results_R[string] = yaml.safe_load(f)
         x_grid, q_grid = self.x_q_grids(obs, order, h_id)
         ordered_result_R = {}
@@ -174,7 +177,7 @@ class Plot:
         results_M = {}
         for filepath in filenames_M:
             with open(self.result_path / (filepath + ".yaml"), encoding="utf-8") as f:
-                string = filepath.split(orderstrings[order])[-1].split("_0")[0]
+                string = filepath.split("_5F_")[-1].split("_0")[0]
                 results_M[string] = yaml.safe_load(f)
         x_grid, q_grid = self.x_q_grids(obs, order, h_id)
         ordered_result_M = {}
@@ -273,14 +276,14 @@ class Plot:
             res_plot_R = {}
             res_plot_M = {}
             shifts = {
-                "_mub=05mb": 0.5,
-                "": 1.0,
-                "_mub=2mb": 2.0,
+                "05kb": 0.5,
+                "0": 1.0,
+                "20kb": 2.0,
             }
             corr = {
-                "_mub=05mb": 1.12,
-                "": 1.0,
-                "_mub=2mb": 1.12,
+                "05kb": 1.12,
+                "0": 1.0,
+                "20kb": 1.12,
             }
             for sv in ordered_result_R:
                 res_plot_tmp = [res for res in ordered_result_R[sv] if res["x"] == x]
@@ -300,7 +303,7 @@ class Plot:
             for var, fo_var in zip(n3lo_var_M, res_plot_FO_n3lo_variations):
                 res_plot_tmp = [res for res in n3lo_var_M[var] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] >= mass * corr[""] else res_FO
+                    res["res"] if res["q"] >= mass * corr["0"] else res_FO
                     for res, res_FO in zip(res_plot_tmp, fo_var)
                 ]
                 res_plot_M_var[var] = res_plot
@@ -329,42 +332,44 @@ class Plot:
             )
             to_fill_R = [
                 (
-                    lambda q: abs(
-                        res_plot_R[list(shifts.keys())[0]][q_plot.index(q)]
-                        - res_plot_R[list(shifts.keys())[1]][q_plot.index(q)]
-                    )
-                    if abs(
-                        res_plot_R[list(shifts.keys())[0]][q_plot.index(q)]
-                        - res_plot_R[list(shifts.keys())[1]][q_plot.index(q)]
-                    )
-                    > abs(
-                        res_plot_R[list(shifts.keys())[2]][q_plot.index(q)]
-                        - res_plot_R[list(shifts.keys())[1]][q_plot.index(q)]
-                    )
-                    else abs(
-                        res_plot_R[list(shifts.keys())[2]][q_plot.index(q)]
-                        - res_plot_R[list(shifts.keys())[1]][q_plot.index(q)]
+                    lambda q: 0.5
+                    * np.sqrt(
+                        (
+                            (
+                                res_plot_R[list(shifts.keys())[0]][q_plot.index(q)]
+                                - res_plot_R[list(shifts.keys())[1]][q_plot.index(q)]
+                            )
+                            ** 2
+                        )
+                        + (
+                            (
+                                res_plot_R[list(shifts.keys())[2]][q_plot.index(q)]
+                                - res_plot_R[list(shifts.keys())[1]][q_plot.index(q)]
+                            )
+                            ** 2
+                        )
                     )
                 )(q)
                 for q in q_plot
             ]
             to_fill_M = [
                 (
-                    lambda q: abs(
-                        res_plot_M[list(shifts.keys())[0]][q_plot.index(q)]
-                        - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
-                    )
-                    if abs(
-                        res_plot_M[list(shifts.keys())[0]][q_plot.index(q)]
-                        - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
-                    )
-                    > abs(
-                        res_plot_M[list(shifts.keys())[2]][q_plot.index(q)]
-                        - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
-                    )
-                    else abs(
-                        res_plot_M[list(shifts.keys())[2]][q_plot.index(q)]
-                        - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
+                    lambda q: 0.5
+                    * np.sqrt(
+                        (
+                            (
+                                res_plot_M[list(shifts.keys())[0]][q_plot.index(q)]
+                                - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
+                            )
+                            ** 2
+                        )
+                        + (
+                            (
+                                res_plot_M[list(shifts.keys())[2]][q_plot.index(q)]
+                                - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
+                            )
+                            ** 2
+                        )
                     )
                 )(q)
                 for q in q_plot
@@ -373,21 +378,26 @@ class Plot:
             if order == "3":
                 to_fill_M_n3lo_var = [
                     (
-                        lambda q: abs(
-                            res_plot_M_var["-1"][q_plot.index(q)]
-                            - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
-                        )
-                        if abs(
-                            res_plot_M_var["-1"][q_plot.index(q)]
-                            - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
-                        )
-                        > abs(
-                            res_plot_M_var["1"][q_plot.index(q)]
-                            - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
-                        )
-                        else abs(
-                            res_plot_M_var["1"][q_plot.index(q)]
-                            - res_plot_M[list(shifts.keys())[1]][q_plot.index(q)]
+                        lambda q: 0.5
+                        * np.sqrt(
+                            (
+                                (
+                                    res_plot_M_var["-1"][q_plot.index(q)]
+                                    - res_plot_M[list(shifts.keys())[1]][
+                                        q_plot.index(q)
+                                    ]
+                                )
+                                ** 2
+                            )
+                            + (
+                                (
+                                    res_plot_M_var["1"][q_plot.index(q)]
+                                    - res_plot_M[list(shifts.keys())[1]][
+                                        q_plot.index(q)
+                                    ]
+                                )
+                                ** 2
+                            )
                         )
                     )(q)
                     for q in q_plot
@@ -396,21 +406,22 @@ class Plot:
             if order == "3":
                 to_fill_FO_n3lo_var = [
                     (
-                        lambda q: abs(
-                            res_plot_FO_n3lo_variations[0][q_plot.index(q)]
-                            - res_plot_FO[q_plot.index(q)]
-                        )
-                        if abs(
-                            res_plot_FO_n3lo_variations[0][q_plot.index(q)]
-                            - res_plot_FO[q_plot.index(q)]
-                        )
-                        > abs(
-                            res_plot_FO_n3lo_variations[1][q_plot.index(q)]
-                            - res_plot_FO[q_plot.index(q)]
-                        )
-                        else abs(
-                            res_plot_FO_n3lo_variations[1][q_plot.index(q)]
-                            - res_plot_FO[q_plot.index(q)]
+                        lambda q: 0.5
+                        * np.sqrt(
+                            (
+                                (
+                                    res_plot_FO_n3lo_variations[0][q_plot.index(q)]
+                                    - res_plot_FO[q_plot.index(q)]
+                                )
+                                ** 2
+                            )
+                            + (
+                                (
+                                    res_plot_FO_n3lo_variations[1][q_plot.index(q)]
+                                    - res_plot_FO[q_plot.index(q)]
+                                )
+                                ** 2
+                            )
                         )
                     )(q)
                     for q in q_plot

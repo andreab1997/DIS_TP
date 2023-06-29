@@ -34,12 +34,12 @@ for res in $restype; do
         for var in ${variations[@]}; do
             if [ $ord -eq 3 ]; then
                 if [ $var = "t" ]; then
-                    if [ $res = "M"]; then
+                    if [ $res = "M" ]; then
                         for n3lo_var in $n3lo_variations; do
                             dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_${n3lo_var};
                         done;
                     else
-                        dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
+                        dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_0;
                     fi;
                 else
                     dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};

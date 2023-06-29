@@ -1,6 +1,6 @@
 obs:
   F2_bottom:
-    PDF: NNPDF_5F_nnlo_mub=2mb
+    PDF: NNPDF40ev_N3LO_5F_20kb
     kinematics:
     - q: 1.0
       x: 0.1
@@ -1724,7 +1724,7 @@ obs:
       x: 0.0001
     restype: R
   FL_bottom:
-    PDF: NNPDF_5F_nnlo_mub=2mb
+    PDF: NNPDF40ev_N3LO_5F_20kb
     kinematics:
     - q: 1.0
       x: 0.1
