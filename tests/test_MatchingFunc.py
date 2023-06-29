@@ -1,7 +1,7 @@
 import numpy as np
 from eko.constants import CA, TR
 from eko.mellin import Path
-from ekore.harmonics import S1, compute_cache
+from ekore.harmonics import S1, cache
 from ekore.operator_matrix_elements.unpolarized.space_like import as1, as2, as3
 from numpy.testing import assert_allclose
 from scipy import integrate
@@ -71,9 +71,8 @@ class Test_Matching_Hg:
                 def quad_ker_talbot(u, func):
                     path = Path(u, np.log(x), self.is_singlet)
                     integrand = path.prefactor * x ** (-path.n) * path.jac
-                    sx = compute_cache(path.n, 3, self.is_singlet)
-                    sx = [np.array(s) for s in sx]
-                    gamma = func(path.n, sx, L)
+                    sx_cache = cache.reset()
+                    gamma = func(path.n, sx_cache, L)
                     return np.real(gamma * integrand)
 
                 eko.append(
@@ -101,9 +100,8 @@ class Test_Matching_Hg:
                 def quad_ker_talbot(u, func):
                     path = Path(u, np.log(x), self.is_singlet)
                     integrand = path.prefactor * x ** (-path.n) * path.jac
-                    sx = compute_cache(path.n, 5, self.is_singlet)
-                    sx = [np.array(s) for s in sx]
-                    gamma = func(path.n, sx, h_id, L)
+                    sx_cache = cache.reset()
+                    gamma = func(path.n, sx_cache, h_id, L)
                     return np.real(gamma * integrand)
 
                 eko.append(
@@ -137,9 +135,8 @@ class Test_Matching_Hq:
                 def quad_ker_talbot(u, func):
                     path = Path(u, np.log(x), self.is_singlet)
                     integrand = path.prefactor * x ** (-path.n) * path.jac
-                    sx = compute_cache(path.n, 3, self.is_singlet)
-                    sx = [np.array(s) for s in sx]
-                    gamma = func(path.n, sx, L)
+                    sx_cache = cache.reset()
+                    gamma = func(path.n, sx_cache, L)
                     return np.real(gamma * integrand)
 
                 eko.append(
@@ -167,9 +164,8 @@ class Test_Matching_Hq:
                 def quad_ker_talbot(u, func):
                     path = Path(u, np.log(x), self.is_singlet)
                     integrand = path.prefactor * x ** (-path.n) * path.jac
-                    sx = compute_cache(path.n, 5, self.is_singlet)
-                    sx = [np.array(s) for s in sx]
-                    gamma = func(path.n, sx, h_id, L)
+                    sx_cache = cache.reset()
+                    gamma = func(path.n, sx_cache, h_id, L)
                     return np.real(gamma * integrand)
 
                 eko.append(
@@ -246,9 +242,8 @@ class Test_Matching_gg:
                     )
 
                 my.append(mellin_integrate(n))
-                sx = compute_cache(n, 3, self.is_singlet)
-                sx = [np.array(s) for s in sx]
-                eko.append(as2.A_gg(n, sx, L))
+                sx_cache = cache.reset()
+                eko.append(as2.A_gg(n, sx_cache, L))
         assert_allclose(my, eko)
 
 
@@ -282,9 +277,8 @@ class Test_Matching_qq:
                     )
 
                 my.append(mellin_integrate(n))
-                sx = compute_cache(n, 3, self.is_singlet)
-                sx = [np.array(s) for s in sx]
-                eko.append(as2.A_qq_ns(n, sx, L))
+                sx_cache = cache.reset()
+                eko.append(as2.A_qq_ns(n, sx_cache, L))
         assert_allclose(my, eko)
 
 
@@ -305,9 +299,8 @@ class Test_Matching_gq:
                 def quad_ker_talbot(u, func):
                     path = Path(u, np.log(x), self.is_singlet)
                     integrand = path.prefactor * x ** (-path.n) * path.jac
-                    sx = compute_cache(path.n, 3, self.is_singlet)
-                    sx = [np.array(s) for s in sx]
-                    gamma = func(path.n, sx, L)
+                    sx_cache = cache.reset()
+                    gamma = func(path.n, sx_cache, L)
                     return np.real(gamma * integrand)
 
                 eko.append(

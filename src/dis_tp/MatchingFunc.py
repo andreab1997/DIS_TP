@@ -2,8 +2,7 @@
 notation: p[1] is Q while p[0] is m_b
 """
 import numpy as np
-from eko.constants import CA, CF, TR
-from ekore.harmonics.constants import zeta2, zeta3
+from eko.constants import CA, CF, TR, zeta2, zeta3
 from ekore.operator_matrix_elements.unpolarized.space_like import as3
 
 from . import Initialize as Ini
@@ -16,7 +15,6 @@ from yadism.coefficient_functions.fonll.raw_nc import wgplg
 
 def Mbg_1(z, p, _nf):
     return 2 * TR * np.log((p[1] ** 2) / (p[0] ** 2)) * (z * z + (1 - z) * (1 - z))
-
 
 
 def Mgg_1_loc(z, p, _nf):

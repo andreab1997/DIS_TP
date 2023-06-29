@@ -78,7 +78,11 @@ class Runner:
         self.t_par = self.runparameters.theory_parameters()
 
         initialize_theory(
-            th_obj.grids, th_obj.masses, th_obj.strong_coupling, th_obj.thr_atlas
+            th_obj.grids,
+            th_obj.masses,
+            th_obj.strong_coupling,
+            th_obj.thr_atlas,
+            th_obj.thr_atlas_as,
         )
         self.partial_sf = None
 
@@ -98,7 +102,6 @@ class Runner:
     def compute(self, n_cores):
         # loop on observables
         for ob in self.o_par.obs:
-
             hid = map_heavyness[ob.heavyness]
             if ob.heavyness != "light" and self.t_par.order == 3 and self.t_par.grids:
                 Ini.Initialize_all(n3lo_variation=self.t_par.n3lo_variation)
