@@ -2,10 +2,10 @@ import numpy as np
 import pandas as pd
 import yaml
 from eko.couplings import Couplings
-from eko.quantities.couplings import CouplingEvolutionMethod, CouplingsInfo
-from eko.quantities.heavy_quarks import QuarkMassScheme
 from eko.matchings import Atlas
 from eko.quantities import heavy_quarks
+from eko.quantities.couplings import CouplingEvolutionMethod, CouplingsInfo
+from eko.quantities.heavy_quarks import QuarkMassScheme
 
 from . import parameters
 from .logging import console
@@ -268,7 +268,7 @@ class RunParameters:
     def dump_result(self, ob, ob_result):
         heavyness_dict = {"charm": ["4", 0], "bottom": ["5", 1]}
         thr_ratio = np.sqrt(
-            self.theoryparam.thr_atlas.thresholds_ratios[
+            (self.theoryparam.thr_atlas.walls[1:4] / (self.theoryparam.masses**2))[
                 heavyness_dict[ob.heavyness][1]
             ]
         )
