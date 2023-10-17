@@ -286,6 +286,8 @@ class RunParameters:
             + str(thr_ratio)
             + "_"
             + str(ob.pdf)
+            + "_"
+            + str(self.theory_parameters().n3lo_variation)
         )
         obs_path = self.resultpath / (file_name + ".yaml")
         # construct the object to dump
