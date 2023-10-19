@@ -101,7 +101,7 @@ class Test_Matching_Hg:
                     path = Path(u, np.log(x), self.is_singlet)
                     integrand = path.prefactor * x ** (-path.n) * path.jac
                     sx_cache = cache.reset()
-                    gamma = func(path.n, sx_cache, h_id, L)
+                    gamma = func(path.n, sx_cache, h_id - 1, L)
                     return np.real(gamma * integrand)
 
                 eko.append(
@@ -165,7 +165,7 @@ class Test_Matching_Hq:
                     path = Path(u, np.log(x), self.is_singlet)
                     integrand = path.prefactor * x ** (-path.n) * path.jac
                     sx_cache = cache.reset()
-                    gamma = func(path.n, sx_cache, h_id, L)
+                    gamma = func(path.n, sx_cache, h_id - 1, L)
                     return np.real(gamma * integrand)
 
                 eko.append(
