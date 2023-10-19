@@ -124,7 +124,9 @@ def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
         - 2
         * Cb_0_loc(z, Q, p, nf)
         * (
-            Mbg_3_reg(z, p, nf) #This is called with nf instead of nf-1 but the grid is computed correctly with nf-1
+            Mbg_3_reg(
+                z, p, nf
+            )  # This is called with nf instead of nf-1 but the grid is computed correctly with nf-1
             - Mgg_1_loc(z, p, nf - 1) * Mbg_2(z, p, nf - 1)
             + Mbg_1(z, p, nf - 1) * Mgg_1_loc(z, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
             - (
@@ -166,7 +168,10 @@ def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
             + Convolute(Cb_1_reg, Mbq_2, z, Q, p, nf - 1)
             + Convolute_plus_coeff(Cb_1_sing, Mbq_2, z, Q, p, nf - 1)
         )
-        - 2 * (Cb_0_loc(z, Q, p, nf) * Mbq_3_reg(z, p, nf) #This is called with nf instead of nf-1 but the grid is computed correctly with nf-1)
+        - 2
+        * (
+            Cb_0_loc(z, Q, p, nf) * Mbq_3_reg(z, p, nf)
+        )  # This is called with nf instead of nf-1 but the grid is computed correctly with nf-1
     )
 
 
