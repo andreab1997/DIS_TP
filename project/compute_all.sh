@@ -1,9 +1,7 @@
 #!bin/bash
 prefix="t"
 declare variations=("_2mb" "_05mb" "t")
-orders="1
-2
-3"
+orders="3"
 restype="M
 R"
 n3lo_variations="-1
@@ -16,13 +14,13 @@ for ord in $orders; do
         if [ $ord -eq 3 ]; then
             if [ $var = "t" ]; then
                 for n3lo_var in $n3lo_variations; do
-                    dis_tp compute ${ord}FO ${ord}${var#"$prefix"}_${n3lo_var};
+                    dis_tp compute -n 15 ${ord}FO ${ord}${var#"$prefix"}_${n3lo_var};
                 done;
             else
-                dis_tp compute ${ord}FO ${ord}${var#"$prefix"};
+                dis_tp compute -n 15 ${ord}FO ${ord}${var#"$prefix"};
             fi;
         else
-            dis_tp compute ${ord}FO ${ord}${var#"$prefix"};
+            dis_tp compute -n 15 ${ord}FO ${ord}${var#"$prefix"};
         fi;
     done;
 done;
@@ -36,16 +34,16 @@ for res in $restype; do
                 if [ $var = "t" ]; then
                     if [ $res = "M" ]; then
                         for n3lo_var in $n3lo_variations; do
-                            dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_${n3lo_var};
+                            dis_tp compute -n 15 ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_${n3lo_var};
                         done;
                     else
-                        dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_0;
+                        dis_tp compute -n 15 ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_0;
                     fi;
                 else
-                    dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
+                    dis_tp compute -n 15 ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
                 fi;
             else
-                dis_tp compute ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
+                dis_tp compute -n 15 ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
             fi;
         done;
     done;
