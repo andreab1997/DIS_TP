@@ -147,21 +147,21 @@ def Mgq_2_reg(z, p, nf):
     )
 
 
-def Mbg_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=True):
+def Mbg_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.Mbg3[nf - 4](x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    # Here the function is called in nf but to construct the grid has been called with nf-1
-    # because for h_id=5 it has to be called with nf=4, for instance
+    # This function is called with nf (=h_id) but actually uses nf-1. Still it
+    # is called with nf in order to take the correct grid
     return 0.5 * inverse_mellin(as3.A_Hg, x, nf - 1, r, s, path, L)
 
 
-def Mbq_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=True):
+def Mbq_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.Mbq3[nf - 4](x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    # Here the function is called in nf but to construct the grid has been called with nf-1
-    # because for h_id=5 it has to be called with nf=4, for instance
+    # This function is called with nf (=h_id) but actually uses nf-1. Still it
+    # is called with nf in order to take the correct grid
     return 0.5 * inverse_mellin(as3.A_Hq, x, nf - 1, r, s, path, L)
 
 
