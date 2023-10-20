@@ -1,7 +1,9 @@
 #!bin/bash
 prefix="t"
 declare variations=("_2mb" "_05mb" "t")
-orders="3"
+orders="1
+2
+3"
 restype="M
 R"
 n3lo_variations="-1

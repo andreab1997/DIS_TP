@@ -280,22 +280,17 @@ class Plot:
                 "0": 1.0,
                 "20kb": 2.0,
             }
-            corr = {
-                "05kb": 1.12,
-                "0": 1.0,
-                "20kb": 1.12,
-            }
             for sv in ordered_result_R:
                 res_plot_tmp = [res for res in ordered_result_R[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] >= (shifts[sv] * mass) * corr[sv] else np.nan
+                    res["res"] if res["q"] >= (shifts[sv] * mass) else np.nan
                     for res in res_plot_tmp
                 ]
                 res_plot_R[sv] = res_plot
             for sv, fo_sv in zip(ordered_result_M, sv_FO_coll):
                 res_plot_tmp = [res for res in ordered_result_M[sv] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] >= (shifts[sv] * mass) * corr[sv] else res_FO
+                    res["res"] if res["q"] >= (shifts[sv] * mass) else res_FO
                     for res, res_FO in zip(res_plot_tmp, fo_sv)
                 ]
                 res_plot_M[sv] = res_plot
@@ -303,7 +298,7 @@ class Plot:
             for var, fo_var in zip(n3lo_var_M, res_plot_FO_n3lo_variations):
                 res_plot_tmp = [res for res in n3lo_var_M[var] if res["x"] == x]
                 res_plot = [
-                    res["res"] if res["q"] >= mass * corr["0"] else res_FO
+                    res["res"] if res["q"] >= mass else res_FO
                     for res, res_FO in zip(res_plot_tmp, fo_var)
                 ]
                 res_plot_M_var[var] = res_plot
