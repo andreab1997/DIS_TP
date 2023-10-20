@@ -1,4 +1,3 @@
 *.dat
 
 plots/*.pdf
-results/*.yaml
