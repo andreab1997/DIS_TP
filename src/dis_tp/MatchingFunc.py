@@ -4,13 +4,12 @@ notation: p[1] is Q while p[0] is m_b
 import numpy as np
 from eko.constants import CA, CF, TR, zeta2, zeta3
 from ekore.operator_matrix_elements.unpolarized.space_like import as3
+from yadism.coefficient_functions.fonll.raw_nc import wgplg
+from yadism.coefficient_functions.special import li2 as ddilog
 
 from . import Initialize as Ini
 from . import parameters
 from .InverseMellin import inverse_mellin
-
-from yadism.coefficient_functions.special import li2 as ddilog
-from yadism.coefficient_functions.fonll.raw_nc import wgplg
 
 
 def Mbg_1(z, p, _nf):
@@ -96,11 +95,11 @@ def Mbq_2(z, p, _nf):
 
     # fmt: off
     A0 = (
-        ( 1.0 + z ) * ( 32.0 * S121mz + 16.0 * lnz * Li21mz 
-        - 16.0 * zeta2 * lnz - 4.0 * lnz**3 / 3.0 ) 
-        + ( 32.0 / 3.0 / z + 8.0 - 8.0 * z - 32.0 * z2 / 3.0 ) 
-        * ( Li21mz - zeta2 ) + ( 2.0 + 10.0 * z + 16.0 * z2 / 3.0 ) 
-        * lnz**2 - ( 56.0 / 3.0 + 88.0 * z / 3.0 
+        ( 1.0 + z ) * ( 32.0 * S121mz + 16.0 * lnz * Li21mz
+        - 16.0 * zeta2 * lnz - 4.0 * lnz**3 / 3.0 )
+        + ( 32.0 / 3.0 / z + 8.0 - 8.0 * z - 32.0 * z2 / 3.0 )
+        * ( Li21mz - zeta2 ) + ( 2.0 + 10.0 * z + 16.0 * z2 / 3.0 )
+        * lnz**2 - ( 56.0 / 3.0 + 88.0 * z / 3.0
         + 448.0 * z2 / 9.0 ) * lnz - 448.0 / 27.0 / z - 4.0 / 3.0
         - 124.0 * z / 3.0 + 1600.0 * z2 / 27.0
     )
@@ -152,14 +151,18 @@ def Mbg_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.Mbg3[nf - 4](x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return 0.5 * inverse_mellin(as3.A_Hg, x, nf, r, s, path, L)
+    # This function is called with nf (=h_id) but actually uses nf-1. Still it
+    # is called with nf in order to take the correct grid
+    return 0.5 * inverse_mellin(as3.A_Hg, x, nf - 1, r, s, path, L)
 
 
 def Mbq_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
         return Ini.Mbq3[nf - 4](x, p[1])[0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
-    return 0.5 * inverse_mellin(as3.A_Hq, x, nf, r, s, path, L)
+    # This function is called with nf (=h_id) but actually uses nf-1. Still it
+    # is called with nf in order to take the correct grid
+    return 0.5 * inverse_mellin(as3.A_Hq, x, nf - 1, r, s, path, L)
 
 
 def P1(p, nf):
@@ -224,45 +227,45 @@ def Mbg_2(z, p, _nf):
 
     # fmt: off
     A01 = (
-          ( 1.0 - 2.0 * z + 2.0 * z2 ) * ( 8.0 * zeta3 
-         + 4.0 * ln1mz3 / 3.0 - 8.0 * ln1mz * s111mz 
-         + 8.0 * zeta2 * lnz - 4.0 * lnz * ln1mz2 + 2.0 * lnz3 / 3.0 
-         - 8.0 * lnz * s111mz + 8.0 * s211mz - 24.0 * s121mz )               
+          ( 1.0 - 2.0 * z + 2.0 * z2 ) * ( 8.0 * zeta3
+         + 4.0 * ln1mz3 / 3.0 - 8.0 * ln1mz * s111mz
+         + 8.0 * zeta2 * lnz - 4.0 * lnz * ln1mz2 + 2.0 * lnz3 / 3.0
+         - 8.0 * lnz * s111mz + 8.0 * s211mz - 24.0 * s121mz )
     )
     B01 = (
-        - ( 4.0 + 96.0 * z - 64.0 * z2 ) * s111mz 
-        - ( 4.0 - 48.0 * z + 40.0 * z2 ) * zeta2 
-        - ( 8.0 + 48.0 * z - 24.0 * z2 ) * lnz * ln1mz 
-        + ( 4.0 + 8.0 * z - 12.0 * z2 ) * ln1mz2 
-        - ( 1.0 + 12.0 * z - 20.0 * z2 ) * lnz2 
-        - ( 52.0 * z - 48.0 * z2 ) * ln1mz 
-        - ( 16.0 + 18.0 * z + 48.0 * z2 ) * lnz 
-        + 26.0 - 82.0 * z + 80.0 * z2 + z2 * ( - 16.0 * zeta2 * lnz 
+        - ( 4.0 + 96.0 * z - 64.0 * z2 ) * s111mz
+        - ( 4.0 - 48.0 * z + 40.0 * z2 ) * zeta2
+        - ( 8.0 + 48.0 * z - 24.0 * z2 ) * lnz * ln1mz
+        + ( 4.0 + 8.0 * z - 12.0 * z2 ) * ln1mz2
+        - ( 1.0 + 12.0 * z - 20.0 * z2 ) * lnz2
+        - ( 52.0 * z - 48.0 * z2 ) * ln1mz
+        - ( 16.0 + 18.0 * z + 48.0 * z2 ) * lnz
+        + 26.0 - 82.0 * z + 80.0 * z2 + z2 * ( - 16.0 * zeta2 * lnz
         + 4.0 * lnz3 / 3.0 +  16.0 * lnz * s111mz +  32.0 * s121mz )
     )
-    
+
     A02 = (
-        ( 1.0 - 2.0 * z + 2.0 * z2 ) * ( - 4.0 * ln1mz3 / 3.0 
-        + 8.0 * ln1mz * s111mz - 8.0 * s211mz ) 
-        + ( 1.0 + 2.0 * z + 2.0 * z2 ) * ( - 8.0 * zeta2 * ln1pz 
-        - 16.0 * ln1pz * s11mz - 8.0 * lnz * ln1pz2 
-        + 4.0 * lnz2 * ln1pz + 8.0 * lnz * s11mz - 8.0 * s21mz 
-        - 16.0 * s12mz ) + ( 16.0 + 64.0 * z ) * ( 2.0 * s121mz 
-        + lnz * s111mz ) - ( 4.0 + 8.0 * z ) * lnz3 / 3.0 
-        + ( 8.0 - 32.0 * z + 16.0 * z2 ) * zeta3 
+        ( 1.0 - 2.0 * z + 2.0 * z2 ) * ( - 4.0 * ln1mz3 / 3.0
+        + 8.0 * ln1mz * s111mz - 8.0 * s211mz )
+        + ( 1.0 + 2.0 * z + 2.0 * z2 ) * ( - 8.0 * zeta2 * ln1pz
+        - 16.0 * ln1pz * s11mz - 8.0 * lnz * ln1pz2
+        + 4.0 * lnz2 * ln1pz + 8.0 * lnz * s11mz - 8.0 * s21mz
+        - 16.0 * s12mz ) + ( 16.0 + 64.0 * z ) * ( 2.0 * s121mz
+        + lnz * s111mz ) - ( 4.0 + 8.0 * z ) * lnz3 / 3.0
+        + ( 8.0 - 32.0 * z + 16.0 * z2 ) * zeta3
         - ( 16.0 + 64.0 * z ) * zeta2 * lnz
     )
-    
+
     B02 = (
         ( 16.0 * z + 16.0 * z2 ) * ( s11mz + lnz * ln1pz )
-        + ( 32.0 / z / 3.0 + 12.0 + 64.0 * z - 272.0 * z2 / 3.0 ) 
-        * s111mz - ( 12.0 + 48.0 * z - 260.0 * z2 / 3.0 
-        + 32.0 / z / 3.0 ) * zeta2 - 4.0 * z2 * lnz * ln1mz 
-        - ( 2.0 + 8.0 * z - 10.0 * z2 ) * ln1mz2 
-        + ( 2.0 + 8.0 * z + 46.0 * z2 / 3.0 ) * lnz2 
+        + ( 32.0 / z / 3.0 + 12.0 + 64.0 * z - 272.0 * z2 / 3.0 )
+        * s111mz - ( 12.0 + 48.0 * z - 260.0 * z2 / 3.0
+        + 32.0 / z / 3.0 ) * zeta2 - 4.0 * z2 * lnz * ln1mz
+        - ( 2.0 + 8.0 * z - 10.0 * z2 ) * ln1mz2
+        + ( 2.0 + 8.0 * z + 46.0 * z2 / 3.0 ) * lnz2
         + ( 4.0 + 16.0 * z - 16.0 * z2 ) * ln1mz
-        - ( 56.0 / 3.0 + 172.0 * z / 3.0 + 1600.0 * z2 / 9.0 ) * lnz 
-        - 448.0 / z / 27.0 - 4.0 / 3.0 - 628.0 * z / 3.0 
+        - ( 56.0 / 3.0 + 172.0 * z / 3.0 + 1600.0 * z2 / 9.0 ) * lnz
+        - 448.0 / z / 27.0 - 4.0 / 3.0 - 628.0 * z / 3.0
         + 6352.0 * z2 / 27.0
     )
     AS2Hg = TR * ( CF * ( A01 + B01 )  +  CA * ( A02 + B02 ) )
@@ -271,7 +274,7 @@ def Mbg_2(z, p, _nf):
     lnk2 = lnk * lnk
     omeL1p1 = (
             CF * TR * ( ( 8.0 - 16.0 * z + 16.0 * z2 )
-            * ( 2.0 * lnz * ln1mz - ln1mz2 + 2.0 * zeta2 ) 
+            * ( 2.0 * lnz * ln1mz - ln1mz2 + 2.0 * zeta2 )
             - ( 4.0 - 8.0 * z + 16.0 * z2 ) * lnz2
             - 32.0 * z * ( 1.0 - z ) * ln1mz
             - ( 12.0 - 16.0 * z + 32.0 * z2 ) * lnz - 56.0 + 116.0 * z
@@ -281,7 +284,7 @@ def Mbg_2(z, p, _nf):
             CA * TR * ( ( 16.0 + 32.0 * z + 32.0 * z2 )
             * ( s11mz + lnz * ln1pz ) + ( 8.0 - 16.0 * z + 16.0 * z2)
             * ln1mz2 + ( 8.0 + 16.0 * z ) * lnz2
-            + 32.0 * z * zeta2 + 32.0 * z * ( 1.0 - z ) * ln1mz 
+            + 32.0 * z * zeta2 + 32.0 * z * ( 1.0 - z ) * ln1mz
             - ( 8.0 + 64.0 * z + 352.0 * z2 / 3.0 ) * lnz
             - 160.0 / 9.0 / z + 16.0 - 200.0 * z + 1744.0 * z2 / 9.0 )
     )
@@ -290,7 +293,7 @@ def Mbg_2(z, p, _nf):
     omeL2p1 = (
         CF * TR * ( ( 8.0 - 16.0 * z + 16.0 * z2 ) * ln1mz
         - ( 4.0 - 8.0 * z + 16.0 * z2 ) * lnz
-        - ( 2.0 - 8.0 * z ) ) 
+        - ( 2.0 - 8.0 * z ) )
     )
     omeL2p2 = (
         CA * TR * ( - ( 8.0 - 16.0 * z + 16.0 * z2 ) * ln1mz

@@ -1,0 +1,5 @@
+order: 3
+fns: "our"
+grids: True
+mass: 4.92
+kbThr: 0.5

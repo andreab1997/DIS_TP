@@ -3,7 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 #paper
-disn3lo/
 #data
 data/
 #Mac things

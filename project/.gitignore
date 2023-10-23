@@ -1,5 +1,3 @@
 *.dat
-*.yaml
-*.yml
 
-plots/
+plots/*.pdf

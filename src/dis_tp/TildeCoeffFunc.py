@@ -2,7 +2,7 @@
 
 import numpy as np
 import scipy.special as special
-from eko.constants import CF, TR, CA
+from eko.constants import CA, CF, TR
 
 from . import Initialize as Ini
 from . import parameters
@@ -114,37 +114,39 @@ def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
         return Ini.Cg3_til[nf - 4](z, Q)[0]
     return (
         Cg_3_m_reg(z, Q, p, nf)
-        + Cg_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
+        + Cg_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
         + P2(p) * Cg_1_m_reg(z, Q, p, nf - 1)
         - (
-            Cg_1_m_reg(z, Q, p, nf - 1) * Mgg_2_loc(z, p, nf)
-            + Convolute(Cg_1_m_reg, Mgg_2_reg, z, Q, p, nf, nf - 1)
-            + Convolute_plus_matching(Cg_1_m_reg, Mgg_2_sing, z, Q, p, nf, nf - 1)
+            Cg_1_m_reg(z, Q, p, nf - 1) * Mgg_2_loc(z, p, nf - 1)
+            + Convolute(Cg_1_m_reg, Mgg_2_reg, z, Q, p, nf - 1, nf - 1)
+            + Convolute_plus_matching(Cg_1_m_reg, Mgg_2_sing, z, Q, p, nf - 1, nf - 1)
         )
         - 2
         * Cb_0_loc(z, Q, p, nf)
         * (
-            Mbg_3_reg(z, p, nf)
-            - Mgg_1_loc(z, p, nf) * Mbg_2(z, p, nf)
-            + Mbg_1(z, p, nf) * Mgg_1_loc(z, p, nf) * Mgg_1_loc(z, p, nf)
+            Mbg_3_reg(
+                z, p, nf
+            )  # This is called with nf instead of nf-1 but the grid is computed correctly with nf-1
+            - Mgg_1_loc(z, p, nf - 1) * Mbg_2(z, p, nf - 1)
+            + Mbg_1(z, p, nf - 1) * Mgg_1_loc(z, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
             - (
-                Mbg_1(z, p, nf) * Mgg_2_loc(z, p, nf)
-                + Convolute_matching(Mbg_1, Mgg_2_reg, z, Q, p, nf)
-                + Mbg1_Mgg2_sing(z, p, nf)
+                Mbg_1(z, p, nf - 1) * Mgg_2_loc(z, p, nf - 1)
+                + Convolute_matching(Mbg_1, Mgg_2_reg, z, Q, p, nf - 1)
+                + Mbg1_Mgg2_sing(z, p, nf - 1)
             )
         )
         - 2
         * (
-            Cb_1_loc(z, Q, p, nf) * Mbg_2(z, p, nf)
-            + Convolute(Cb_1_reg, Mbg_2, z, Q, p, nf)
-            + Convolute_plus_coeff(Cb_1_sing, Mbg_2, z, Q, p, nf)
-            - Cb1_Mbg1(z, p, nf) * Mgg_1_loc(z, p, nf)
+            Cb_1_loc(z, Q, p, nf) * Mbg_2(z, p, nf - 1)
+            + Convolute(Cb_1_reg, Mbg_2, z, Q, p, nf - 1)
+            + Convolute_plus_coeff(Cb_1_sing, Mbg_2, z, Q, p, nf - 1)
+            - Cb1_Mbg1(z, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
         )
         - 2
         * (
-            Mbg_1(z, p, nf) * Cb_2_loc(z, Q, p, nf)
-            + Convolute(Cb_2_reg, Mbg_1, z, Q, p, nf)
-            + Convolute_plus_coeff(Cb_2_sing, Mbg_1, z, Q, p, nf)
+            Mbg_1(z, p, nf - 1) * Cb_2_loc(z, Q, p, nf - 1)
+            + Convolute(Cb_2_reg, Mbg_1, z, Q, p, nf - 1)
+            + Convolute_plus_coeff(Cb_2_sing, Mbg_1, z, Q, p, nf - 1)
         )
     )
 
@@ -158,15 +160,18 @@ def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
         return Ini.Cq3_til[nf - 4](z, Q)[0]
     return (
         Cq_3_m_reg(z, Q, p, nf)
-        + 2 * Cq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
-        - Convolute(Cg_1_m_reg, Mgq_2_reg, z, Q, p, nf, nf - 1)
+        + 2 * Cq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
+        - Convolute(Cg_1_m_reg, Mgq_2_reg, z, Q, p, nf - 1, nf - 1)
         - 2
         * (
-            Cb_1_loc(z, Q, p, nf) * Mbq_2(z, p, nf)
-            + Convolute(Cb_1_reg, Mbq_2, z, Q, p, nf)
-            + Convolute_plus_coeff(Cb_1_sing, Mbq_2, z, Q, p, nf)
+            Cb_1_loc(z, Q, p, nf) * Mbq_2(z, p, nf - 1)
+            + Convolute(Cb_1_reg, Mbq_2, z, Q, p, nf - 1)
+            + Convolute_plus_coeff(Cb_1_sing, Mbq_2, z, Q, p, nf - 1)
         )
-        - 2 * (Cb_0_loc(z, Q, p, nf) * Mbq_3_reg(z, p, nf))
+        - 2
+        * (
+            Cb_0_loc(z, Q, p, nf) * Mbq_3_reg(z, p, nf)
+        )  # This is called with nf instead of nf-1 but the grid is computed correctly with nf-1
     )
 
 
@@ -186,22 +191,22 @@ def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
         return Ini.CLg3_til[nf - 4](z, Q)[0]
     return (
         CLg_3_m_reg(z, Q, p, nf)
-        + CLg_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
+        + CLg_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
         + P2(p) * CLg_1_m_reg(z, Q, p, nf - 1)
         - (
-            CLg_1_m_reg(z, Q, p, nf - 1) * Mgg_2_loc(z, p, nf)
-            + Convolute(CLg_1_m_reg, Mgg_2_reg, z, Q, p, nf, nf - 1)
-            + Convolute_plus_matching(CLg_1_m_reg, Mgg_2_sing, z, Q, p, nf, nf - 1)
+            CLg_1_m_reg(z, Q, p, nf - 1) * Mgg_2_loc(z, p, nf - 1)
+            + Convolute(CLg_1_m_reg, Mgg_2_reg, z, Q, p, nf - 1, nf - 1)
+            + Convolute_plus_matching(CLg_1_m_reg, Mgg_2_sing, z, Q, p, nf - 1, nf - 1)
         )
         - 2
         * (
-            Convolute(CLb_1_reg, Mbg_2, z, Q, p, nf)
-            - CLb1_Mbg1(z, p, nf) * Mgg_1_loc(z, p, nf)
+            Convolute(CLb_1_reg, Mbg_2, z, Q, p, nf - 1)
+            - CLb1_Mbg1(z, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
         )
         - 2
         * (
-            CLb_2_loc(z, Q, p, nf) * Mbg_1(z, p, nf)
-            + Convolute(CLb_2_reg, Mbg_1, z, Q, p, nf)
+            CLb_2_loc(z, Q, p, nf) * Mbg_1(z, p, nf - 1)
+            + Convolute(CLb_2_reg, Mbg_1, z, Q, p, nf - 1)
         )
     )
 
@@ -215,7 +220,7 @@ def CLq_3_til_reg(z, Q, p, nf, use_analytic=False):
         return Ini.CLq3_til[nf - 4](z, Q)[0]
     return (
         CLq_3_m_reg(z, Q, p, nf)
-        + 2 * CLq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf)
-        - Convolute(CLg_1_m_reg, Mgq_2_reg, z, Q, p, nf, nf - 1)
-        - 2 * Convolute(CLb_1_reg, Mbq_2, z, Q, p, nf)
+        + 2 * CLq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
+        - Convolute(CLg_1_m_reg, Mgq_2_reg, z, Q, p, nf - 1, nf - 1)
+        - 2 * Convolute(CLb_1_reg, Mbq_2, z, Q, p, nf - 1)
     )
