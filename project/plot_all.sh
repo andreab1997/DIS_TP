@@ -13,7 +13,7 @@ heavy_quark="5"
 
 for ord in $orders; do
     for ob in $obs; do
-        dis_tp plot $plot_path $ob $ord $heavy_quark;
+        dis_tp plot $plot_path $ob $ord $heavy_quark plot_single_obs;
     done;
 done;
 
