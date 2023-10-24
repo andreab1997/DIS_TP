@@ -604,3 +604,121 @@ class Plot:
             plt.grid(alpha=0.75)
             plt.savefig(plot_path)
             plt.close()
+
+    def plot_single_obs_noband(self, obs, order, h_id):
+        parameters.initialize_theory(True)
+        mass = parameters.masses(int(h_id))
+        ordered_results_FO, x_grid, _q_grid = self.get_FO_result(obs, order, h_id)
+        ordered_result_M = self.get_M_results(obs, order, h_id)
+        ordered_result_R = self.get_R_results(obs, order, h_id)
+        n3lo_var_FO = {}
+        n3lo_var_M = {}
+        if order == "3":
+            n3lo_var_FO = self.get_FO_n3lo_var_results(obs, h_id)
+            n3lo_var_M = self.get_M_n3lo_var_results(obs, h_id)
+        diff_x_points = list(set(x_grid))
+        for x in diff_x_points:
+            plot_name = "Nobands_" + obs + "_" + order + "_" + h_id
+            plot_path = self.plot_dir / (plot_name + "_" + str(x) + ".pdf")
+            q_plot = self.q_plot_x(ordered_results_FO, x)
+            res_plot_FO_n3lo_variations = []
+            if order == "3":
+                res_plot_FO_n3lo_variations = self.get_FO_res_plot_x_n3lo_var(
+                    n3lo_var_FO, x
+                )
+            sv_FO_coll = self.get_FO_res_plot_x_and_sv(ordered_results_FO, x)
+            res_plot_R = self.get_R_res_plot_x_sv(ordered_result_R, x, mass)
+            res_plot_M = self.get_M_res_plot_x_sv(ordered_result_M, x, mass, sv_FO_coll)
+            res_plot_M_var = self.get_M_res_plot_x_var(
+                n3lo_var_M, x, mass, res_plot_FO_n3lo_variations
+            )
+            plt.xscale("log")
+            plt.plot(
+                q_plot,
+                sv_FO_coll[1],
+                label="FO",
+                color="violet",
+                linestyle="--",
+                linewidth=2.0,
+            )
+            plt.plot(
+                q_plot,
+                res_plot_R[list(shifts.keys())[1]],
+                label="R",
+                color="green",
+                linewidth=0.8,
+            )
+            plt.plot(
+                q_plot,
+                res_plot_M[list(shifts.keys())[1]],
+                label="M",
+                color="blue",
+                linewidth=1.2,
+            )
+            plt.plot(
+                q_plot,
+                res_plot_R[list(shifts.keys())[0]],
+                label="R-mub=0.5mb",
+                color="green",
+                linewidth=0.5,
+                linestyle="dotted",
+            )
+            plt.plot(
+                q_plot,
+                res_plot_R[list(shifts.keys())[2]],
+                label="R-mub=2.0mb",
+                color="green",
+                linewidth=0.5,
+                linestyle="dotted",
+            )
+            plt.plot(
+                q_plot,
+                res_plot_M[list(shifts.keys())[0]],
+                label="M-mub=0.5mb",
+                color="blue",
+                linewidth=0.8,
+                linestyle="dotted",
+            )
+            plt.plot(
+                q_plot,
+                res_plot_M[list(shifts.keys())[2]],
+                label="M-mub=2.0mb",
+                color="blue",
+                linewidth=0.8,
+                linestyle="dotted",
+            )
+            to_fill_M_n3lo_var = []
+            to_fill_FO_n3lo_var = []
+            if order == "3":
+                to_fill_M_n3lo_var = self.construct_M_var_band(
+                    res_plot_M_var, res_plot_M, q_plot
+                )
+                to_fill_FO_n3lo_var = self.construct_FO_var_band(
+                    res_plot_FO_n3lo_variations, sv_FO_coll[1], q_plot
+                )
+            if order == "3":
+                plt.fill_between(
+                    q_plot,
+                    np.array(res_plot_M[list(shifts.keys())[1]])
+                    + np.array(to_fill_M_n3lo_var),
+                    np.array(res_plot_M[list(shifts.keys())[1]])
+                    - np.array(to_fill_M_n3lo_var),
+                    color="lightseagreen",
+                    label="cf_unc",
+                    alpha=0.25,
+                )
+                plt.fill_between(
+                    q_plot,
+                    np.array(sv_FO_coll[1]) + np.array(to_fill_FO_n3lo_var),
+                    np.array(sv_FO_coll[1]) - np.array(to_fill_FO_n3lo_var),
+                    color="darkorchid",
+                    label="cf_unc",
+                    alpha=0.25,
+                    linestyle="--",
+                )
+            plt.xlabel("Q[GeV]")
+            plt.ylabel("x" + obs)
+            plt.legend()
+            plt.grid(alpha=0.75)
+            plt.savefig(plot_path)
+            plt.close()
