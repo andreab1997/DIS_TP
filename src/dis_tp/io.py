@@ -36,7 +36,7 @@ class TheoryParameters:
         return self._t_card
 
     @classmethod
-    def load_card(cls, configs, name):
+    def load_card(cls, configs, name, is_FO=False, heavyness=""):
         """Return a TheoryParameters object."""
         if isinstance(name, str):
             with open(
@@ -84,6 +84,15 @@ class TheoryParameters:
         kmc = th.get("kcThr", 1.0)
         kmb = th.get("kbThr", 1.0)
         kmt = th.get("ktThr", 1.0)
+        if is_FO:
+            if heavyness == "bottom":
+                kmb = 1000.0 * kmb  # Basically infinity
+                kmt = 1000.0 * kmt  # Basically infinity
+            elif heavyness == "charm":
+                kmc = 1000.0 * kmc  # Basically infinity
+                kmb = 1000.0 * kmb  # Basically infinity
+                kmt = 1000.0 * kmt  # Basically infinity
+
         thresholds_ratios = np.array([kmc, kmb, kmt]) ** 2
         method = CouplingEvolutionMethod.EXPANDED
         if "ModEv" in th and th["ModEv"] == "EXA":
@@ -272,6 +281,13 @@ class RunParameters:
                 heavyness_dict[ob.heavyness][1]
             ]
         )
+        if ob.restype == "FO":
+            if np.isclose(thr_ratio, 1000.0):
+                thr_ratio = 1.0
+            if np.isclose(thr_ratio, 2000.0):
+                thr_ratio = 2.0
+            if np.isclose(thr_ratio, 500.0):
+                thr_ratio = 0.5
         file_name = (
             ob.name
             + "_"

@@ -49,6 +49,7 @@ cfg = click.option(
     type=click.Path(resolve_path=True, path_type=pathlib.Path),
     help="Explicitly specify config file (it has to be a valid TOML file).",
 )
+which_func = click.argument("which_func", type=str)
 
 
 @command.command("compute")
@@ -114,21 +115,22 @@ def add_obs_opcard(
 @order
 @h_id
 @cfg
-def plot_observable(plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib.Path):
+@which_func
+def plot_observable(
+    plot_dir: str, obs: str, order: str, h_id: str, cfg: pathlib.Path, which_func: str
+):
     """
-    Plot (and save the results in plot_dir) an observable with all the method overimposed for a certain order
-    and heavy quark id.
+    Plot (and save the results in plot_dir) an observable for a certain heavy quark using the specified function.
 
-    USAGE dis_tp plot <plot_dir> <obs> <order> <h_id>
+    USAGE dis_tp plot <plot_dir> <obs> <order> <h_id> <which_func>
     """
     cfg = configs.load(cfg)
     cfg = configs.defaults(cfg)
     plot_dir_path = cfg["paths"]["root"] / plot_dir
     plotclass = plot.Plot(cfg, plot_dir_path)
     orders = {"NLO": 1, "NNLO": 2, "N3LO": 3}
-    plotclass.plot_single_obs(obs, str(orders[order]), h_id)
-    # plotclass.plot_fonll_noerr(obs, str(orders[order]), h_id)
-    # plotclass.plot_fonll_order_comparison(obs, h_id)
+    func = getattr(plotclass, which_func)
+    func(obs, str(orders[order]), h_id)
 
 
 @command.command("k-factors")
