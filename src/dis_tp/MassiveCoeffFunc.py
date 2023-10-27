@@ -24,7 +24,15 @@ def Cb_2_m_reg(z, Q, p, _nf, mur_ratio=1.0, muf_ratio=1.0):
     FHprefactor = Q2 / (np.pi * m_b**2) * e_h**2
     bare_res = FHprefactor / z * (4.0 * np.pi) ** 2 * LeProHQ.dq1("F2", "VV", xi, eta)
     return scale_variations.apply_sv_kernel(
-        order=0, m=2, ingredients=[bare_res], mur_ratio=mur_ratio, muf_ratio=muf_ratio
+        order=0,
+        m=2,
+        ingredients=[bare_res],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=_nf,
+        mur_ratio=mur_ratio,
+        muf_ratio=muf_ratio,
     )
 
 
@@ -37,7 +45,15 @@ def Cb_2_m_loc(_z, Q, p, _nf, mur_ratio=1.0, muf_ratio=1.0):
     )
     bare_res = -l[0]
     return scale_variations.apply_sv_kernel(
-        order=0, m=2, ingredients=[bare_res], mur_ratio=mur_ratio, muf_ratio=muf_ratio
+        order=0,
+        m=2,
+        ingredients=[bare_res],
+        z=_z,
+        Q=Q,
+        p=p,
+        nf=_nf,
+        mur_ratio=mur_ratio,
+        muf_ratio=muf_ratio,
     )
 
 
@@ -62,7 +78,15 @@ def Cg_1_m_reg(z, Q, p, _nf, mur_ratio=1.0, muf_ratio=1.0):
         )
     )
     return scale_variations.apply_sv_kernel(
-        order=0, m=1, ingredients=[bare_res], mur_ratio=mur_ratio, muf_ratio=muf_ratio
+        order=0,
+        m=1,
+        ingredients=[bare_res],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=_nf,
+        mur_ratio=mur_ratio,
+        muf_ratio=muf_ratio,
     )
 
 
@@ -92,7 +116,11 @@ def Cg_2_m_reg(z, Q, p, _nf, mur_ratio=1.0, muf_ratio=1.0):
     return scale_variations.apply_sv_kernel(
         order=1,
         m=1,
-        ingredients=[bare_res, Cg_1_m_reg(z, Q, p, _nf)],
+        ingredients=[bare_res, Cg_1_m_reg],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=_nf,
         mur_ratio=mur_ratio,
         muf_ratio=muf_ratio,
     )
@@ -110,7 +138,11 @@ def Cg_3_m_reg(z, Q, p, nf, mur_ratio=1.0, muf_ratio=1.0):
     return scale_variations.apply_sv_kernel(
         order=2,
         m=1,
-        ingredients=[bare_res, Cg_1_m_reg(z, Q, p, nf), Cg_2_m_reg(z, Q, p, nf)],
+        ingredients=[bare_res, Cg_1_m_reg, Cg_2_m_reg],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=nf,
         mur_ratio=mur_ratio,
         muf_ratio=muf_ratio,
     )
@@ -137,7 +169,15 @@ def Cq_2_m_reg(z, Q, p, _nf, mur_ratio=1.0, muf_ratio=1.0):
         )
     )
     return scale_variations.apply_sv_kernel(
-        order=0, m=2, ingredients=[bare_res], mur_ratio=mur_ratio, muf_ratio=muf_ratio
+        order=0,
+        m=2,
+        ingredients=[bare_res],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=_nf,
+        mur_ratio=mur_ratio,
+        muf_ratio=muf_ratio,
     )
 
 
@@ -153,7 +193,11 @@ def Cq_3_m_reg(z, Q, p, nf, mur_ratio=1.0, muf_ratio=1.0):
     return scale_variations.apply_sv_kernel(
         order=1,
         m=2,
-        ingredients=[bare_res, Cq_2_m_reg(z, Q, p, nf)],
+        ingredients=[bare_res, Cq_2_m_reg],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=nf,
         mur_ratio=mur_ratio,
         muf_ratio=muf_ratio,
     )
@@ -173,7 +217,15 @@ def CLb_2_m_reg(z, Q, p, _nf, mur_ratio=1.0, muf_ratio=1.0):
     FHprefactor = Q2 / (np.pi * m_b**2) * e_h**2
     bare_res = FHprefactor / z * (4.0 * np.pi) ** 2 * LeProHQ.dq1("FL", "VV", xi, eta)
     return scale_variations.apply_sv_kernel(
-        order=0, m=2, ingredients=[bare_res], mur_ratio=mur_ratio, muf_ratio=muf_ratio
+        order=0,
+        m=2,
+        ingredients=[bare_res],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=_nf,
+        mur_ratio=mur_ratio,
+        muf_ratio=muf_ratio,
     )
 
 
@@ -195,7 +247,15 @@ def CLg_1_m_reg(z, Q, p, _nf, mur_ratio=1.0, muf_ratio=1.0):
         * (-8 * eps * z2 * np.log((1 + v) / (1 - v)) + 4 * v * z * (1 - z))
     )
     return scale_variations.apply_sv_kernel(
-        order=0, m=1, ingredients=[bare_res], mur_ratio=mur_ratio, muf_ratio=muf_ratio
+        order=0,
+        m=1,
+        ingredients=[bare_res],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=_nf,
+        mur_ratio=mur_ratio,
+        muf_ratio=muf_ratio,
     )
 
 
@@ -225,7 +285,11 @@ def CLg_2_m_reg(z, Q, p, _nf, mur_ratio=1.0, muf_ratio=1.0):
     return scale_variations.apply_sv_kernel(
         order=1,
         m=1,
-        ingredients=[bare_res, CLg_1_m_reg(z, Q, p, _nf)],
+        ingredients=[bare_res, CLg_1_m_reg],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=_nf,
         mur_ratio=mur_ratio,
         muf_ratio=muf_ratio,
     )
@@ -243,7 +307,11 @@ def CLg_3_m_reg(z, Q, p, nf, mur_ratio=1.0, muf_ratio=1.0):
     return scale_variations.apply_sv_kernel(
         order=2,
         m=1,
-        ingredients=[bare_res, CLg_1_m_reg(z, Q, p, nf), CLg_2_m_reg(z, Q, p, nf)],
+        ingredients=[bare_res, CLg_1_m_reg, CLg_2_m_reg],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=nf,
         mur_ratio=mur_ratio,
         muf_ratio=muf_ratio,
     )
@@ -270,7 +338,15 @@ def CLq_2_m_reg(z, Q, p, _nf, mur_ratio=1.0, muf_ratio=1.0):
         )
     )
     return scale_variations.apply_sv_kernel(
-        order=0, m=2, ingredients=[bare_res], mur_ratio=mur_ratio, muf_ratio=muf_ratio
+        order=0,
+        m=2,
+        ingredients=[bare_res],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=_nf,
+        mur_ratio=mur_ratio,
+        muf_ratio=muf_ratio,
     )
 
 
@@ -286,7 +362,11 @@ def CLq_3_m_reg(z, Q, p, nf, mur_ratio=1.0, muf_ratio=1.0):
     return scale_variations.apply_sv_kernel(
         order=1,
         m=2,
-        ingredients=[bare_res, CLq_2_m_reg(z, Q, p, nf)],
+        ingredients=[bare_res, CLq_2_m_reg],
+        z=z,
+        Q=Q,
+        p=p,
+        nf=nf,
         mur_ratio=mur_ratio,
         muf_ratio=muf_ratio,
     )
