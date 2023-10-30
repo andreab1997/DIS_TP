@@ -5,8 +5,7 @@ import numpy as np
 from eko.constants import TR
 from scipy.integrate import quad
 
-from . import Initialize
-from .structure_functions import scale_variations
+from . import Initialize, scale_variations
 
 
 # F2
