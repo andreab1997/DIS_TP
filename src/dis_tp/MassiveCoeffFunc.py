@@ -22,7 +22,7 @@ def Cb_2_m_reg(z, Q, p, _nf, mur_ratio=1.0):
     eta = min(eta, 1e5)
     FHprefactor = Q2 / (np.pi * m_b**2) * e_h**2
     bare_res = FHprefactor / z * (4.0 * np.pi) ** 2 * LeProHQ.dq1("F2", "VV", xi, eta)
-    return scale_variations.apply_rensv_kernel(0, 0, [bare_res], mur_ratio, _nf)
+    return scale_variations.apply_rensv_kernel(0, 2, [bare_res], mur_ratio, _nf)
 
 
 def Cb_2_m_loc(_z, Q, p, _nf, mur_ratio=1.0):
@@ -33,7 +33,7 @@ def Cb_2_m_loc(_z, Q, p, _nf, mur_ratio=1.0):
         points=(0.0, 1.0),
     )
     bare_res = -l[0]
-    return scale_variations.apply_rensv_kernel(0, 0, [bare_res], mur_ratio, _nf)
+    return scale_variations.apply_rensv_kernel(0, 2, [bare_res], mur_ratio, _nf)
 
 
 def Cg_1_m_reg(z, Q, p, _nf, mur_ratio=1.0):
