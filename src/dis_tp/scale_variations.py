@@ -40,4 +40,31 @@ def apply_rensv_kernel(
             * ingredients[-1]
         )
     elif order == 3:
+        piece_one = (
+            (m + 2) * ingredients[-3] * beta_qcd(0, nf)
+            + (m + 1) * ingredients[-2] * beta_qcd(1, nf)
+            + m * ingredients[-1] * beta_qcd(2, nf)
+        )
+        piece_two = (m + 1) * (m + 2) * 0.5 * ingredients[-2] * beta_qcd(
+            0, nf
+        ) * beta_qcd(0, nf) + m * (2 * m + 3) * 0.5 * ingredients[-1] * beta_qcd(
+            0, nf
+        ) * beta_qcd(
+            1, nf
+        )
+        piece_three = (
+            m
+            * (m + 1)
+            * (m + 2)
+            * (1.0 / 6.0)
+            * ingredients[-1]
+            * (beta_qcd(0, nf) ** 3)
+        )
+        return (
+            ingredients[0]
+            + LR * piece_one
+            + (LR**2) * piece_two
+            + (LR**3) * piece_three
+        )
+    elif order >= 4:
         raise NotImplementedError

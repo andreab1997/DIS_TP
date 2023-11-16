@@ -376,4 +376,7 @@ def CLb_3_reg(z, Q, p, nf, mur_ratio=1.0):
 def CLb_3_loc(z, Q, p, nf, mur_ratio=1.0):
     e_h = p[-1]
     args = np.array([nf], dtype=float)
-    return e_h**2 * xclns3p.clnp3c(z, args=args)
+    bare_res = e_h**2 * xclns3p.clnp3c(z, args=args)
+    return scale_variations.apply_rensv_kernel(
+        1, 2, [bare_res, CLb_2_loc(z, Q, p, nf)], mur_ratio, nf
+    )
