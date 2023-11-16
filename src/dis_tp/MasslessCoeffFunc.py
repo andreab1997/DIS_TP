@@ -215,7 +215,7 @@ def Cq_3_loc(z, Q, p, nf, mur_ratio=1.0):
     flps = p[2]
     args = np.array([nf, flps], dtype=float)
     bare_res = e_h**2 * xc2sg3p.c2s3c(z, args=args) / nf
-    return scale_variations.apply_rensv_kernel(0, 2, [bare_res], mur_ratio, nf)
+    return scale_variations.apply_rensv_kernel(0, 3, [bare_res], mur_ratio, nf)
 
 
 def Cb_3_reg(z, Q, p, nf, mur_ratio=1.0):
@@ -223,7 +223,9 @@ def Cb_3_reg(z, Q, p, nf, mur_ratio=1.0):
     fl = p[2]
     args = np.array([nf, fl], dtype=float)
     bare_res = e_h**2 * xc2ns3p.c2np3a(z, args=args)
-    return scale_variations.apply_rensv_kernel(0, 2, [bare_res], mur_ratio, nf)
+    return scale_variations.apply_rensv_kernel(
+        2, 1, [bare_res, Cb_2_reg(z, Q, p, nf), Cb_1_reg(z, Q, p, nf)], mur_ratio, nf
+    )
 
 
 def Cb_3_loc(z, Q, p, nf, mur_ratio=1.0):
@@ -359,7 +361,7 @@ def CLq_3_reg(z, Q, p, nf, mur_ratio=1.0):
     args = np.array([nf, flps], dtype=float)
     bare_res = e_h**2 * xclsg3p.cls3a(z, args=args) / nf
     return scale_variations.apply_rensv_kernel(
-        0, 2, [bare_res, CLq_2_reg(z, Q, p, nf)], mur_ratio, nf
+        1, 2, [bare_res, CLq_2_reg(z, Q, p, nf)], mur_ratio, nf
     )
 
 
