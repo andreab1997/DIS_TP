@@ -15,7 +15,17 @@ class TheoryParameters:
     """Class containing all the theory parameters."""
 
     def __init__(
-        self, order, fns, masses, sc, thr_atlas, thr_atlas_as, grids, full_card=None
+        self,
+        order,
+        fns,
+        masses,
+        sc,
+        thr_atlas,
+        thr_atlas_as,
+        grids,
+        mur_ratio,
+        muf_ratio,
+        full_card=None,
     ):
         self.order = order
         self.fns = fns
@@ -25,6 +35,8 @@ class TheoryParameters:
         self.strong_coupling = sc
         self.thr_atlas = thr_atlas
         self.thr_atlas_as = thr_atlas_as
+        self.mur_ratio = mur_ratio
+        self.muf_ratio = muf_ratio
         self.n3lo_variation = full_card.get("n3lo_cf_variation", 0)
 
         if not self.grids:
@@ -84,6 +96,8 @@ class TheoryParameters:
         kmc = th.get("kcThr", 1.0)
         kmb = th.get("kbThr", 1.0)
         kmt = th.get("ktThr", 1.0)
+        mur_ratio = th.get("mur_ratio", 1.0)
+        muf_ratio = th.get("muf_ratio", 1.0)
         thresholds_ratios = np.array([kmc, kmb, kmt]) ** 2
         method = CouplingEvolutionMethod.EXPANDED
         if "ModEv" in th and th["ModEv"] == "EXA":
@@ -120,6 +134,8 @@ class TheoryParameters:
             sc=sc,
             thr_atlas=thr_atlas,
             thr_atlas_as=thr_atlas_as,
+            mur_ratio=mur_ratio,
+            muf_ratio=muf_ratio,
             full_card=th,
         )
 
@@ -282,6 +298,10 @@ class RunParameters:
             + heavyness_dict[ob.heavyness][0]
             + "_"
             + ob.heavyness
+            + "_mur_ratio="
+            + str(self.theory_parameters().mur_ratio)
+            + "_muf_ratio="
+            + str(self.theory_parameters().muf_ratio)
             + "_thr="
             + str(thr_ratio)
             + "_"

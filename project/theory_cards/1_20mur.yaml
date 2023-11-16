@@ -1,0 +1,6 @@
+order: 2
+fns: "our"
+grids: False
+mass: 4.92
+mur_ratio: 2.0
+muf_ratio: 1.0

@@ -5,7 +5,7 @@ import scipy.special as special
 from eko.constants import CA, CF, TR
 
 from . import Initialize as Ini
-from . import parameters
+from . import parameters, scale_variations
 from .MassiveCoeffFunc import (
     Cg_1_m_reg,
     Cg_2_m_reg,
@@ -95,24 +95,37 @@ def Mbg1_Mgg2_sing(x, p, _nf):
 
 
 # F2
-def Cg_1_til_reg(z, Q, p, _nf):
-    return Cg_1_m_reg(z, Q, p, _nf - 1) - 2 * Cb_0_loc(z, Q, p, _nf) * Mbg_1(z, p, _nf)
+def Cg_1_til_reg(z, Q, p, _nf, mur_ratio=1.0):
+    bare_res = Cg_1_m_reg(z, Q, p, _nf - 1) - 2 * Cb_0_loc(z, Q, p, _nf) * Mbg_1(
+        z, p, _nf
+    )
+    return scale_variations.apply_rensv_kernel(0, 1, [bare_res], mur_ratio, _nf)
 
 
-def Cg_2_til_reg(z, Q, p, _nf):
-    return (
+def Cg_2_til_reg(z, Q, p, _nf, mur_ratio=1.0):
+    bare_res = (
         Cg_2_m_reg(z, Q, p, _nf - 1)
         - 2
         * Cb_0_loc(z, Q, p, _nf)
         * (Mbg_2(z, p, _nf) - Mbg_1(z, p, _nf) * Mgg_1_loc(z, p, _nf))
         - 2 * np.log((Q**2) / (p[0] ** 2)) * Cb1_Mbg1(z, p, _nf)
     )
+    return scale_variations.apply_rensv_kernel(
+        1, 1, [bare_res, Cg_1_til_reg(z, Q, p, _nf)], mur_ratio, _nf
+    )
 
 
-def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
+def Cg_3_til_reg(z, Q, p, nf, use_analytic=False, mur_ratio=1.0):
     if parameters.grids and not use_analytic:
-        return Ini.Cg3_til[nf - 4](z, Q)[0]
-    return (
+        bare_res = Ini.Cg3_til[nf - 4](z, Q)[0]
+        return scale_variations.apply_rensv_kernel(
+            2,
+            1,
+            [bare_res, Cg_2_til_reg(z, Q, p, nf), Cg_1_til_reg(z, Q, p, nf)],
+            mur_ratio,
+            nf,
+        )
+    bare_res = (
         Cg_3_m_reg(z, Q, p, nf)
         + Cg_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
         + P2(p) * Cg_1_m_reg(z, Q, p, nf - 1)
@@ -149,16 +162,29 @@ def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
             + Convolute_plus_coeff(Cb_2_sing, Mbg_1, z, Q, p, nf - 1)
         )
     )
+    return scale_variations.apply_rensv_kernel(
+        2,
+        1,
+        [bare_res, Cg_2_til_reg(z, Q, p, nf), Cg_1_til_reg(z, Q, p, nf)],
+        mur_ratio,
+        nf,
+    )
 
 
-def Cq_2_til_reg(z, Q, p, _nf):
-    return Cq_2_m_reg(z, Q, p, _nf - 1) - 2 * Cb_0_loc(z, Q, p, _nf) * Mbq_2(z, p, _nf)
+def Cq_2_til_reg(z, Q, p, _nf, mur_ratio=1.0):
+    bare_res = Cq_2_m_reg(z, Q, p, _nf - 1) - 2 * Cb_0_loc(z, Q, p, _nf) * Mbq_2(
+        z, p, _nf
+    )
+    return scale_variations.apply_rensv_kernel(0, 2, [bare_res], mur_ratio, _nf)
 
 
-def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
+def Cq_3_til_reg(z, Q, p, nf, use_analytic=False, mur_ratio=1.0):
     if parameters.grids and not use_analytic:
-        return Ini.Cq3_til[nf - 4](z, Q)[0]
-    return (
+        bare_res = Ini.Cq3_til[nf - 4](z, Q)[0]
+        return scale_variations.apply_rensv_kernel(
+            1, 2, [bare_res, Cq_2_til_reg(z, Q, p, nf)], mur_ratio, nf
+        )
+    bare_res = (
         Cq_3_m_reg(z, Q, p, nf)
         + 2 * Cq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
         - Convolute(Cg_1_m_reg, Mgq_2_reg, z, Q, p, nf - 1, nf - 1)
@@ -173,23 +199,37 @@ def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
             Cb_0_loc(z, Q, p, nf) * Mbq_3_reg(z, p, nf)
         )  # This is called with nf instead of nf-1 but the grid is computed correctly with nf-1
     )
+    return scale_variations.apply_rensv_kernel(
+        1, 2, [bare_res, Cq_2_til_reg(z, Q, p, nf)], mur_ratio, nf
+    )
 
 
 # FL
-def CLg_1_til_reg(z, Q, p, _nf):
-    return CLg_1_m_reg(z, Q, p, _nf - 1)
+def CLg_1_til_reg(z, Q, p, _nf, mur_ratio=1.0):
+    bare_res = CLg_1_m_reg(z, Q, p, _nf - 1)
+    return scale_variations.apply_rensv_kernel(0, 1, [bare_res], mur_ratio, _nf)
 
 
-def CLg_2_til_reg(z, Q, p, _nf):
-    return CLg_2_m_reg(z, Q, p, _nf - 1) - 2 * np.log(
+def CLg_2_til_reg(z, Q, p, _nf, mur_ratio=1.0):
+    bare_res = CLg_2_m_reg(z, Q, p, _nf - 1) - 2 * np.log(
         (Q**2) / (p[0] ** 2)
     ) * CLb1_Mbg1(z, p, _nf)
+    return scale_variations.apply_rensv_kernel(
+        1, 1, [bare_res, CLg_1_til_reg(z, Q, p, _nf)], mur_ratio, _nf
+    )
 
 
-def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
+def CLg_3_til_reg(z, Q, p, nf, use_analytic=False, mur_ratio=1.0):
     if parameters.grids and not use_analytic:
-        return Ini.CLg3_til[nf - 4](z, Q)[0]
-    return (
+        bare_res = Ini.CLg3_til[nf - 4](z, Q)[0]
+        return scale_variations.apply_rensv_kernel(
+            2,
+            1,
+            [bare_res, CLg_2_til_reg(z, Q, p, nf), CLg_1_til_reg(z, Q, p, nf)],
+            mur_ratio,
+            nf,
+        )
+    bare_res = (
         CLg_3_m_reg(z, Q, p, nf)
         + CLg_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
         + P2(p) * CLg_1_m_reg(z, Q, p, nf - 1)
@@ -209,18 +249,32 @@ def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
             + Convolute(CLb_2_reg, Mbg_1, z, Q, p, nf - 1)
         )
     )
+    return scale_variations.apply_rensv_kernel(
+        2,
+        1,
+        [bare_res, CLg_2_til_reg(z, Q, p, nf), CLg_1_til_reg(z, Q, p, nf)],
+        mur_ratio,
+        nf,
+    )
 
 
-def CLq_2_til_reg(z, Q, p, _nf):
-    return CLq_2_m_reg(z, Q, p, _nf - 1)
+def CLq_2_til_reg(z, Q, p, _nf, mur_ratio=1.0):
+    bare_res = CLq_2_m_reg(z, Q, p, _nf - 1)
+    return scale_variations.apply_rensv_kernel(0, 2, [bare_res], mur_ratio, _nf)
 
 
-def CLq_3_til_reg(z, Q, p, nf, use_analytic=False):
+def CLq_3_til_reg(z, Q, p, nf, use_analytic=False, mur_ratio=1.0):
     if parameters.grids and not use_analytic:
-        return Ini.CLq3_til[nf - 4](z, Q)[0]
-    return (
+        bare_res = Ini.CLq3_til[nf - 4](z, Q)[0]
+        return scale_variations.apply_rensv_kernel(
+            1, 2, [bare_res, CLq_2_til_reg(z, Q, p, nf)], mur_ratio, nf
+        )
+    bare_res = (
         CLq_3_m_reg(z, Q, p, nf)
         + 2 * CLq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
         - Convolute(CLg_1_m_reg, Mgq_2_reg, z, Q, p, nf - 1, nf - 1)
         - 2 * Convolute(CLb_1_reg, Mbq_2, z, Q, p, nf - 1)
+    )
+    return scale_variations.apply_rensv_kernel(
+        1, 2, [bare_res, CLq_2_til_reg(z, Q, p, nf)], mur_ratio, nf
     )
