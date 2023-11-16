@@ -117,6 +117,8 @@ class Runner:
                     pdf=ob.pdf,
                     h_id=hid,
                     target_dict=self.o_par.target_dict,
+                    muR_ratio=self.t_par.mur_ratio,
+                    muF_ratio=self.t_par.muf_ratio,
                 )
                 console.log(
                     f"[green]Computing {func.__name__} @ order: {self.t_par.order} ..."

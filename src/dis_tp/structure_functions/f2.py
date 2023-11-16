@@ -61,11 +61,13 @@ def F2_FO(
         res = 0.0
     if order >= 1:
         res += a_s * PDFConvolute(
-            MassiveCoeffFunc.Cg_1_m_reg, Mypdf, x, Q, p, h_id, g_id
+            MassiveCoeffFunc.Cg_1_m_reg, Mypdf, x, Q, p, h_id, g_id, muR_ratio
         )
     if order >= 2:
         res += a_s**2 * (
-            PDFConvolute(MassiveCoeffFunc.Cg_2_m_reg, Mypdf, x, Q, p, h_id, g_id)
+            PDFConvolute(
+                MassiveCoeffFunc.Cg_2_m_reg, Mypdf, x, Q, p, h_id, g_id, muR_ratio
+            )
             + conv_func(
                 MassiveCoeffFunc.Cq_2_m_reg,
                 Mypdf,
@@ -74,6 +76,7 @@ def F2_FO(
                 p,
                 3 if h_id == 5 and nf == 3 else h_id,
                 target_dict=target_dict,
+                mur_ratio=muR_ratio,
             )
         )
 
@@ -81,16 +84,18 @@ def F2_FO(
         for ihq in range(h_id + 1, 6):
             pihq = [masses(ihq), Q, charges(h_id)]
             reg_miss = PDFConvolute(
-                MassiveCoeffFunc.Cb_2_m_reg, Mypdf, x, Q, pihq, h_id, h_id
+                MassiveCoeffFunc.Cb_2_m_reg, Mypdf, x, Q, pihq, h_id, h_id, muR_ratio
             )
-            loc_miss = MassiveCoeffFunc.Cb_2_m_loc(x, Q, pihq, h_id) * (
+            loc_miss = MassiveCoeffFunc.Cb_2_m_loc(x, Q, pihq, h_id, muR_ratio) * (
                 Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q)
             )
             res += a_s**2 * (reg_miss + loc_miss)
 
     if order >= 3:
         res += a_s**3 * (
-            PDFConvolute(MassiveCoeffFunc.Cg_3_m_reg, Mypdf, x, Q, p, h_id, g_id)
+            PDFConvolute(
+                MassiveCoeffFunc.Cg_3_m_reg, Mypdf, x, Q, p, h_id, g_id, muR_ratio
+            )
             + conv_func(
                 MassiveCoeffFunc.Cq_3_m_reg,
                 Mypdf,
@@ -99,6 +104,7 @@ def F2_FO(
                 p,
                 3 if h_id == 5 and nf == 3 else h_id,
                 target_dict=target_dict,
+                mur_ratio=muR_ratio,
             )
         )
     return res
@@ -136,9 +142,9 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, target_dict=None, muF_ratio=1, muR_r
         res = 0.0
     if order >= 1:
         nll_reg = a_s * PDFConvolute(
-            MasslessCoeffFunc.Cg_1_reg, Mypdf, x, Q, p, nf, g_id
+            MasslessCoeffFunc.Cg_1_reg, Mypdf, x, Q, p, nf, g_id, muR_ratio
         )
-        nll_local = MasslessCoeffFunc.Cb_0_loc(x, Q, p, nf) * (
+        nll_local = MasslessCoeffFunc.Cb_0_loc(x, Q, p, nf, muR_ratio) * (
             Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q)
         )
         res += nll_reg + nll_local
@@ -146,7 +152,9 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, target_dict=None, muF_ratio=1, muR_r
         nnll_reg = a_s * (
             a_s
             * (
-                PDFConvolute(MasslessCoeffFunc.Cg_2_reg, Mypdf, x, Q, p, nf, g_id)
+                PDFConvolute(
+                    MasslessCoeffFunc.Cg_2_reg, Mypdf, x, Q, p, nf, g_id, muR_ratio
+                )
                 + PDFConvolute(
                     MasslessCoeffFunc.Cq_2_reg,
                     Mypdf,
@@ -155,17 +163,20 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, target_dict=None, muF_ratio=1, muR_r
                     p,
                     nf,
                     target_dict=target_dict,
+                    mur_ratio=muR_ratio,
                 )
             )
-            + PDFConvolute(MasslessCoeffFunc.Cb_1_reg, Mypdf, x, Q, p, nf, h_id)
+            + PDFConvolute(
+                MasslessCoeffFunc.Cb_1_reg, Mypdf, x, Q, p, nf, h_id, muR_ratio
+            )
         )
         nnll_local = (
             a_s
-            * MasslessCoeffFunc.Cb_1_loc(x, Q, p, nf)
+            * MasslessCoeffFunc.Cb_1_loc(x, Q, p, nf, muR_ratio)
             * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
         )
         nnll_sing = a_s * PDFConvolute_plus(
-            MasslessCoeffFunc.Cb_1_sing, Mypdf, x, Q, p, nf, h_id
+            MasslessCoeffFunc.Cb_1_sing, Mypdf, x, Q, p, nf, h_id, muR_ratio
         )
         res += nnll_reg + nnll_local + nnll_sing
     if order >= 3:
@@ -175,7 +186,9 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, target_dict=None, muF_ratio=1, muR_r
         n3ll_reg = (a_s**2) * (
             a_s
             * (
-                PDFConvolute(MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, pg, nf, g_id)
+                PDFConvolute(
+                    MasslessCoeffFunc.Cg_3_reg, Mypdf, x, Q, pg, nf, g_id, muR_ratio
+                )
                 + PDFConvolute(
                     MasslessCoeffFunc.Cq_3_reg,
                     Mypdf,
@@ -184,23 +197,27 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, target_dict=None, muF_ratio=1, muR_r
                     ps,
                     nf,
                     target_dict=target_dict,
+                    mur_ratio=muR_ratio,
                 )
             )
-            + PDFConvolute(MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nf, h_id)
+            + PDFConvolute(
+                MasslessCoeffFunc.Cb_2_reg, Mypdf, x, Q, p, nf, h_id, muR_ratio
+            )
         )
 
         n3ll_local = (a_s**2) * (
-            MasslessCoeffFunc.Cb_2_loc(x, Q, p, nf)
+            MasslessCoeffFunc.Cb_2_loc(x, Q, p, nf, muR_ratio)
             * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
             + a_s
             * (
-                MasslessCoeffFunc.Cg_3_loc(x, Q, pg, nf) * Mypdf.xfxQ2(h_id, x, Q * Q)
-                + MasslessCoeffFunc.Cq_3_loc(x, Q, ps, nf)
+                MasslessCoeffFunc.Cg_3_loc(x, Q, pg, nf, muR_ratio)
+                * Mypdf.xfxQ2(h_id, x, Q * Q)
+                + MasslessCoeffFunc.Cq_3_loc(x, Q, ps, nf, muR_ratio)
                 * singlet_pdf(Mypdf, x, Q, nf, target_dict)
             )
         )
         n3ll_sing = a_s**2 * PDFConvolute_plus(
-            MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nf, h_id
+            MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nf, h_id, muR_ratio
         )
         res += n3ll_reg + n3ll_local + n3ll_sing
     return res

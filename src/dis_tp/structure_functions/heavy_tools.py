@@ -7,12 +7,13 @@ import scipy.integrate as integrate
 from .light_tools import apply_isospin_roation
 
 
-def PDFConvolute(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None):
+def PDFConvolute(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None, mur_ratio=1.0):
     lower = x
     upper = 1.0
     if pid == 21:
         result, error = integrate.quad(
-            lambda z: func1(z, Q, p1, nf) * pdf.xfxQ2(pid, x * (1.0 / z), Q * Q),
+            lambda z: func1(z, Q, p1, nf, mur_ratio)
+            * pdf.xfxQ2(pid, x * (1.0 / z), Q * Q),
             lower,
             upper,
             epsabs=1e-12,
@@ -22,7 +23,7 @@ def PDFConvolute(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None):
         )
     elif pid in [4, 5, 6]:
         result, error = integrate.quad(
-            lambda z: func1(z, Q, p1, nf)
+            lambda z: func1(z, Q, p1, nf, mur_ratio)
             * (
                 pdf.xfxQ2(pid, x * (1.0 / z), Q * Q)
                 + pdf.xfxQ2(-pid, x * (1.0 / z), Q * Q)
@@ -46,7 +47,7 @@ def PDFConvolute(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None):
             return np.sum(light_pdfs)
 
         result, error = integrate.quad(
-            lambda z: func1(z, Q, p1, nf) * light_pdfs(z),
+            lambda z: func1(z, Q, p1, nf, mur_ratio) * light_pdfs(z),
             lower,
             upper,
             epsabs=1e-12,
@@ -57,12 +58,14 @@ def PDFConvolute(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None):
     return result
 
 
-def Convolute(func1, matching, x, Q, p1, nf, nl=None):
+def Convolute(func1, matching, x, Q, p1, nf, nl=None, mur_ratio=1.0):
     lower = x
     upper = 1.0
     nl = nf if nl is None else nl
     result, _ = integrate.quad(
-        lambda z: (1.0 / z) * func1(z, Q, p1, nl) * matching(x * (1.0 / z), p1, nf),
+        lambda z: (1.0 / z)
+        * func1(z, Q, p1, nl, mur_ratio)
+        * matching(x * (1.0 / z), p1, nf),
         lower,
         upper,
         epsabs=1e-12,
@@ -88,10 +91,12 @@ def Convolute_matching(matching1, matching2, x, Q, p1, nf):
     return result
 
 
-def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None):
+def PDFConvolute_plus(
+    func1, pdf, x, Q, p1, nf, pid=None, target_dict=None, mur_ratio=1.0
+):
     if pid == 21:
         plus1, error1 = integrate.quad(
-            lambda z: func1(z, Q, p1, nf)
+            lambda z: func1(z, Q, p1, nf, mur_ratio)
             * (pdf.xfxQ2(pid, x * (1.0 / z), Q * Q) - pdf.xfxQ2(pid, x, Q * Q)),
             x,
             1.0,
@@ -102,7 +107,7 @@ def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None):
         )
     elif pid in [4, 5, 6]:
         plus1, error1 = integrate.quad(
-            lambda z: func1(z, Q, p1, nf)
+            lambda z: func1(z, Q, p1, nf, mur_ratio)
             * (
                 pdf.xfxQ2(pid, x * (1.0 / z), Q * Q)
                 + pdf.xfxQ2(-pid, x * (1.0 / z), Q * Q)
@@ -129,7 +134,7 @@ def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None):
             return np.sum(light_pdfs - light_pdfs_x)
 
         plus1, error1 = integrate.quad(
-            lambda z: func1(z, Q, p1, nf) * light_pdfs(z),
+            lambda z: func1(z, Q, p1, nf, mur_ratio) * light_pdfs(z),
             x,
             1.0,
             epsabs=1e-12,
@@ -140,9 +145,9 @@ def PDFConvolute_plus(func1, pdf, x, Q, p1, nf, pid=None, target_dict=None):
     return plus1
 
 
-def Convolute_plus_coeff(func1, matching, x, Q, p1, nf):
+def Convolute_plus_coeff(func1, matching, x, Q, p1, nf, mur_ratio=1.0):
     plus1, error1 = integrate.quad(
-        lambda z: func1(z, Q, p1, nf)
+        lambda z: func1(z, Q, p1, nf, mur_ratio)
         * ((1.0 / z) * matching(x * (1.0 / z), p1, nf) - matching(x, p1, nf)),
         x,
         1.0,
@@ -154,11 +159,14 @@ def Convolute_plus_coeff(func1, matching, x, Q, p1, nf):
     return plus1
 
 
-def Convolute_plus_matching(func1, matching, x, Q, p1, nf, nl=None):
+def Convolute_plus_matching(func1, matching, x, Q, p1, nf, nl=None, mur_ratio=1.0):
     nl = nf if nl is None else nl
     plus1, error1 = integrate.quad(
         lambda z: matching(z, p1, nf)
-        * ((1.0 / z) * func1(x * (1.0 / z), Q, p1, nl) - func1(x, Q, p1, nf)),
+        * (
+            (1.0 / z) * func1(x * (1.0 / z), Q, p1, nl, mur_ratio)
+            - func1(x, Q, p1, nf, mur_ratio)
+        ),
         x,
         1.0,
         epsabs=1e-12,
