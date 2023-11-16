@@ -231,13 +231,22 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
             res = 0.0
         if order >= 1:
             res += a_s * PDFConvolute(
-                TildeCoeffFunc.CLg_1_til_reg, Mypdf, x, Q, p, nf, g_id
+                TildeCoeffFunc.CLg_1_til_reg, Mypdf, x, Q, p, nf, g_id, muR_ratio
             )
         if order >= 2:
             nnlo_nnll_reg = a_s * (
                 a_s
                 * (
-                    PDFConvolute(TildeCoeffFunc.CLg_2_til_reg, Mypdf, x, Q, p, nf, g_id)
+                    PDFConvolute(
+                        TildeCoeffFunc.CLg_2_til_reg,
+                        Mypdf,
+                        x,
+                        Q,
+                        p,
+                        nf,
+                        g_id,
+                        muR_ratio,
+                    )
                     + PDFConvolute(
                         TildeCoeffFunc.CLq_2_til_reg,
                         Mypdf,
@@ -246,16 +255,28 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
                         p,
                         nf,
                         target_dict=target_dict,
+                        mur_ratio=muR_ratio,
                     )
                 )
-                + PDFConvolute(MasslessCoeffFunc.CLb_1_reg, Mypdf, x, Q, p, nf, h_id)
+                + PDFConvolute(
+                    MasslessCoeffFunc.CLb_1_reg, Mypdf, x, Q, p, nf, h_id, muR_ratio
+                )
             )
             res += nnlo_nnll_reg
         if order >= 3:
             n3lo_n3ll_reg = a_s**2 * (
                 a_s
                 * (
-                    PDFConvolute(TildeCoeffFunc.CLg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
+                    PDFConvolute(
+                        TildeCoeffFunc.CLg_3_til_reg,
+                        Mypdf,
+                        x,
+                        Q,
+                        p,
+                        nf,
+                        g_id,
+                        muR_ratio,
+                    )
                     + PDFConvolute(
                         TildeCoeffFunc.CLq_3_til_reg,
                         Mypdf,
@@ -264,14 +285,17 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
                         p,
                         nf,
                         target_dict=target_dict,
+                        mur_ratio=muR_ratio,
                     )
                 )
-                + PDFConvolute(MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nf, h_id)
+                + PDFConvolute(
+                    MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nf, h_id, muR_ratio
+                )
             )
             n3lo_n3ll_loc = (
                 a_s
                 * a_s
-                * MasslessCoeffFunc.CLb_2_loc(x, Q, p, nf)
+                * MasslessCoeffFunc.CLb_2_loc(x, Q, p, nf, muR_ratio)
                 * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
             )
             res += n3lo_n3ll_loc + n3lo_n3ll_reg
@@ -280,12 +304,18 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
             res = 0.0
         if order >= 1:
             res += a_s * (
-                PDFConvolute(TildeCoeffFunc.CLg_1_til_reg, Mypdf, x, Q, p, nf, g_id)
-                + PDFConvolute(MasslessCoeffFunc.CLb_1_reg, Mypdf, x, Q, p, nf, h_id)
+                PDFConvolute(
+                    TildeCoeffFunc.CLg_1_til_reg, Mypdf, x, Q, p, nf, g_id, muR_ratio
+                )
+                + PDFConvolute(
+                    MasslessCoeffFunc.CLb_1_reg, Mypdf, x, Q, p, nf, h_id, muR_ratio
+                )
             )
         if order >= 2:
             nnlo_nnll_reg = a_s**2 * (
-                PDFConvolute(TildeCoeffFunc.CLg_2_til_reg, Mypdf, x, Q, p, nf, g_id)
+                PDFConvolute(
+                    TildeCoeffFunc.CLg_2_til_reg, Mypdf, x, Q, p, nf, g_id, muR_ratio
+                )
                 + PDFConvolute(
                     TildeCoeffFunc.CLq_2_til_reg,
                     Mypdf,
@@ -294,12 +324,15 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
                     p,
                     nf,
                     target_dict=target_dict,
+                    mur_ratio=muR_ratio,
                 )
-                + PDFConvolute(MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nf, h_id)
+                + PDFConvolute(
+                    MasslessCoeffFunc.CLb_2_reg, Mypdf, x, Q, p, nf, h_id, muR_ratio
+                )
             )
             nnlo_nnll_loc = (
                 a_s**2
-                * MasslessCoeffFunc.CLb_2_loc(x, Q, p, nf)
+                * MasslessCoeffFunc.CLb_2_loc(x, Q, p, nf, muR_ratio)
                 * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
             )
             res += nnlo_nnll_reg + nnlo_nnll_loc
@@ -308,7 +341,7 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
             for ihq in range(h_id + 1, 6):
                 pihq = [masses(ihq), Q, charges(h_id)]
                 reg_miss = PDFConvolute(
-                    MassiveCoeffFunc.CLb_2_m_reg, Mypdf, x, Q, pihq, nf, h_id
+                    MassiveCoeffFunc.CLb_2_m_reg, Mypdf, x, Q, pihq, nf, h_id, muR_ratio
                 )
                 res += a_s**2 * reg_miss
 
@@ -316,7 +349,9 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
             pns = [masses(h_id), Q, 0, charges(h_id)]
             pns[2] = n3lo_color_factors("ns", nf, False)
             n3lo_n3ll_reg = a_s**3 * (
-                PDFConvolute(TildeCoeffFunc.CLg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
+                PDFConvolute(
+                    TildeCoeffFunc.CLg_3_til_reg, Mypdf, x, Q, p, nf, g_id, muR_ratio
+                )
                 + PDFConvolute(
                     TildeCoeffFunc.CLq_3_til_reg,
                     Mypdf,
@@ -325,12 +360,15 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
                     p,
                     nf,
                     target_dict=target_dict,
+                    mur_ratio=muR_ratio,
                 )
-                + PDFConvolute(MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, pns, nf, h_id)
+                + PDFConvolute(
+                    MasslessCoeffFunc.CLb_3_reg, Mypdf, x, Q, pns, nf, h_id, muR_ratio
+                )
             )
             n3lo_n3ll_loc = (
                 a_s**3
-                * MasslessCoeffFunc.CLb_3_loc(x, Q, pns, nf)
+                * MasslessCoeffFunc.CLb_3_loc(x, Q, pns, nf, muR_ratio)
                 * (Mypdf.xfxQ2(h_id, x, Q * Q) + Mypdf.xfxQ2(-h_id, x, Q * Q))
             )
             res += n3lo_n3ll_reg + n3lo_n3ll_loc
