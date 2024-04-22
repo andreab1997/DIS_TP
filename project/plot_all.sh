@@ -18,4 +18,10 @@ for ord in $orders; do
     done;
 done;
 
+# Order Comparison
+
+for ob in $obs; do
+    dis_tp plot $plot_path $ob NLO $heavy_quark plot_fonll_order_comparison;
+done;
+
 echo "ALL DONE!"
