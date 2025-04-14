@@ -6,6 +6,8 @@ from eko.constants import CA, CF, TR, zeta2, zeta3
 from ekore.operator_matrix_elements.unpolarized.space_like import as3
 from yadism.coefficient_functions.fonll.raw_nc import wgplg
 from yadism.coefficient_functions.special import li2 as ddilog
+from .aQg3N import A_Hg_no_aQg3
+import adani
 
 from . import Initialize as Ini
 from . import parameters
@@ -146,6 +148,7 @@ def Mgq_2_reg(z, p, nf):
         )
     )
 
+aQg3 = adani.MatchingCondition(3, 'Q', 'g', 'exact')
 
 def Mbg_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
@@ -154,6 +157,7 @@ def Mbg_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     # This function is called with nf (=h_id) but actually uses nf-1. Still it
     # is called with nf in order to take the correct grid
     return 0.5 * inverse_mellin(as3.A_Hg, x, nf - 1, r, s, path, L)
+    #return 0.5 * inverse_mellin(A_Hg_no_aQg3, x, nf - 1, r, s, path, L) + aQg3.MuIndependentTerm(x, nf - 1)
 
 
 def Mbq_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
