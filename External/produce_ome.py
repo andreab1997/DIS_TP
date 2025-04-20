@@ -30,13 +30,13 @@ def read_grid(input_file):
 
 def function_to_exe_in_parallel_g(pair):
     z, q, nf = pair
-    res = MatchingFunc.Mbg_3_reg(z, [MB, q], nf + 1, use_analytic=True)
+    res = MatchingFunc.Mbg_3_reg(z, [MB, q], nf, use_analytic=True)
     #print(z, q, res)
     return res
 
 def function_to_exe_in_parallel_q(pair):
     z, q, nf = pair
-    res = MatchingFunc.Mbg_3_reg(z, [MB, q], nf + 1, use_analytic=True)
+    res = MatchingFunc.Mbq_3_reg(z, [MB, q], nf, use_analytic=True)
     #print(z, q, res)
     return res
 
