@@ -159,7 +159,7 @@ def Mbg_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     # is called with nf in order to take the correct grid
     #return 0.5 * inverse_mellin(as3.A_Hg, x, nf - 1, r, s, path, L)
     muindep = 0. if np.isclose(x, 1.0, rtol=1e-7) else aQg3.MuIndependentTerm(x, nf - 1).GetCentral()
-    return 0.5 * inverse_mellin(A_Hg_no_aQg3, x, nf - 1, r, s, path, L) + muindep
+    return 0.5 * (inverse_mellin(A_Hg_no_aQg3, x, nf - 1, r, s, path, L) + muindep)
 
 
 def Mbq_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):

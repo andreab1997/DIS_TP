@@ -79,6 +79,6 @@ def produce_grid(nf, channel, debug=False):
 
 
 if __name__ == "__main__":
-    for nf in range(3, 5 + 1):
+    for nf in range(4, 5 + 1):
         for channel in ["g", "q"]:
             produce_grid(nf, channel, debug)
