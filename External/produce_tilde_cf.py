@@ -5,8 +5,12 @@ from multiprocessing import Pool
 import numpy as np
 from dis_tp import TildeCoeffFunc, Initialize, parameters
 
-here = pathlib.Path(__file__).parent
-here.mkdir(exist_ok=True)
+if len(sys.argv) == 1:
+    debug = False
+elif len(sys.argv) == 2:
+    debug = bool(sys.argv[1])
+else:
+    raise ValueError("Too many command line arguments!!")
 
 MB = 4.92
 n_threads = 4
@@ -79,9 +83,9 @@ def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     print(f"Producing tilde grid for C{kind}{channel}(nf={nf})")
     parameters.initialize_theory(use_grids=False, masses=[1.51, 4.92, 172.5])
     
-    x_fname = "../External/x.txt"
+    x_fname = "./x.txt"
     x_grid = read_grid(x_fname)
-    q_fname = "../External/Q.txt"
+    q_fname = "./Q.txt"
     q_grid = read_grid(q_fname)
 
     if debug:
@@ -95,7 +99,7 @@ def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     res_mat = res_vec.reshape(len(q_grid), len(x_grid))
 
     kind_ = kind if kind == "L" else ""
-    output_dir = f"../External/C{kind_}{channel}_3_til"
+    output_dir = f"./C{kind_}{channel}_3_til"
     output_file = output_dir + f"/C{kind}{channel}til_nf{nf}_var{n3lo_var}.txt"
     np.savetxt(output_file, res_mat)
 
@@ -105,4 +109,4 @@ if __name__ == "__main__":
         for kind in ["2", "L"]:
             for channel in ["g", "q"]:
                 for n3lo_var in range(-1, 1+1):
-                    produce_grid(nf, kind, channel, n3lo_var, True)
+                    produce_grid(nf, kind, channel, n3lo_var, debug)

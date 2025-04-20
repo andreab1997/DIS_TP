@@ -3,11 +3,16 @@ import os
 import time
 from multiprocessing import Pool
 import numpy as np
+import sys
 
 from dis_tp import MatchingFunc, parameters
 
-here = pathlib.Path(__file__).parent
-here.mkdir(exist_ok=True)
+if len(sys.argv) == 1:
+    debug = False
+elif len(sys.argv) == 2:
+    debug = bool(sys.argv[1])
+else:
+    raise ValueError("Too many command line arguments!!")
 
 MB = 4.92
 n_threads = 4
@@ -43,11 +48,11 @@ def produce_grid(nf, debug=False):
     print(f"Producing Mbg_3(nf={nf})")
     parameters.initialize_theory(use_grids=False, masses=[1.51, 4.92, 172.5])
     
-    output_dir = f"../External/Mbg_3"
+    output_dir = f"./Mbg_3"
     output_file = output_dir + f"/Mbg3_nf{nf}.txt"
-    x_fname = "../External/x.txt"
+    x_fname = "./x.txt"
     x_grid = read_grid(x_fname)
-    q_fname = "../External/Q.txt"
+    q_fname = "./Q.txt"
     q_grid = read_grid(q_fname)
 
     if debug:
@@ -65,6 +70,6 @@ def produce_grid(nf, debug=False):
 
 
 if __name__ == "__main__":
-    produce_grid(3)
-    produce_grid(4)
-    produce_grid(5)
+    produce_grid(3, debug)
+    produce_grid(4, debug)
+    produce_grid(5, debug)

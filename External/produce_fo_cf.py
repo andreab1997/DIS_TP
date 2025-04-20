@@ -3,11 +3,16 @@ import time
 import os
 from multiprocessing import Pool
 import numpy as np
+import sys
 
 import adani as ad
 
-here = pathlib.Path(__file__).parent
-here.mkdir(exist_ok=True)
+if len(sys.argv) == 1:
+    debug = False
+elif len(sys.argv) == 2:
+    debug = bool(sys.argv[1])
+else:
+    raise ValueError("Too many command line arguments!!")
 
 MB = 4.92
 n_threads = 4
@@ -81,9 +86,9 @@ def run(n_threads, x_grid, q_grid, nf, kind, channel):
 
 def produce_grid(nf, kind, channel, debug = False):
     print(f"Producing FO grid for C{kind}{channel}(nf={nf})")
-    x_fname = "../External/x.txt"
+    x_fname = "./x.txt"
     x_grid = read_grid(x_fname)
-    q_fname = "../External/Q.txt"
+    q_fname = "./Q.txt"
     q_grid = read_grid(q_fname)
 
     if debug:
@@ -99,7 +104,7 @@ def produce_grid(nf, kind, channel, debug = False):
     for i in range(3):
         var = i - 1
         kind_ = kind if kind == "L" else ""
-        output_dir = f"../External/C{kind_}{channel}_3_m"
+        output_dir = f"./C{kind_}{channel}_3_m"
         output_file = output_dir + f"/C{kind}{channel}_nf{nf}_var{var}.txt"
         os.system(f"mkdir -p {output_dir}")
         np.savetxt(output_file, res_mat[:, :, i])
@@ -109,4 +114,4 @@ if __name__ == "__main__":
     for nf in [4, 5]:
         for kind in ["2", "L"]:
             for channel in ["g", "q"]:
-                produce_grid(nf, kind, channel)
+                produce_grid(nf, kind, channel, debug)
