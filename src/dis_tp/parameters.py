@@ -7,7 +7,6 @@ from yadism.coefficient_functions.light import n3lo
 
 pids = {"g": 21, "c": 4, "b": 5, "t": 6}
 
-grids = None
 
 def number_active_flavors(Q):
     return nf_default(Q**2, _thr_atlas)
@@ -51,7 +50,7 @@ def initialize_theory(
                 raise ValueError(
                     f"Grids are only available for the default mass {default_masses(i+4)}."
                 )
-    # global grids
+    global grids
     global _masses
     grids = use_grids
     if masses is None:

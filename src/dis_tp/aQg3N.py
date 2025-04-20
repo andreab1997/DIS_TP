@@ -1,9 +1,11 @@
 """The unpolarized, space-like |N3LO| heavy-gluon |OME|."""
 
 import numpy as np
+import numba as nb
 
 from ekore.harmonics import cache as c
 
+@nb.njit(cache=True)
 def A_Hg_no_aQg3(n, cache, nf, L):
     r"""Compute the |N3LO| singlet |OME| :math:`A_{Hg}^{S,(3)}(N)`.
 
