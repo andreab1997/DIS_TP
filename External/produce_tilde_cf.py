@@ -1,4 +1,4 @@
-import pathlib
+import os
 import time
 import sys
 from multiprocessing import Pool
@@ -101,7 +101,9 @@ def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     kind_ = kind if kind == "L" else ""
     output_dir = f"./C{kind_}{channel}_3_til"
     output_file = output_dir + f"/C{kind}{channel}til_nf{nf}_var{n3lo_var}.txt"
-    np.savetxt(output_file, res_mat)
+    
+    os.system(f"mkdir -p {output_dir}")
+    np.savetxt(output_file, res_mat.T)
 
 
 if __name__ == "__main__":

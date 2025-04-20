@@ -28,28 +28,37 @@ def read_grid(input_file):
 
     return numbers
 
-def function_to_exe_in_parallel(pair):
+def function_to_exe_in_parallel_g(pair):
     z, q, nf = pair
     res = MatchingFunc.Mbg_3_reg(z, [MB, q], nf + 1, use_analytic=True)
     #print(z, q, res)
     return res
 
-def run(n_threads, x_grid, q_grid, nf):
+def function_to_exe_in_parallel_q(pair):
+    z, q, nf = pair
+    res = MatchingFunc.Mbg_3_reg(z, [MB, q], nf + 1, use_analytic=True)
+    #print(z, q, res)
+    return res
+
+def run(n_threads, x_grid, q_grid, nf, channel):
     grid = []
     for q in q_grid:
         for x in x_grid:
             grid.append((x, q, nf))
-    args = (function_to_exe_in_parallel, grid)
+    if channel == "g":
+        args = (function_to_exe_in_parallel_g, grid)
+    if channel == "q":
+        args = (function_to_exe_in_parallel_q, grid)
     with Pool(n_threads) as pool:
         result = pool.map(*args)
     return result
 
-def produce_grid(nf, debug=False):
-    print(f"Producing Mbg_3(nf={nf})")
+def produce_grid(nf, channel, debug=False):
+    print(f"Producing Mb{channel}_3(nf={nf})")
     parameters.initialize_theory(use_grids=False, masses=[1.51, 4.92, 172.5])
     
-    output_dir = f"./Mbg_3"
-    output_file = output_dir + f"/Mbg3_nf{nf}.txt"
+    output_dir = f"./Mb{channel}_3"
+    output_file = output_dir + f"/Mb{channel}3_nf{nf}.txt"
     x_fname = "./x.txt"
     x_grid = read_grid(x_fname)
     q_fname = "./Q.txt"
@@ -60,16 +69,16 @@ def produce_grid(nf, debug=False):
         q_grid = np.geomspace(1, 150, 5)
 
     start = time.perf_counter()
-    res_vec = np.array(run(n_threads, x_grid, q_grid, nf))
+    res_vec = np.array(run(n_threads, x_grid, q_grid, nf, channel))
     print("total running time: ", time.perf_counter() - start, "s")
 
     res_mat = res_vec.reshape(len(q_grid), len(x_grid))
 
     os.system(f"mkdir -p {output_dir}")
-    np.savetxt(output_file, res_mat)
+    np.savetxt(output_file, res_mat.T)
 
 
 if __name__ == "__main__":
-    produce_grid(3, debug)
-    produce_grid(4, debug)
-    produce_grid(5, debug)
+    for nf in range(3, 5 + 1):
+        for channel in ["g", "q"]:
+            produce_grid(nf, channel, debug)
