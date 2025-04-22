@@ -82,7 +82,7 @@ def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
 
 def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     print(f"Producing tilde grid for C{kind}{channel}(nf={nf})")
-    parameters.initialize_theory(use_grids=False, masses=[1.51, 4.92, 172.5])
+    parameters.initialize_theory(use_grids=True, masses=[1.51, 4.92, 172.5])
     
     x_fname = "./x.txt"
     x_grid = read_grid(x_fname)
@@ -90,7 +90,7 @@ def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     q_grid = read_grid(q_fname)
 
     if debug:
-        x_grid = np.geomspace(1e-6, 1., 10)
+        x_grid = np.geomspace(1e-6, 1., 10, endpoint=False)
         q_grid = np.geomspace(1, 150, 5)
 
     start = time.perf_counter()
