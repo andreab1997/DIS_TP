@@ -53,6 +53,7 @@ def function_to_exe_in_parallel_Lq(pair):
 
 def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
     Initialize.InitializeQX()
+    Initialize.InitializeHPL()
     Initialize.InitializeMbg_3(nflist)
     Initialize.InitializeMbq_3(nflist)
 
@@ -89,8 +90,8 @@ def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     q_grid = read_grid(q_fname)
 
     if debug:
-        x_grid = np.logspace(1e-6, 1., 10)
-        q_grid = np.logspace(1, 150, 5)
+        x_grid = np.geomspace(1e-6, 1., 10)
+        q_grid = np.geomspace(1, 150, 5)
 
     start = time.perf_counter()
     res_vec = np.array(run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf))
