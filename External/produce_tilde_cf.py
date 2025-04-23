@@ -13,6 +13,7 @@ else:
     raise ValueError("Too many command line arguments!!")
 
 MB = 4.92
+EQ = -1/3
 n_threads = 4
 nflist = [4, 5]
 
@@ -30,25 +31,25 @@ def read_grid(input_file):
 def function_to_exe_in_parallel_2g(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.Cg_3_til_reg(z, q, [MB, q], nf, use_analytic=True)
+    res = TildeCoeffFunc.Cg_3_til_reg(z, q, [MB, EQ], nf, use_analytic=True)
     return res
 
 def function_to_exe_in_parallel_2q(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.Cq_3_til_reg(z, q, [MB, q], nf, use_analytic=True)
+    res = TildeCoeffFunc.Cq_3_til_reg(z, q, [MB, EQ], nf, use_analytic=True)
     return res
 
 def function_to_exe_in_parallel_Lg(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.CLg_3_til_reg(z, q, [MB, q], nf, use_analytic=True)
+    res = TildeCoeffFunc.CLg_3_til_reg(z, q, [MB, EQ], nf, use_analytic=True)
     return res
 
 def function_to_exe_in_parallel_Lq(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.CLq_3_til_reg(z, q, [MB, q], nf, use_analytic=True)
+    res = TildeCoeffFunc.CLq_3_til_reg(z, q, [MB, EQ], nf, use_analytic=True)
     return res
 
 def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
@@ -82,7 +83,7 @@ def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
 
 def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     print(f"Producing tilde grid for C{kind}{channel}(nf={nf})")
-    parameters.initialize_theory(use_grids=False, masses=[1.51, 4.92, 172.5])
+    parameters.initialize_theory(use_grids=True, masses=[1.51, 4.92, 172.5])
     
     x_fname = "./x.txt"
     x_grid = read_grid(x_fname)
@@ -90,7 +91,7 @@ def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     q_grid = read_grid(q_fname)
 
     if debug:
-        x_grid = np.geomspace(1e-6, 1., 10)
+        x_grid = np.geomspace(1e-6, 1., 10, endpoint=False)
         q_grid = np.geomspace(1, 150, 5)
 
     start = time.perf_counter()
