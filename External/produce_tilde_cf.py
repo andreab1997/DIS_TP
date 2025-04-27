@@ -1,7 +1,7 @@
 import os
 import time
 import sys
-from multiprocessing import Pool
+from multiprocessing import Pool, set_start_method
 import numpy as np
 from dis_tp import TildeCoeffFunc, Initialize, parameters
 
@@ -12,9 +12,11 @@ elif len(sys.argv) == 2:
 else:
     raise ValueError("Too many command line arguments!!")
 
+set_start_method("fork")
+
 MB = 4.92
 EQ = -1/3
-n_threads = 4
+n_threads = 2
 nflist = [4, 5]
 
 def read_grid(input_file):

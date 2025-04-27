@@ -1,11 +1,12 @@
-import pathlib
 import os
 import time
-from multiprocessing import Pool
+from multiprocessing import Pool, set_start_method
 import numpy as np
 import sys
 
-from dis_tp import MatchingFunc, parameters
+from dis_tp import parameters, MatchingFunc
+
+set_start_method("fork")
 
 if len(sys.argv) == 1:
     debug = False
@@ -15,7 +16,7 @@ else:
     raise ValueError("Too many command line arguments!!")
 
 MB = 4.92
-n_threads = 4
+n_threads = 2
 
 def read_grid(input_file):
     # Open the file in read mode
@@ -79,6 +80,6 @@ def produce_grid(nf, channel, debug=False):
 
 
 if __name__ == "__main__":
-    for nf in range(4, 5 + 1):
+    for nf in range(5, 5 + 1):
         for channel in ["g", "q"]:
             produce_grid(nf, channel, debug)
