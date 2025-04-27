@@ -56,6 +56,8 @@ def function_to_exe_in_parallel_Lq(pair):
     return res
 
 def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
+    parameters.initialize_theory(use_grids=True, masses=[1.51, 4.92, 172.5])
+    
     Initialize.InitializeQX()
     Initialize.InitializeHPL()
     Initialize.InitializeMbg_3(nflist)
@@ -86,7 +88,6 @@ def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
 
 def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     print(f"Producing tilde grid for C{kind}{channel}(nf={nf})")
-    parameters.initialize_theory(use_grids=True, masses=[1.51, 4.92, 172.5])
     
     x_fname = "./x.txt"
     x_grid = read_grid(x_fname)
