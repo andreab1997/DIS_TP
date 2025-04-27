@@ -15,8 +15,9 @@ elif len(sys.argv) == 2:
 else:
     raise ValueError("Too many command line arguments!!")
 
-MB = 4.92
-n_threads = 2
+n_threads = 1
+
+mQ = {4: 1.51, 5: 4.92}
 
 def read_grid(input_file):
     # Open the file in read mode
@@ -31,13 +32,13 @@ def read_grid(input_file):
 
 def function_to_exe_in_parallel_g(pair):
     z, q, nf = pair
-    res = MatchingFunc.Mbg_3_reg(z, [MB, q], nf, use_analytic=True)
+    res = MatchingFunc.Mbg_3_reg(z, [mQ[nf], q], nf, use_analytic=True)
     #print(z, q, res)
     return res
 
 def function_to_exe_in_parallel_q(pair):
     z, q, nf = pair
-    res = MatchingFunc.Mbq_3_reg(z, [MB, q], nf, use_analytic=True)
+    res = MatchingFunc.Mbq_3_reg(z, [mQ[nf], q], nf, use_analytic=True)
     #print(z, q, res)
     return res
 
@@ -80,6 +81,6 @@ def produce_grid(nf, channel, debug=False):
 
 
 if __name__ == "__main__":
-    for nf in range(5, 5 + 1):
+    for nf in range(4, 5 + 1):
         for channel in ["g", "q"]:
             produce_grid(nf, channel, debug)

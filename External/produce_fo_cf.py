@@ -14,8 +14,8 @@ elif len(sys.argv) == 2:
 else:
     raise ValueError("Too many command line arguments!!")
 
-MB = 4.92
-n_threads = 4
+mQ = {4: 1.51, 5: 4.92}
+n_threads = 2
 
 approx2g = ad.ApproximateCoefficientFunction(3, "2", "g")
 approx2q = ad.ApproximateCoefficientFunction(3, "2", "q")
@@ -35,7 +35,7 @@ def read_grid(input_file):
 
 def function_to_exe_in_parallel_2g(pair):
     z, q, nf = pair
-    m2Q2 = MB**2 / q**2
+    m2Q2 = mQ[nf]**2 / q**2
     m2mu2 = m2Q2
 
     res = approx2g.fxBand(z, m2Q2, m2mu2, nf)
@@ -43,7 +43,7 @@ def function_to_exe_in_parallel_2g(pair):
 
 def function_to_exe_in_parallel_2q(pair):
     z, q, nf = pair
-    m2Q2 = MB**2 / q**2
+    m2Q2 = mQ[nf]**2 / q**2
     m2mu2 = m2Q2
 
     res = approx2q.fxBand(z, m2Q2, m2mu2, nf)
@@ -51,7 +51,7 @@ def function_to_exe_in_parallel_2q(pair):
 
 def function_to_exe_in_parallel_Lg(pair):
     z, q, nf = pair
-    m2Q2 = MB**2 / q**2
+    m2Q2 = mQ[nf]**2 / q**2
     m2mu2 = m2Q2
 
     res = approxLg.fxBand(z, m2Q2, m2mu2, nf)
@@ -59,7 +59,7 @@ def function_to_exe_in_parallel_Lg(pair):
 
 def function_to_exe_in_parallel_Lq(pair):
     z, q, nf = pair
-    m2Q2 = MB**2 / q**2
+    m2Q2 = mQ[nf]**2 / q**2
     m2mu2 = m2Q2
 
     res = approxLq.fxBand(z, m2Q2, m2mu2, nf)

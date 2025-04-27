@@ -14,10 +14,11 @@ else:
 
 set_start_method("fork")
 
-MB = 4.92
-EQ = -1/3
 n_threads = 2
 nflist = [4, 5]
+
+mQ = {4: 1.51, 5: 4.92}
+eq = {4: 2/3, 5: -1/3}
 
 def read_grid(input_file):
     # Open the file in read mode
@@ -33,25 +34,25 @@ def read_grid(input_file):
 def function_to_exe_in_parallel_2g(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.Cg_3_til_reg(z, q, [MB, EQ], nf, use_analytic=True)
+    res = TildeCoeffFunc.Cg_3_til_reg(z, q, [mQ[nf], eq[nf]], nf, use_analytic=True)
     return res
 
 def function_to_exe_in_parallel_2q(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.Cq_3_til_reg(z, q, [MB, EQ], nf, use_analytic=True)
+    res = TildeCoeffFunc.Cq_3_til_reg(z, q, [mQ[nf], eq[nf]], nf, use_analytic=True)
     return res
 
 def function_to_exe_in_parallel_Lg(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.CLg_3_til_reg(z, q, [MB, EQ], nf, use_analytic=True)
+    res = TildeCoeffFunc.CLg_3_til_reg(z, q, [mQ[nf], eq[nf]], nf, use_analytic=True)
     return res
 
 def function_to_exe_in_parallel_Lq(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.CLq_3_til_reg(z, q, [MB, EQ], nf, use_analytic=True)
+    res = TildeCoeffFunc.CLq_3_til_reg(z, q, [mQ[nf], eq[nf]], nf, use_analytic=True)
     return res
 
 def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
