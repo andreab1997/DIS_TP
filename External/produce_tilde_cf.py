@@ -4,6 +4,7 @@ import sys
 from multiprocessing import Pool, set_start_method
 import numpy as np
 from dis_tp import TildeCoeffFunc, Initialize, parameters
+from tqdm import tqdm
 
 if len(sys.argv) == 1:
     debug = False
@@ -83,11 +84,11 @@ def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
         args = (function_to_exe_in_parallel_Lq, grid)
     
     with Pool(n_threads) as pool:
-        result = pool.map(*args)
+        result = list(tqdm(pool.imap(*args), total=len(grid)))
     return result
 
 def produce_grid(nf, kind, channel, n3lo_var, debug = False):
-    print(f"Producing tilde grid for C{kind}{channel}(nf={nf})")
+    print(f"Producing tilde grid for C{kind}{channel}(nf={nf}) n3lo_var={n3lo_var}")
     
     x_fname = "./x.txt"
     x_grid = read_grid(x_fname)

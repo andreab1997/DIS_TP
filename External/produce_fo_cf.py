@@ -1,4 +1,4 @@
-import pathlib
+from tqdm import tqdm
 import time
 import os
 from multiprocessing import Pool
@@ -81,7 +81,7 @@ def run(n_threads, x_grid, q_grid, nf, kind, channel):
         args = (function_to_exe_in_parallel_Lq, grid)
 
     with Pool(n_threads) as pool:
-        result = pool.map(*args)
+        result = list(tqdm(pool.imap(*args), total=len(grid)))
     return result
 
 def produce_grid(nf, kind, channel, debug = False):

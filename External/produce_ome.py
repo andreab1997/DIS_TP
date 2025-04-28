@@ -3,6 +3,7 @@ import time
 from multiprocessing import Pool, set_start_method
 import numpy as np
 import sys
+from tqdm import tqdm
 
 from dis_tp import parameters, MatchingFunc
 
@@ -52,7 +53,7 @@ def run(n_threads, x_grid, q_grid, nf, channel):
     if channel == "q":
         args = (function_to_exe_in_parallel_q, grid)
     with Pool(n_threads) as pool:
-        result = pool.map(*args)
+        result = list(tqdm(pool.imap(*args), total=len(grid)))
     return result
 
 def produce_grid(nf, channel, debug=False):
