@@ -137,6 +137,7 @@ int main() {
     }
 
     std::array<string, N> names = {
+//      HPL of weight 4 
         "0011",
         "0m1m1m1",
         "00m1m1",
@@ -149,7 +150,7 @@ int main() {
         "01m11",
         "011m1",
         "0m101",
-//        
+//      HPL of weight 5
         "00011",
         "00101",
         "00111",

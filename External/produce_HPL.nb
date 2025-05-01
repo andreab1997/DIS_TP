@@ -1,0 +1,1220 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     46042,       1212]
+NotebookOptionsPosition[     40571,       1134]
+NotebookOutlinePosition[     40967,       1150]
+CellTagsIndexPosition[     40924,       1147]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"<<", "HPL`"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.955026070728518*^9, 3.95502608310715*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"7d68e7a0-cd4c-4da3-b4b2-427b1ce4cd17"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"*-*-*-*-*-* HPL 2.0 *-*-*-*-*-*\\n\\nAuthor: Daniel Maitre, \
+University of Zurich\"\>"], "Print",
+ CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
+  3.95508882228201*^9, 3.955097638555072*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"681ee747-c9d3-4364-b74d-84c0901b5ef0"],
+
+Cell[BoxData["\<\"Rules for minimal set loaded for weights: 2, 3, 4, 5, \
+6.\"\>"], "Print",
+ CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
+  3.95508882228201*^9, 3.9550976386638107`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"9660cd47-59d6-4375-a720-3e33f27636e9"],
+
+Cell[BoxData["\<\"Rules for minimal set for + - weights loaded for weights: \
+2, 3, 4, 5, 6.\"\>"], "Print",
+ CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
+  3.95508882228201*^9, 3.955097638885584*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"5044551b-848d-4f5f-b25d-231938c5b685"],
+
+Cell[BoxData["\<\"Table of MZVs loaded up to weight 6\"\>"], "Print",
+ CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
+  3.95508882228201*^9, 3.9550976389259233`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"6933cac8-94bc-49a7-8b02-a33f8fdf6908"],
+
+Cell[BoxData["\<\"Table of values at I loaded up to weight 6\"\>"], "Print",
+ CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
+  3.95508882228201*^9, 3.955097639504681*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"7ce1e165-9afa-4795-8126-2bfb17976f28"],
+
+Cell[BoxData["\<\"$HPLFunctions gives a list of the functions of the package.\
+\\n$HPLOptions gives a list of the options of the package.\"\>"], "Print",
+ CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
+  3.95508882228201*^9, 3.955097639512939*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"a6c09051-99bc-4d5e-9df6-930249633658"],
+
+Cell[BoxData["\<\"More info in hep-ph/0507152, hep-ph/0703052 and at \\n \
+http://krone.physik.unizh.ch/~maitreda/HPL/\"\>"], "Print",
+ CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
+  3.95508882228201*^9, 3.9550976395135717`*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"d9eb2307-2582-48d7-9ac5-0c09e8eb3b68"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"HPLDir", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"NotebookDirectory", "[", "]"}], " ", "<>", " ", 
+    "\"\<HPL/\>\""}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.95508858604445*^9, 3.955088657211822*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"785043e6-f977-42c0-a1cf-78a1faa30f33"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"xvect", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"Import", "[", 
+     RowBox[{
+      RowBox[{"HPLDir", " ", "<>", " ", "\"\<HPL_x.txt\>\""}], ",", " ", 
+      "\"\<Table\>\""}], "]"}], " ", "//", "Flatten"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.955026136849181*^9, 3.9550261863216333`*^9}, {
+   3.955026232571013*^9, 3.955026248726935*^9}, {3.9550263501357327`*^9, 
+   3.95502636292461*^9}, 3.955026453753971*^9, 3.95502666500077*^9, {
+   3.955029902451037*^9, 3.955029920574531*^9}, {3.9550886881239634`*^9, 
+   3.9550886987343817`*^9}},
+ CellLabel->"In[3]:=",ExpressionUUID->"7bb169b3-1965-4d88-a053-6956e19575c2"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Define", " ", "the", " ", "function"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"ExportHPL4", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"i0_", ",", "i1_", ",", "i2_", ",", "i3_"}], "}"}], ",", 
+     "xvect_", ",", "outputDir_String"}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"Hlist", ",", "outputFilename"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"Compute", " ", "HPL", " ", "values"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Hlist", "=", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Re", "[", 
+          RowBox[{"HPL", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"i0", ",", "i1", ",", "i2", ",", "i3"}], "}"}], ",", 
+            "#"}], "]"}], "]"}], "&"}], "/@", "xvect"}]}], " ", ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"Generate", " ", "filename"}], ",", 
+        RowBox[{
+        "replacing", " ", "\"\<-\>\"", " ", "with", " ", "\"\<m\>\""}]}], 
+       "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"outputFilename", "=", 
+       RowBox[{"StringJoin", "[", 
+        RowBox[{"outputDir", ",", 
+         RowBox[{"\"\<HPL_\>\"", "<>", 
+          RowBox[{"StringReplace", "[", 
+           RowBox[{
+            RowBox[{"ToString", "/@", 
+             RowBox[{"{", 
+              RowBox[{"i0", ",", "i1", ",", "i2", ",", "i3"}], "}"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{"\"\<-\>\"", "->", "\"\<m\>\""}], "}"}]}], "]"}], "<>", 
+          "\"\<.txt\>\""}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{"Export", " ", "to", " ", "file"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{"outputFilename", ",", "\[IndentingNewLine]", 
+        RowBox[{"{", "Hlist", "}"}], ",", "\[IndentingNewLine]", 
+        "\"\<Table\>\"", ",", "\[IndentingNewLine]", 
+        RowBox[{"\"\<FieldSeparators\>\"", "->", "\"\< \>\""}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{"Return", " ", "confirmation", " ", "message"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<Exported to: \>\"", ",", "outputFilename"}], "]"}], 
+      ";"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.955030331583417*^9, 3.955030367113659*^9}, {
+   3.955030430234932*^9, 3.955030463029502*^9}, {3.955030532994755*^9, 
+   3.955030535008033*^9}, {3.955031454065497*^9, 3.955031458637361*^9}, {
+   3.9550315738314466`*^9, 3.9550316051389217`*^9}, 3.9550316984200363`*^9, {
+   3.955031801852957*^9, 3.955031803768991*^9}, {3.955031863161512*^9, 
+   3.955031864372136*^9}, {3.9550319521721363`*^9, 3.955031984961235*^9}, 
+   3.955085886963396*^9},
+ CellLabel->"In[4]:=",ExpressionUUID->"1499f219-3050-49e9-b48f-3ecc3fec6079"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ExportHPL5", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"i0_", ",", "i1_", ",", "i2_", ",", "i3_", ",", "i4_"}], "}"}], 
+    ",", "xvect_", ",", "outputDir_String"}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"Hlist", ",", "outputFilename"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"Compute", " ", "HPL", " ", "values"}], "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Hlist", "=", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Re", "[", 
+         RowBox[{"HPL", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"i0", ",", "i1", ",", "i2", ",", "i3", ",", "i4"}], "}"}],
+            ",", "#"}], "]"}], "]"}], "&"}], "/@", "xvect"}]}], " ", ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"Generate", " ", "filename"}], ",", 
+       RowBox[{
+       "replacing", " ", "\"\<-\>\"", " ", "with", " ", "\"\<m\>\""}]}], 
+      "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"outputFilename", "=", 
+      RowBox[{"StringJoin", "[", 
+       RowBox[{"outputDir", ",", 
+        RowBox[{"\"\<HPL_\>\"", "<>", 
+         RowBox[{"StringReplace", "[", 
+          RowBox[{
+           RowBox[{"ToString", "/@", 
+            RowBox[{"{", 
+             RowBox[{"i0", ",", "i1", ",", "i2", ",", "i3", ",", "i4"}], 
+             "}"}]}], ",", 
+           RowBox[{"{", 
+            RowBox[{"\"\<-\>\"", "->", "\"\<m\>\""}], "}"}]}], "]"}], "<>", 
+         "\"\<.txt\>\""}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"Export", " ", "to", " ", "file"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"Export", "[", 
+      RowBox[{"outputFilename", ",", "\[IndentingNewLine]", 
+       RowBox[{"{", "Hlist", "}"}], ",", "\[IndentingNewLine]", 
+       "\"\<Table\>\"", ",", "\[IndentingNewLine]", 
+       RowBox[{"\"\<FieldSeparators\>\"", "->", "\"\< \>\""}]}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"Return", " ", "confirmation", " ", "message"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<Exported to: \>\"", ",", "outputFilename"}], "]"}], 
+     ";"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.955030543686445*^9, 3.955030547215682*^9}, {
+   3.9550314622098627`*^9, 3.9550314655975847`*^9}, {3.955031626614571*^9, 
+   3.955031633347282*^9}, {3.955031672175709*^9, 3.955031683433425*^9}, {
+   3.955031792791925*^9, 3.955031797611225*^9}, {3.955031868745955*^9, 
+   3.95503186968629*^9}, 3.9550858931661253`*^9},
+ CellLabel->"In[5]:=",ExpressionUUID->"6e5488fa-9f61-4f43-a44f-df17d56f700d"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "1", ",", "1"}], "}"}], ",", "xvect", ",", 
+   "HPLDir"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "1", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", "1", ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "1", ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "1", ",", "1", ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "1", ",", 
+     RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", "0", ",", "1"}], "}"}], ",", "xvect", ",", 
+   "HPLDir"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL4", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", "1", ",", "1"}], "}"}], ",", "xvect", ",", 
+   "HPLDir"}], "]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.955032785642846*^9, 3.9550327871977158`*^9}, {
+  3.955088735064823*^9, 3.95508875464011*^9}},
+ CellLabel->"In[45]:=",ExpressionUUID->"67919f03-a1eb-4870-8e00-178b31caf3f7"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0011.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0011.txt"],
+  
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097754074141*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"fd53f0bd-7826-42bf-9280-c16756b1edc4"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.9550977544063883`*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"1330a810-309d-4714-926b-bade0eaae5a5"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097755549285*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"ee3d2405-fc21-4695-93f2-83bda4252c14"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.9550977565573387`*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"0e4908d7-17d7-441a-9107-c8a814681d51"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m11m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m11m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.95509775757178*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"5a101f5d-1964-4c47-bd96-78ad0374bfdf"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.9550977584977417`*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"04e45538-b174-461a-aec9-8401dd251e8c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_011m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_011m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097759702388*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"90393ef3-0b64-4e21-a548-dc11bc652961"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m11.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m11.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097760762982*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"4d644970-989d-4031-9cfe-bc300e35d27e"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m11.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m11.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097761722474*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"86cc0bfd-49b5-4180-b4b6-5587a41b1ad7"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m11.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m11.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097762848477*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"c17d2846-0412-4fd7-b57d-b59c8ddec2bf"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m101.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m101.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097763832711*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"6f825266-a962-41cc-bf79-f2240480064c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m111.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m111.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097765020506*^9},
+ CellLabel->
+  "During evaluation of \
+In[45]:=",ExpressionUUID->"aef95f1b-4883-4430-a7a1-19887710677a"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", "0", ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "1", ",", "0", ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", "0", ",", "1", ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "0", ",", "1", ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", "0", ",", "1"}], "}"}], ",", "xvect", ",", 
+   "HPLDir"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", "0", ",", "1"}], "}"}], ",", "xvect", ",", 
+   "HPLDir"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "1", ",", "0", ",", "1"}], "}"}], ",", 
+   "xvect", ",", "HPLDir"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", "0", ",", "1", ",", "1"}], "}"}], ",", "xvect", 
+   ",", "HPLDir"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "0", ",", "1", ",", "1"}], "}"}], ",", 
+   "xvect", ",", "HPLDir"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "1", ",", "0", ",", "1", ",", "1"}], "}"}], ",", 
+   "xvect", ",", "HPLDir"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "1", ",", "1", ",", "1"}], "}"}], ",", 
+   "xvect", ",", "HPLDir"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", "1", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", "1", ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", "1", ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", 
+     RowBox[{"-", "1"}], ",", "1", ",", "1"}], "}"}], ",", "xvect", ",", 
+   "HPLDir"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "1", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "1", ",", 
+     RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "0", ",", "1", ",", "1", ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ExportHPL5", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", "1", ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}]}], "}"}], ",", "xvect", ",", "HPLDir"}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.9550303920440063`*^9, 3.955030395009182*^9}, {
+  3.955030493508924*^9, 3.955030498243421*^9}, {3.955030555880391*^9, 
+  3.9550305583642*^9}, {3.955030660851574*^9, 3.955030869788562*^9}, {
+  3.955032432566143*^9, 3.9550327511145763`*^9}, {3.955086100112732*^9, 
+  3.955086100809492*^9}, {3.955088758670517*^9, 3.955088785930431*^9}},
+ CellLabel->"In[57]:=",ExpressionUUID->"4f14fa52-dddf-4fe2-886e-8e8a6aaf18e1"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097770882072*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"0d273e96-69f2-4d8a-8f87-34bccd1635d6"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m10m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m10m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.9550977719909353`*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"4b98d390-2a96-46fd-94df-847729f8aa7d"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_000m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_000m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097772805995*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"2aff8b8f-b9fe-4d8c-bb0c-c1c0307a27cd"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m10m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m10m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097773609344*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"e68e33b8-ee97-4f8b-8ce9-715e4ca8cbe3"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0010m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0010m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097774672571*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"eeca49e5-d7a5-452e-873f-8a3f2af5dd6a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m101m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m101m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097775940333*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"54beae6c-03b5-4a27-ab1e-167d331cea06"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0001m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0001m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.9550977771472692`*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"7d88acdd-1061-4295-b1cf-b857a9fa46e9"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m10m11.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m10m11.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.9550977784490128`*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"7cd381c7-75fc-4235-8503-b828137c448f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_000m11.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_000m11.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.95509777970252*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"da418b89-6676-4e91-b8fa-32ea62ff0d8a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m101.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m101.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.9550977810330467`*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"c621cf92-98ab-44d3-a382-903ddd66b478"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m101.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m101.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097782280889*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"74222dac-66a8-4d3f-9e86-5d2950fa2d6d"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00101.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00101.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.9550977839833517`*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"73af85cb-c6b5-4552-98e1-835223f58892"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1011.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1011.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097785685718*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"b1f3abea-d126-4b56-9717-31a06f73d751"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00011.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00011.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.9550977867781477`*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"ee583eb6-7548-44ce-98a6-d8a3d6a49d3b"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01011.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01011.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.9550977888229733`*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"ec2e4ddd-0d0b-470b-92db-90e70cf73a5c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00111.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00111.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097789950181*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"fc88f558-9ef9-4717-9327-04b37afd22e9"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m11m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m11m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097791425746*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"36502de2-82c9-49b3-a488-3cd764204094"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m11m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m11m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097792950933*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"6ff96fc0-30dc-4608-9c47-7d9622dfb797"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m11.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m11.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097794580797*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"55bc0841-2b4f-45ad-a312-d93a8f10c59f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m11.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m11.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097795835847*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"16516029-61af-421c-a43d-7ba7abd32216"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m11m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m11m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097797042194*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"c9ee74d9-d808-4d91-8cd6-ecd4ba7eef89"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m111.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m111.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097798673827*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"25dbe5fa-bf83-4792-86ef-8eda54a56e08"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097799844961*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"27457757-21c0-4ece-82c6-99bc3ecacc43"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m11.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m11.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.9550978012772818`*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"19958424-9f84-4bb0-9e7e-b217bdeb6a7d"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0011m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0011m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097802896549*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"a888b7e9-20da-4270-a43a-da3657aabbce"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.9550978043662786`*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"76603353-deef-45f5-a815-340904153d45"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m1m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m1m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097805780551*^9},
+ CellLabel->
+  "During evaluation of \
+In[57]:=",ExpressionUUID->"7f745023-d54d-4d67-b730-43ef4fafc1b9"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{Full, Full},
+WindowMargins->{{4, Automatic}, {Automatic, 4}},
+FrontEndVersion->"13.0 for Mac OS X ARM (64-bit) (February 4, 2022)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"04af4a50-87c7-4b51-ac39-59c5ace59b9b"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 227, 4, 52, "Input",ExpressionUUID->"7d68e7a0-cd4c-4da3-b4b2-427b1ce4cd17"],
+Cell[CellGroupData[{
+Cell[832, 30, 331, 6, 63, "Print",ExpressionUUID->"681ee747-c9d3-4364-b74d-84c0901b5ef0"],
+Cell[1166, 38, 309, 6, 24, "Print",ExpressionUUID->"9660cd47-59d6-4375-a720-3e33f27636e9"],
+Cell[1478, 46, 323, 6, 24, "Print",ExpressionUUID->"5044551b-848d-4f5f-b25d-231938c5b685"],
+Cell[1804, 54, 286, 5, 24, "Print",ExpressionUUID->"6933cac8-94bc-49a7-8b02-a33f8fdf6908"],
+Cell[2093, 61, 291, 5, 24, "Print",ExpressionUUID->"7ce1e165-9afa-4795-8126-2bfb17976f28"],
+Cell[2387, 68, 368, 6, 44, "Print",ExpressionUUID->"a6c09051-99bc-4d5e-9df6-930249633658"],
+Cell[2758, 76, 351, 6, 44, "Print",ExpressionUUID->"d9eb2307-2582-48d7-9ac5-0c09e8eb3b68"]
+}, Open  ]]
+}, Open  ]],
+Cell[3136, 86, 317, 7, 30, "Input",ExpressionUUID->"785043e6-f977-42c0-a1cf-78a1faa30f33"],
+Cell[3456, 95, 655, 13, 30, "Input",ExpressionUUID->"7bb169b3-1965-4d88-a053-6956e19575c2"],
+Cell[4114, 110, 2929, 70, 283, "Input",ExpressionUUID->"1499f219-3050-49e9-b48f-3ecc3fec6079"],
+Cell[7046, 182, 2678, 65, 262, "Input",ExpressionUUID->"6e5488fa-9f61-4f43-a44f-df17d56f700d"],
+Cell[CellGroupData[{
+Cell[9749, 251, 2715, 80, 283, "Input",ExpressionUUID->"67919f03-a1eb-4870-8e00-178b31caf3f7"],
+Cell[CellGroupData[{
+Cell[12489, 335, 512, 13, 24, "Print",ExpressionUUID->"fd53f0bd-7826-42bf-9280-c16756b1edc4"],
+Cell[13004, 350, 521, 13, 24, "Print",ExpressionUUID->"1330a810-309d-4714-926b-bade0eaae5a5"],
+Cell[13528, 365, 517, 13, 24, "Print",ExpressionUUID->"ee3d2405-fc21-4695-93f2-83bda4252c14"],
+Cell[14048, 380, 519, 13, 24, "Print",ExpressionUUID->"0e4908d7-17d7-441a-9107-c8a814681d51"],
+Cell[14570, 395, 516, 13, 24, "Print",ExpressionUUID->"5a101f5d-1964-4c47-bd96-78ad0374bfdf"],
+Cell[15089, 410, 513, 12, 24, "Print",ExpressionUUID->"04e45538-b174-461a-aec9-8401dd251e8c"],
+Cell[15605, 424, 511, 12, 24, "Print",ExpressionUUID->"90393ef3-0b64-4e21-a548-dc11bc652961"],
+Cell[16119, 438, 517, 13, 24, "Print",ExpressionUUID->"4d644970-989d-4031-9cfe-bc300e35d27e"],
+Cell[16639, 453, 511, 12, 24, "Print",ExpressionUUID->"86cc0bfd-49b5-4180-b4b6-5587a41b1ad7"],
+Cell[17153, 467, 511, 12, 24, "Print",ExpressionUUID->"c17d2846-0412-4fd7-b57d-b59c8ddec2bf"],
+Cell[17667, 481, 511, 12, 24, "Print",ExpressionUUID->"6f825266-a962-41cc-bf79-f2240480064c"],
+Cell[18181, 495, 511, 12, 24, "Print",ExpressionUUID->"aef95f1b-4883-4430-a7a1-19887710677a"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[18741, 513, 6486, 187, 577, "Input",ExpressionUUID->"4f14fa52-dddf-4fe2-886e-8e8a6aaf18e1"],
+Cell[CellGroupData[{
+Cell[25252, 704, 566, 14, 24, "Print",ExpressionUUID->"0d273e96-69f2-4d8a-8f87-34bccd1635d6"],
+Cell[25821, 720, 568, 14, 24, "Print",ExpressionUUID->"4b98d390-2a96-46fd-94df-847729f8aa7d"],
+Cell[26392, 736, 564, 14, 24, "Print",ExpressionUUID->"2aff8b8f-b9fe-4d8c-bb0c-c1c0307a27cd"],
+Cell[26959, 752, 564, 14, 24, "Print",ExpressionUUID->"e68e33b8-ee97-4f8b-8ce9-715e4ca8cbe3"],
+Cell[27526, 768, 562, 14, 24, "Print",ExpressionUUID->"eeca49e5-d7a5-452e-873f-8a3f2af5dd6a"],
+Cell[28091, 784, 564, 14, 24, "Print",ExpressionUUID->"54beae6c-03b5-4a27-ab1e-167d331cea06"],
+Cell[28658, 800, 564, 14, 24, "Print",ExpressionUUID->"7d88acdd-1061-4295-b1cf-b857a9fa46e9"],
+Cell[29225, 816, 566, 14, 24, "Print",ExpressionUUID->"7cd381c7-75fc-4235-8503-b828137c448f"],
+Cell[29794, 832, 561, 14, 24, "Print",ExpressionUUID->"da418b89-6676-4e91-b8fa-32ea62ff0d8a"],
+Cell[30358, 848, 566, 14, 24, "Print",ExpressionUUID->"c621cf92-98ab-44d3-a382-903ddd66b478"],
+Cell[30927, 864, 562, 14, 24, "Print",ExpressionUUID->"74222dac-66a8-4d3f-9e86-5d2950fa2d6d"],
+Cell[31492, 880, 558, 13, 24, "Print",ExpressionUUID->"73af85cb-c6b5-4552-98e1-835223f58892"],
+Cell[32053, 895, 562, 14, 24, "Print",ExpressionUUID->"b1f3abea-d126-4b56-9717-31a06f73d751"],
+Cell[32618, 911, 558, 13, 24, "Print",ExpressionUUID->"ee583eb6-7548-44ce-98a6-d8a3d6a49d3b"],
+Cell[33179, 926, 558, 13, 24, "Print",ExpressionUUID->"ec2e4ddd-0d0b-470b-92db-90e70cf73a5c"],
+Cell[33740, 941, 556, 13, 24, "Print",ExpressionUUID->"fc88f558-9ef9-4717-9327-04b37afd22e9"],
+Cell[34299, 956, 566, 14, 24, "Print",ExpressionUUID->"36502de2-82c9-49b3-a488-3cd764204094"],
+Cell[34868, 972, 566, 14, 24, "Print",ExpressionUUID->"6ff96fc0-30dc-4608-9c47-7d9622dfb797"],
+Cell[35437, 988, 566, 14, 24, "Print",ExpressionUUID->"55bc0841-2b4f-45ad-a312-d93a8f10c59f"],
+Cell[36006, 1004, 564, 14, 24, "Print",ExpressionUUID->"16516029-61af-421c-a43d-7ba7abd32216"],
+Cell[36573, 1020, 564, 14, 24, "Print",ExpressionUUID->"c9ee74d9-d808-4d91-8cd6-ecd4ba7eef89"],
+Cell[37140, 1036, 562, 14, 24, "Print",ExpressionUUID->"25dbe5fa-bf83-4792-86ef-8eda54a56e08"],
+Cell[37705, 1052, 564, 14, 24, "Print",ExpressionUUID->"27457757-21c0-4ece-82c6-99bc3ecacc43"],
+Cell[38272, 1068, 564, 14, 24, "Print",ExpressionUUID->"19958424-9f84-4bb0-9e7e-b217bdeb6a7d"],
+Cell[38839, 1084, 562, 14, 24, "Print",ExpressionUUID->"a888b7e9-20da-4270-a43a-da3657aabbce"],
+Cell[39404, 1100, 570, 14, 24, "Print",ExpressionUUID->"76603353-deef-45f5-a815-340904153d45"],
+Cell[39977, 1116, 566, 14, 24, "Print",ExpressionUUID->"7f745023-d54d-4d67-b730-43ef4fafc1b9"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
