@@ -35,25 +35,25 @@ def read_grid(input_file):
 def function_to_exe_in_parallel_2g(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.Cg_3_til_reg(z, q, [mQ[nf], eq[nf]], nf, use_analytic=True)
+    res = TildeCoeffFunc.Cg_3_til_reg(z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True)
     return res
 
 def function_to_exe_in_parallel_2q(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.Cq_3_til_reg(z, q, [mQ[nf], eq[nf]], nf, use_analytic=True)
+    res = TildeCoeffFunc.Cq_3_til_reg(z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True)
     return res
 
 def function_to_exe_in_parallel_Lg(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.CLg_3_til_reg(z, q, [mQ[nf], eq[nf]], nf, use_analytic=True)
+    res = TildeCoeffFunc.CLg_3_til_reg(z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True)
     return res
 
 def function_to_exe_in_parallel_Lq(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.CLq_3_til_reg(z, q, [mQ[nf], eq[nf]], nf, use_analytic=True)
+    res = TildeCoeffFunc.CLq_3_til_reg(z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True)
     return res
 
 def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
@@ -91,7 +91,7 @@ def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     print(f"Producing tilde grid for C{kind}{channel}(nf={nf}) n3lo_var={n3lo_var}")
     
     x_fname = "./x.txt"
-    x_grid = read_grid(x_fname)
+    x_grid = read_grid(x_fname)[:-1]
     q_fname = "./Q.txt"
     q_grid = read_grid(q_fname)
 
@@ -107,7 +107,7 @@ def produce_grid(nf, kind, channel, n3lo_var, debug = False):
 
     kind_ = kind if kind == "L" else ""
     output_dir = f"./C{kind_}{channel}_3_til"
-    output_file = output_dir + f"/C{kind}{channel}til_nf{nf}_var{n3lo_var}.txt"
+    output_file = output_dir + f"/C{kind_}{channel}3til_nf{nf}_var{n3lo_var}.txt"
     
     os.system(f"mkdir -p {output_dir}")
     np.savetxt(output_file, res_mat.T)

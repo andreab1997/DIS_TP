@@ -9,6 +9,10 @@
 
 using namespace std;
 
+uint HPL_map(int id0 = -1, int id1 = -1, int id2 = -1, int id3 = -1, int id4 = -1) {
+    return (id0 + 1) + (id1 + 1) * 3 + (id2 + 1) * 3 * 3 + (id3 + 1) * 3 * 3 * 3 + (id4 + 1) * 3 * 3 * 3 * 3;
+}
+
 int main() {
 
     ifstream inputx;
@@ -41,46 +45,46 @@ int main() {
         // Call polylogs
         apf_hplog_(&wx, &nw, Hr1, Hr2, Hr3, Hr4, Hr5, &n1, &n2);
 
-        const double H0m1m1m1 = Hr4[1];
-        const double H00m1m1 = Hr4[4];
-        const double H01m1m1 = Hr4[7];
-        const double H0m11m1 = Hr4[19];
-        const double H001m1 = Hr4[22];
-        const double H011m1 = Hr4[25];
-        const double H0m1m11 = Hr4[55];
-        const double H00m11 = Hr4[58];
-        const double H01m11 = Hr4[61];
-        const double H0m101 = Hr4[64];
-        const double H0m111 = Hr4[73];
-        const double H0011 = Hr4[76];
+        const double H0011 = Hr4[HPL_map(0, 0, 1, 1)];
+        const double H0m1m1m1 = Hr4[HPL_map(0, -1, -1, -1)];
+        const double H00m1m1 = Hr4[HPL_map(0, 0, -1, -1)];
+        const double H01m1m1 = Hr4[HPL_map(0, 1, -1, -1)];
+        const double H0m11m1 = Hr4[HPL_map(0, -1, 1, -1)];
+        const double H001m1 = Hr4[HPL_map(0, 0, 1, -1)];
+        const double H011m1 = Hr4[HPL_map(0, 1, 1, -1)];
+        const double H0m1m11 = Hr4[HPL_map(0, -1, -1, 1)];
+        const double H00m11 = Hr4[HPL_map(0, 0, -1, 1)];
+        const double H01m11 = Hr4[HPL_map(0, 1, -1, 1)];
+        const double H0m101 = Hr4[HPL_map(0, -1, 0, 1)];
+        const double H0m111 = Hr4[HPL_map(0, -1, 1, 1)];
 
-        const double H00m1m1m1 = Hr5[4];
-        const double H0m10m1m1 = Hr5[10];
-        const double H000m1m1 = Hr5[13];
-        const double H00m10m1 = Hr5[31];
-        const double H0010m1 = Hr5[49];
-        const double H0m101m1 = Hr5[64];
-        const double H0001m1 = Hr5[67];
-        const double H0m10m11 = Hr5[172];
-        const double H000m11 = Hr5[175];
-        const double H0m1m101 = Hr5[190];
-        const double H00m101 = Hr5[193];
-        const double H00101 = Hr5[211];
-        const double H0m1011 = Hr5[226];
-        const double H00011 = Hr5[229];
-        const double H01011 = Hr5[232];
-        const double H00111 = Hr5[238];
-        const double H0m11m1m1 = Hr5[19];
-        const double H0m1m11m1 = Hr5[55];
-        const double H0m1m1m11 = Hr5[163];
-        const double H00m1m11 = Hr5[166];
-        const double H00m11m1 = Hr5[58];
-        const double H00m111 = Hr5[220];
-        const double H001m1m1 = Hr5[22];
-        const double H001m11 = Hr5[184];
-        const double H0011m1 = Hr5[76];
-        const double H0m1m1m1m1 = Hr5[1];
-        const double H01m1m1m1 = Hr5[7];
+        const double H00m1m1m1 = Hr5[HPL_map(0, 0, -1, -1, -1)];
+        const double H0m10m1m1 = Hr5[HPL_map(0, -1, 0, -1, -1)];
+        const double H000m1m1 = Hr5[HPL_map(0, 0, 0, -1, -1)];
+        const double H00m10m1 = Hr5[HPL_map(0, 0, -1, 0, -1)];
+        const double H0010m1 = Hr5[HPL_map(0, 0, 1, 0, -1)];
+        const double H0m101m1 = Hr5[HPL_map(0, -1, 0, 1, -1)];
+        const double H0001m1 = Hr5[HPL_map(0, 0, 0, 1, -1)];
+        const double H0m10m11 = Hr5[HPL_map(0, -1, 0, -1, 1)];
+        const double H000m11 = Hr5[HPL_map(0, 0, 0, -1, 1)];
+        const double H0m1m101 = Hr5[HPL_map(0, -1, -1, 0, 1)];
+        const double H00m101 = Hr5[HPL_map(0, 0, -1, 0, 1)];
+        const double H00101 = Hr5[HPL_map(0, 0, 1, 0, 1)];
+        const double H0m1011 = Hr5[HPL_map(0, -1, 0, 1, 1)];
+        const double H00011 = Hr5[HPL_map(0, 0, 0, 1, 1)];
+        const double H01011 = Hr5[HPL_map(0, 1, 0, 1, 1)];
+        const double H00111 = Hr5[HPL_map(0, 0, 1, 1, 1)];
+        const double H0m11m1m1 = Hr5[HPL_map(0, -1, 1, -1, -1)];
+        const double H0m1m11m1 = Hr5[HPL_map(0, -1, -1, 1, -1)];
+        const double H0m1m1m11 = Hr5[HPL_map(0, -1, -1, -1, 1)];
+        const double H00m1m11 = Hr5[HPL_map(0, 0, -1, -1, 1)];
+        const double H00m11m1 = Hr5[HPL_map(0, 0, -1, 1, -1)];
+        const double H00m111 = Hr5[HPL_map(0, 0, -1, 1, 1)];
+        const double H001m1m1 = Hr5[HPL_map(0, 0, 1, -1, -1)];
+        const double H001m11 = Hr5[HPL_map(0, 0, 1, -1, 1)];
+        const double H0011m1 = Hr5[HPL_map(0, 0, 1, 1, -1)];
+        const double H0m1m1m1m1 = Hr5[HPL_map(0, -1, -1, -1, -1)];
+        const double H01m1m1m1 = Hr5[HPL_map(0, 1, -1, -1, -1)];
 
         HPL_matrix[0].push_back(H0011);
         HPL_matrix[1].push_back(H0m1m1m1);
@@ -144,7 +148,8 @@ int main() {
         "0m111",
         "01m11",
         "011m1",
-        "0m101", ///////////////
+        "0m101",
+//        
         "00011",
         "00101",
         "00111",

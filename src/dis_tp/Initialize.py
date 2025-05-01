@@ -2,7 +2,7 @@
 import pathlib
 
 import numpy as np
-from scipy.interpolate import interp1d, interp2d
+from scipy.interpolate import interp1d, RectBivariateSpline
 
 from . import ReadTxt as readt
 from .logging import console
@@ -40,7 +40,7 @@ def InitializeMbg_3(nf_list):
         Mbg3_array = np.array(
             readt.readND(PATH_TO_GLOBAL + f"/External/Mbg_3/Mbg3_nf{nf}.txt")
         )
-        Mbg3.append(interp2d(ZList, QList, Mbg3_array.T, kind="quintic"))
+        Mbg3.append(RectBivariateSpline(ZList, QList, Mbg3_array.T.T))
 
 
 def InitializeMbq_3(nf_list):
@@ -52,7 +52,7 @@ def InitializeMbq_3(nf_list):
         Mbq3_array = np.array(
             readt.readND(PATH_TO_GLOBAL + f"/External/Mbq_3/Mbq3_nf{nf}.txt")
         )
-        Mbq3.append(interp2d(ZList, QList, Mbq3_array.T, kind="quintic"))
+        Mbq3.append(RectBivariateSpline(ZList, QList, Mbq3_array.T.T))
 
 
 def InitializeCq3_m(nf_list, n3lo_variation):
@@ -66,7 +66,7 @@ def InitializeCq3_m(nf_list, n3lo_variation):
                 PATH_TO_GLOBAL + f"/External/Cq_3_m/C2q_nf{nf}_var{n3lo_variation}.txt"
             )
         )
-        Cq3m.append(interp2d(ZList[:-1], QList, Cq3m_array[:, :-1], kind="quintic"))
+        Cq3m.append(RectBivariateSpline(ZList[:-1], QList, Cq3m_array[:, :-1].T))
 
 
 def InitializeCq3_til(nf_list, n3lo_variation):
@@ -81,7 +81,7 @@ def InitializeCq3_til(nf_list, n3lo_variation):
                 + f"/External/Cq_3_til/Cq3til_nf{nf}_var{n3lo_variation}.txt"
             )
         )
-        Cq3_til.append(interp2d(ZList[:-1], QList, Cq3_til_array.T, kind="quintic"))
+        Cq3_til.append(RectBivariateSpline(ZList[:-1], QList, Cq3_til_array.T.T))
 
 
 def InitializeCLq3_m(nf_list, n3lo_variation):
@@ -95,7 +95,7 @@ def InitializeCLq3_m(nf_list, n3lo_variation):
                 PATH_TO_GLOBAL + f"/External/CLq_3_m/CLq_nf{nf}_var{n3lo_variation}.txt"
             )
         )
-        CLq3m.append(interp2d(ZList, QList, CLq3m_array, kind="quintic"))
+        CLq3m.append(RectBivariateSpline(ZList, QList, CLq3m_array.T))
 
 
 def InitializeCLq3_til(nf_list, n3lo_variation):
@@ -110,7 +110,7 @@ def InitializeCLq3_til(nf_list, n3lo_variation):
                 + f"/External/CLq_3_til/CLq3til_nf{nf}_var{n3lo_variation}.txt"
             )
         )
-        CLq3_til.append(interp2d(ZList[:-1], QList, CLq3_til_array.T, kind="quintic"))
+        CLq3_til.append(RectBivariateSpline(ZList[:-1], QList, CLq3_til_array.T.T, kind="quintic"))
 
 
 def InitializeCg3_m(nf_list, n3lo_variation):
@@ -124,7 +124,7 @@ def InitializeCg3_m(nf_list, n3lo_variation):
                 PATH_TO_GLOBAL + f"/External/Cg_3_m/C2g_nf{nf}_var{n3lo_variation}.txt"
             )
         )
-        Cg3m.append(interp2d(ZList[:-1], QList, Cg3m_array[:, :-1], kind="quintic"))
+        Cg3m.append(RectBivariateSpline(ZList[:-1], QList, Cg3m_array[:, :-1].T))
 
 
 def InitializeCLg3_m(nf_list, n3lo_variation):
@@ -138,7 +138,7 @@ def InitializeCLg3_m(nf_list, n3lo_variation):
                 PATH_TO_GLOBAL + f"/External/CLg_3_m/CLg_nf{nf}_var{n3lo_variation}.txt"
             )
         )
-        CLg3m.append(interp2d(ZList, QList, CLg3m_array, kind="quintic"))
+        CLg3m.append(RectBivariateSpline(ZList, QList, CLg3m_array.T))
 
 
 def InitializeCg3_til(nf_list, n3lo_variation):
@@ -153,7 +153,7 @@ def InitializeCg3_til(nf_list, n3lo_variation):
                 + f"/External/Cg_3_til/Cg3til_nf{nf}_var{n3lo_variation}.txt"
             )
         )
-        Cg3_til.append(interp2d(ZList[:-1], QList, Cg3_til_array.T, kind="quintic"))
+        Cg3_til.append(RectBivariateSpline(ZList[:-1], QList, Cg3_til_array.T.T))
 
 
 def InitializeCLg3_til(nf_list, n3lo_variation):
@@ -168,7 +168,7 @@ def InitializeCLg3_til(nf_list, n3lo_variation):
                 + f"/External/CLg_3_til/CLg3til_nf{nf}_var{n3lo_variation}.txt"
             )
         )
-        CLg3_til.append(interp2d(ZList[:-1], QList, CLg3_til_array.T, kind="quintic"))
+        CLg3_til.append(RectBivariateSpline(ZList[:-1], QList, CLg3_til_array.T.T))
 
 
 def Initialize_all(nf=None, n3lo_variation=0):

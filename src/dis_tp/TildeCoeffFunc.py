@@ -111,7 +111,7 @@ def Cg_2_til_reg(z, Q, p, _nf):
 
 def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Cg3_til[nf - 4](z, Q)[0]
+        return Ini.Cg3_til[nf - 4](z, Q)[0, 0]
     if np.isclose(z, 1.0, rtol=1e-7):
         return 0.0
     return (
@@ -159,7 +159,7 @@ def Cq_2_til_reg(z, Q, p, _nf):
 
 def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Cq3_til[nf - 4](z, Q)[0]
+        return Ini.Cq3_til[nf - 4](z, Q)[0, 0]
     if np.isclose(z, 1.0, rtol=1e-7):
         return 0.0
     return (
@@ -192,7 +192,7 @@ def CLg_2_til_reg(z, Q, p, _nf):
 
 def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.CLg3_til[nf - 4](z, Q)[0]
+        return Ini.CLg3_til[nf - 4](z, Q)[0, 0]
     if np.isclose(z, 1.0, rtol=1e-7):
         return 0.0
     return (
@@ -223,7 +223,7 @@ def CLq_2_til_reg(z, Q, p, _nf):
 
 def CLq_3_til_reg(z, Q, p, nf, use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.CLq3_til[nf - 4](z, Q)[0]
+        return Ini.CLq3_til[nf - 4](z, Q)[0, 0]
     if np.isclose(z, 1.0, rtol=1e-7):
         return 0.0
     return (
