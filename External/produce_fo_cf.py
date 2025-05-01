@@ -81,7 +81,12 @@ def run(n_threads, x_grid, q_grid, nf, kind, channel):
         args = (function_to_exe_in_parallel_Lq, grid)
 
     with Pool(n_threads) as pool:
-        result = list(tqdm(pool.imap(*args), total=len(grid)))
+        result = list(tqdm(
+            pool.imap(*args),
+            total=len(grid),
+            colour="green",
+            bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"
+        ))
     return result
 
 def produce_grid(nf, kind, channel, debug = False):
