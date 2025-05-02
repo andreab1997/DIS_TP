@@ -147,14 +147,14 @@ def Cg_2_reg(z, Q, p, _nf):
     )
     return e_h**2 * res
 
-@nb.njit(cache=True)
+
 def Cg_3_reg(z, Q, p, nf):
     e_h = p[-1]
     flg = p[2]
     args = np.array([nf, flg], dtype=float)
     return e_h**2 * xc2sg3p.c2g3a(z, args=args) / nf
 
-@nb.njit(cache=True)
+
 def Cg_3_loc(z, Q, p, nf):
     e_h = p[-1]
     args = np.array([nf], dtype=float)
@@ -176,35 +176,35 @@ def Cq_2_reg(z, Q, p, _nf):
     )
     return e_h**2 * res
 
-@nb.njit(cache=True)
+
 def Cq_3_reg(z, Q, p, nf):
     e_h = p[-1]
     flps = p[2]
     args = np.array([nf, flps], dtype=float)
     return e_h**2 * xc2sg3p.c2s3a(z, args=args) / nf
 
-@nb.njit(cache=True)
+
 def Cq_3_loc(z, Q, p, nf):
     e_h = p[-1]
     flps = p[2]
     args = np.array([nf, flps], dtype=float)
     return e_h**2 * xc2sg3p.c2s3c(z, args=args) / nf
 
-@nb.njit(cache=True)
+
 def Cb_3_reg(z, Q, p, nf):
     e_h = p[-1]
     fl = p[2]
     args = np.array([nf, fl], dtype=float)
     return e_h**2 * xc2ns3p.c2np3a(z, args=args)
 
-@nb.njit(cache=True)
+
 def Cb_3_loc(z, Q, p, nf):
     e_h = p[-1]
     fl = p[2]
     args = np.array([nf, fl], dtype=float)
     return e_h**2 * xc2ns3p.c2np3c(z, args=args)
 
-@nb.njit(cache=True)
+
 def Cb_3_sing(z, Q, p, nf):
     e_h = p[-1]
     args = np.array([nf], dtype=float)
@@ -238,7 +238,7 @@ def CLg_2_reg(z, Q, p, _nf):
         )
     )
 
-@nb.njit(cache=True)
+
 def CLg_3_reg(z, Q, p, nf):
     e_h = p[-1]
     flg = p[2]
@@ -298,21 +298,21 @@ def CLq_2_reg(z, Q, p, _nf):
         )
     )
 
-@nb.njit(cache=True)
+
 def CLq_3_reg(z, Q, p, nf):
     e_h = p[-1]
     flps = p[2]
     args = np.array([nf, flps], dtype=float)
     return e_h**2 * xclsg3p.cls3a(z, args=args) / nf
 
-@nb.njit(cache=True)
+
 def CLb_3_reg(z, Q, p, nf):
     e_h = p[-1]
     fl = p[2]
     args = np.array([nf, fl], dtype=float)
     return e_h**2 * xclns3p.clnp3a(z, args=args)
 
-@nb.njit(cache=True)
+
 def CLb_3_loc(z, Q, p, nf):
     e_h = p[-1]
     args = np.array([nf], dtype=float)
