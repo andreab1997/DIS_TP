@@ -53,7 +53,6 @@ from .structure_functions.heavy_tools import (
 
 
 # convolutions
-@nb.njit(cache=True)
 def Cb1_Mbg1(z, p, _nf):
     e_h = p[-1]
     res = (
@@ -101,7 +100,7 @@ def Mbg1_Mgg2_sing(x, p, _nf):
 def Cg_1_til_reg(z, Q, p, _nf):
     return Cg_1_m_reg(z, Q, p, _nf - 1) - 2 * Cb_0_loc(z, Q, p, _nf) * Mbg_1(z, p, _nf)
 
-@nb.njit(cache=True)
+
 def Cg_2_til_reg(z, Q, p, _nf):
     return (
         Cg_2_m_reg(z, Q, p, _nf - 1)
@@ -155,7 +154,7 @@ def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
         )
     )
 
-@nb.njit(cache=True)
+
 def Cq_2_til_reg(z, Q, p, _nf):
     return Cq_2_m_reg(z, Q, p, _nf - 1) - 2 * Cb_0_loc(z, Q, p, _nf) * Mbq_2(z, p, _nf)
 
@@ -187,7 +186,7 @@ def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
 def CLg_1_til_reg(z, Q, p, _nf):
     return CLg_1_m_reg(z, Q, p, _nf - 1)
 
-@nb.njit(cache=True)
+
 def CLg_2_til_reg(z, Q, p, _nf):
     return CLg_2_m_reg(z, Q, p, _nf - 1) - 2 * np.log(
         (Q**2) / (p[0] ** 2)
@@ -220,7 +219,7 @@ def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
         )
     )
 
-@nb.njit(cache=True)
+
 def CLq_2_til_reg(z, Q, p, _nf):
     return CLq_2_m_reg(z, Q, p, _nf - 1)
 
