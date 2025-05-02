@@ -9,35 +9,35 @@ from . import Initialize as Ini
 mp.dps = 15
 mp.pretty = True
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_0(x):
     return np.log(x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_1(x):
     return -np.log(1 - x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_10(x):
     return -np.log(1 - x) * np.log(x) - polylog(2, x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_m10(x):
     return np.log(1 + x) * np.log(x) + polylog(2, -x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_00(x):
     return (np.log(x) ** 2) / 2.0
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_01(x):
     return polylog(2, x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_001(x):
     return polylog(3, x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_011(x):
     return (
         (1.0 / 2.0) * (np.log(x)) * (np.log(1 - x) ** 2)
@@ -46,7 +46,7 @@ def H_011(x):
         + zeta3
     )
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_0001(x):
     return polylog(4, x)
 
@@ -54,7 +54,7 @@ def H_0001(x):
 def H_0011(x):  ##
     return Ini.HPL_0011(x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_0111(x):
     return (
         (np.pi**4) / (90.0)
@@ -64,7 +64,7 @@ def H_0111(x):
         - polylog[4, 1 - x]
     )
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_00001(x):
     return polylog(5, x)
 
@@ -84,7 +84,7 @@ def H_00111(x):  ##
 def H_01011(x):  ##
     return Ini.HPL_01011(x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_01111(x):
     return (
         (1.0 / 24.0) * (np.log(1 - x) ** 4) * np.log(x)
@@ -95,7 +95,7 @@ def H_01111(x):
         + zeta5
     )
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_0111(x):
     return (
         (np.pi**4) / (90.0)
@@ -105,23 +105,23 @@ def H_0111(x):
         - polylog(4, 1 - x)
     )
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_0m1(x):
     return -polylog(2, -x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_m1(x):
     return np.log(1 + x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_00m1(x):
     return -polylog(3, -x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_0m1m1(x):
     return S12(-x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_0m11(x):
     return (
         ((np.pi**2) / (12.0) - (np.log(2) ** 2) / (2.0)) * np.log(1 - x)
@@ -141,7 +141,7 @@ def H_0m11(x):
         * (-2 * (np.pi**2) * np.log(2) + 4 * (np.log(2) ** 3) + 21 * zeta3)
     )
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_01m1(x):
     return (
         ((np.pi**2) / (12.0) - (np.log(2) ** 2) / (2.0)) * np.log(1 + x)
@@ -171,7 +171,7 @@ def H_00m1m1(x):  ##
 def H_00m11(x):  ##
     return Ini.HPL_00m11(x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_000m1(x):
     return -polylog(4, -x)
 
@@ -203,7 +203,7 @@ def H_000m1m1(x):  ##
 def H_000m11(x):  ##
     return Ini.HPL_000m11(x)
 
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def H_0000m1(x):
     return -polylog(5, -x)
 
@@ -301,7 +301,7 @@ def H_01m1m1m1(x):  ##
 
 
 # Generalized Nielsen
-@nb.jit(cache=True)
+@nb.njit(cache=True)
 def S12(x):
     ZETA3 = zeta3
     if x > 1:

@@ -1,5 +1,6 @@
 """Tilde coefficents functions for the matched scheme for the light components and asymptotics."""
 import numpy as np
+import numba as nb
 
 from .MasslessCoeffFunc import (
     Cb_1_loc,
@@ -88,31 +89,32 @@ def CLb_2_asy_reg(z, Q, p, _nf):
 # NOTE: due to some cancellations see eq 96 and 97 of
 # https://arxiv.org/pdf/1001.2312.pdf, in NS
 # we just need to evaluate the massless at nf = nl
+@nb.njit(cache=True)
 def Cb_2_til_reg(z, Q, p, nl):
     e_q_light = p[-1] ** 2
     return Cb_2_reg(z, Q, p, nl) - (
         e_q_light * Mqq_2_reg(z, p, nl) + P1(p, nl) * Cb_1_reg(z, Q, p, nl)
     )
 
-
+@nb.njit(cache=True)
 def Cb_2_til_loc(z, Q, p, nl):
     e_q_light = p[-1] ** 2
     return Cb_2_loc(z, Q, p, nl) - (
         e_q_light * Mqq_2_loc(z, p, nl) + P1(p, nl) * Cb_1_loc(z, Q, p, nl)
     )
 
-
+@nb.njit(cache=True)
 def Cb_2_til_sing(z, Q, p, nl):
     e_q_light = p[-1] ** 2
     return Cb_2_sing(z, Q, p, nl) - (
         e_q_light * Mqq_2_sing(z, p, nl) + P1(p, nl) * Cb_1_sing(z, Q, p, nl)
     )
 
-
+@nb.njit(cache=True)
 def Cg_2_til_reg(z, Q, p, _nl):
     return Cg_2_reg(z, Q, p, _nl + 1)
 
-
+@nb.njit(cache=True)
 def Cq_2_til_reg(z, Q, p, _nl):
     return Cq_2_reg(z, Q, p, _nl + 1)
 
@@ -121,63 +123,66 @@ def Cq_2_til_reg(z, Q, p, _nl):
 # TODO: construct the full N3LO tilde once massive
 # coefficient functions to light will be available
 # for the moment everthin reduces to the pure massless in nf = nl+1
+@nb.njit(cache=True)
 def Cb_3_til_reg(z, Q, p, nl):
     return Cb_3_reg(z, Q, p, nl + 1)
 
-
+@nb.njit(cache=True)
 def Cb_3_til_loc(z, Q, p, nl):
     return Cb_3_loc(z, Q, p, nl + 1)
 
-
+@nb.njit(cache=True)
 def Cb_3_til_sing(z, Q, p, nl):
     return Cb_3_sing(z, Q, p, nl + 1)
 
-
+@nb.njit(cache=True)
 def Cg_3_til_reg(z, Q, p, nl):
     return Cg_3_reg(z, Q, p, nl + 1)
 
-
+@nb.njit(cache=True)
 def Cg_3_til_loc(z, Q, p, nl):
     return Cg_3_loc(z, Q, p, nl + 1)
 
-
+@nb.njit(cache=True)
 def Cq_3_til_reg(z, Q, p, nl):
     return Cq_3_reg(z, Q, p, nl + 1)
 
-
+@nb.njit(cache=True)
 def Cq_3_til_loc(z, Q, p, nl):
     return Cq_3_loc(z, Q, p, nl + 1)
 
 
 #### FL NNLO
+@nb.njit(cache=True)
 def CLb_2_til_reg(z, Q, p, nl):
     return CLb_2_reg(z, Q, p, nl) - P1(p, nl) * CLb_1_reg(z, Q, p, nl)
 
-
+@nb.njit(cache=True)
 def CLb_2_til_loc(z, Q, p, _nl):
     return CLb_2_loc(z, Q, p, _nl)
 
-
+@nb.njit(cache=True)
 def CLg_2_til_reg(z, Q, p, _nl):
     return CLg_2_reg(z, Q, p, _nl + 1)
 
-
+@nb.njit(cache=True)
 def CLq_2_til_reg(z, Q, p, _nl):
     return CLq_2_reg(z, Q, p, _nl + 1)
 
 
 #### FL N3LO
+@nb.njit(cache=True)
 def CLb_3_til_reg(z, Q, p, nl):
     return CLb_3_reg(z, Q, p, nl + 1)
 
-
+@nb.njit(cache=True)
 def CLb_3_til_loc(z, Q, p, nl):
     return CLb_3_loc(z, Q, p, nl + 1)
 
-
+@nb.njit(cache=True)
 def CLg_3_til_reg(z, Q, p, nl):
     return CLg_3_reg(z, Q, p, nl + 1)
 
-
+@nb.njit(cache=True)
 def CLq_3_til_reg(z, Q, p, nl):
     return CLq_3_reg(z, Q, p, nl + 1)

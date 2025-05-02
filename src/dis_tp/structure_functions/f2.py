@@ -169,7 +169,7 @@ def F2_R(order, pdf, x, Q, h_id, meth=None, target_dict=None, muF_ratio=1, muR_r
         )
         res += nnll_reg + nnll_local + nnll_sing
     if order >= 3:
-        pg = ps = [masses(h_id), Q, 0, charges(h_id)]
+        pg = ps = np.array([masses(h_id), Q, 0, charges(h_id)])
         ps[2] = n3lo_color_factors("s", nf, False)
         pg[2] = n3lo_color_factors("g", nf, False)
         n3ll_reg = (a_s**2) * (
@@ -356,7 +356,7 @@ def F2_M(order, pdf, x, Q, h_id, meth, target_dict=None, muF_ratio=1, muR_ratio=
                 res += a_s**2 * (reg_miss + loc_miss)
 
         if order >= 3:
-            pns = [masses(h_id), Q, 0, charges(h_id)]
+            pns = np.array([masses(h_id), Q, 0, charges(h_id)])
             pns[2] = n3lo_color_factors("ns", nf, False)
             n3lo_n3ll_reg = a_s**3 * (
                 PDFConvolute(TildeCoeffFunc.Cg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
@@ -440,7 +440,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
         # here for the first time we need to make some disctinction
         # of above and below charm thr.
         if nl != number_active_flavors(Q):
-            p = [masses(nl + 1), Q, 1]
+            p = np.array([masses(nl + 1), Q, 1])
             reg = PDFConvolute_light(
                 TildeCoeffFunc_light.Cb_2_til_reg, Mypdf, x, Q, p, nl, target_dict
             ) + nl * meansq_e * (
@@ -540,7 +540,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
                 res += a_s**2 * (reg_miss + loc_miss)
 
     if order >= 3:
-        pg = ps = pns = [0, Q, 0, 1]
+        pg = ps = pns = np.array([0, Q, 0, 1])
         if nl != number_active_flavors(Q):
             # NOTE: here the NS has to be evaluated at nl+1 but convluted with nl
             pns[2] = n3lo_color_factors("ns", nl + 1, True)
@@ -667,7 +667,7 @@ def F2_ZM(
         sing = PDFConvolute_plus(MasslessCoeffFunc.Cb_2_sing, Mypdf, x, Q, p, nl, h_id)
         res += a_s**2 * (reg + loc + sing)
     if order >= 3 and min_order <= 3:
-        pg = ps = pns = [0, Q, 0, charges(h_id)]
+        pg = ps = pns = np.array([0, Q, 0, charges(h_id)])
         pns[2] = n3lo_color_factors("ns", nl, False)
         ps[2] = n3lo_color_factors("s", nl, False)
         pg[2] = n3lo_color_factors("g", nl, False)

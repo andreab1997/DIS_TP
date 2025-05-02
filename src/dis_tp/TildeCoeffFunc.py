@@ -3,6 +3,7 @@
 import numpy as np
 import scipy.special as special
 from eko.constants import CA, CF, TR
+import numba as nb
 
 from . import Initialize as Ini
 from . import parameters
@@ -52,6 +53,7 @@ from .structure_functions.heavy_tools import (
 
 
 # convolutions
+@nb.njit(cache=True)
 def Cb1_Mbg1(z, p, _nf):
     e_h = p[-1]
     res = (
@@ -75,12 +77,12 @@ def Cb1_Mbg1(z, p, _nf):
     )
     return np.real(res)
 
-
+@nb.njit(cache=True)
 def CLb1_Mbg1(z, p, _nf):
     e_h = p[-1]
     return 8 * CF * TR * pow(e_h, 2) * (1 + z - 2 * pow(z, 2) + 2 * z * np.log(z))
 
-
+@nb.njit(cache=True)
 def Mbg1_Mgg2_sing(x, p, _nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     return (
@@ -95,10 +97,11 @@ def Mbg1_Mgg2_sing(x, p, _nf):
 
 
 # F2
+@nb.njit(cache=True)
 def Cg_1_til_reg(z, Q, p, _nf):
     return Cg_1_m_reg(z, Q, p, _nf - 1) - 2 * Cb_0_loc(z, Q, p, _nf) * Mbg_1(z, p, _nf)
 
-
+@nb.njit(cache=True)
 def Cg_2_til_reg(z, Q, p, _nf):
     return (
         Cg_2_m_reg(z, Q, p, _nf - 1)
@@ -152,7 +155,7 @@ def Cg_3_til_reg(z, Q, p, nf, use_analytic=False):
         )
     )
 
-
+@nb.njit(cache=True)
 def Cq_2_til_reg(z, Q, p, _nf):
     return Cq_2_m_reg(z, Q, p, _nf - 1) - 2 * Cb_0_loc(z, Q, p, _nf) * Mbq_2(z, p, _nf)
 
@@ -180,10 +183,11 @@ def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
 
 
 # FL
+@nb.njit(cache=True)
 def CLg_1_til_reg(z, Q, p, _nf):
     return CLg_1_m_reg(z, Q, p, _nf - 1)
 
-
+@nb.njit(cache=True)
 def CLg_2_til_reg(z, Q, p, _nf):
     return CLg_2_m_reg(z, Q, p, _nf - 1) - 2 * np.log(
         (Q**2) / (p[0] ** 2)
@@ -216,7 +220,7 @@ def CLg_3_til_reg(z, Q, p, nf, use_analytic=False):
         )
     )
 
-
+@nb.njit(cache=True)
 def CLq_2_til_reg(z, Q, p, _nf):
     return CLq_2_m_reg(z, Q, p, _nf - 1)
 

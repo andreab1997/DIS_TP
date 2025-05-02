@@ -77,7 +77,7 @@ def FL_FO(
 
         # add missing diagrams with hq+1 effects
         for ihq in range(h_id + 1, 6):
-            pihq = [masses(ihq), Q, charges(h_id)]
+            pihq = np.array([masses(ihq), Q, charges(h_id)])
             reg_miss = PDFConvolute(
                 MassiveCoeffFunc.CLb_2_m_reg, Mypdf, x, Q, pihq, h_id, h_id
             )
@@ -151,7 +151,7 @@ def FL_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, target_dict=None, muR_r
         )
         res += nnll_reg
     if order >= 3:
-        pg = ps = [masses(h_id), Q, 0, charges(h_id)]
+        pg = ps = np.array([masses(h_id), Q, 0, charges(h_id)])
         ps[2] = n3lo_color_factors("s", nf, False)
         pg[2] = n3lo_color_factors("g", nf, False)
         n3ll_reg = a_s**2 * (
@@ -288,14 +288,14 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
 
             # add missing diagrams with hq+1 effects
             for ihq in range(h_id + 1, 6):
-                pihq = [masses(ihq), Q, charges(h_id)]
+                pihq = np.array([masses(ihq), Q, charges(h_id)])
                 reg_miss = PDFConvolute(
                     MassiveCoeffFunc.CLb_2_m_reg, Mypdf, x, Q, pihq, nf, h_id
                 )
                 res += a_s**2 * reg_miss
 
         if order >= 3:
-            pns = [masses(h_id), Q, 0, charges(h_id)]
+            pns = np.array([masses(h_id), Q, 0, charges(h_id)])
             pns[2] = n3lo_color_factors("ns", nf, False)
             n3lo_n3ll_reg = a_s**3 * (
                 PDFConvolute(TildeCoeffFunc.CLg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
@@ -357,7 +357,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
         res += a_s * reg
     if order >= 2:
         if nl != number_active_flavors(Q):
-            p = [masses(nl + 1), Q, 1]
+            p = np.array([masses(nl + 1), Q, 1])
             reg = PDFConvolute_light(
                 TildeCoeffFunc_light.CLb_2_til_reg, Mypdf, x, Q, p, nl, target_dict
             ) + nl * meansq_e * (
@@ -402,7 +402,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
 
         # add the missing terms for heavy quarks
         for ihq in range(nl + 1, 6):
-            pihq = [masses(ihq), Q, 1]
+            pihq = np.array([masses(ihq), Q, 1])
             nf = number_active_flavors(Q)
 
             # for the thr quark we subtract the asymptotic
@@ -429,7 +429,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
                 res += a_s**2 * reg_miss
 
     if order >= 3:
-        pg = ps = pns = [0, Q, 0, 1]
+        pg = ps = pns = np.array([0, Q, 0, 1])
         if nl != number_active_flavors(Q):
             # NOTE: here the NS has to be evaluated at nl+1 but convluted with nl
             pns[2] = n3lo_color_factors("ns", nl + 1, True)
@@ -532,7 +532,7 @@ def FL_ZM(
         loc = MasslessCoeffFunc.CLb_2_loc(x, Q, p, nl) * pdfxfx
         res += a_s**2 * (reg + loc)
     if order >= 3 and min_order <= 3:
-        pg = ps = pns = [0, Q, 0, charges(h_id)]
+        pg = ps = pns = np.array([0, Q, 0, charges(h_id)])
         pns[2] = n3lo_color_factors("ns", nl, False)
         ps[2] = n3lo_color_factors("s", nl, False)
         pg[2] = n3lo_color_factors("g", nl, False)
