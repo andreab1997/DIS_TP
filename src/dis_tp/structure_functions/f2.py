@@ -51,7 +51,7 @@ def F2_FO(
     """
     Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
-    p = [masses(h_id), Q, charges(h_id)]
+    p = np.array([masses(h_id), Q, charges(h_id)])
     nf = number_active_flavors(Q)
     conv_func = PDFConvolute
     if nf > h_id:
@@ -79,7 +79,7 @@ def F2_FO(
 
         # add missing diagrams with hq+1 effects
         for ihq in range(h_id + 1, 6):
-            pihq = [masses(ihq), Q, charges(h_id)]
+            pihq = np.array([masses(ihq), Q, charges(h_id)])
             reg_miss = PDFConvolute(
                 MassiveCoeffFunc.Cb_2_m_reg, Mypdf, x, Q, pihq, h_id, h_id
             )
@@ -346,7 +346,7 @@ def F2_M(order, pdf, x, Q, h_id, meth, target_dict=None, muF_ratio=1, muR_ratio=
 
             # add missing diagrams with hq+1 effects
             for ihq in range(h_id + 1, 6):
-                pihq = [masses(ihq), Q, charges(h_id)]
+                pihq = np.array([masses(ihq), Q, charges(h_id)])
                 reg_miss = PDFConvolute(
                     MassiveCoeffFunc.Cb_2_m_reg, Mypdf, x, Q, pihq, nf, h_id
                 )
@@ -495,7 +495,7 @@ def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
         # add the missing terms for heavy quarks
         # TODO: here we always neglect top effects...
         for ihq in range(nl + 1, 6):
-            pihq = [masses(ihq), Q, 1]
+            pihq = np.array([masses(ihq), Q, 1])
             nf = number_active_flavors(Q)
 
             # for the thr quark we subtract the asymptotic

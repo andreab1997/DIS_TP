@@ -49,7 +49,7 @@ def FL_FO(
     """
     Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
-    p = [masses(h_id), Q, charges(h_id)]
+    p = np.array([masses(h_id), Q, charges(h_id)])
     nf = number_active_flavors(Q)
     conv_func = PDFConvolute
     if nf > h_id:
