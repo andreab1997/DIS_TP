@@ -13,3 +13,5 @@ data/
 #dist
 dist/
 External/*.exe
+.vscode/
+venv/

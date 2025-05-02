@@ -5,7 +5,7 @@ import numpy as np
 import numba as nb
 from eko.constants import CA, CF, TR, zeta2, zeta3
 from ekore.operator_matrix_elements.unpolarized.space_like import as3
-from yadism.coefficient_functions.fonll.raw_nc import wgplg
+from yadism.coefficient_functions.asy.raw_nc import wgplg
 from yadism.coefficient_functions.special import li2 as ddilog
 from .aQg3N import A_Hg_no_aQg3
 import adani
