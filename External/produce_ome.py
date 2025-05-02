@@ -4,8 +4,12 @@ from multiprocessing import Pool, set_start_method
 import numpy as np
 import sys
 from tqdm import tqdm
+import warnings
+from scipy.integrate import IntegrationWarning
 
 from dis_tp import parameters, MatchingFunc
+
+warnings.filterwarnings("ignore", category=IntegrationWarning)
 
 set_start_method("fork")
 
@@ -20,9 +24,10 @@ n_threads = 1
 
 mQ = {4: 1.51, 5: 4.92}
 
+
 def read_grid(input_file):
     # Open the file in read mode
-    with open(input_file, 'r') as file:
+    with open(input_file, "r") as file:
         # Read the entire line from the file
         line = file.readline().strip()
 
@@ -31,17 +36,20 @@ def read_grid(input_file):
 
     return numbers
 
+
 def function_to_exe_in_parallel_g(pair):
     z, q, nf = pair
     res = MatchingFunc.Mbg_3_reg(z, np.array([mQ[nf], q]), nf, use_analytic=True)
-    #print(z, q, res)
+    # print(z, q, res)
     return res
+
 
 def function_to_exe_in_parallel_q(pair):
     z, q, nf = pair
     res = MatchingFunc.Mbq_3_reg(z, np.array([mQ[nf], q]), nf, use_analytic=True)
-    #print(z, q, res)
+    # print(z, q, res)
     return res
+
 
 def run(n_threads, x_grid, q_grid, nf, channel):
     grid = []
@@ -53,18 +61,21 @@ def run(n_threads, x_grid, q_grid, nf, channel):
     if channel == "q":
         args = (function_to_exe_in_parallel_q, grid)
     with Pool(n_threads) as pool:
-        result = list(tqdm(
-            pool.imap(*args),
-            total=len(grid),
-            colour="green",
-            bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"
-        ))
+        result = list(
+            tqdm(
+                pool.imap(*args),
+                total=len(grid),
+                colour="green",
+                bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]",
+            )
+        )
     return result
+
 
 def produce_grid(nf, channel, debug=False):
     print(f"Producing Mb{channel}_3(nf={nf})")
     parameters.initialize_theory(use_grids=False, masses=[1.51, 4.92, 172.5])
-    
+
     output_dir = f"./Mb{channel}_3"
     output_file = output_dir + f"/Mb{channel}3_nf{nf}.txt"
     x_fname = "./x.txt"
@@ -73,7 +84,7 @@ def produce_grid(nf, channel, debug=False):
     q_grid = read_grid(q_fname)
 
     if debug:
-        x_grid = np.geomspace(1e-6, 1., 10)
+        x_grid = np.geomspace(1e-6, 1.0, 10)
         q_grid = np.geomspace(1, 150, 5)
 
     start = time.perf_counter()

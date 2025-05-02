@@ -5,6 +5,10 @@ from multiprocessing import Pool, set_start_method
 import numpy as np
 from dis_tp import TildeCoeffFunc, Initialize, parameters
 from tqdm import tqdm
+import warnings
+from scipy.integrate import IntegrationWarning
+
+warnings.filterwarnings("ignore", category=IntegrationWarning)
 
 if len(sys.argv) == 1:
     debug = False
@@ -19,11 +23,12 @@ n_threads = 2
 nflist = [4, 5]
 
 mQ = {4: 1.51, 5: 4.92}
-eq = {4: 2/3, 5: -1/3}
+eq = {4: 2 / 3, 5: -1 / 3}
+
 
 def read_grid(input_file):
     # Open the file in read mode
-    with open(input_file, 'r') as file:
+    with open(input_file, "r") as file:
         # Read the entire line from the file
         line = file.readline().strip()
 
@@ -32,33 +37,46 @@ def read_grid(input_file):
 
     return numbers
 
+
 def function_to_exe_in_parallel_2g(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.Cg_3_til_reg(z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True)
+    res = TildeCoeffFunc.Cg_3_til_reg(
+        z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True
+    )
     return res
+
 
 def function_to_exe_in_parallel_2q(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.Cq_3_til_reg(z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True)
+    res = TildeCoeffFunc.Cq_3_til_reg(
+        z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True
+    )
     return res
+
 
 def function_to_exe_in_parallel_Lg(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.CLg_3_til_reg(z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True)
+    res = TildeCoeffFunc.CLg_3_til_reg(
+        z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True
+    )
     return res
+
 
 def function_to_exe_in_parallel_Lq(pair):
     z, q, nf = pair
 
-    res = TildeCoeffFunc.CLq_3_til_reg(z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True)
+    res = TildeCoeffFunc.CLq_3_til_reg(
+        z, q, np.array([mQ[nf], eq[nf]]), nf, use_analytic=True
+    )
     return res
+
 
 def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
     parameters.initialize_theory(use_grids=True, masses=[1.51, 4.92, 172.5])
-    
+
     Initialize.InitializeQX()
     Initialize.InitializeHPL()
     Initialize.InitializeMbg_3(nflist)
@@ -73,7 +91,7 @@ def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
     for q in q_grid:
         for x in x_grid:
             grid.append((x, q, nf))
-    
+
     if (kind, channel) == ("2", "g"):
         args = (function_to_exe_in_parallel_2g, grid)
     if (kind, channel) == ("L", "g"):
@@ -82,26 +100,29 @@ def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
         args = (function_to_exe_in_parallel_2q, grid)
     if (kind, channel) == ("L", "q"):
         args = (function_to_exe_in_parallel_Lq, grid)
-    
+
     with Pool(n_threads) as pool:
-        result = list(tqdm(
-            pool.imap(*args),
-            total=len(grid),
-            colour="green",
-            bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]"
-        ))
+        result = list(
+            tqdm(
+                pool.imap(*args),
+                total=len(grid),
+                colour="green",
+                bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}]",
+            )
+        )
     return result
 
-def produce_grid(nf, kind, channel, n3lo_var, debug = False):
+
+def produce_grid(nf, kind, channel, n3lo_var, debug=False):
     print(f"Producing tilde grid for C{kind}{channel}(nf={nf}) n3lo_var={n3lo_var}")
-    
+
     x_fname = "./x.txt"
     x_grid = read_grid(x_fname)[:-1]
     q_fname = "./Q.txt"
     q_grid = read_grid(q_fname)
 
     if debug:
-        x_grid = np.geomspace(1e-6, 1., 10, endpoint=False)
+        x_grid = np.geomspace(1e-6, 1.0, 10, endpoint=False)
         q_grid = np.geomspace(1, 150, 5)
 
     start = time.perf_counter()
@@ -113,7 +134,7 @@ def produce_grid(nf, kind, channel, n3lo_var, debug = False):
     kind_ = kind if kind == "L" else ""
     output_dir = f"./C{kind_}{channel}_3_til"
     output_file = output_dir + f"/C{kind_}{channel}3til_nf{nf}_var{n3lo_var}.txt"
-    
+
     os.system(f"mkdir -p {output_dir}")
     np.savetxt(output_file, res_mat.T)
 
