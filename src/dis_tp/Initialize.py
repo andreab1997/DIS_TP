@@ -110,7 +110,7 @@ def InitializeCLq3_til(nf_list, n3lo_variation):
                 + f"/External/CLq_3_til/CLq3til_nf{nf}_var{n3lo_variation}.txt"
             )
         )
-        CLq3_til.append(RectBivariateSpline(ZList[:-1], QList, CLq3_til_array, kind="quintic"))
+        CLq3_til.append(RectBivariateSpline(ZList[:-1], QList, CLq3_til_array))
 
 
 def InitializeCg3_m(nf_list, n3lo_variation):
