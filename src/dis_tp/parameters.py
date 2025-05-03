@@ -2,8 +2,7 @@ import numpy as np
 
 from eko.matchings import Atlas, nf_default
 from eko.quantities import heavy_quarks
-import yadism.coefficient_functions.coupling_constants as coupl
-from yadism.coefficient_functions.light import n3lo
+
 
 pids = {"g": 21, "c": 4, "b": 5, "t": 6}
 
@@ -107,11 +106,19 @@ obs_d = dict(
     PropagatorCorrection=0,
     NCPositivityCharge=None,
 )
-coupl_const = coupl.CouplingConstants.from_dict(_th_d, obs_d)
 
+fl11g = {1: 1.0, 2: 0.09999999999999999, 3: 0.0, 4: 0.09999999999999999, 5: 0.01818181818181818, 6: 0.09999999999999999}
+fl11s = {1: 2.0, 2: -0.4, 3: 0.0, 4: -0.4, 5: -0.18181818181818182, 6: -0.4}
+fl11ns = {1: -1.0, 2: 0.5, 3: 0.0, 4: 0.5, 5: 0.2, 6: 0.5}
 
 def n3lo_color_factors(partonic_channel, nf, skip_heavylight):
     """Compute N3LO color facotrs. nf is the number of total active flavors"""
-    return n3lo.common.nc_color_factor(
-        coupl_const, nf, partonic_channel, skip_heavylight
-    )
+    nfused = nf if not skip_heavylight else nf - 1
+    if partonic_channel == "g":
+        return fl11g[nfused]
+    elif partonic_channel == "s":
+        return fl11s[nfused]
+    elif partonic_channel == "ns":
+        return fl11ns[nfused]
+    else:
+        raise ValueError(f"Given unknown channel: {partonic_channel}")
