@@ -1,7 +1,6 @@
 #!bin/bash
 prefix="t"
 declare variations=("_2mb" "_05mb" "t")
-restype="M R"
 
 #FO results
 for ord in 1 2 3; do
