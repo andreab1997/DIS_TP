@@ -36,7 +36,7 @@ from .MatchingFunc import (
 )
 
 
-from yadism.coefficient_functions.asy import raw_nc
+from yadism.coefficient_functions.fonll import raw_nc
 
 
 ############ NNLO Massive Non Singlet Asymptotics ########
