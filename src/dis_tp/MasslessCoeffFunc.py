@@ -152,16 +152,13 @@ def Cg_3_reg(z, Q, p, nf):
     e_h = p[-1]
     flg = p[2]
     args = np.array([nf, flg], dtype=float)
-    return e_h**2 * (
-        xc2sg3p.c2g3a_fl2(z, args=args)
-        + flg * xc2sg3p.c2g3a_fl11(z, args=args)
-    ) / nf
+    return e_h**2 * xc2sg3p.c2g3a(z, args=args) / nf
 
 
 def Cg_3_loc(z, Q, p, nf):
     e_h = p[-1]
     args = np.array([nf], dtype=float)
-    return e_h**2 * xc2sg3p.c2g3c_fl2(z, args=args) / nf
+    return e_h**2 * xc2sg3p.c2g3c(z, args=args) / nf
 
 @nb.njit(cache=True)
 def Cq_2_reg(z, Q, p, _nf):
@@ -184,37 +181,34 @@ def Cq_3_reg(z, Q, p, nf):
     e_h = p[-1]
     flps = p[2]
     args = np.array([nf, flps], dtype=float)
-    return e_h**2 * (
-        xc2sg3p.c2s3a_fl2(z, args=args)
-        + flps * xc2sg3p.c2s3a_fl11(z, args=args)
-    ) / nf
+    return e_h**2 * xc2sg3p.c2s3a(z, args=args) / nf
 
 
 def Cq_3_loc(z, Q, p, nf):
     e_h = p[-1]
     flps = p[2]
     args = np.array([nf, flps], dtype=float)
-    return e_h**2 * flps * xc2sg3p.c2s3c_fl11(z, args=args) / nf
+    return e_h**2 * xc2sg3p.c2s3c(z, args=args) / nf
 
 
 def Cb_3_reg(z, Q, p, nf):
     e_h = p[-1]
     fl = p[2]
     args = np.array([nf, fl], dtype=float)
-    return e_h**2 * xc2ns3p.c2np3a_fl2(z, args=args)
+    return e_h**2 * xc2ns3p.c2np3a(z, args=args)
 
 
 def Cb_3_loc(z, Q, p, nf):
     e_h = p[-1]
     fl = p[2]
     args = np.array([nf, fl], dtype=float)
-    return e_h**2 * xc2ns3p.c2np3c_fl2(z, args=args)
+    return e_h**2 * xc2ns3p.c2np3c(z, args=args)
 
 
 def Cb_3_sing(z, Q, p, nf):
     e_h = p[-1]
     args = np.array([nf], dtype=float)
-    return e_h**2 * xc2ns3p.c2ns3b_fl2(z, args=args)
+    return e_h**2 * xc2ns3p.c2ns3b(z, args=args)
 
 
 # FL
@@ -249,10 +243,7 @@ def CLg_3_reg(z, Q, p, nf):
     e_h = p[-1]
     flg = p[2]
     args = np.array([nf, flg], dtype=float)
-    return e_h**2 * (
-        xclsg3p.clg3a_fl2(z, args=args)
-        + flg * xclsg3p.clg3a_fl11(z, args=args)
-    ) / nf
+    return e_h**2 * xclsg3p.clg3a(z, args=args) / nf
 
 @nb.njit(cache=True)
 def CLb_1_reg(z, Q, p, _nf):
@@ -312,20 +303,17 @@ def CLq_3_reg(z, Q, p, nf):
     e_h = p[-1]
     flps = p[2]
     args = np.array([nf, flps], dtype=float)
-    return e_h**2 * (
-        xclsg3p.cls3a_fl2(z, args=args)
-        + flps * xclsg3p.cls3a_fl11(z, args=args)
-    ) / nf
+    return e_h**2 * xclsg3p.cls3a(z, args=args) / nf
 
 
 def CLb_3_reg(z, Q, p, nf):
     e_h = p[-1]
     fl = p[2]
     args = np.array([nf, fl], dtype=float)
-    return e_h**2 * xclns3p.clnp3a_fl2(z, args=args)
+    return e_h**2 * xclns3p.clnp3a(z, args=args)
 
 
 def CLb_3_loc(z, Q, p, nf):
     e_h = p[-1]
     args = np.array([nf], dtype=float)
-    return e_h**2 * xclns3p.clnp3c_fl2(z, args=args)
+    return e_h**2 * xclns3p.clnp3c(z, args=args)
