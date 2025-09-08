@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     46042,       1212]
-NotebookOptionsPosition[     40571,       1134]
-NotebookOutlinePosition[     40967,       1150]
-CellTagsIndexPosition[     40924,       1147]
+NotebookDataLength[     48417,       1256]
+NotebookOptionsPosition[     42772,       1174]
+NotebookOutlinePosition[     43210,       1191]
+CellTagsIndexPosition[     43167,       1188]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -31,67 +31,78 @@ Cell[CellGroupData[{
 Cell[BoxData["\<\"*-*-*-*-*-* HPL 2.0 *-*-*-*-*-*\\n\\nAuthor: Daniel Maitre, \
 University of Zurich\"\>"], "Print",
  CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
-  3.95508882228201*^9, 3.955097638555072*^9},
+  3.95508882228201*^9, 3.955097638555072*^9, 3.966341783001328*^9},
  CellLabel->
   "During evaluation of \
-In[1]:=",ExpressionUUID->"681ee747-c9d3-4364-b74d-84c0901b5ef0"],
+In[1]:=",ExpressionUUID->"1fe4357c-44bb-4401-9dae-852db5af56a8"],
 
 Cell[BoxData["\<\"Rules for minimal set loaded for weights: 2, 3, 4, 5, \
 6.\"\>"], "Print",
  CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
-  3.95508882228201*^9, 3.9550976386638107`*^9},
+  3.95508882228201*^9, 3.955097638555072*^9, 3.96634178309477*^9},
  CellLabel->
   "During evaluation of \
-In[1]:=",ExpressionUUID->"9660cd47-59d6-4375-a720-3e33f27636e9"],
+In[1]:=",ExpressionUUID->"45b2e221-f78d-421a-af33-4f9b3dfb3491"],
 
 Cell[BoxData["\<\"Rules for minimal set for + - weights loaded for weights: \
 2, 3, 4, 5, 6.\"\>"], "Print",
  CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
-  3.95508882228201*^9, 3.955097638885584*^9},
+  3.95508882228201*^9, 3.955097638555072*^9, 3.966341783289378*^9},
  CellLabel->
   "During evaluation of \
-In[1]:=",ExpressionUUID->"5044551b-848d-4f5f-b25d-231938c5b685"],
+In[1]:=",ExpressionUUID->"e4a29cb8-2765-40e3-818b-01c80a34845a"],
 
 Cell[BoxData["\<\"Table of MZVs loaded up to weight 6\"\>"], "Print",
  CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
-  3.95508882228201*^9, 3.9550976389259233`*^9},
+  3.95508882228201*^9, 3.955097638555072*^9, 3.966341783324759*^9},
  CellLabel->
   "During evaluation of \
-In[1]:=",ExpressionUUID->"6933cac8-94bc-49a7-8b02-a33f8fdf6908"],
+In[1]:=",ExpressionUUID->"0d8a5ae0-ef0b-43f3-9bd1-2aebf043dab6"],
 
 Cell[BoxData["\<\"Table of values at I loaded up to weight 6\"\>"], "Print",
  CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
-  3.95508882228201*^9, 3.955097639504681*^9},
+  3.95508882228201*^9, 3.955097638555072*^9, 3.966341783830003*^9},
  CellLabel->
   "During evaluation of \
-In[1]:=",ExpressionUUID->"7ce1e165-9afa-4795-8126-2bfb17976f28"],
+In[1]:=",ExpressionUUID->"8702f88a-b15b-4ab4-8634-07c7e7cf971e"],
 
 Cell[BoxData["\<\"$HPLFunctions gives a list of the functions of the package.\
 \\n$HPLOptions gives a list of the options of the package.\"\>"], "Print",
  CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
-  3.95508882228201*^9, 3.955097639512939*^9},
+  3.95508882228201*^9, 3.955097638555072*^9, 3.966341783837037*^9},
  CellLabel->
   "During evaluation of \
-In[1]:=",ExpressionUUID->"a6c09051-99bc-4d5e-9df6-930249633658"],
+In[1]:=",ExpressionUUID->"f235480c-94b3-41da-85b7-f94eda3b1acd"],
 
 Cell[BoxData["\<\"More info in hep-ph/0507152, hep-ph/0703052 and at \\n \
 http://krone.physik.unizh.ch/~maitreda/HPL/\"\>"], "Print",
  CellChangeTimes->{3.9550260851071672`*^9, 3.95508593254747*^9, 
-  3.95508882228201*^9, 3.9550976395135717`*^9},
+  3.95508882228201*^9, 3.955097638555072*^9, 3.9663417838376513`*^9},
  CellLabel->
   "During evaluation of \
-In[1]:=",ExpressionUUID->"d9eb2307-2582-48d7-9ac5-0c09e8eb3b68"]
+In[1]:=",ExpressionUUID->"32b335a5-6e85-4112-8b86-a07aac202bd9"]
 }, Open  ]]
 }, Open  ]],
 
+Cell[CellGroupData[{
+
 Cell[BoxData[
- RowBox[{
-  RowBox[{"HPLDir", " ", "=", " ", 
-   RowBox[{
-    RowBox[{"NotebookDirectory", "[", "]"}], " ", "<>", " ", 
-    "\"\<HPL/\>\""}]}], ";"}]], "Input",
- CellChangeTimes->{{3.95508858604445*^9, 3.955088657211822*^9}},
+ RowBox[{"HPLDir", " ", "=", " ", 
+  RowBox[{
+   RowBox[{"DirectoryName", "[", 
+    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], " ", "<>", " ", 
+   "\"\<src/dis_tp/grids/HPL/\>\""}]}]], "Input",
+ CellChangeTimes->{{3.95508858604445*^9, 3.955088657211822*^9}, {
+  3.966341542970869*^9, 3.966341549110021*^9}, {3.966341590706438*^9, 
+  3.9663416181587963`*^9}, {3.966341652561915*^9, 3.9663416668898973`*^9}, {
+  3.9663417249361553`*^9, 3.9663417649167*^9}},
  CellLabel->"In[2]:=",ExpressionUUID->"785043e6-f977-42c0-a1cf-78a1faa30f33"],
+
+Cell[BoxData["\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/\"\>"], \
+"Output",
+ CellChangeTimes->{{3.966341729198634*^9, 3.966341783913073*^9}},
+ CellLabel->"Out[2]=",ExpressionUUID->"858f7136-174f-4a44-920e-3ef8fa61493c"]
+}, Open  ]],
 
 Cell[BoxData[
  RowBox[{
@@ -329,7 +340,7 @@ Cell[BoxData[{
    "HPLDir"}], "]"}], "\[IndentingNewLine]"}], "Input",
  CellChangeTimes->{{3.955032785642846*^9, 3.9550327871977158`*^9}, {
   3.955088735064823*^9, 3.95508875464011*^9}},
- CellLabel->"In[45]:=",ExpressionUUID->"67919f03-a1eb-4870-8e00-178b31caf3f7"],
+ CellLabel->"In[6]:=",ExpressionUUID->"67919f03-a1eb-4870-8e00-178b31caf3f7"],
 
 Cell[CellGroupData[{
 
@@ -337,175 +348,185 @@ Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0011.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0011.txt\"\>"}],
   SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0011.txt"],
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0011.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.966341785062401*^9},
+ CellLabel->
+  "During evaluation of \
+In[6]:=",ExpressionUUID->"e414f8fa-8e62-44dd-87a8-e55b9c289eb4"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m1m1.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.966341785357397*^9},
+ CellLabel->
+  "During evaluation of \
+In[6]:=",ExpressionUUID->"a773f691-3671-4c00-93ef-8b8805ff970c"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m1m1.txt\"\>"}],
   
-  Editable->False]], "Print",
- CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.955097754074141*^9},
- CellLabel->
-  "During evaluation of \
-In[45]:=",ExpressionUUID->"fd53f0bd-7826-42bf-9280-c16756b1edc4"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"Exported to: \"\>", 
-   "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m1.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m1m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.9550977544063883`*^9},
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.966341786353683*^9},
  CellLabel->
   "During evaluation of \
-In[45]:=",ExpressionUUID->"1330a810-309d-4714-926b-bade0eaae5a5"],
+In[6]:=",ExpressionUUID->"b650d094-2f1e-42e8-a84a-9cd074012f2d"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_01m1m1.txt\"\>"}],
+  
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_01m1m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.955097755549285*^9},
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.9663417872193527`*^9},
  CellLabel->
   "During evaluation of \
-In[45]:=",ExpressionUUID->"ee3d2405-fc21-4695-93f2-83bda4252c14"],
+In[6]:=",ExpressionUUID->"e3784e1c-8b17-4779-870d-acfe05747f3e"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m1m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m11m1.txt\"\>"}],
+  
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m1m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m11m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.9550977565573387`*^9},
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.9663417881082172`*^9},
  CellLabel->
   "During evaluation of \
-In[45]:=",ExpressionUUID->"0e4908d7-17d7-441a-9107-c8a814681d51"],
+In[6]:=",ExpressionUUID->"7933beae-52f4-421a-af1c-6434893cbf7b"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m11m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_001m1.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m11m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_001m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.95509775757178*^9},
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.966341788914139*^9},
  CellLabel->
   "During evaluation of \
-In[45]:=",ExpressionUUID->"5a101f5d-1964-4c47-bd96-78ad0374bfdf"],
+In[6]:=",ExpressionUUID->"331fdbec-b9dd-4579-904e-4aa3cb45a305"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m1.txt\"\>"}],
-  SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m1.txt"],
-  Editable->False]], "Print",
- CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.9550977584977417`*^9},
- CellLabel->
-  "During evaluation of \
-In[45]:=",ExpressionUUID->"04e45538-b174-461a-aec9-8401dd251e8c"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"Exported to: \"\>", 
-   "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_011m1.txt\"\>"}],
-  SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_011m1.txt"],
-  Editable->False]], "Print",
- CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.955097759702388*^9},
- CellLabel->
-  "During evaluation of \
-In[45]:=",ExpressionUUID->"90393ef3-0b64-4e21-a548-dc11bc652961"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"Exported to: \"\>", 
-   "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m11.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_011m1.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m11.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_011m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.955097760762982*^9},
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.966341789954282*^9},
  CellLabel->
   "During evaluation of \
-In[45]:=",ExpressionUUID->"4d644970-989d-4031-9cfe-bc300e35d27e"],
+In[6]:=",ExpressionUUID->"0d5d97b4-a311-470e-828c-3523037a6936"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m11.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m11.txt\"\>"}],
+  
   SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m11.txt"],
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m11.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.955097761722474*^9},
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.966341790862521*^9},
  CellLabel->
   "During evaluation of \
-In[45]:=",ExpressionUUID->"86cc0bfd-49b5-4180-b4b6-5587a41b1ad7"],
+In[6]:=",ExpressionUUID->"231c7408-2af5-40f2-8849-4cb29ba24dc0"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m11.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m11.txt\"\>"}],
   SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m11.txt"],
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m11.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.955097762848477*^9},
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.966341791688939*^9},
  CellLabel->
   "During evaluation of \
-In[45]:=",ExpressionUUID->"c17d2846-0412-4fd7-b57d-b59c8ddec2bf"],
+In[6]:=",ExpressionUUID->"f24382a6-7a87-40a7-bf7e-a231e8695474"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m101.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_01m11.txt\"\>"}],
   SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m101.txt"],
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_01m11.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.955097763832711*^9},
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.9663417926632442`*^9},
  CellLabel->
   "During evaluation of \
-In[45]:=",ExpressionUUID->"6f825266-a962-41cc-bf79-f2240480064c"],
+In[6]:=",ExpressionUUID->"a476c67d-c5dc-4331-9336-35657b31510c"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m111.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m101.txt\"\>"}],
   SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m111.txt"],
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m101.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
-  3.9550976413827887`*^9, 3.955097765020506*^9},
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.96634179350659*^9},
  CellLabel->
   "During evaluation of \
-In[45]:=",ExpressionUUID->"aef95f1b-4883-4430-a7a1-19887710677a"]
+In[6]:=",ExpressionUUID->"7ef41c78-4050-403d-a1bd-5c4b129a6d39"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m111.txt\"\>"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m111.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550860437901363`*^9, 3.955088823469164*^9, 
+  3.9550976413827887`*^9, 3.955097754074141*^9, 3.966341794550301*^9},
+ CellLabel->
+  "During evaluation of \
+In[6]:=",ExpressionUUID->"a4192fe3-40b6-4e6d-bab4-3fe46cde0c2f"]
 }, Open  ]]
 }, Open  ]],
 
@@ -698,7 +719,7 @@ Cell[BoxData[{
   3.9550305583642*^9}, {3.955030660851574*^9, 3.955030869788562*^9}, {
   3.955032432566143*^9, 3.9550327511145763`*^9}, {3.955086100112732*^9, 
   3.955086100809492*^9}, {3.955088758670517*^9, 3.955088785930431*^9}},
- CellLabel->"In[57]:=",ExpressionUUID->"4f14fa52-dddf-4fe2-886e-8e8a6aaf18e1"],
+ CellLabel->"In[18]:=",ExpressionUUID->"4f14fa52-dddf-4fe2-886e-8e8a6aaf18e1"],
 
 Cell[CellGroupData[{
 
@@ -706,434 +727,454 @@ Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m1m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m1m1m1.txt\"\>"}\
+],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m1m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m1m1m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097770882072*^9},
+  3.955097770882072*^9, 3.96634179551573*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"0d273e96-69f2-4d8a-8f87-34bccd1635d6"],
+In[18]:=",ExpressionUUID->"61a13d06-2f8f-4012-a5e0-b500754d7f41"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m10m1m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m10m1m1.txt\"\>"}\
+],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m10m1m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m10m1m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.9550977719909353`*^9},
+  3.955097770882072*^9, 3.966341796550783*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"4b98d390-2a96-46fd-94df-847729f8aa7d"],
+In[18]:=",ExpressionUUID->"b766a680-c2ba-47a0-8b4a-a2c0103b17e5"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_000m1m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_000m1m1.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_000m1m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_000m1m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097772805995*^9},
+  3.955097770882072*^9, 3.966341797282496*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"2aff8b8f-b9fe-4d8c-bb0c-c1c0307a27cd"],
+In[18]:=",ExpressionUUID->"5cfd96ac-365c-437b-a7a0-48e48a9fedfd"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m10m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m10m1.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m10m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m10m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097773609344*^9},
+  3.955097770882072*^9, 3.9663417980049343`*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"e68e33b8-ee97-4f8b-8ce9-715e4ca8cbe3"],
+In[18]:=",ExpressionUUID->"3ca861e9-fdd6-4b51-8a70-18d37053bca2"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0010m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0010m1.txt\"\>"}],
+  
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0010m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0010m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097774672571*^9},
+  3.955097770882072*^9, 3.96634179893909*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"eeca49e5-d7a5-452e-873f-8a3f2af5dd6a"],
+In[18]:=",ExpressionUUID->"1b7e8846-359e-48b9-a5e2-3c3eac46faa4"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m101m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m101m1.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m101m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m101m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097775940333*^9},
+  3.955097770882072*^9, 3.966341800074729*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"54beae6c-03b5-4a27-ab1e-167d331cea06"],
+In[18]:=",ExpressionUUID->"5829d8a2-59ad-4596-a5f0-070e86e12e99"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0001m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0001m1.txt\"\>"}],
+  
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0001m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0001m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.9550977771472692`*^9},
+  3.955097770882072*^9, 3.966341801119141*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"7d88acdd-1061-4295-b1cf-b857a9fa46e9"],
+In[18]:=",ExpressionUUID->"32351717-8480-4380-90b9-f6aac99ed5fc"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m10m11.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m10m11.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m10m11.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m10m11.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.9550977784490128`*^9},
+  3.955097770882072*^9, 3.966341802265918*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"7cd381c7-75fc-4235-8503-b828137c448f"],
+In[18]:=",ExpressionUUID->"683a70c6-5dab-4adc-bfed-8d816cb181bd"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_000m11.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_000m11.txt\"\>"}],
+  
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_000m11.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_000m11.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.95509777970252*^9},
+  3.955097770882072*^9, 3.96634180337077*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"da418b89-6676-4e91-b8fa-32ea62ff0d8a"],
+In[18]:=",ExpressionUUID->"9e2834b3-7387-4271-81ef-2c7fdf556f98"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m101.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m101.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m101.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m101.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.9550977810330467`*^9},
+  3.955097770882072*^9, 3.96634180452223*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"c621cf92-98ab-44d3-a382-903ddd66b478"],
+In[18]:=",ExpressionUUID->"b92d4766-1405-4888-95d1-b8b20912acc0"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m101.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m101.txt\"\>"}],
+  
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m101.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m101.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097782280889*^9},
+  3.955097770882072*^9, 3.966341805677734*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"74222dac-66a8-4d3f-9e86-5d2950fa2d6d"],
+In[18]:=",ExpressionUUID->"c36f4954-c397-4a7e-96f1-b337f7134f5a"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00101.txt\"\>"}],
-  SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00101.txt"],
-  Editable->False]], "Print",
- CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
-  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.9550977839833517`*^9},
- CellLabel->
-  "During evaluation of \
-In[57]:=",ExpressionUUID->"73af85cb-c6b5-4552-98e1-835223f58892"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"Exported to: \"\>", 
-   "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1011.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00101.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1011.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00101.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097785685718*^9},
+  3.955097770882072*^9, 3.966341807158347*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"b1f3abea-d126-4b56-9717-31a06f73d751"],
+In[18]:=",ExpressionUUID->"13c10e6d-6ce1-4b50-97ad-2940faf86341"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00011.txt\"\>"}],
-  SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00011.txt"],
-  Editable->False]], "Print",
- CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
-  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.9550977867781477`*^9},
- CellLabel->
-  "During evaluation of \
-In[57]:=",ExpressionUUID->"ee583eb6-7548-44ce-98a6-d8a3d6a49d3b"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"Exported to: \"\>", 
-   "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01011.txt\"\>"}],
-  SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01011.txt"],
-  Editable->False]], "Print",
- CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
-  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.9550977888229733`*^9},
- CellLabel->
-  "During evaluation of \
-In[57]:=",ExpressionUUID->"ec2e4ddd-0d0b-470b-92db-90e70cf73a5c"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"Exported to: \"\>", 
-   "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00111.txt\"\>"}],
-  SequenceForm[
-  "Exported to: ", "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00111.txt"],
-  Editable->False]], "Print",
- CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
-  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097789950181*^9},
- CellLabel->
-  "During evaluation of \
-In[57]:=",ExpressionUUID->"fc88f558-9ef9-4717-9327-04b37afd22e9"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"Exported to: \"\>", 
-   "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m11m1m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1011.txt\"\>"}],
+  
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m11m1m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1011.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097791425746*^9},
+  3.955097770882072*^9, 3.9663418086899548`*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"36502de2-82c9-49b3-a488-3cd764204094"],
+In[18]:=",ExpressionUUID->"581e31e2-35f7-452a-bb33-a545d86bd1d2"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m11m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00011.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m11m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00011.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097792950933*^9},
+  3.955097770882072*^9, 3.966341809693798*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"6ff96fc0-30dc-4608-9c47-7d9622dfb797"],
+In[18]:=",ExpressionUUID->"a15f118c-7d2a-4e81-b1e7-ba469c11e924"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m11.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_01011.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m11.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_01011.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097794580797*^9},
+  3.955097770882072*^9, 3.966341811516425*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"55bc0841-2b4f-45ad-a312-d93a8f10c59f"],
+In[18]:=",ExpressionUUID->"701cf8c1-8016-4735-913e-2fe26e6298cb"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m11.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00111.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m1m11.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00111.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097795835847*^9},
+  3.955097770882072*^9, 3.96634181253889*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"16516029-61af-421c-a43d-7ba7abd32216"],
+In[18]:=",ExpressionUUID->"f6bcbf99-d74b-4fce-83ae-1d63ae84dade"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m11m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m11m1m1.txt\"\>"}\
+],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m11m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m11m1m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097797042194*^9},
+  3.955097770882072*^9, 3.966341813825842*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"c9ee74d9-d808-4d91-8cd6-ecd4ba7eef89"],
+In[18]:=",ExpressionUUID->"d3072047-d34e-4bf1-9e05-46b7b4427e2b"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m111.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m11m1.txt\"\>"}\
+],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_00m111.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m11m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097798673827*^9},
+  3.955097770882072*^9, 3.9663418151551323`*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"25dbe5fa-bf83-4792-86ef-8eda54a56e08"],
+In[18]:=",ExpressionUUID->"f560c8f7-a84a-459a-b929-6b47e1f6da1f"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m1m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m1m11.txt\"\>"}\
+],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m1m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m1m11.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097799844961*^9},
+  3.955097770882072*^9, 3.966341816507772*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"27457757-21c0-4ece-82c6-99bc3ecacc43"],
+In[18]:=",ExpressionUUID->"389a261e-269b-4248-b68f-30bd209e5592"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m11.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m1m11.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_001m11.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m1m11.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.9550978012772818`*^9},
+  3.955097770882072*^9, 3.966341817670948*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"19958424-9f84-4bb0-9e7e-b217bdeb6a7d"],
+In[18]:=",ExpressionUUID->"43a39298-2395-4817-8ab5-dd82db54586f"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0011m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m11m1.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0011m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m11m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097802896549*^9},
+  3.955097770882072*^9, 3.966341818783445*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"a888b7e9-20da-4270-a43a-da3657aabbce"],
+In[18]:=",ExpressionUUID->"a9995b18-ba33-45cf-a97c-4aef1e150fc3"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m1m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m111.txt\"\>"}],
+  
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_0m1m1m1m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_00m111.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.9550978043662786`*^9},
+  3.955097770882072*^9, 3.966341820212284*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"76603353-deef-45f5-a815-340904153d45"],
+In[18]:=",ExpressionUUID->"1bdb05f3-b791-48ce-8fc6-6243dc3d55d1"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"Exported to: \"\>", 
    "\[InvisibleSpace]", \
-"\<\"/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m1m1m1.txt\"\>"}],
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_001m1m1.txt\"\>"}],
   SequenceForm[
   "Exported to: ", 
-   "/Users/niccololaurenti/DIS_TP/External/HPL/HPL_01m1m1m1.txt"],
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_001m1m1.txt"],
   Editable->False]], "Print",
  CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
   3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
-  3.955097805780551*^9},
+  3.955097770882072*^9, 3.966341821240211*^9},
  CellLabel->
   "During evaluation of \
-In[57]:=",ExpressionUUID->"7f745023-d54d-4d67-b730-43ef4fafc1b9"]
+In[18]:=",ExpressionUUID->"c0ba84e1-3c05-44ec-83f2-8a8cc221fd43"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_001m11.txt\"\>"}],
+  
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_001m11.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097770882072*^9, 3.9663418224918203`*^9},
+ CellLabel->
+  "During evaluation of \
+In[18]:=",ExpressionUUID->"27d421ad-f84a-4ee3-b4fc-19acd86a57ab"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0011m1.txt\"\>"}],
+  
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0011m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097770882072*^9, 3.9663418239238577`*^9},
+ CellLabel->
+  "During evaluation of \
+In[18]:=",ExpressionUUID->"0be2678e-66a5-4f1d-aa77-dfe3c50ed793"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m1m1m1.txt\"\>\
+"}],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_0m1m1m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097770882072*^9, 3.966341825229786*^9},
+ CellLabel->
+  "During evaluation of \
+In[18]:=",ExpressionUUID->"ad4b0c92-594a-41ca-b166-7853afa3da36"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Exported to: \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_01m1m1m1.txt\"\>"}\
+],
+  SequenceForm[
+  "Exported to: ", 
+   "/Users/niccololaurenti/DIS_TP/src/dis_tp/grids/HPL/HPL_01m1m1m1.txt"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.9550327912669077`*^9, 3.955032938337356*^9, 
+  3.955086115433515*^9, 3.955088834901226*^9, 3.955097653503022*^9, 
+  3.955097770882072*^9, 3.966341826501972*^9},
+ CellLabel->
+  "During evaluation of \
+In[18]:=",ExpressionUUID->"30286e76-2246-43f0-8894-572ac4f0ade1"]
 }, Open  ]]
 }, Open  ]]
 },
 WindowSize->{Full, Full},
 WindowMargins->{{4, Automatic}, {Automatic, 4}},
+TaggingRules-><|"TryRealOnly" -> False|>,
 FrontEndVersion->"13.0 for Mac OS X ARM (64-bit) (February 4, 2022)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"04af4a50-87c7-4b51-ac39-59c5ace59b9b"
@@ -1152,66 +1193,69 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[580, 22, 227, 4, 52, "Input",ExpressionUUID->"7d68e7a0-cd4c-4da3-b4b2-427b1ce4cd17"],
 Cell[CellGroupData[{
-Cell[832, 30, 331, 6, 63, "Print",ExpressionUUID->"681ee747-c9d3-4364-b74d-84c0901b5ef0"],
-Cell[1166, 38, 309, 6, 24, "Print",ExpressionUUID->"9660cd47-59d6-4375-a720-3e33f27636e9"],
-Cell[1478, 46, 323, 6, 24, "Print",ExpressionUUID->"5044551b-848d-4f5f-b25d-231938c5b685"],
-Cell[1804, 54, 286, 5, 24, "Print",ExpressionUUID->"6933cac8-94bc-49a7-8b02-a33f8fdf6908"],
-Cell[2093, 61, 291, 5, 24, "Print",ExpressionUUID->"7ce1e165-9afa-4795-8126-2bfb17976f28"],
-Cell[2387, 68, 368, 6, 44, "Print",ExpressionUUID->"a6c09051-99bc-4d5e-9df6-930249633658"],
-Cell[2758, 76, 351, 6, 44, "Print",ExpressionUUID->"d9eb2307-2582-48d7-9ac5-0c09e8eb3b68"]
-}, Open  ]]
-}, Open  ]],
-Cell[3136, 86, 317, 7, 30, "Input",ExpressionUUID->"785043e6-f977-42c0-a1cf-78a1faa30f33"],
-Cell[3456, 95, 655, 13, 30, "Input",ExpressionUUID->"7bb169b3-1965-4d88-a053-6956e19575c2"],
-Cell[4114, 110, 2929, 70, 283, "Input",ExpressionUUID->"1499f219-3050-49e9-b48f-3ecc3fec6079"],
-Cell[7046, 182, 2678, 65, 262, "Input",ExpressionUUID->"6e5488fa-9f61-4f43-a44f-df17d56f700d"],
-Cell[CellGroupData[{
-Cell[9749, 251, 2715, 80, 283, "Input",ExpressionUUID->"67919f03-a1eb-4870-8e00-178b31caf3f7"],
-Cell[CellGroupData[{
-Cell[12489, 335, 512, 13, 24, "Print",ExpressionUUID->"fd53f0bd-7826-42bf-9280-c16756b1edc4"],
-Cell[13004, 350, 521, 13, 24, "Print",ExpressionUUID->"1330a810-309d-4714-926b-bade0eaae5a5"],
-Cell[13528, 365, 517, 13, 24, "Print",ExpressionUUID->"ee3d2405-fc21-4695-93f2-83bda4252c14"],
-Cell[14048, 380, 519, 13, 24, "Print",ExpressionUUID->"0e4908d7-17d7-441a-9107-c8a814681d51"],
-Cell[14570, 395, 516, 13, 24, "Print",ExpressionUUID->"5a101f5d-1964-4c47-bd96-78ad0374bfdf"],
-Cell[15089, 410, 513, 12, 24, "Print",ExpressionUUID->"04e45538-b174-461a-aec9-8401dd251e8c"],
-Cell[15605, 424, 511, 12, 24, "Print",ExpressionUUID->"90393ef3-0b64-4e21-a548-dc11bc652961"],
-Cell[16119, 438, 517, 13, 24, "Print",ExpressionUUID->"4d644970-989d-4031-9cfe-bc300e35d27e"],
-Cell[16639, 453, 511, 12, 24, "Print",ExpressionUUID->"86cc0bfd-49b5-4180-b4b6-5587a41b1ad7"],
-Cell[17153, 467, 511, 12, 24, "Print",ExpressionUUID->"c17d2846-0412-4fd7-b57d-b59c8ddec2bf"],
-Cell[17667, 481, 511, 12, 24, "Print",ExpressionUUID->"6f825266-a962-41cc-bf79-f2240480064c"],
-Cell[18181, 495, 511, 12, 24, "Print",ExpressionUUID->"aef95f1b-4883-4430-a7a1-19887710677a"]
+Cell[832, 30, 353, 6, 63, "Print",ExpressionUUID->"1fe4357c-44bb-4401-9dae-852db5af56a8"],
+Cell[1188, 38, 328, 6, 24, "Print",ExpressionUUID->"45b2e221-f78d-421a-af33-4f9b3dfb3491"],
+Cell[1519, 46, 345, 6, 24, "Print",ExpressionUUID->"e4a29cb8-2765-40e3-818b-01c80a34845a"],
+Cell[1867, 54, 306, 5, 24, "Print",ExpressionUUID->"0d8a5ae0-ef0b-43f3-9bd1-2aebf043dab6"],
+Cell[2176, 61, 313, 5, 24, "Print",ExpressionUUID->"8702f88a-b15b-4ab4-8634-07c7e7cf971e"],
+Cell[2492, 68, 390, 6, 44, "Print",ExpressionUUID->"f235480c-94b3-41da-85b7-f94eda3b1acd"],
+Cell[2885, 76, 373, 6, 44, "Print",ExpressionUUID->"32b335a5-6e85-4112-8b86-a07aac202bd9"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[18741, 513, 6486, 187, 577, "Input",ExpressionUUID->"4f14fa52-dddf-4fe2-886e-8e8a6aaf18e1"],
+Cell[3307, 88, 552, 10, 30, "Input",ExpressionUUID->"785043e6-f977-42c0-a1cf-78a1faa30f33"],
+Cell[3862, 100, 232, 3, 34, "Output",ExpressionUUID->"858f7136-174f-4a44-920e-3ef8fa61493c"]
+}, Open  ]],
+Cell[4109, 106, 655, 13, 30, "Input",ExpressionUUID->"7bb169b3-1965-4d88-a053-6956e19575c2"],
+Cell[4767, 121, 2929, 70, 283, "Input",ExpressionUUID->"1499f219-3050-49e9-b48f-3ecc3fec6079"],
+Cell[7699, 193, 2678, 65, 262, "Input",ExpressionUUID->"6e5488fa-9f61-4f43-a44f-df17d56f700d"],
 Cell[CellGroupData[{
-Cell[25252, 704, 566, 14, 24, "Print",ExpressionUUID->"0d273e96-69f2-4d8a-8f87-34bccd1635d6"],
-Cell[25821, 720, 568, 14, 24, "Print",ExpressionUUID->"4b98d390-2a96-46fd-94df-847729f8aa7d"],
-Cell[26392, 736, 564, 14, 24, "Print",ExpressionUUID->"2aff8b8f-b9fe-4d8c-bb0c-c1c0307a27cd"],
-Cell[26959, 752, 564, 14, 24, "Print",ExpressionUUID->"e68e33b8-ee97-4f8b-8ce9-715e4ca8cbe3"],
-Cell[27526, 768, 562, 14, 24, "Print",ExpressionUUID->"eeca49e5-d7a5-452e-873f-8a3f2af5dd6a"],
-Cell[28091, 784, 564, 14, 24, "Print",ExpressionUUID->"54beae6c-03b5-4a27-ab1e-167d331cea06"],
-Cell[28658, 800, 564, 14, 24, "Print",ExpressionUUID->"7d88acdd-1061-4295-b1cf-b857a9fa46e9"],
-Cell[29225, 816, 566, 14, 24, "Print",ExpressionUUID->"7cd381c7-75fc-4235-8503-b828137c448f"],
-Cell[29794, 832, 561, 14, 24, "Print",ExpressionUUID->"da418b89-6676-4e91-b8fa-32ea62ff0d8a"],
-Cell[30358, 848, 566, 14, 24, "Print",ExpressionUUID->"c621cf92-98ab-44d3-a382-903ddd66b478"],
-Cell[30927, 864, 562, 14, 24, "Print",ExpressionUUID->"74222dac-66a8-4d3f-9e86-5d2950fa2d6d"],
-Cell[31492, 880, 558, 13, 24, "Print",ExpressionUUID->"73af85cb-c6b5-4552-98e1-835223f58892"],
-Cell[32053, 895, 562, 14, 24, "Print",ExpressionUUID->"b1f3abea-d126-4b56-9717-31a06f73d751"],
-Cell[32618, 911, 558, 13, 24, "Print",ExpressionUUID->"ee583eb6-7548-44ce-98a6-d8a3d6a49d3b"],
-Cell[33179, 926, 558, 13, 24, "Print",ExpressionUUID->"ec2e4ddd-0d0b-470b-92db-90e70cf73a5c"],
-Cell[33740, 941, 556, 13, 24, "Print",ExpressionUUID->"fc88f558-9ef9-4717-9327-04b37afd22e9"],
-Cell[34299, 956, 566, 14, 24, "Print",ExpressionUUID->"36502de2-82c9-49b3-a488-3cd764204094"],
-Cell[34868, 972, 566, 14, 24, "Print",ExpressionUUID->"6ff96fc0-30dc-4608-9c47-7d9622dfb797"],
-Cell[35437, 988, 566, 14, 24, "Print",ExpressionUUID->"55bc0841-2b4f-45ad-a312-d93a8f10c59f"],
-Cell[36006, 1004, 564, 14, 24, "Print",ExpressionUUID->"16516029-61af-421c-a43d-7ba7abd32216"],
-Cell[36573, 1020, 564, 14, 24, "Print",ExpressionUUID->"c9ee74d9-d808-4d91-8cd6-ecd4ba7eef89"],
-Cell[37140, 1036, 562, 14, 24, "Print",ExpressionUUID->"25dbe5fa-bf83-4792-86ef-8eda54a56e08"],
-Cell[37705, 1052, 564, 14, 24, "Print",ExpressionUUID->"27457757-21c0-4ece-82c6-99bc3ecacc43"],
-Cell[38272, 1068, 564, 14, 24, "Print",ExpressionUUID->"19958424-9f84-4bb0-9e7e-b217bdeb6a7d"],
-Cell[38839, 1084, 562, 14, 24, "Print",ExpressionUUID->"a888b7e9-20da-4270-a43a-da3657aabbce"],
-Cell[39404, 1100, 570, 14, 24, "Print",ExpressionUUID->"76603353-deef-45f5-a815-340904153d45"],
-Cell[39977, 1116, 566, 14, 24, "Print",ExpressionUUID->"7f745023-d54d-4d67-b730-43ef4fafc1b9"]
+Cell[10402, 262, 2714, 80, 283, "Input",ExpressionUUID->"67919f03-a1eb-4870-8e00-178b31caf3f7"],
+Cell[CellGroupData[{
+Cell[13141, 346, 550, 13, 24, "Print",ExpressionUUID->"e414f8fa-8e62-44dd-87a8-e55b9c289eb4"],
+Cell[13694, 361, 556, 13, 24, "Print",ExpressionUUID->"a773f691-3671-4c00-93ef-8b8805ff970c"],
+Cell[14253, 376, 557, 14, 24, "Print",ExpressionUUID->"b650d094-2f1e-42e8-a84a-9cd074012f2d"],
+Cell[14813, 392, 559, 14, 24, "Print",ExpressionUUID->"e3784e1c-8b17-4779-870d-acfe05747f3e"],
+Cell[15375, 408, 559, 14, 24, "Print",ExpressionUUID->"7933beae-52f4-421a-af1c-6434893cbf7b"],
+Cell[15937, 424, 552, 13, 24, "Print",ExpressionUUID->"331fdbec-b9dd-4579-904e-4aa3cb45a305"],
+Cell[16492, 439, 552, 13, 24, "Print",ExpressionUUID->"0d5d97b4-a311-470e-828c-3523037a6936"],
+Cell[17047, 454, 557, 14, 24, "Print",ExpressionUUID->"231c7408-2af5-40f2-8849-4cb29ba24dc0"],
+Cell[17607, 470, 552, 13, 24, "Print",ExpressionUUID->"f24382a6-7a87-40a7-bf7e-a231e8695474"],
+Cell[18162, 485, 554, 13, 24, "Print",ExpressionUUID->"a476c67d-c5dc-4331-9336-35657b31510c"],
+Cell[18719, 500, 551, 13, 24, "Print",ExpressionUUID->"7ef41c78-4050-403d-a1bd-5c4b129a6d39"],
+Cell[19273, 515, 552, 13, 24, "Print",ExpressionUUID->"a4192fe3-40b6-4e6d-bab4-3fe46cde0c2f"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19874, 534, 6486, 187, 577, "Input",ExpressionUUID->"4f14fa52-dddf-4fe2-886e-8e8a6aaf18e1"],
+Cell[CellGroupData[{
+Cell[26385, 725, 605, 15, 24, "Print",ExpressionUUID->"61a13d06-2f8f-4012-a5e0-b500754d7f41"],
+Cell[26993, 742, 606, 15, 24, "Print",ExpressionUUID->"b766a680-c2ba-47a0-8b4a-a2c0103b17e5"],
+Cell[27602, 759, 602, 14, 24, "Print",ExpressionUUID->"5cfd96ac-365c-437b-a7a0-48e48a9fedfd"],
+Cell[28207, 775, 604, 14, 24, "Print",ExpressionUUID->"3ca861e9-fdd6-4b51-8a70-18d37053bca2"],
+Cell[28814, 791, 602, 15, 24, "Print",ExpressionUUID->"1b7e8846-359e-48b9-a5e2-3c3eac46faa4"],
+Cell[29419, 808, 602, 14, 24, "Print",ExpressionUUID->"5829d8a2-59ad-4596-a5f0-070e86e12e99"],
+Cell[30024, 824, 603, 15, 24, "Print",ExpressionUUID->"32351717-8480-4380-90b9-f6aac99ed5fc"],
+Cell[30630, 841, 602, 14, 24, "Print",ExpressionUUID->"683a70c6-5dab-4adc-bfed-8d816cb181bd"],
+Cell[31235, 857, 602, 15, 24, "Print",ExpressionUUID->"9e2834b3-7387-4271-81ef-2c7fdf556f98"],
+Cell[31840, 874, 601, 14, 24, "Print",ExpressionUUID->"b92d4766-1405-4888-95d1-b8b20912acc0"],
+Cell[32444, 890, 603, 15, 24, "Print",ExpressionUUID->"c36f4954-c397-4a7e-96f1-b337f7134f5a"],
+Cell[33050, 907, 598, 14, 24, "Print",ExpressionUUID->"13c10e6d-6ce1-4b50-97ad-2940faf86341"],
+Cell[33651, 923, 605, 15, 24, "Print",ExpressionUUID->"581e31e2-35f7-452a-bb33-a545d86bd1d2"],
+Cell[34259, 940, 598, 14, 24, "Print",ExpressionUUID->"a15f118c-7d2a-4e81-b1e7-ba469c11e924"],
+Cell[34860, 956, 598, 14, 24, "Print",ExpressionUUID->"701cf8c1-8016-4735-913e-2fe26e6298cb"],
+Cell[35461, 972, 597, 14, 24, "Print",ExpressionUUID->"f6bcbf99-d74b-4fce-83ae-1d63ae84dade"],
+Cell[36061, 988, 606, 15, 24, "Print",ExpressionUUID->"d3072047-d34e-4bf1-9e05-46b7b4427e2b"],
+Cell[36670, 1005, 608, 15, 24, "Print",ExpressionUUID->"f560c8f7-a84a-459a-b929-6b47e1f6da1f"],
+Cell[37281, 1022, 606, 15, 24, "Print",ExpressionUUID->"389a261e-269b-4248-b68f-30bd209e5592"],
+Cell[37890, 1039, 602, 14, 24, "Print",ExpressionUUID->"43a39298-2395-4817-8ab5-dd82db54586f"],
+Cell[38495, 1055, 602, 14, 24, "Print",ExpressionUUID->"a9995b18-ba33-45cf-a97c-4aef1e150fc3"],
+Cell[39100, 1071, 603, 15, 24, "Print",ExpressionUUID->"1bdb05f3-b791-48ce-8fc6-6243dc3d55d1"],
+Cell[39706, 1088, 602, 14, 24, "Print",ExpressionUUID->"c0ba84e1-3c05-44ec-83f2-8a8cc221fd43"],
+Cell[40311, 1104, 605, 15, 24, "Print",ExpressionUUID->"27d421ad-f84a-4ee3-b4fc-19acd86a57ab"],
+Cell[40919, 1121, 605, 15, 24, "Print",ExpressionUUID->"0be2678e-66a5-4f1d-aa77-dfe3c50ed793"],
+Cell[41527, 1138, 608, 15, 24, "Print",ExpressionUUID->"ad4b0c92-594a-41ca-b166-7853afa3da36"],
+Cell[42138, 1155, 606, 15, 24, "Print",ExpressionUUID->"30286e76-2246-43f0-8894-572ac4f0ade1"]
 }, Open  ]]
 }, Open  ]]
 }

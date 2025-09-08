@@ -91,9 +91,9 @@ def run(n_threads, x_grid, q_grid, nf, kind, channel):
 
 def produce_grid(nf, kind, channel, debug = False):
     print(f"Producing FO grid for C{kind}{channel}(nf={nf})")
-    x_fname = "./x.txt"
+    x_fname = "../src/dis_tp/grids/x.txt"
     x_grid = read_grid(x_fname)
-    q_fname = "./Q.txt"
+    q_fname = "../src/dis_tp/grids/Q.txt"
     q_grid = read_grid(q_fname)
 
     if debug:
@@ -109,7 +109,7 @@ def produce_grid(nf, kind, channel, debug = False):
     for i in range(3):
         var = i - 1
         kind_ = kind if kind == "L" else ""
-        output_dir = f"./C{kind_}{channel}_3_m"
+        output_dir = f"../src/dis_tp/grids/C{kind_}{channel}_3_m"
         output_file = output_dir + f"/C{kind}{channel}_nf{nf}_var{var}.txt"
         os.system(f"mkdir -p {output_dir}")
         np.savetxt(output_file, res_mat[:, :, i])

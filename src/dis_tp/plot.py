@@ -28,7 +28,7 @@ class Plot:
     """Class for handling plots"""
 
     def __init__(self, configs: dict, plot_dir: pathlib.Path):
-        plt.style.use(self.load_style(PATH_TO_GLOBAL + "/External/style.yaml"))
+        plt.style.use(self.load_style(PATH_TO_GLOBAL + "/grids/style.yaml"))
         self.result_path = configs["paths"]["results"]
         self.plot_dir = plot_dir
 

@@ -116,9 +116,9 @@ def run(n_threads, x_grid, q_grid, kind, channel, n3lo_var, nf):
 def produce_grid(nf, kind, channel, n3lo_var, debug=False):
     print(f"Producing tilde grid for C{kind}{channel}(nf={nf}) n3lo_var={n3lo_var}")
 
-    x_fname = "./x.txt"
+    x_fname = "../src/dis_tp/grids/x.txt"
     x_grid = read_grid(x_fname)[:-1]
-    q_fname = "./Q.txt"
+    q_fname = "../src/dis_tp/grids/Q.txt"
     q_grid = read_grid(q_fname)
 
     if debug:
@@ -132,7 +132,7 @@ def produce_grid(nf, kind, channel, n3lo_var, debug=False):
     res_mat = res_vec.reshape(len(q_grid), len(x_grid))
 
     kind_ = kind if kind == "L" else ""
-    output_dir = f"./C{kind_}{channel}_3_til"
+    output_dir = f"../src/dis_tp/grids/C{kind_}{channel}_3_til"
     output_file = output_dir + f"/C{kind_}{channel}3til_nf{nf}_var{n3lo_var}.txt"
 
     os.system(f"mkdir -p {output_dir}")

@@ -76,11 +76,11 @@ def produce_grid(nf, channel, debug=False):
     print(f"Producing Mb{channel}_3(nf={nf})")
     parameters.initialize_theory(use_grids=False, masses=[1.51, 4.92, 172.5])
 
-    output_dir = f"./Mb{channel}_3"
+    output_dir = f"../src/dis_tp/grids/Mb{channel}_3"
     output_file = output_dir + f"/Mb{channel}3_nf{nf}.txt"
-    x_fname = "./x.txt"
+    x_fname = "../src/dis_tp/grids/x.txt"
     x_grid = read_grid(x_fname)
-    q_fname = "./Q.txt"
+    q_fname = "../src/dis_tp/grids/Q.txt"
     q_grid = read_grid(q_fname)
 
     if debug:

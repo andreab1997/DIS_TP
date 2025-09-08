@@ -16,7 +16,7 @@ uint HPL_map(int id0 = -1, int id1 = -1, int id2 = -1, int id3 = -1, int id4 = -
 int main() {
 
     ifstream inputx;
-    inputx.open("HPL/HPL_x.txt");
+    inputx.open("../src/dis_tp/grids/HPL/HPL_x.txt");
 
     std::vector<double> x_;
 
@@ -182,7 +182,7 @@ int main() {
 
     std::array<ofstream, N> files;
     for (int i = 0; i < names.size(); i++) {
-        string name = "HPL/HPL_" + names[i] + ".txt";
+        string name = "../src/dis_tp/grids/HPL/HPL_" + names[i] + ".txt";
         files[i].open(name);
         if (!files[i].is_open()) {
             cout << "Problems in opening " << name << endl;

@@ -39,6 +39,9 @@ dependencies = [
     "tomli == 2.0.1"
 ]
 
+[tool.setuptools]
+include-package-data = true
+
 [tool.pytest.ini_options]
 testpaths = ['tests/', 'benchmarks/']
 python_files = ['test_*.py', 'bench_*.py']
