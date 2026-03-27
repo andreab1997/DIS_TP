@@ -2,42 +2,46 @@
 prefix="t"
 declare variations=("_2mb" "_05mb" "t")
 
+CORES=1
+
 #FO results
-for ord in 1 2 3; do
+for ord in 3; do
     for var in ${variations[@]}; do
         if [ $ord -eq 3 ]; then
             if [ $var = "t" ]; then
                 for n3lo_var in -1 0 1; do
-                    dis_tp compute -n 2 ${ord}FO ${ord}${var#"$prefix"}_${n3lo_var};
+                    dis_tp compute -n $CORES ${ord}FO ${ord}${var#"$prefix"}_${n3lo_var};
                 done;
             else
-                dis_tp compute -n 2 ${ord}FO ${ord}${var#"$prefix"};
+                dis_tp compute -n $CORES ${ord}FO ${ord}${var#"$prefix"};
             fi;
         else
-            dis_tp compute -n 2 ${ord}FO ${ord}${var#"$prefix"};
+            dis_tp compute -n $CORES ${ord}FO ${ord}${var#"$prefix"};
         fi;
     done;
 done;
 
 #M and R results
 
-for res in "M" "R"; do
-    for ord in 1 2 3; do
+MATCHING="M_ord"
+
+for res in $MATCHING "R"; do
+    for ord in 3; do
         for var in ${variations[@]}; do
             if [ $ord -eq 3 ]; then
                 if [ $var = "t" ]; then
-                    if [ $res = "M" ]; then
+                    if [ $res = $MATCHING ]; then
                         for n3lo_var in -1 0 1; do
-                            dis_tp compute -n 2 ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_${n3lo_var};
+                            dis_tp compute -n $CORES ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_${n3lo_var};
                         done;
                     else
-                        dis_tp compute -n 2 ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_0;
+                        dis_tp compute -n $CORES ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"}_0;
                     fi;
                 else
-                    dis_tp compute -n 2 ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
+                    dis_tp compute -n $CORES ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
                 fi;
             else
-                dis_tp compute -n 2 ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
+                dis_tp compute -n $CORES ${ord}${res}${var#"$prefix"} ${ord}${var#"$prefix"};
             fi;
         done;
     done;

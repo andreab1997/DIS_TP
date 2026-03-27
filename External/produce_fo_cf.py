@@ -15,7 +15,7 @@ else:
     raise ValueError("Too many command line arguments!!")
 
 mQ = {4: 1.51, 5: 4.92}
-n_threads = 2
+n_threads = 1
 
 approx2g = ad.ApproximateCoefficientFunction(3, "2", "g")
 approx2q = ad.ApproximateCoefficientFunction(3, "2", "q")
@@ -38,7 +38,7 @@ def function_to_exe_in_parallel_2g(pair):
     m2Q2 = mQ[nf]**2 / q**2
     m2mu2 = m2Q2
 
-    res = approx2g.fxBand(z, m2Q2, m2mu2, nf)
+    res = approx2g.fxBand(z, m2Q2, m2mu2, nf - 1)
     return [res.GetLower(), res.GetCentral(), res.GetHigher()]
 
 def function_to_exe_in_parallel_2q(pair):
@@ -46,7 +46,7 @@ def function_to_exe_in_parallel_2q(pair):
     m2Q2 = mQ[nf]**2 / q**2
     m2mu2 = m2Q2
 
-    res = approx2q.fxBand(z, m2Q2, m2mu2, nf)
+    res = approx2q.fxBand(z, m2Q2, m2mu2, nf - 1)
     return [res.GetLower(), res.GetCentral(), res.GetHigher()]
 
 def function_to_exe_in_parallel_Lg(pair):
@@ -54,7 +54,7 @@ def function_to_exe_in_parallel_Lg(pair):
     m2Q2 = mQ[nf]**2 / q**2
     m2mu2 = m2Q2
 
-    res = approxLg.fxBand(z, m2Q2, m2mu2, nf)
+    res = approxLg.fxBand(z, m2Q2, m2mu2, nf - 1)
     return [res.GetLower(), res.GetCentral(), res.GetHigher()]
 
 def function_to_exe_in_parallel_Lq(pair):
@@ -62,7 +62,7 @@ def function_to_exe_in_parallel_Lq(pair):
     m2Q2 = mQ[nf]**2 / q**2
     m2mu2 = m2Q2
 
-    res = approxLq.fxBand(z, m2Q2, m2mu2, nf)
+    res = approxLq.fxBand(z, m2Q2, m2mu2, nf - 1)
     return [res.GetLower(), res.GetCentral(), res.GetHigher()]
 
 def run(n_threads, x_grid, q_grid, nf, kind, channel):
@@ -116,7 +116,7 @@ def produce_grid(nf, kind, channel, debug = False):
 
 
 if __name__ == "__main__":
-    for nf in [4, 5]:
+    for nf in [5]:
         for kind in ["2", "L"]:
             for channel in ["g", "q"]:
                 produce_grid(nf, kind, channel, debug)

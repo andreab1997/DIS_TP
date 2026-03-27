@@ -35,6 +35,8 @@ def Cb_1_loc(z, Q, p, _nf):
 
 @nb.njit(cache=True)
 def Cb_1_sing(z, Q, p, _nf):
+    if np.isclose(z, 1.0, rtol=1e-7):
+        return 0.0
     e_h = p[-1]
     return e_h * e_h * 2 * CF * (2 * np.log(1 - z) - 3.0 / 2.0) / (1 - z)
 
@@ -97,6 +99,8 @@ def Cb_2_loc(z, Q, p, nf):
 
 @nb.njit(cache=True)
 def Cb_2_sing(z, Q, p, nf):
+    if np.isclose(z, 1.0, rtol=1e-7):
+        return 0.0
     e_h = p[-1]
     z1 = 1 - z
     dl = np.log(z)
@@ -206,6 +210,8 @@ def Cb_3_loc(z, Q, p, nf):
 
 
 def Cb_3_sing(z, Q, p, nf):
+    if np.isclose(z, 1.0, rtol=1e-7):
+        return 0.0
     e_h = p[-1]
     args = np.array([nf], dtype=float)
     return e_h**2 * xc2ns3p.c2ns3b(z, args=args)

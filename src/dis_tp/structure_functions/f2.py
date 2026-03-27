@@ -382,6 +382,105 @@ def F2_M(order, pdf, x, Q, h_id, meth, target_dict=None, muF_ratio=1, muR_ratio=
             res += n3lo_n3ll_reg + n3lo_n3ll_local + n3lo_n3ll_sing
     return res
 
+def F2_M_ord(order, pdf, x, Q, h_id, meth, target_dict=None, muF_ratio=1, muR_ratio=1):
+    """
+    Compute the M result for the structure function F2 with different PDFs at every order
+
+    Parameters:
+        order : int
+            requested perturbative order (0 == LO, 1 == NLO,...)
+        meth : str
+            method to be used (our, fonll)
+        pdf : str or list(str)
+            pdf(s) to be used
+        x : float
+            x-value
+        Q : float
+            Q-value
+        h_id : int
+            heavy quark id
+        muF_ratio : float
+            ratio to Q of the factorization scale
+        muR_ratio : float
+            ratio to Q of the renormalization scale
+    Returns:
+            : float
+            result
+    """
+
+    muR = muR_ratio * Q
+    nf = number_active_flavors(Q)
+    # NOTE: here we don't adjust PDFConvolute as in FO
+    # because we always assume Intrisic contributions to be zero.
+    p = np.array([masses(h_id), Q, charges(h_id)])
+    a_s = alpha_s(muR**2)
+    if meth == "our":
+        if order >= 0:
+            res = 0.0
+        if order >= 1:
+            Mypdf_1 = mkPDF(pdf[0], order)
+            nlo_nll_reg = a_s * PDFConvolute(
+                TildeCoeffFunc.Cg_1_til_reg, Mypdf_1, x, Q, p, nf, g_id
+            )
+            nlo_nll_local = MasslessCoeffFunc.Cb_0_loc(x, Q, p, nf) * (
+                Mypdf_1.xfxQ2(h_id, x, Q * Q) + Mypdf_1.xfxQ2(-h_id, x, Q * Q)
+            )
+            res += nlo_nll_reg + nlo_nll_local
+        if order >= 2:
+            Mypdf_2 = mkPDF(pdf[1], order)
+            nnlo_nnll_reg = a_s * (
+                a_s
+                * (
+                    PDFConvolute(TildeCoeffFunc.Cg_2_til_reg, Mypdf_2, x, Q, p, nf, g_id)
+                    + PDFConvolute(
+                        TildeCoeffFunc.Cq_2_til_reg,
+                        Mypdf_2,
+                        x,
+                        Q,
+                        p,
+                        nf,
+                        target_dict=target_dict,
+                    )
+                )
+                + PDFConvolute(MasslessCoeffFunc.Cb_1_reg, Mypdf_2, x, Q, p, nf, h_id)
+            )
+            nnlo_nnll_local = (
+                a_s
+                * MasslessCoeffFunc.Cb_1_loc(x, Q, p, nf)
+                * (Mypdf_2.xfxQ2(h_id, x, Q * Q) + Mypdf_2.xfxQ2(-h_id, x, Q * Q))
+            )
+            nnlo_nnll_sing = a_s * PDFConvolute_plus(
+                MasslessCoeffFunc.Cb_1_sing, Mypdf_2, x, Q, p, nf, h_id
+            )
+            res += nnlo_nnll_reg + nnlo_nnll_local + nnlo_nnll_sing
+        if order >= 3:
+            Mypdf_3 = mkPDF(pdf[2], order)
+            n3lo_n3ll_reg = (a_s**2) * (
+                a_s
+                * (
+                    PDFConvolute(TildeCoeffFunc.Cg_3_til_reg, Mypdf_3, x, Q, p, nf, g_id)
+                    + PDFConvolute(
+                        TildeCoeffFunc.Cq_3_til_reg,
+                        Mypdf_3,
+                        x,
+                        Q,
+                        p,
+                        nf,
+                        target_dict=target_dict,
+                    )
+                )
+                + PDFConvolute(MasslessCoeffFunc.Cb_2_reg, Mypdf_3, x, Q, p, nf, h_id)
+            )
+            n3lo_n3ll_local = (
+                (a_s**2)
+                * MasslessCoeffFunc.Cb_2_loc(x, Q, p, nf)
+                * (Mypdf_3.xfxQ2(h_id, x, Q * Q) + Mypdf_3.xfxQ2(-h_id, x, Q * Q))
+            )
+            n3lo_n3ll_sing = a_s**2 * PDFConvolute_plus(
+                MasslessCoeffFunc.Cb_2_sing, Mypdf_3, x, Q, p, nf, h_id
+            )
+            res += n3lo_n3ll_reg + n3lo_n3ll_local + n3lo_n3ll_sing
+    return res
 
 def F2_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio=1):
     """

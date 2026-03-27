@@ -7,8 +7,8 @@ from eko.constants import CA, CF, TR, zeta2, zeta3
 from ekore.operator_matrix_elements.unpolarized.space_like import as3
 from yadism.coefficient_functions.fonll.raw_nc import wgplg
 from yadism.coefficient_functions.special import li2 as ddilog
-from .aQg3N import A_Hg_no_aQg3
-import adani
+# from .aQg3N import A_Hg_no_aQg3
+# import adani
 
 from . import Initialize as Ini
 from . import parameters
@@ -149,18 +149,13 @@ def Mgq_2_reg(z, p, nf):
         )
     )
 
-aQg3 = adani.MatchingCondition(3, 'Q', 'g', 'exact')
-
 def Mbg_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        # print("Interpolating!!")
         return Ini.Mbg3[nf - 4](x, p[1])[0, 0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     # This function is called with nf (=h_id) but actually uses nf-1. Still it
     # is called with nf in order to take the correct grid
-    #return 0.5 * inverse_mellin(as3.A_Hg, x, nf - 1, r, s, path, L)
-    muindep = 0. if np.isclose(x, 1.0, rtol=1e-7) else aQg3.MuIndependentTerm(x, nf - 1).GetCentral()
-    return 0.5 * (inverse_mellin(A_Hg_no_aQg3, x, nf - 1, r, s, path, L) + muindep)
+    return 0.5 * inverse_mellin(as3.A_Hg, x, nf - 1, r, s, path, L)
 
 
 def Mbq_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
@@ -178,7 +173,7 @@ def P1(p, nf):
 @nb.njit(cache=True)
 def P2(p):
     fact = np.log((p[1] ** 2) / (p[0] ** 2))
-    return (2.0 / 9.0) * (2 * (fact**2) + 19 * 3 * fact + 7 * 3)  # Thanks EKO
+    return (2.0 / 9.0) * (2 * (fact**2) - 19 * 3 * fact - 7 * 3)  # Thanks EKO
 
 @nb.njit(cache=True)
 def Mqq_2_reg(z, p, _nf):

@@ -14,6 +14,7 @@ mapfunc = {
     "F2": {
         "R": [f2.F2_R],
         "M": [f2.F2_M],
+        "M_ord": [f2.F2_M_ord],
         "FO": [f2.F2_FO],
         "light": [f2.F2_Light],
         "total": [f2.F2_Total],
@@ -24,6 +25,7 @@ mapfunc = {
     "FL": {
         "R": [fl.FL_R],
         "M": [fl.FL_M],
+        "M_ord": [fl.FL_M_ord],
         "FO": [fl.FL_FO],
         "light": [fl.FL_Light],
         "total": [fl.FL_Total],
@@ -91,6 +93,15 @@ class Runner:
             th_obj.thr_atlas_as,
         )
         self.partial_sf = None
+
+        if obs_obj.obs[0].restype == "M_ord":
+            for ob in self.o_par.obs:
+                if self.t_par.order != len(ob.pdf):
+                    raise ValueError("In operator card there are more PDFs than needed!")
+        else:
+            for ob in self.o_par.obs:
+                if isinstance(ob.pdf, list):
+                    raise ValueError("Multiple PDFs are allowed only if restype='M_ord'!")
 
     @staticmethod
     def compute_xs(ob, sfs):
