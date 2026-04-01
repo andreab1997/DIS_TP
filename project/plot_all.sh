@@ -12,9 +12,9 @@ done;
 
 # Order Comparison
 
-# for ob in F2 FL; do
-#     dis_tp plot $plot_path $ob NLO $heavy_quark plot_fonll_order_comparison;
-# done;
+for ob in F2 FL; do
+    dis_tp plot $plot_path $ob NLO $heavy_quark plot_fonll_order_comparison;
+done;
 
 for ob in F2 FL; do
     dis_tp plot $plot_path $ob NLO $heavy_quark plot_massive_order_comparison;

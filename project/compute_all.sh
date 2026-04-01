@@ -5,7 +5,7 @@ declare variations=("_2mb" "_05mb" "t")
 CORES=1
 
 #FO results
-for ord in 3; do
+for ord in 1 2 3; do
     for var in ${variations[@]}; do
         if [ $ord -eq 3 ]; then
             if [ $var = "t" ]; then
@@ -26,7 +26,7 @@ done;
 MATCHING="M_ord"
 
 for res in $MATCHING "R"; do
-    for ord in 3; do
+    for ord in 1 2 3; do
         for var in ${variations[@]}; do
             if [ $ord -eq 3 ]; then
                 if [ $var = "t" ]; then
