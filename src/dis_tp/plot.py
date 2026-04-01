@@ -607,10 +607,10 @@ class Plot:
         ordered_result_FO_NNLO, x_grid, _q_grid = self.get_FO_result(obs, "2", h_id)
         ordered_result_FO_N3LO, x_grid, _q_grid = self.get_FO_result(obs, "3", h_id)
         n3lo_var_FO = self.get_FO_n3lo_var_results(obs, h_id)
-        ordered_result_M_NLO = self.get_M_results(obs, "1", h_id)
-        ordered_result_M_NNLO = self.get_M_results(obs, "2", h_id)
-        ordered_result_M_N3LO = self.get_M_results(obs, "3", h_id)
-        n3lo_var_M = self.get_M_n3lo_var_results(obs, h_id)
+        ordered_result_M_NLO = self.get_M_results(obs, "1", h_id, True)
+        ordered_result_M_NNLO = self.get_M_results(obs, "2", h_id, True)
+        ordered_result_M_N3LO = self.get_M_results(obs, "3", h_id, True)
+        n3lo_var_M = self.get_M_n3lo_var_results(obs, h_id, True)
         diff_x_points = list(set(x_grid))
         for x in diff_x_points:
             plot_name = obs + "_comporders_" + h_id
