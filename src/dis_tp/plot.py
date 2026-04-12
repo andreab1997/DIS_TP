@@ -530,7 +530,7 @@ class Plot:
                 label="FO",
                 color="violet",
                 linestyle="--",
-                linewidth=2.0,
+                linewidth=0.8,
             )
             plt.plot(
                 q_plot,
@@ -544,7 +544,7 @@ class Plot:
                 res_plot_M[list(shifts.keys())[1]],
                 label="M",
                 color="blue",
-                linewidth=1.2,
+                linewidth=1.0,
             )
             to_fill_R = self.construct_sv_band(res_plot_R, q_plot)
             to_fill_M = self.construct_sv_band(res_plot_M, q_plot)
@@ -562,7 +562,7 @@ class Plot:
                 np.array(res_plot_R[list(shifts.keys())[1]]) + np.array(to_fill_R),
                 np.array(res_plot_R[list(shifts.keys())[1]]) - np.array(to_fill_R),
                 color="green",
-                label="scale_unc",
+                # label="scale_unc",
                 alpha=0.25,
             )
             plt.fill_between(
@@ -570,7 +570,7 @@ class Plot:
                 np.array(res_plot_M[list(shifts.keys())[1]]) + np.array(to_fill_M),
                 np.array(res_plot_M[list(shifts.keys())[1]]) - np.array(to_fill_M),
                 color="blue",
-                label="scale_unc",
+                # label="scale_unc",
                 alpha=0.25,
             )
             if order == "3":
@@ -581,7 +581,7 @@ class Plot:
                     np.array(res_plot_M[list(shifts.keys())[1]])
                     - np.array(to_fill_M_n3lo_var),
                     color="lightseagreen",
-                    label="cf_unc",
+                    # label="cf_unc",
                     alpha=0.25,
                 )
                 plt.fill_between(
@@ -589,7 +589,7 @@ class Plot:
                     np.array(sv_FO_coll[1]) + np.array(to_fill_FO_n3lo_var),
                     np.array(sv_FO_coll[1]) - np.array(to_fill_FO_n3lo_var),
                     color="darkorchid",
-                    label="cf_unc",
+                    # label="cf_unc",
                     alpha=0.25,
                     linestyle="--",
                 )
@@ -645,21 +645,21 @@ class Plot:
                 res_plot_M_NLO[list(shifts.keys())[1]],
                 label="NLO",
                 color="green",
-                linewidth=2.0,
+                linewidth=1.0,
             )
             plt.plot(
                 q_plot,
                 res_plot_M_NNLO[list(shifts.keys())[1]],
                 label="NNLO",
                 color="violet",
-                linewidth=2.0,
+                linewidth=1.0,
             )
             plt.plot(
                 q_plot,
                 res_plot_M_N3LO[list(shifts.keys())[1]],
                 label="N3LO",
                 color="blue",
-                linewidth=2.5,
+                linewidth=1.0,
             )
             plt.fill_between(
                 q_plot,
@@ -668,7 +668,7 @@ class Plot:
                 np.array(res_plot_M_NLO[list(shifts.keys())[1]])
                 - np.array(to_fill_M_NLO),
                 color="green",
-                label="scale_unc",
+                # label="scale_unc",
                 alpha=0.25,
             )
             plt.fill_between(
@@ -678,7 +678,7 @@ class Plot:
                 np.array(res_plot_M_NNLO[list(shifts.keys())[1]])
                 - np.array(to_fill_M_NNLO),
                 color="violet",
-                label="scale_unc",
+                # label="scale_unc",
                 alpha=0.25,
             )
             plt.fill_between(
@@ -688,7 +688,7 @@ class Plot:
                 np.array(res_plot_M_N3LO[list(shifts.keys())[1]])
                 - np.array(to_fill_M_N3LO),
                 color="blue",
-                label="scale_unc",
+                # label="scale_unc",
                 alpha=0.25,
             )
             plt.fill_between(
@@ -698,7 +698,7 @@ class Plot:
                 np.array(res_plot_M_N3LO[list(shifts.keys())[1]])
                 - np.array(to_fill_M_n3lo_var),
                 color="lightseagreen",
-                label="cf_unc",
+                # label="cf_unc",
                 alpha=0.25,
             )
             plt.xscale("log")
@@ -737,21 +737,21 @@ class Plot:
                 sv_FO_coll_NLO[1],
                 label="NLO",
                 color="green",
-                linewidth=2.0,
+                linewidth=1.0,
             )
             plt.plot(
                 q_plot,
                 sv_FO_coll_NNLO[1],
                 label="NNLO",
                 color="violet",
-                linewidth=2.0,
+                linewidth=1.0,
             )
             plt.plot(
                 q_plot,
                 sv_FO_coll_N3LO[1],
                 label="N3LO",
                 color="blue",
-                linewidth=2.5,
+                linewidth=1.0,
             )
 
             plt.fill_between(
@@ -759,7 +759,7 @@ class Plot:
                     np.array(sv_FO_coll_N3LO[1]) + np.array(to_fill_FO_n3lo_var),
                     np.array(sv_FO_coll_N3LO[1]) - np.array(to_fill_FO_n3lo_var),
                     color="blue",
-                    label="cf_unc",
+                    # label="cf_unc",
                     alpha=0.25,
                     linestyle="--",
                 )
@@ -923,7 +923,7 @@ class Plot:
                 label="FO",
                 color="violet",
                 linestyle="--",
-                linewidth=2.0,
+                linewidth=0.8,
             )
             plt.plot(
                 q_plot,
@@ -937,7 +937,7 @@ class Plot:
                 res_plot_M[list(shifts.keys())[1]],
                 label="M",
                 color="blue",
-                linewidth=1.2,
+                linewidth=1.0,
             )
             plt.plot(
                 q_plot,
@@ -988,7 +988,7 @@ class Plot:
                     np.array(res_plot_M[list(shifts.keys())[1]])
                     - np.array(to_fill_M_n3lo_var),
                     color="lightseagreen",
-                    label="cf_unc",
+                    # label="cf_unc",
                     alpha=0.25,
                 )
                 plt.fill_between(
@@ -996,7 +996,7 @@ class Plot:
                     np.array(sv_FO_coll[1]) + np.array(to_fill_FO_n3lo_var),
                     np.array(sv_FO_coll[1]) - np.array(to_fill_FO_n3lo_var),
                     color="darkorchid",
-                    label="cf_unc",
+                    # label="cf_unc",
                     alpha=0.25,
                     linestyle="--",
                 )
