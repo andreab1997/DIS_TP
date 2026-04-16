@@ -167,7 +167,7 @@ def Cq_3_til_reg(z, Q, p, nf, use_analytic=False):
     return (
         Cq_3_m_reg(z, Q, p, nf)
         + 2 * Cq_2_m_reg(z, Q, p, nf - 1) * Mgg_1_loc(z, p, nf - 1)
-        - Convolute(Cg_1_m_reg, Mgq_2_reg, z, Q, p, nf - 1, nf - 1)
+        - Convolute(Cg_1_til_reg, Mgq_2_reg, z, Q, p, nf - 1, nf)
         - 2
         * (
             Cb_1_loc(z, Q, p, nf) * Mbq_2(z, p, nf - 1)
