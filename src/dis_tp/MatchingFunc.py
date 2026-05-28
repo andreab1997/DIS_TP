@@ -2,24 +2,27 @@
 notation: p[1] is Q while p[0] is m_b
 """
 import numpy as np
+import numba as nb
 from eko.constants import CA, CF, TR, zeta2, zeta3
 from ekore.operator_matrix_elements.unpolarized.space_like import as3
 from yadism.coefficient_functions.fonll.raw_nc import wgplg
 from yadism.coefficient_functions.special import li2 as ddilog
+# from .aQg3N import A_Hg_no_aQg3
+# import adani
 
 from . import Initialize as Ini
 from . import parameters
 from .InverseMellin import inverse_mellin
 
-
+@nb.njit(cache=True)
 def Mbg_1(z, p, _nf):
     return 2 * TR * np.log((p[1] ** 2) / (p[0] ** 2)) * (z * z + (1 - z) * (1 - z))
 
-
+@nb.njit(cache=True)
 def Mgg_1_loc(z, p, _nf):
     return -(4.0 / 3.0) * TR * np.log((p[1] ** 2) / (p[0] ** 2))
 
-
+@nb.njit(cache=True)
 def Mgg_2_reg(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z2 = z**2
@@ -67,7 +70,7 @@ def Mgg_2_reg(z, p, nf):
     ) + CA * TR * (8.0 / 3.0 / z - 16.0 / 3.0 + 8.0 * z / 3.0 - 8.0 * z2 / 3.0)
     return AS2ggH_R + L * omeL1 + L**2 * omeL2
 
-
+@nb.njit(cache=True)
 def Mgg_2_loc(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     lm1 = np.log(1 - z)
@@ -76,7 +79,7 @@ def Mgg_2_loc(z, p, nf):
     omeL2 = TR**2 * 16.0 / 9.0 + CA * TR * 8 * lm1 / 3
     return AS2ggH_L + L * omeL1 + L**2 * omeL2
 
-
+@nb.njit(cache=True)
 def Mgg_2_sing(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
@@ -85,7 +88,7 @@ def Mgg_2_sing(z, p, nf):
     omeL2 = 8.0 / 3.0 / z1
     return CA * TR * (AS2ggH_S + L**2 * omeL2 + L * omeL1)
 
-
+@nb.njit(cache=True)
 def Mbq_2(z, p, _nf):
     lnz = np.log(z)
     lnz2 = np.log(z) ** 2
@@ -123,7 +126,7 @@ def Mbq_2(z, p, _nf):
     # fmt: on
     return 1 / 2 * (APS2Hq + APS2Hq_mass)
 
-
+@nb.njit(cache=True)
 def Mgq_2_reg(z, p, nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     z1 = 1 - z
@@ -146,10 +149,9 @@ def Mgq_2_reg(z, p, nf):
         )
     )
 
-
 def Mbg_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbg3[nf - 4](x, p[1])[0]
+        return Ini.Mbg3[nf - 4](x, p[1])[0, 0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     # This function is called with nf (=h_id) but actually uses nf-1. Still it
     # is called with nf in order to take the correct grid
@@ -158,22 +160,22 @@ def Mbg_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
 
 def Mbq_3_reg(x, p, nf, r=None, s=None, path="talbot", use_analytic=False):
     if parameters.grids and not use_analytic:
-        return Ini.Mbq3[nf - 4](x, p[1])[0]
+        return Ini.Mbq3[nf - 4](x, p[1])[0, 0]
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     # This function is called with nf (=h_id) but actually uses nf-1. Still it
     # is called with nf in order to take the correct grid
     return 0.5 * inverse_mellin(as3.A_Hq, x, nf - 1, r, s, path, L)
 
-
+@nb.njit(cache=True)
 def P1(p, nf):
     return -Mgg_1_loc(0, p, nf)
 
-
+@nb.njit(cache=True)
 def P2(p):
     fact = np.log((p[1] ** 2) / (p[0] ** 2))
-    return (2.0 / 9.0) * (2 * (fact**2) + 19 * 3 * fact + 7 * 3)  # Thanks EKO
+    return (2.0 / 9.0) * (2 * (fact**2) - 19 * 3 * fact - 7 * 3)  # Thanks EKO
 
-
+@nb.njit(cache=True)
 def Mqq_2_reg(z, p, _nf):
     z2 = z * z
     lnz = np.log(z)
@@ -189,7 +191,7 @@ def Mqq_2_reg(z, p, _nf):
     omeL2 = -4.0 / 3.0 - 4.0 * z / 3.0
     return CF * TR * (ANS2qqH_R + omeL1 * L + omeL2 * L**2)
 
-
+@nb.njit(cache=True)
 def Mqq_2_sing(z, p, _nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     ANS2qqH_S = 224.0 / 27.0 / (1.0 - z)
@@ -197,7 +199,7 @@ def Mqq_2_sing(z, p, _nf):
     omeL2 = 8.0 / 3.0 / (1.0 - z)
     return CF * TR * (ANS2qqH_S + omeL1 * L + omeL2 * L**2)
 
-
+@nb.njit(cache=True)
 def Mqq_2_loc(z, p, _nf):
     L = np.log((p[1] ** 2) / (p[0] ** 2))
     ln1mz = np.log(1.0 - z)
@@ -206,7 +208,7 @@ def Mqq_2_loc(z, p, _nf):
     omeL2 = 8.0 * ln1mz / 3.0 + 2.0
     return CF * TR * (ANS2qqH_L + omeL1 * L + omeL2 * L**2)
 
-
+@nb.njit(cache=True)
 def Mbg_2(z, p, _nf):
     s121mz = wgplg(1, 2, 1.0 - z)
     s12mz = wgplg(1, 2, -z)

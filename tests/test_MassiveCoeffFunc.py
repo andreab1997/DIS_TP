@@ -2,7 +2,7 @@ import pathlib
 
 import numpy as np
 from numpy.testing import assert_allclose
-from scipy.interpolate import interp2d
+from scipy.interpolate import RectBivariateSpline
 from test_MasslessCoeffFunc import MockESF
 from yadism.coefficient_functions.heavy import f2_nc, fl_nc
 
@@ -108,17 +108,17 @@ class TestNic:
     c2q = np.array(readND(here / f"grids/C2q.txt"))
     cLg = np.array(readND(here / f"grids/CLg.txt"))
     cLq = np.array(readND(here / f"grids/CLq.txt"))
-    c2g = interp2d(Ini.ZList, Ini.QList, c2g, kind="quintic")
-    c2q = interp2d(Ini.ZList, Ini.QList, c2q, kind="quintic")
-    cLg = interp2d(Ini.ZList, Ini.QList, cLg, kind="quintic")
-    cLq = interp2d(Ini.ZList, Ini.QList, cLq, kind="quintic")
+    c2g = RectBivariateSpline(Ini.ZList, Ini.QList, c2g.T)
+    c2q = RectBivariateSpline(Ini.ZList, Ini.QList, c2q.T)
+    cLg = RectBivariateSpline(Ini.ZList, Ini.QList, cLg.T)
+    cLq = RectBivariateSpline(Ini.ZList, Ini.QList, cLq.T)
 
     def test_Lg(self):
         dis_tp = []
         my = []
         for x in self.xs:
             dis_tp.append(cf.CLg_2_m_reg(x, self.Q, p, h_id) / e_h**2)
-            my.append(self.cLg(x, self.Q)[0])
+            my.append(self.cLg(x, self.Q)[0, 0])
         assert_allclose(my, dis_tp, rtol=1e-3)
 
     def test_Lq(self):
@@ -126,7 +126,7 @@ class TestNic:
         my = []
         for x in self.xs:
             dis_tp.append(cf.CLq_2_m_reg(x, self.Q, p, h_id) / e_h**2)
-            my.append(self.cLq(x, self.Q)[0])
+            my.append(self.cLq(x, self.Q)[0, 0])
         assert_allclose(my, dis_tp, rtol=1e-1)
 
     def test_2g(self):
@@ -134,7 +134,7 @@ class TestNic:
         my = []
         for x in self.xs:
             dis_tp.append(cf.Cg_2_m_reg(x, self.Q, p, h_id) / e_h**2)
-            my.append(self.c2g(x, self.Q)[0])
+            my.append(self.c2g(x, self.Q)[0, 0])
         assert_allclose(my, dis_tp, rtol=9e-4)
 
     def test_2q(self):
@@ -142,7 +142,7 @@ class TestNic:
         my = []
         for x in self.xs:
             dis_tp.append(cf.Cq_2_m_reg(x, self.Q, p, h_id) / e_h**2)
-            my.append(self.c2q(x, self.Q)[0])
+            my.append(self.c2q(x, self.Q)[0, 0])
         assert_allclose(my, dis_tp, rtol=3e-1)
 
     def test_n3lo_f2(self):

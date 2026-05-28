@@ -288,6 +288,11 @@ class RunParameters:
                 thr_ratio = 2.0
             if np.isclose(thr_ratio, 500.0):
                 thr_ratio = 0.5
+        if ob.restype == "M_ord":
+            pdf = ob.pdf[0]
+        else:
+            pdf = ob.pdf
+        
         file_name = (
             ob.name
             + "_"
@@ -301,7 +306,7 @@ class RunParameters:
             + "_thr="
             + str(thr_ratio)
             + "_"
-            + str(ob.pdf)
+            + str(pdf)
             + "_"
             + str(self.theory_parameters().n3lo_variation)
         )

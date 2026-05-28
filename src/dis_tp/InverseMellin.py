@@ -10,7 +10,6 @@ def check_path(r, s):
             "r + s must be greater than 1 (i.e. than the real part of the rightmost pole)"
         )
 
-
 def quad_ker_talbot(u, func, x, nf, L):
     is_singlet = True
     path = Path(u, np.log(x), is_singlet)

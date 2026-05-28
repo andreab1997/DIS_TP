@@ -12,3 +12,6 @@ data/
 *.log
 #dist
 dist/
+External/*.exe
+.vscode/
+venv/

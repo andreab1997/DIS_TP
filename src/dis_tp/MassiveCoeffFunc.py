@@ -2,6 +2,7 @@
 
 import LeProHQ
 import numpy as np
+import numba as nb
 from eko.constants import TR
 from scipy.integrate import quad
 
@@ -23,7 +24,7 @@ def Cb_2_m_reg(z, Q, p, _nf):
     FHprefactor = Q2 / (np.pi * m_b**2) * e_h**2
     return FHprefactor / z * (4.0 * np.pi) ** 2 * LeProHQ.dq1("F2", "VV", xi, eta)
 
-
+@nb.njit(cache=True)
 def Cb_2_m_loc(_z, Q, p, _nf):
     l = quad(
         lambda x: Cb_2_m_reg(x, Q, p, _nf),
@@ -33,7 +34,7 @@ def Cb_2_m_loc(_z, Q, p, _nf):
     )
     return -l[0]
 
-
+@nb.njit(cache=True)
 def Cg_1_m_reg(z, Q, p, _nf):
     Q2 = Q * Q
     m_b = p[0]
@@ -89,7 +90,7 @@ def Cg_3_m_reg(z, Q, p, nf):
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return e_h**2 * Initialize.Cg3m[nf - 4](z, Q)[0]
+    return e_h**2 * Initialize.Cg3m[nf - 4](z, Q)[0, 0]
 
 
 def Cq_2_m_reg(z, Q, p, _nf):
@@ -122,7 +123,7 @@ def Cq_3_m_reg(z, Q, p, nf):
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return e_h**2 * Initialize.Cq3m[nf - 4](z, Q)[0]
+    return e_h**2 * Initialize.Cq3m[nf - 4](z, Q)[0, 0]
 
 
 # FL
@@ -139,7 +140,7 @@ def CLb_2_m_reg(z, Q, p, _nf):
     FHprefactor = Q2 / (np.pi * m_b**2) * e_h**2
     return FHprefactor / z * (4.0 * np.pi) ** 2 * LeProHQ.dq1("FL", "VV", xi, eta)
 
-
+@nb.njit(cache=True)
 def CLg_1_m_reg(z, Q, p, _nf):
     Q2 = Q * Q
     m_b = p[0]
@@ -192,8 +193,7 @@ def CLg_3_m_reg(z, Q, p, nf):
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0
-    return e_h**2 * Initialize.CLg3m[nf - 4](z, Q)[0]
-
+    return e_h**2 * Initialize.CLg3m[nf - 4](z, Q)[0, 0]
 
 def CLq_2_m_reg(z, Q, p, _nf):
     Q2 = Q * Q
@@ -225,4 +225,4 @@ def CLq_3_m_reg(z, Q, p, nf):
     thre = 4.0 * eps * z / (1 - z)
     if thre > 1.0:
         return 0.0
-    return e_h**2 * Initialize.CLq3m[nf - 4](z, Q)[0]
+    return e_h**2 * Initialize.CLq3m[nf - 4](z, Q)[0,0]

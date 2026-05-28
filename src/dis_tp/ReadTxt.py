@@ -67,11 +67,11 @@ class Construct_Grid:
 
     def construct_single_x(self, z):
         z_func_values = []
-        p = []
+        p = np.array([])
         i = self.xgrid.index(z)
         console.log(f"[green]Computing x = {z},  {i}/{len(self.xgrid)}")
         for q in self.qgrid:
-            p = [self.mass, q, self.e_h]
+            p = np.array([self.mass, q, self.e_h])
             if self.grid_type == "matching":
                 z_func_values.append(self.func(z, p, self.nf, use_analytic=True))
             elif self.grid_type == "tilde":

@@ -49,7 +49,7 @@ def FL_FO(
     """
     Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
-    p = [masses(h_id), Q, charges(h_id)]
+    p = np.array([masses(h_id), Q, charges(h_id)])
     nf = number_active_flavors(Q)
     conv_func = PDFConvolute
     if nf > h_id:
@@ -77,7 +77,7 @@ def FL_FO(
 
         # add missing diagrams with hq+1 effects
         for ihq in range(h_id + 1, 6):
-            pihq = [masses(ihq), Q, charges(h_id)]
+            pihq = np.array([masses(ihq), Q, charges(h_id)])
             reg_miss = PDFConvolute(
                 MassiveCoeffFunc.CLb_2_m_reg, Mypdf, x, Q, pihq, h_id, h_id
             )
@@ -124,7 +124,7 @@ def FL_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, target_dict=None, muR_r
     """
     Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
-    p = [masses(h_id), Q, charges(h_id)]
+    p = np.array([masses(h_id), Q, charges(h_id)])
     nf = number_active_flavors(Q)
     a_s = alpha_s(muR**2)
     res = 0.0
@@ -151,7 +151,7 @@ def FL_R(order, pdf, x, Q, h_id, meth=None, muF_ratio=1, target_dict=None, muR_r
         )
         res += nnll_reg
     if order >= 3:
-        pg = ps = [masses(h_id), Q, 0, charges(h_id)]
+        pg = ps = np.array([masses(h_id), Q, 0, charges(h_id)])
         ps[2] = n3lo_color_factors("s", nf, False)
         pg[2] = n3lo_color_factors("g", nf, False)
         n3ll_reg = a_s**2 * (
@@ -206,7 +206,7 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
     Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
     nf = number_active_flavors(Q)
-    p = [masses(h_id), Q, charges(h_id)]
+    p = np.array([masses(h_id), Q, charges(h_id)])
     a_s = alpha_s(muR**2)
     if meth == "our":
         if order >= 0:
@@ -288,14 +288,14 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
 
             # add missing diagrams with hq+1 effects
             for ihq in range(h_id + 1, 6):
-                pihq = [masses(ihq), Q, charges(h_id)]
+                pihq = np.array([masses(ihq), Q, charges(h_id)])
                 reg_miss = PDFConvolute(
                     MassiveCoeffFunc.CLb_2_m_reg, Mypdf, x, Q, pihq, nf, h_id
                 )
                 res += a_s**2 * reg_miss
 
         if order >= 3:
-            pns = [masses(h_id), Q, 0, charges(h_id)]
+            pns = np.array([masses(h_id), Q, 0, charges(h_id)])
             pns[2] = n3lo_color_factors("ns", nf, False)
             n3lo_n3ll_reg = a_s**3 * (
                 PDFConvolute(TildeCoeffFunc.CLg_3_til_reg, Mypdf, x, Q, p, nf, g_id)
@@ -318,6 +318,89 @@ def FL_M(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=
             res += n3lo_n3ll_reg + n3lo_n3ll_loc
     return res
 
+def FL_M_ord(order, pdf, x, Q, h_id, meth, muF_ratio=1, target_dict=None, muR_ratio=1):
+    """
+    Compute the M result for the structure function F2 with different PDFs at every order
+
+    Parameters:
+        order : int
+            requested perturbative order (0 == LO, 1 == NLO,...)
+        meth : str
+            method to be used (our, fonll)
+        pdf : str or list(str)
+            pdf(s) to be used
+        x : float
+            x-value
+        Q : float
+            Q-value
+        h_id : int
+            heavy quark id
+        muF_ratio : float
+            ratio to Q of the factorization scale
+        muR_ratio : float
+            ratio to Q of the renormalization scale
+    Returns:
+            : float
+            result
+    """
+
+    muR = muR_ratio * Q
+    nf = number_active_flavors(Q)
+    p = np.array([masses(h_id), Q, charges(h_id)])
+    a_s = alpha_s(muR**2)
+    if meth == "our":
+        if order >= 0:
+            res = 0.0
+        if order >= 1:
+            Mypdf_1 = mkPDF(pdf[0], order)
+            res += a_s * PDFConvolute(
+                TildeCoeffFunc.CLg_1_til_reg, Mypdf_1, x, Q, p, nf, g_id
+            )
+        if order >= 2:
+            Mypdf_2 = mkPDF(pdf[1], order)
+            nnlo_nnll_reg = a_s * (
+                a_s
+                * (
+                    PDFConvolute(TildeCoeffFunc.CLg_2_til_reg, Mypdf_2, x, Q, p, nf, g_id)
+                    + PDFConvolute(
+                        TildeCoeffFunc.CLq_2_til_reg,
+                        Mypdf_2,
+                        x,
+                        Q,
+                        p,
+                        nf,
+                        target_dict=target_dict,
+                    )
+                )
+                + PDFConvolute(MasslessCoeffFunc.CLb_1_reg, Mypdf_2, x, Q, p, nf, h_id)
+            )
+            res += nnlo_nnll_reg
+        if order >= 3:
+            Mypdf_3 = mkPDF(pdf[2], order)
+            n3lo_n3ll_reg = a_s**2 * (
+                a_s
+                * (
+                    PDFConvolute(TildeCoeffFunc.CLg_3_til_reg, Mypdf_3, x, Q, p, nf, g_id)
+                    + PDFConvolute(
+                        TildeCoeffFunc.CLq_3_til_reg,
+                        Mypdf_3,
+                        x,
+                        Q,
+                        p,
+                        nf,
+                        target_dict=target_dict,
+                    )
+                )
+                + PDFConvolute(MasslessCoeffFunc.CLb_2_reg, Mypdf_3, x, Q, p, nf, h_id)
+            )
+            n3lo_n3ll_loc = (
+                a_s
+                * a_s
+                * MasslessCoeffFunc.CLb_2_loc(x, Q, p, nf)
+                * (Mypdf_3.xfxQ2(h_id, x, Q * Q) + Mypdf_3.xfxQ2(-h_id, x, Q * Q))
+            )
+            res += n3lo_n3ll_loc + n3lo_n3ll_reg
+    return res
 
 def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio=1):
     """
@@ -342,7 +425,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
     """
     Mypdf = mkPDF(pdf, order)
     muR = muR_ratio * Q
-    p = [0, Q, 1]
+    p = np.array([0, Q, 1])
     nl = number_light_flavors(Q)
     a_s = alpha_s(muR**2)
     meansq_e = np.mean([charges(nl) ** 2 for nl in range(1, nl + 1)])
@@ -357,7 +440,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
         res += a_s * reg
     if order >= 2:
         if nl != number_active_flavors(Q):
-            p = [masses(nl + 1), Q, 1]
+            p = np.array([masses(nl + 1), Q, 1])
             reg = PDFConvolute_light(
                 TildeCoeffFunc_light.CLb_2_til_reg, Mypdf, x, Q, p, nl, target_dict
             ) + nl * meansq_e * (
@@ -402,7 +485,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
 
         # add the missing terms for heavy quarks
         for ihq in range(nl + 1, 6):
-            pihq = [masses(ihq), Q, 1]
+            pihq = np.array([masses(ihq), Q, 1])
             nf = number_active_flavors(Q)
 
             # for the thr quark we subtract the asymptotic
@@ -429,7 +512,7 @@ def FL_Light(order, pdf, x, Q, h_id=None, meth=None, target_dict=None, muR_ratio
                 res += a_s**2 * reg_miss
 
     if order >= 3:
-        pg = ps = pns = [0, Q, 0, 1]
+        pg = ps = pns = np.array([0, Q, 0, 1])
         if nl != number_active_flavors(Q):
             # NOTE: here the NS has to be evaluated at nl+1 but convluted with nl
             pns[2] = n3lo_color_factors("ns", nl + 1, True)
@@ -512,7 +595,7 @@ def FL_ZM(
     conv_func = PDFConvolute
     if nl != h_id:
         conv_func = PDFConvolute_light_singlet
-    p = [0, Q, charges(h_id)]
+    p = np.array([0, Q, charges(h_id)])
     a_s = alpha_s(muR**2)
     pdfxfx = Mypdf.xfxQ2(h_id, x, Q**2) + Mypdf.xfxQ2(-h_id, x, Q**2)
     res = 0
@@ -532,7 +615,7 @@ def FL_ZM(
         loc = MasslessCoeffFunc.CLb_2_loc(x, Q, p, nl) * pdfxfx
         res += a_s**2 * (reg + loc)
     if order >= 3 and min_order <= 3:
-        pg = ps = pns = [0, Q, 0, charges(h_id)]
+        pg = ps = pns = np.array([0, Q, 0, charges(h_id)])
         pns[2] = n3lo_color_factors("ns", nl, False)
         ps[2] = n3lo_color_factors("s", nl, False)
         pg[2] = n3lo_color_factors("g", nl, False)
